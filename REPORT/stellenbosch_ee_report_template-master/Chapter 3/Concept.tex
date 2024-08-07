@@ -1,0 +1,12 @@
+\section*{Concept}
+
+The flow of the camera system shall be as follows:
+
+\begin{enumerate}
+    \item The controller shall receive footage in real-time from the UAV and sync it with known telemetry data such as GPS coordinates, altitude, heading and speed.
+    \item The controller shall then process the video footage and telemetry data to extract and store the relevant features
+    \item When the GPS signal is lost, the UAV will turn around
+    \item The controller shall extract and match the features of the current image with that of the previous images
+    \item It will find the most correlated images and use that image to determine the change in feature locations to infer the UAV's position
+\end{enumerate}
+

@@ -1,0 +1,29 @@
+HIGH-LEVEL goal
+Create a camera-based UAV navigation redundancy system that kicks in upon GPS signal loss. During flight, it will continuously record footage and extract and store features with the related images relative GPS location. Upon signal loss, it will turn around and use the features in the current image to match against features in prior images. Using this, it will estimate the change in feature landscape and thereby infer the current location of the UAV. This is then used to navigate the UAV back to base. The system will be tested using footage from a set of test UAV flights which return along the same path. The system will be evaluated based on the accuracy of and time taken to find the estimated location. The system will be implemented on a single-board computer (SBC). 
+
+
+Q - Can i store images or only features (doesnt matter, only need central GPS and features)
+
+CH1
+ Background (1/2 to 1 page) - context
+
+Context implies 
+- problem statement (1 paragraph)
+- objectives "fine-grain" SMART, numbers
+- Scope: What will be done and not be done
+- Structure of Report (Not exactly the same as the Table of Contents)
+
+
+CH2
+LIT-review + background concept (4th year)
+- Previous Work done in this field or goal
+
+
+CH3 -> CH x-2
+Conceptual -> Detailed Design
+
+CH x-1
+Results + Evaluation (NB!)
+
+CH x
+Conclusion, future work and limitations
