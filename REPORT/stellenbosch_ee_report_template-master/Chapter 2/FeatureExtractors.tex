@@ -1,6 +1,139 @@
 \chapter{Feature Extractors}
-\section{Introduction}
-In this report, we conduct an in-depth evaluation of various feature extractors to determine the most suitable one for real-time UAV-based navigation. Feature extractors play a pivotal role in image processing tasks, including object detection, recognition, and tracking. The chosen feature extractor must be efficient, accurate, and compatible with the high processing power capabilities of modern UAVs, ensuring reliable performance under varied conditions.
+
+
+2. What information did u draw from or acquire to solve problem. What did I learn not from EE engineering. Additional to undergrad. 
+
+e.g. water quality: UV spectrum, optical sensing, color spectrum moving signals. Capture additional technologies and information to do design. Anything beyond scope of EE, lecturer might not know. I needed to know this before addressing problem. 
+
+eg i have these 3 options at my disposal or many. 
+
+\section{Intropara}
+
+This chapter focuses on the additional prerequisite knowledge required to solve the problem above what the reader is expected to know. The image-based navigation system involves many functional parts which need to be understood and integrated to solve the problem. This includes the technique of feature extraction, feature matching, and homographic estimation based on the change in rotation and translation of the landscape. 
+
+\subsection*{Feature Extractors}
+In this report, we conduct an in-depth evaluation of various feature extractors to determine the most suitable one for real-time, robust and accurate UAV-based navigation. 
+
+
+- what is a feature extractor   
+- why is it important
+- what are the factors that affect the performance of a feature extractor 
+- what are the types of feature extractors (How many are there)
+- Parameters of feature extractors
+- which ones solve the problem. e.g. built for identifying people is not good for landscapes. 
+- which are the best ones for our problem
+- what are the parameters associated with feature extractor optimization 
+- techniques to optimize feature extractors (plots, optimization techniques etc)
+- how to evaluate feature extractors
+- what are the limitations of feature extractors
+
+
+\subsection{Feature Matchers}
+
+- What is a feature matcher
+- Why is it important
+- What are the types of feature matchers (How many are there)
+- Which ones solve the problem. e.g. good at matching people is not good for landscapes.
+- What are the factors that affect the performance of a feature matcher
+- Which are the best ones for our problem
+- What are the parameters associated with feature matcher optimization
+- Techniques to optimize feature matchers (plots, optimization techniques etc)
+- How to evaluate feature matchers
+- What are the limitations of feature matchers
+
+
+\subsection{Homographic Estimation} 
+- What is homographic estimation (rot translation warping)
+- Why is it important
+- What are the types of homographic estimation (How many are there)
+- what are the alternatives to homographic estimation (e.g. optical flow, affine transformation, and perspective transformation)
+- What is the most accurate way to estimate homography
+- What are the factors that affect the performance of homographic estimation    
+- How should we optimize homographic estimation
+- How do we evaluate the performance of homographic estimation
+- What are the limitations of homographic estimation
+
+\subsection*{Accuracy considerations}
+- Pixel to GPS coordinate conversion factor accuracy
+- Warping in the data (fisheye lens, distortion)
+- Image resolution and quality
+- Depth of objects causing relatively velocity differences
+- Parameters of extraction and matching
+- Preprocessing of images (e.g., blurring)
+- Outlier removal techniques
+
+\subsection*{Stereo Vision}
+- What is stereo vision
+- Why is it important
+- What are the techniques of stereo vision (How many are there)
+- What are the factors that affect the performance of stereo vision
+- What is the basic data requirements for accurately estimating depth
+- How should we optimize stereo vision
+- How can we evaluate the performance of stereo vision
+- What are the limitations of stereo vision
+- What are the performance considerations of stereo vision
+
+
+
+
+\subsection*{Feature Extractors}
+In this report, we conduct an in-depth evaluation of various feature extractors to determine the most suitable one for real-time, robust and accurate UAV-based navigation. 
+
+
+- what is a feature extractor   
+- Usage in this task
+- what are the types of feature extractors (How many are there)
+- which ones solve the problem. e.g. built for identifying people is not good for landscapes. 
+- what are the factors that affect the performance of a feature extractor 
+- which are the best ones for our problem
+- what are the parameters associated with feature extractor optimization 
+- techniques to optimize feature extractors (plots, optimization techniques etc)
+- how to evaluate feature extractors
+- what are the limitations of feature extractors
+
+
+\subsubsection*{What is a feature Extractor}
+A feature extractor is a computer vision algorithm or deep-learning model that identifies and extracts key features in an image. A feature is a pixel or weight of multiple pixels that represents a highly unique and distinctive part of an image. For instance, this could be an edge between a wall and the sky. Feature extractors are characterized by a spatial coordinate and a descriptor. A descriptor is a vector which contains information about the helps it be uniquely identified again in a new image. This can include information about the size, shape, and intensity of the feature. One can also infer the scale and orientation of the feature from the descriptor. A feature extractor also commonly includes a confidence score which indicates a score of how unique and well-defined the feature is. Ultimately, a feature extractors goal is to find unique and well-defined features that can be used to match images, estimate motion or depth, classify objects and perform other computer vision tasks.
+
+\subsubsection*{Usage in this task}
+In this task, feature extractors are used to identify and extract key features in images captured by a UAV. We then use the extracted featured to match images, and ultimately estimate the new GPS coordinates and heading of the UAV. Accurate features are required to find the image that has the most correlation with the current image. Then, many features are required to accurately estimate the new GPS coordinates and heading of the UAV. In both cases, there is a requirement on the extractor to propose as many accurate keypoints as possible to the next stage. 
+
+\subsubsection*{What factors affect the performance of a feature extractor}
+The performance of a feature extractor is influenced by several factors, including:
+- Accuracy: The ability of the feature extractor to detect and describe features accurately is crucial for reliable image matching and estimation tasks. That is, it should be able to identify unique features that have very distinct and strong descriptors.
+- Robustness: The feature extractor should be invariant to changes in scale, rotation, illumination, and noise to ensure consistent performance across different environments and conditions.
+- Speed: Real-time processing requires fast computation and feature extraction to minimize latency, which is essential for timely decision-making in dynamic environments.
+- Repeatability: The feature extractor should be able to detect the same feature in different images, even if the feature is viewed from different angles or under different lighting conditions.
+- Scalability: The algorithm should efficiently handle large datasets or high-resolution images, maintaining performance as the scale of data increases.
+
+\subsubsection*{How many feature extractors exist and what are the main ones?}
+
+There exists a wide variety of feature extractors, each with its unique strengths and weaknesses. Some of the most commonly used feature extractors include: 
+- SIFT (Scale-Invariant Feature Transform): SIFT is a classic feature extractor known for its robustness to scale, rotation, and illumination changes. It is widely used in various computer vision applications.
+- SURF (Speeded-Up Robust Features): SURF is a faster alternative to SIFT, offering similar robustness and accuracy while being computationally more efficient.
+- ORB (Oriented FAST and Rotated BRIEF): ORB is a fast and efficient feature extractor that combines the FAST keypoint detector with the BRIEF descriptor. It is suitable for real-time applications.
+- SuperPoint: SuperPoint is a recently developed, deep learning-based feature extractor that offers high accuracy and efficiency for real-time applications. It learns feature representations directly from data, making it adaptable to specific tasks.
+- 
+
+
+
+feature extractors are nb bc they r iinvariant to scale rotation and transformation. As opposed to simply correlating entire image. also less computationally expensive.
+https://baotramduong.medium.com/feature-extraction-in-computer-vision-using-python-358d7c9863cb
+
+HOG, LBP (texture), Color Histogram, 
+SIFT, SURF (comp efficient surf), ORB 
+Gabor (texture and edges)
+Zernike  (shape representation)
+Hu Moments (shape recognition)
+Haralick Texture Features
+
+keras applications
+https://keras.io/api/applications/
+https://keras.io/api/applications/HASHTAGusage-examples-for-image-classification-models
+
+common feature extraction techniques include edge detection, color histograms, and texture analysis
+
+
 
 \section{Choosing a Feature Extractor}
 When selecting a feature extractor, several critical factors must be considered:

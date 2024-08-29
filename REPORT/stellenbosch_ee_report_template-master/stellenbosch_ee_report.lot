@@ -2,13 +2,12 @@
 \babel@toc {afrikaans}{}\relax 
 \babel@toc {english}{}\relax 
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {1.1}{\ignorespaces Performance of the unconstrained segmental Bayesian model on TIDigits1 over iterations in which the reference set is refined.}}{1}{table.caption.7}%
-\contentsline {table}{\numberline {1.2}{\ignorespaces A table with an example of using multiple columns.}}{1}{table.caption.8}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Standard Deviation and Norm of the Ratio of Actual to Estimated GPS Location for Various Kernel Sizes}}{17}{table.caption.16}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces Comparison of Deviation and Norm for SIFT + BFMatcher and SuperPoint + LightGlue}}{18}{table.caption.17}%
-\contentsline {table}{\numberline {3.3}{\ignorespaces Normalized Error vs. Lower Percentile Cutoff}}{20}{table.caption.18}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Standard Deviation and Norm of the Ratio of Actual to Estimated GPS Location for Various Kernel Sizes}}{17}{table.caption.13}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Comparison of Deviation and Norm for SIFT + BFMatcher and SuperPoint + LightGlue}}{18}{table.caption.14}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces Normalized Error vs. Lower Percentile Cutoff}}{20}{table.caption.15}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces Comparison of SIFT and SURF for different image transformations}}{23}{table.caption.17}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
