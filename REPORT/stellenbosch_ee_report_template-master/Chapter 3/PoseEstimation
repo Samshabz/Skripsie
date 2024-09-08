@@ -1,0 +1,27 @@
+\subsection*{Primary Methods for Estimating Transformations}
+
+\subsubsection*{Manual Transformation Estimation}
+This approach involves manually calculating transformations such as rotation, scale, and translation by analyzing the differences in feature points between two images. This method gives full control but is time-consuming and prone to errors, making it unsuitable for complex or real-time applications.
+
+\subsubsection*{OpenCV Tools}
+OpenCV provides several built-in functions to estimate transformations:
+
+\paragraph{cv2.estimateAffine2D} Estimates an affine transformation, which includes rotation, translation, and scale. This method is efficient and commonly used for 2D transformations where perspective distortion is not a concern.
+
+\paragraph{cv2.findHomography} Estimates a homography matrix, which handles rotation, translation, scale, and perspective distortion. It is particularly useful for mapping points between planes in more complex transformations.
+
+\paragraph{cv2.getRotationMatrix2D} Specifically designed for applying rotation around a given center point. This method is straightforward and efficient for tasks that primarily involve rotation.
+
+\subsubsection*{ICP (Iterative Closest Point)}
+ICP is an algorithm that iteratively aligns two point clouds to minimize the difference between them, estimating rotation, translation, and scale. While primarily used in 3D applications, it can be adapted for 2D transformations. It is accurate but may be slow for large datasets or if an initial alignment is not provided.
+
+\subsubsection*{Feature-Based Transformation Estimation}
+This method involves detecting and matching features between two images and then estimating the transformation (rotation, translation, scale) that aligns these features. Commonly used feature detectors and matchers (e.g., SIFT, ORB, FLANN) can be combined with transformation estimation tools like `cv2.estimateAffine2D` for robust results.
+
+\subsection*{Improvements for Transformation Estimation}
+
+\subsubsection*{RANSAC (Random Sample Consensus)}
+RANSAC is a robust method used to refine transformation estimation by iteratively selecting a subset of matches and fitting a model, such as an affine transformation or homography. RANSAC can be paired with methods like `cv2.estimateAffine2D`, `cv2.findHomography`, or any feature-based transformation estimation technique. It filters out outliers, ensuring that only the most accurate matches contribute to the final transformation.
+
+\subsubsection*{Bundle Adjustment}
+Bundle Adjustment refines the estimated transformation by minimizing the re-projection error across multiple images. It is particularly useful in sequences of images where consistency in rotation, translation, and scale is required. Bundle Adjustment is often used in conjunction with feature-based methods for improved accuracy over time, but it is computationally intensive and typically used in post-processing rather than real-time applications.

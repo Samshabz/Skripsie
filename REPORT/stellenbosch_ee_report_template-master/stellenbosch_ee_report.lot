@@ -7,7 +7,7 @@
 \contentsline {table}{\numberline {3.1}{\ignorespaces Standard Deviation and Norm of the Ratio of Actual to Estimated GPS Location for Various Kernel Sizes}}{17}{table.caption.13}%
 \contentsline {table}{\numberline {3.2}{\ignorespaces Comparison of Deviation and Norm for SIFT + BFMatcher and SuperPoint + LightGlue}}{18}{table.caption.14}%
 \contentsline {table}{\numberline {3.3}{\ignorespaces Normalized Error vs. Lower Percentile Cutoff}}{20}{table.caption.15}%
-\contentsline {table}{\numberline {3.4}{\ignorespaces Comparison of SIFT and SURF for different image transformations}}{23}{table.caption.17}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces Comparison of SIFT and SURF for different image transformations}}{24}{table.caption.17}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

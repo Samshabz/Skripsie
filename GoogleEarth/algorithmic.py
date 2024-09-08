@@ -3,10 +3,53 @@ import numpy as np  # For numerical operations
 import os  # For file operations
 import matplotlib.pyplot as plt  # For plotting
 from sklearn.linear_model import LinearRegression
+from skimage.metrics import structural_similarity as ssim
+import imagehash
+from PIL import Image
+
+
+
+
+def compare_histograms(img1, img2):
+    # Convert both images to HSV
+    img1_gray = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY) if len(img1.shape) == 3 else img1
+    img2_gray = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY) if len(img2.shape) == 3 else img2
+
+    if len(img1.shape) == 2:
+        img1 = cv2.cvtColor(img1, cv2.COLOR_GRAY2BGR)
+    if len(img2.shape) == 2:
+        img2 = cv2.cvtColor(img2, cv2.COLOR_GRAY2BGR)
+
+    # Convert both images to HSV
+    img1_pil = Image.fromarray(cv2.cvtColor(img1, cv2.COLOR_BGR2RGB))
+    img2_pil = Image.fromarray(cv2.cvtColor(img2, cv2.COLOR_BGR2RGB))
+    img1_hsv = cv2.cvtColor(img1, cv2.COLOR_BGR2HSV)
+    img2_hsv = cv2.cvtColor(img2, cv2.COLOR_BGR2HSV)
+    # Compute histograms for both images
+    hist1 = cv2.calcHist([img1_hsv], [0, 1, 2], None, [50, 60, 60], [0, 180, 0, 256, 0, 256])
+    hist2 = cv2.calcHist([img2_hsv], [0, 1, 2], None, [50, 60, 60], [0, 180, 0, 256, 0, 256])
+
+    # Normalize the histograms
+    hist1 = cv2.normalize(hist1, hist1).flatten()
+    hist2 = cv2.normalize(hist2, hist2).flatten()
+
+    # Compare histograms using correlation
+    score1 = cv2.compareHist(hist1, hist2, cv2.HISTCMP_CORREL)
+    score2, _ = ssim(img1_gray, img2_gray, full=True)
+
+
+    hash1 = imagehash.average_hash(img1_pil)
+    hash2 = imagehash.average_hash(img2_pil)
+    score3 = 1 - (hash1 - hash2) / len(hash1.hash)  # Normalized Hamming distance
+    #print(f"All scores: {score1}, {score2}, {score3}")
+    score = (score2+score3+score1) / 3
+    # the 3 methods are score1: histogram correlation, score2: SSIM, score3: average hash's hamming distance
+
+    
+    return score
 
 class UAVNavigator:
-    def __init__(self, gps_to_pixel_scale):
-        self.gps_to_pixel_scale = gps_to_pixel_scale  # Pixels per meter
+    def __init__(self, detector_choice):
         self.stored_images = []
         self.stored_keypoints = []
         self.stored_descriptors = []
@@ -18,16 +61,96 @@ class UAVNavigator:
         self.actuals_x = []
         self.actuals_y = []
 
-        # Initialize the ORB detector
-        self.orb = cv2.ORB_create(nfeatures=20000)
+        # Initialize the detector based on choice
+        if detector_choice == 1:
+            self.detector_name = "ORB"
+            self.detector = cv2.ORB_create(nfeatures=20000)
+            self.detector.setEdgeThreshold(10)  # Lower edge threshold (default is 31). range is 0-100. faster is lower
+            self.detector.setFastThreshold(5)   # Lower FAST threshold (default is 20). range is 1-100. faster is lower
 
-        # Set up FLANN-based matcher parameters for ORB (binary features)
-        index_params = dict(algorithm=6,  # FLANN_INDEX_LSH
-                            table_number=12,  # Increase table number
-                            key_size=20,  # Increase key size
-                            multi_probe_level=2)  # Increase multi-probe level
-        search_params = dict(checks=100)  # Increase the number of checks
-        self.matcher = cv2.FlannBasedMatcher(index_params, search_params)
+            index_params = dict(algorithm=6,  # FLANN_INDEX_LSH
+                                table_number=12,
+                                key_size=20,
+                                multi_probe_level=2)
+        elif detector_choice == 2:
+            self.detector_name = "AKAZE"
+            self.detector = cv2.AKAZE_create(threshold=0.0005)  # Lower threshold (default is 0.001). faster is lower
+            index_params = dict(algorithm=6,  # FLANN_INDEX_LSH
+                                table_number=12,
+                                key_size=20,
+                                multi_probe_level=2)
+
+        else:
+            raise ValueError("Invalid detector choice! Please choose 1 for ORB, 2 for AKAZE")
+
+        search_params = dict(checks=150)
+        if 0==1:
+            self.matcher = cv2.FlannBasedMatcher(index_params, search_params)
+        else:
+            self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False) # both akaze and orb use binary descriptors - norm hamming
+
+
+
+    def find_best_match(self, image_index, lower_percentile=20, upper_percentile=100-20):
+        """Finds the best matching stored image for the given image index, using histogram comparison."""
+        if len(self.stored_descriptors) == 0:
+            raise ValueError("No descriptors available for matching.")
+
+        descriptors_current = self.stored_descriptors[image_index]
+        kp_current = self.stored_keypoints[image_index]
+
+        best_index = -1
+        max_corr_score = -np.inf
+
+        for i in range(image_index):
+            if i >= image_index:
+                continue
+
+            kp_stored = self.stored_keypoints[i]
+            descriptors_stored = self.stored_descriptors[i]
+
+            matches = self.matcher.knnMatch(descriptors_current, descriptors_stored, k=2)
+
+            good_matches = []
+            for match_pair in matches:
+                if len(match_pair) == 2:
+                    m, n = match_pair
+                    if m.distance < 0.99999999999 * n.distance:
+                        good_matches.append(m)
+
+            if len(good_matches) > 0:
+                src_pts = np.float32([kp_current[m.queryIdx].pt for m in good_matches])
+                dst_pts = np.float32([kp_stored[m.trainIdx].pt for m in good_matches])
+                shifts = dst_pts - src_pts
+
+                shifts = self.filter_outliers_joint(shifts, lower_percentile, upper_percentile)
+
+                if shifts is None or len(shifts) == 0:
+                    continue
+
+                M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
+
+                if M is not None:
+                    angle = np.arctan2(M[1, 0], M[0, 0]) * (180 / np.pi)
+                    image_i = pull_image(i)
+                    rotated_image_i = self.rotate_image(image_i, -angle)
+                    current_image = pull_image(image_index)
+
+                    # Perform histogram comparison
+                    score0 = compare_histograms(rotated_image_i, current_image) 
+                    score1 = len(good_matches)/100 #weight
+                    score = 0*score0 + score1
+                    #print(f"Histogram similarity score for image {image_index+1} and {i+1}: {score0} and {score1}")
+                    #print(f"matches in {image_index} and {i} are {len(good_matches)}")
+
+                    if score > max_corr_score:
+                        max_corr_score = score
+                        best_index = i
+
+        print(f"Best match for image {image_index+1} is image {best_index+1} with histogram similarity score {max_corr_score} and matches {len(good_matches)}")
+        return best_index
+    
+
 
     def clear_stored_data(self):
         """Clear stored images, keypoints, descriptors, and GPS data."""
@@ -51,19 +174,20 @@ class UAVNavigator:
         """Add an image and its GPS coordinates to the stored list."""
         cropped_image = self.crop_image(image, kernel_to_test)
         
-        # Convert to grayscale for ORB if not already
+        # Convert to grayscale for detectors if not already
         gray_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY) if len(cropped_image.shape) == 3 else cropped_image
-        keypoints, descriptors = self.orb.detectAndCompute(gray_image, None)
+        keypoints, descriptors = self.detector.detectAndCompute(gray_image, None)
         
         # Check if descriptors are None
         if descriptors is None:
             print(f"Warning: No descriptors found for one image. Skipping.")
             return
 
-        self.stored_images.append(cropped_image)
+        #self.stored_images.append(cropped_image)
         self.stored_keypoints.append(keypoints)
         self.stored_descriptors.append(descriptors)
         self.stored_gps.append(gps_coordinates)
+
 
     def compute_linear_regression_factors(self):
         """Compute the linear regression factors for both x and y based on the stored estimates and actual values."""
@@ -92,15 +216,19 @@ class UAVNavigator:
         else:
             print("Not enough data points to perform linear regression.")
 
-    def compute_pixel_shifts_and_rotation(self, keypoints1, descriptors1, keypoints2, descriptors2, lower_percentile=20, upper_percentile=80):
+    def compute_pixel_shifts_and_rotation(self, keypoints1, descriptors1, keypoints2, descriptors2, bool_calc_best_match, lower_percentile=20, upper_percentile=80):
         matches = self.matcher.knnMatch(descriptors1, descriptors2, k=2)
-
+        if bool_calc_best_match:
+            # Find the best match for each keypoint
+            match_ratio = 0.995
+        else:
+            match_ratio = 0.75
         # Apply ratio test as per Lowe's paper
         good_matches = []
         for match_pair in matches:
             if len(match_pair) == 2:
                 m, n = match_pair
-                if m.distance < 0.75 * n.distance:
+                if m.distance < match_ratio * n.distance:
                     good_matches.append(m)
 
         if len(good_matches) < 4:
@@ -124,6 +252,7 @@ class UAVNavigator:
         if M is not None:
             angle = np.arctan2(M[1, 0], M[0, 0]) * (180 / np.pi)
             return shifts, angle, len(good_matches)
+        # lets print the angle we would have gotten if we used affine2Dpartial
 
         print("Warning: Homography could not be estimated.")
         return shifts, None, len(good_matches)
@@ -175,47 +304,39 @@ class UAVNavigator:
         deviation_norms_y = []
         rotations_arr = []
 
-        range_im = num_images_analyse if bool_infer_factor else len(self.stored_images)
+        range_im = num_images_analyse if bool_infer_factor else 13#len(self.stored_images)
         
         for i in reversed(range(1, range_im)):  # iterate through all images in reverse order
-            best_index = -1
-            max_good_matches = 0
-
-            for j in range(i):  # iterate through all images before the current image
-                shifts, angle, num_good_matches = self.compute_pixel_shifts_and_rotation(
-                    self.stored_keypoints[i], self.stored_descriptors[i], 
-                    self.stored_keypoints[j], self.stored_descriptors[j]
-                )
-
-                if shifts is not None and num_good_matches > max_good_matches:  # if the number of good matches is greater than the current max, update the max and the best index
-                    max_good_matches = num_good_matches
-                    best_index = j
+            best_index = -1   
+            best_index = self.find_best_match(i)
 
             if best_index != -1:
-                best_index = i - 1
+                #print(f"Best match for image {i+1} is image {best_index+1} with undefined good matches.")
+                #best_index = i - 1
                 shifts, angle, num_good_matches = self.compute_pixel_shifts_and_rotation(
                     self.stored_keypoints[i], self.stored_descriptors[i], 
-                    self.stored_keypoints[best_index], self.stored_descriptors[best_index]
+                    self.stored_keypoints[best_index], self.stored_descriptors[best_index], 0
                 )
+                
                 cumul_ang = 0
 
                 if shifts is not None:
                     # Apply rotation correction if angle is not None
                     if angle is not None:
-                        rotated_image = self.stored_images[best_index]
-                        for _ in range(1, 2, 1):  # Iterate to refine the rotation angle
+                        rotated_image = pull_image(best_index) #self.stored_images[best_index]
+                        for _ in range(1, 3, 1):  # Iterate to refine the rotation angle
                             rotated_image = self.rotate_image(rotated_image, angle)
                             cumul_ang += angle
-                            rotated_keypoints, rotated_descriptors = self.orb.detectAndCompute(rotated_image, None)
+                            rotated_keypoints, rotated_descriptors = self.detector.detectAndCompute(rotated_image, None)
                             shifts, angle, num_good_matches = self.compute_pixel_shifts_and_rotation(
                                 self.stored_keypoints[i], self.stored_descriptors[i], 
-                                rotated_keypoints, rotated_descriptors
+                                rotated_keypoints, rotated_descriptors, 0
                             )
                             # translate the image
                             if shifts is not None:
                                 shift_x = np.mean(shifts[:, 0])
                                 shift_y = np.mean(shifts[:, 1])
-                                rotated_image = self.translate_image(rotated_image, shift_x, shift_y)
+                                #rotated_image = self.translate_image(rotated_image, shift_x, shift_y)
                             
                     rotations_arr.append(cumul_ang)  # Append rotation to the array
 
@@ -229,8 +350,8 @@ class UAVNavigator:
                     actual_gps_diff = np.array(self.stored_gps[i]) - np.array(self.stored_gps[best_index])
                     actual_gps_diff_meters = actual_gps_diff * 111139  # Convert degrees to meters
 
-                    actual_pixel_change_x = actual_gps_diff_meters[0] * self.gps_to_pixel_scale
-                    actual_pixel_change_y = actual_gps_diff_meters[1] * self.gps_to_pixel_scale
+                    actual_pixel_change_x = actual_gps_diff_meters[0] 
+                    actual_pixel_change_y = actual_gps_diff_meters[1] 
                     
                     if bool_infer_factor and actual_pixel_change_x != 0 and actual_pixel_change_y != 0:
                         # Estimate linear regression factors with mse function
@@ -251,10 +372,8 @@ class UAVNavigator:
                     deviation_norms_y.append(np.abs(deviation_y_meters))
                     print(f"Deviations: {deviation_x_meters} meters (x), {deviation_y_meters} meters (y) for image {i+1}")
 
-        # if bool_infer_factor:
-        #     self.clear_stored_data()  # Clear data if the function was used for inference
-        
-        return None, None, None, None, np.mean(deviation_norms_x), np.mean(deviation_norms_y), rotations_arr
+
+        return np.mean(deviation_norms_x), np.mean(deviation_norms_y), rotations_arr
 
 def parse_gps(file_path):
     """Parse GPS coordinates from a text file."""
@@ -291,6 +410,58 @@ def parse_dms(dms_str):
     dir = parts[3]
     return deg, min, sec, dir
 
+
+def overlay_images(img1, img2, alpha=0.5):
+    """
+    Overlays two images and displays the result.
+
+    Parameters:
+    - image_path1: Path to the first image (background).
+    - image_path2: Path to the second image (overlay).
+    - alpha: Weight of the first image (0 to 1). The second image will have (1 - alpha) weight.
+    """
+    # Read the images
+
+
+    if img1 is None or img2 is None:
+        print("Error: One of the images could not be loaded.")
+        return
+
+    # Ensure both images have the same size
+    if img1.shape != img2.shape:
+        print("Error: Images do not have the same dimensions.")
+        return
+
+    # Blend the images
+    blended = cv2.addWeighted(img1, alpha, img2, 1 - alpha, 0)
+
+    # Display the result
+    cv2.imshow('Blended Image', blended)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+def crop_outer_image(image, kernel_to_test):
+    """Crop the top and bottom 10% of the image."""
+    height = image.shape[0]
+    cropped_image = image[int(height * 0.1):int(height * 0.9), :]
+    cropped_image = cv2.GaussianBlur(cropped_image, (kernel_to_test, kernel_to_test), 0)  # Denoise
+    return cropped_image
+
+def pull_image(index):
+    """Pull an image from from the directory with name index.jpg"""
+    directory = './GoogleEarth/SET1'
+    image_path = os.path.join(directory, f'{index+1}.jpg')
+    
+    # read in grey 
+    #image = cv2.imread(image_path, cv2.IMREAD_COLOR)  # Read the image in color
+    # read in grey
+    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # Read the image in
+    cropped_image = crop_outer_image(image, 3)
+        
+        # Convert to grayscale for detectors if not already
+    gray_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY) if len(cropped_image.shape) == 3 else cropped_image
+    return gray_image
+
 def convert_to_decimal(deg, min, sec, dir):
     """Convert DMS to decimal degrees."""
     decimal = deg + min / 60.0 + sec / 3600.0
@@ -299,10 +470,13 @@ def convert_to_decimal(deg, min, sec, dir):
     return decimal
 
 def main():
-    gps_to_pixel_scale = 596 / 1092  # Pixels per meter
-    navigator = UAVNavigator(gps_to_pixel_scale)
+    
+    detector_choice = 2  # Set 1 for ORB, 2 for AKAZE, 3 for SURFB *NOT FREE*
+    navigator = UAVNavigator(detector_choice)
+
     directory = './GoogleEarth/SET1'
     num_images = 13
+    inference_images = 7
     lower_percentiles = [20]
     normalized_errors_percentiles = []
     kernels_to_test = [3]
@@ -316,7 +490,7 @@ def main():
             navigator.clear_stored_data()  # Clear stored data before each kernel test
 
             # Step 1: Add images and infer factors
-            for i in range(1, num_images + 1):
+            for i in range(1, inference_images + 1): # stops at inference_images = 6
                 image_path = os.path.join(directory, f'{i}.jpg')
                 gps_path = os.path.join(directory, f'{i}.txt')
                 image = cv2.imread(image_path, cv2.IMREAD_COLOR)  # Read the image in color
@@ -324,23 +498,22 @@ def main():
                 navigator.add_image(image, gps_coordinates, kernel)
 
             # Run analysis to infer factors
-            _, _, _, _, _, _, rotations = navigator.analyze_matches(lower_percentile, bool_infer_factor, num_images)
+            _, _, rotations = navigator.analyze_matches(lower_percentile, bool_infer_factor, inference_images)
             navigator.compute_linear_regression_factors()
             print("INFERRED FACTORS:", navigator.inferred_factor_x, navigator.inferred_factor_y)
-
-            # Step 2: Clear data and perform actual analysis
-            navigator.clear_stored_data()  # Clear stored data before actual analysis
-            
-            # Add images again for actual analysis
-            for i in range(1, num_images + 1):
+            # flush estimations prior to factor inference
+            navigator.estimations_x = []
+            navigator.estimations_y = []
+            # Add images again for actual analysis. should not have to do this. its not meant to be changed in the prior run. xxx
+            # here we will implement a function which says if stream.available, then if gps_available add image, else we will do the second step which is inferring the GPS and heading for that image. 
+            for i in range(inference_images+1, num_images + 1):
                 image_path = os.path.join(directory, f'{i}.jpg')
                 gps_path = os.path.join(directory, f'{i}.txt')
                 image = cv2.imread(image_path, cv2.IMREAD_COLOR)  # Read the image in color
                 gps_coordinates = parse_gps(gps_path)
                 navigator.add_image(image, gps_coordinates, kernel)
-
             # Run actual analysis with inferred factors
-            _, _, _, _, mean_x_dev, mean_y_dev, rotations = navigator.analyze_matches(lower_percentile, False, num_images)
+            mean_x_dev, mean_y_dev, rotations = navigator.analyze_matches(lower_percentile, False, num_images)
             print(f'Array of rotations: {rotations}')
             print("Mean normalized error", np.linalg.norm([mean_x_dev, mean_y_dev]))
             normalized_error = np.linalg.norm([mean_x_dev, mean_y_dev])
@@ -350,4 +523,4 @@ def main():
     print(normalized_errors_percentiles)
 
 if __name__ == "__main__":
-    main()
+    main() 

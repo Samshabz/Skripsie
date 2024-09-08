@@ -1,0 +1,40 @@
+The next critical feature in an image-based navigation system is the feature matcher. The feature matcher serves two main purposes. The first is to find the correlation between two images in order to find which image has the most similar landscape to the current image. The second is to find the high quality matches between the two images in order to infer the relative pose between the two images. The pose is the change in position, scale, and rotation. The differentiation is that the former case primarily requires many feature matches, irrespective of their accuracy, and the latter requires less but very high quality matches. 
+To compute matches, The descriptor first transforms each feature individually to a normalized space. This process aligns the feature’s orientation, adjusts scale, and normalizes other factors like intensity, ensuring that each descriptor is in a consistent format for direct comparison during matching.
+
+
+Matches have specific confidence levels. When calculating transformations we can include confidence weightings to improve the accuracy of the estimations. 
+
+Broadly speaking there are two types of feature matchers: local and global. Local matchers are used to find the relative pose between two images. Global matchers are used to find the correlation between two images.
+
+\subsection*{Brute-Force Matcher (BFMatcher)} BFMatcher compares every descriptor from one image with all descriptors in another image to find the closest match. It calculates the distance between descriptors using a chosen metric (e.g., Euclidean for SIFT, Hamming for ORB). Matches are sorted by distance, and the best ones are selected. While simple and effective, it can be slow with large datasets. Best suited for smaller datasets or when precision is prioritized over speed.
+
+\subsection*{FLANN (Fast Library for Approximate Nearest Neighbors)} FLANN is an efficient matcher that uses approximate nearest neighbor search, speeding up the matching process, especially for large datasets. It uses tree-based algorithms or k-means clustering to quickly find matches. FLANN is often preferred for tasks involving large datasets where speed is critical, such as real-time applications with SIFT or SURF descriptors.
+
+\subsection*{K-Nearest Neighbors (KNN) Matcher} KNN Matcher finds the k best matches for each descriptor, often used with BFMatcher or FLANN. It allows for more sophisticated matching techniques, such as Lowe’s ratio test, which compares the distance of the closest match to the second-closest match to filter out generic or otherwise weak matches. Useful for improving match quality in detailed tasks.
+
+\subsection*{Cross-Check Matching} Cross-check matching performs matching in both directions (from image A to B and B to A) and only retains matches that are consistent in both directions. This reduces false positives and increases the reliability of matches. It can be combined with BFMatcher or FLANN to ensure higher match accuracy. However, this doubles the computation time.
+
+\subsection*{RANSAC (Random Sample Consensus)} RANSAC is used to refine matches by identifying and removing outliers. It works by iteratively selecting a subset of matches, estimating a model (e.g., homography), and checking how well the remaining matches fit this model. Matches that deviate significantly are considered outliers and discarded. RANSAC is crucial in tasks like image stitching, where accurate geometric transformations are required.
+
+\subsection*{Light Glue} Light Glue is a lightweight, relative to other neural network approaches, neural network-based matcher that uses deep learning to match features across images. It is optimized for speed and memory efficiency, making it suitable for mobile and embedded systems. Light Glue provides robust matches even under challenging conditions, such as significant viewpoint changes or lighting variations. This is a significant improvement over traditional feature matching methods like BF or FLANN matchers, however, it increases computational time and risks an inability to generalize well, especially in this context which is unlikely to have training data based off UAV images.
+
+\subsection*{SuperGlue} SuperGlue is a more advanced neural network-based matcher that leverages attention mechanisms, dynamically aggregating local features based on their inferred importance, to enhance the matching process. It works by learning to match keypoints directly from image data, providing superior performance in complex scenarios with large changes in scale, rotation, or perspective. SuperGlue is well-suited for high-precision applications like 3D reconstruction. 
+
+\subsection*{Deep Matching (DM)} Deep Matching uses convolutional neural networks (CNNs) to extract deep features from images, which are then matched using similarity measures. This approach is robust to various transformations and can handle complex scenes with high accuracy. Deep Matching is often used in advanced computer vision tasks like dense optical flow or image retrieval, where traditional feature matching methods might struggle.
+
+
+\section*{Global Matchers}
+\subsection*{Bag of Visual Words (BoVW)}
+BoVW is an image retrieval technique that represents an image as a histogram of visual words. Visual words are clusters of similar features (e.g., SIFT or ORB descriptors). The BoVW model quantizes local features into a fixed-size vector that can be compared across images. This approach is effective for large-scale image retrieval tasks, allowing for efficient similarity searches.
+
+\subsection*{VLAD (Vector of Locally Aggregated Descriptors)}
+VLAD extends BoVW by accumulating the differences between local descriptors and their assigned visual words. This provides a more detailed representation, improving matching accuracy. VLAD is ideal for scenarios requiring a compact yet discriminative image representation for global matching.
+
+\subsection*{Hashing Methods (LSH, PCA-Hashing)}
+Hashing methods like Locality-Sensitive Hashing (LSH) reduce the dimensionality of descriptors, mapping similar descriptors to nearby hash buckets. This enables fast lookups, making these methods suitable for real-time global matching in large databases. While they are faster, they are generally less accurate than VLAD.
+
+\subsection*{CNN Features}
+CNN-based global matching extracts high-level features from images using pretrained models such as VGG or ResNet. These features are then compared using distance metrics. CNN-based methods are powerful for scene understanding and can be used out-of-the-box for image retrieval tasks without additional training. Taking a pre-final layer retrieves high-level features, allowing for highly accurate global matching.
+
+\subsection*{NetVLAD}
+NetVLAD applies the VLAD algorithm to features extracted by a Convolutional Neural Network (CNN), combining the strengths of both methods. It is particularly effective for place recognition and scene matching in UAV mapping, providing robust global matching capabilities without requiring custom training.
