@@ -6,8 +6,8 @@ from sklearn.linear_model import LinearRegression
 from skimage.metrics import structural_similarity as ssim
 import imagehash
 from PIL import Image
-
-
+import time
+from Local_Matchers import set_matcher
 
 
 def compare_histograms(img1, img2):
@@ -68,17 +68,10 @@ class UAVNavigator:
             self.detector.setEdgeThreshold(10)  # Lower edge threshold (default is 31). range is 0-100. faster is lower
             self.detector.setFastThreshold(5)   # Lower FAST threshold (default is 20). range is 1-100. faster is lower
 
-            index_params = dict(algorithm=6,  # FLANN_INDEX_LSH
-                                table_number=12,
-                                key_size=20,
-                                multi_probe_level=2)
         elif detector_choice == 2:
             self.detector_name = "AKAZE"
             self.detector = cv2.AKAZE_create(threshold=0.0005)  # Lower threshold (default is 0.001). faster is lower
-            index_params = dict(algorithm=6,  # FLANN_INDEX_LSH
-                                table_number=12,
-                                key_size=20,
-                                multi_probe_level=2)
+
 
         else:
             raise ValueError("Invalid detector choice! Please choose 1 for ORB, 2 for AKAZE")
@@ -87,69 +80,120 @@ class UAVNavigator:
         if 0==1:
             self.matcher = cv2.FlannBasedMatcher(index_params, search_params)
         else:
-            self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False) # both akaze and orb use binary descriptors - norm hamming
+            self.matcher = set_matcher("flann_matcher")#cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False) # both akaze and orb use binary descriptors - norm hamming
+            # Supported options: "bf_matcher", "flann_matcher", "lsh_matcher", "ann_matcher", "graph_matcher"
 
 
 
-    def find_best_match(self, image_index, lower_percentile=20, upper_percentile=100-20):
-        """Finds the best matching stored image for the given image index, using histogram comparison."""
+         
+
+    def find_best_match(self, image_index, grid_size=(5, 5), lower_percentile=20, upper_percentile=100-20):
+        """Finds the best matching stored image for the given image index, using homography for rotation correction and grid-based ORB feature matching."""
+        
+        # Start timer to measure performance
+        start_time = time.time()
+
         if len(self.stored_descriptors) == 0:
             raise ValueError("No descriptors available for matching.")
+        
+        # Function to divide image into grids
+        def divide_into_grids(image, grid_size):
+            """Divides the given image into grid_size (rows, cols) and returns the grid segments."""
+            height, width = image.shape[:2]
+            grid_height = height // grid_size[0]
+            grid_width = width // grid_size[1]
+            grids = []
 
-        descriptors_current = self.stored_descriptors[image_index]
-        kp_current = self.stored_keypoints[image_index]
+            for i in range(grid_size[0]):
+                for j in range(grid_size[1]):
+                    grid = image[i*grid_height:(i+1)*grid_height, j*grid_width:(j+1)*grid_width]
+                    grids.append(grid)
+            return grids
 
         best_index = -1
         max_corr_score = -np.inf
+
+        current_image = pull_image(image_index)
+        current_grids = divide_into_grids(current_image, grid_size)
 
         for i in range(image_index):
             if i >= image_index:
                 continue
 
+            stored_image = pull_image(i)
+            kp_current = self.stored_keypoints[image_index]
+            descriptors_current = self.stored_descriptors[image_index]
+
             kp_stored = self.stored_keypoints[i]
             descriptors_stored = self.stored_descriptors[i]
 
-            matches = self.matcher.knnMatch(descriptors_current, descriptors_stored, k=2)
+            # Match descriptors between the current image and the stored image
+            matches = self.matcher.find_matches(descriptors_current, descriptors_stored)  #knnMatch(descriptors_current, descriptors_stored, k=2)
+            
 
             good_matches = []
             for match_pair in matches:
                 if len(match_pair) == 2:
                     m, n = match_pair
-                    if m.distance < 0.99999999999 * n.distance:
+                    if m.distance < 0.75 * n.distance:  # Lowe's ratio test
                         good_matches.append(m)
 
-            if len(good_matches) > 0:
-                src_pts = np.float32([kp_current[m.queryIdx].pt for m in good_matches])
-                dst_pts = np.float32([kp_stored[m.trainIdx].pt for m in good_matches])
-                shifts = dst_pts - src_pts
+            if len(good_matches) > 10:
+                # Extract matched points
+                src_pts = np.float32([kp_current[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
+                dst_pts = np.float32([kp_stored[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
 
-                shifts = self.filter_outliers_joint(shifts, lower_percentile, upper_percentile)
-
-                if shifts is None or len(shifts) == 0:
-                    continue
-
+                # Find homography to estimate transformation
                 M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
 
                 if M is not None:
-                    angle = np.arctan2(M[1, 0], M[0, 0]) * (180 / np.pi)
-                    image_i = pull_image(i)
-                    rotated_image_i = self.rotate_image(image_i, -angle)
-                    current_image = pull_image(image_index)
+                    # Rotate the stored image using the homography matrix
+                    h, w = stored_image.shape[:2]
+                    rotated_image_stored = cv2.warpPerspective(stored_image, M, (w, h))
 
-                    # Perform histogram comparison
-                    score0 = compare_histograms(rotated_image_i, current_image) 
-                    score1 = len(good_matches)/100 #weight
-                    score = 0*score0 + score1
-                    #print(f"Histogram similarity score for image {image_index+1} and {i+1}: {score0} and {score1}")
-                    #print(f"matches in {image_index} and {i} are {len(good_matches)}")
+                    # Now divide both current and rotated stored image into grids
+                    rotated_grids_stored = divide_into_grids(rotated_image_stored, grid_size)
+
+                    total_good_matches = 0
+
+                    # Perform grid-wise matching
+                    for current_grid, stored_grid in zip(current_grids, rotated_grids_stored):
+                        kp_current_grid, descriptors_current_grid = self.detector.detectAndCompute(current_grid, None)
+                        kp_stored_grid, descriptors_stored_grid = self.detector.detectAndCompute(stored_grid, None)
+
+                        if descriptors_current_grid is None or descriptors_stored_grid is None:
+                            continue
+
+                        # Match descriptors between grids using knnMatch
+                        matches_grid = self.matcher.find_matches(descriptors_current_grid, descriptors_stored_grid)
+
+                        good_matches_grid = []
+                        for match_pair in matches_grid:
+                            if len(match_pair) == 2:
+                                m, n = match_pair
+                                if m.distance < 0.999 * n.distance:  # Lowe's ratio test
+                                    good_matches_grid.append(m)
+
+                        # Sum the good matches for each grid
+                        total_good_matches += len(good_matches_grid) if len(good_matches_grid) < 50 else 50
+
+                    # Score based on total good matches across all grids
+                    score = total_good_matches
 
                     if score > max_corr_score:
                         max_corr_score = score
                         best_index = i
 
-        print(f"Best match for image {image_index+1} is image {best_index+1} with histogram similarity score {max_corr_score} and matches {len(good_matches)}")
+        # End timer and calculate time taken
+        total_time = time.time() - start_time
+
+
+        print(f"Best match for image {image_index+1} is image {best_index+1} with a total of {max_corr_score} good matches.")
+        print(f"Time taken: {total_time:.2f} seconds")
+        
         return best_index
-    
+
+
 
 
     def clear_stored_data(self):
@@ -217,7 +261,7 @@ class UAVNavigator:
             print("Not enough data points to perform linear regression.")
 
     def compute_pixel_shifts_and_rotation(self, keypoints1, descriptors1, keypoints2, descriptors2, bool_calc_best_match, lower_percentile=20, upper_percentile=80):
-        matches = self.matcher.knnMatch(descriptors1, descriptors2, k=2)
+        matches = self.matcher.find_matches(descriptors1, descriptors2)
         if bool_calc_best_match:
             # Find the best match for each keypoint
             match_ratio = 0.995
@@ -305,10 +349,16 @@ class UAVNavigator:
         rotations_arr = []
 
         range_im = num_images_analyse if bool_infer_factor else 13#len(self.stored_images)
-        
+        num_correct_matches = 0
         for i in reversed(range(1, range_im)):  # iterate through all images in reverse order
             best_index = -1   
+            
             best_index = self.find_best_match(i)
+                    # Update correct_matches array
+            if (best_index == (i - 1 if i!=10 else i-2)):
+                num_correct_matches += 1
+            print(f"Total correct matches at stage {i} is {num_correct_matches}")
+
 
             if best_index != -1:
                 #print(f"Best match for image {i+1} is image {best_index+1} with undefined good matches.")
@@ -471,7 +521,7 @@ def convert_to_decimal(deg, min, sec, dir):
 
 def main():
     
-    detector_choice = 2  # Set 1 for ORB, 2 for AKAZE, 3 for SURFB *NOT FREE*
+    detector_choice = 2  # Set 1 for ORB, 2 for AKAZE, 3 for SURF *NOT FREE*
     navigator = UAVNavigator(detector_choice)
 
     directory = './GoogleEarth/SET1'
