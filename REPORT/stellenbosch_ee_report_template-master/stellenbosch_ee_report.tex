@@ -64,6 +64,8 @@
 \renewcommand{\tabularxcolumn}[1]{m{#1}}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
+% added self
+\usepackage{makecell}  % Include makecell for multiline cells
 
 % Header and footer
 \usepackage{fancyhdr}
@@ -124,6 +126,7 @@
 % Contents
 \input{introduction/introduction}
 \input{Chapter 2/FeatureExtractors}
+\input{Chapter 3/FeatureMatchers.tex}
 \input{Chapter 3/Concept}
 \input{conclusion/conclusion}
 

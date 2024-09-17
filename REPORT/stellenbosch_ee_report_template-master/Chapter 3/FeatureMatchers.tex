@@ -1,6 +1,13 @@
+average 900 flights a day spoofed check source
+https://www.youtube.com/watch?v=bFM9HHB9JXI&ab_channel=DrBenMiles
+
+
+
+
+
 The next critical feature in an image-based navigation system is the feature matcher. The feature matcher serves two main purposes. The first is to find the most highly correlated image pair. The second is to estimate the relative pose (translation and rotation) between the two images. Thus, we break up this section into two components, global matching and local matching. 
 xxx check scale if or not if
-To compute matches, The descriptor first transforms each feature individually to a normalized space. This process aligns the feature’s orientation, adjusts scale, and normalizes other factors like intensity, ensuring that each descriptor is in a consistent format for direct comparison during matching.
+To compute matches, The descriptor first transforms each feature individually to a normalized space. This process aligns the feature’s orientation, adjusts scale, and normalizes other factors like intensity, ensuring that each descriptor is in a consistent format for direct comparison during matching. The actual matching procedure involves comparing the descriptor of a keypoint to that of keypoints in the other image until the most similar keypoint is found in terms of their descriptors. There are, however, basic thresholds of accuracy which need to be met and further techniques to filter out bad matches. 
 
 
 Matches have specific confidence levels. When calculating transformations we can include confidence weightings to improve the accuracy of the estimations. 
@@ -12,15 +19,18 @@ Broadly speaking there are two types of feature matchers: local and global. Loca
 
 \subsection*{FLANN (Fast Library for Approximate Nearest Neighbors)} FLANN is an efficient matcher that uses approximate nearest neighbor search, speeding up the matching process, especially for large datasets. It uses tree-based algorithms or k-means clustering to quickly find matches. FLANN is often preferred for tasks involving large datasets where speed is critical, such as real-time applications with SIFT or SURF descriptors. FLANN must be used with Local-sensitivity hashing to allow for operations on its binary descriptors. 
 
-
-
 \subsection*{Light Glue} Light Glue is a lightweight, relative to other neural network approaches, neural network-based matcher that uses deep learning to match features across images. It is optimized for speed and memory efficiency, making it suitable for mobile and embedded systems. Light Glue provides robust matches even under challenging conditions, such as significant viewpoint changes or lighting variations. This is a significant improvement over traditional feature matching methods like BF or FLANN matchers, however, it increases computational time and risks an inability to generalize well, especially in this context which is unlikely to have training data based off UAV images.
+
+\section*{Matching technique}
+Different matchers use different algorithms to optimize the searching process for matches. For ORB and AKAZE, since the descriptors are binary, the only reliable, pre-made algorithm is knn matching which finds the best k matches. These are then filtered to a single match in additional steps (see Lowes ratio). 
 
 \section*{Improvements to Matching techniques}
 \subsection*{Cross-Check Matching} Cross-check matching performs matching in both directions (from image A to B and B to A) and only retains matches that are consistent in both directions. This reduces false positives and increases the reliability of matches. However, this doubles the computation time.
- 
 
-\subsection*{RANSAC (Random Sample Consensus)} RANSAC is used to refine matches by identifying and removing outliers. It works by iteratively selecting a subset of matches, estimating a model (e.g., homography), and checking how well the remaining matches fit this model. Matches that deviate significantly are considered outliers and discarded. RANSAC is crucial in tasks like image stitching, where accurate geometric transformations are required.
+\subsection*{Lowe's ratio}
+This technique involves comparing the distance of the best match to the distance of the second-best match. If the ratio is below a certain threshold, the match is considered valid. This helps filter out both low-quality and similar matches. 
+
+\subsection*{RANSAC (Random Sample Consensus)} RANSAC is used to refine matches by identifying and removing outliers. It works by iteratively selecting a subset of matches, estimating a model (like homography), and checking how well the remaining matches fit this model. Matches that deviate significantly are considered outliers and discarded. RANSAC is crucial in tasks like image stitching, where accurate geometric transformations are required.
 
 
 \subsection*{SuperGlue} SuperGlue is a more advanced neural network-based matcher that leverages attention mechanisms, dynamically aggregating local features based on their inferred importance, to enhance the matching process. It works by learning to match keypoints directly from image data, providing superior performance in complex scenarios with large changes in scale, rotation, or perspective. SuperGlue is well-suited for high-precision applications like 3D reconstruction. 
@@ -32,12 +42,11 @@ Global matchers aim to capture the overall similarity between images. Many techn
 To ensure full context, we can either choose a global matcher that already considers the entire image space, or use one that does not and divide into grids and compare per-grid to ensure complete context. In both cases, the scale and rotation should be normalized between images unless explicitly invariant to these. 
 The following are chosen based on their ability to be computationally efficient and not require any pre- or live-training.
 
-\subsection*{Translation affects the results of these}
-
 \subsection*{Local matching conversion techniques}
 These are techniques which convert local matchers, which are translation invariant, into techniques which penalize translation in its score. From the above local matchers, tests will be conducted on 
 
 \subsection*{Histograms}
+These techniques work by 
 
 \subsection*{Hashing Methods}  
 Hashing methods, like LSH (Local-sensitivity hashing) or PCA (Principal-component analysis), map high-dimensional descriptors to a lower-dimensional space. Hashing focuses on descriptor similarity rather than relative spatial positions within the image. Grid-rot apply
@@ -63,7 +72,7 @@ To summarize: the invariant methods are: Hashing, BOVW; variant methods are
 Intermediary results:
 
 These results indicate the time to complete the set of best correlated images. The score has not been used as the highly variant parameter set often, with enough computation, can achieve the correct score. So instead of holding computational time constant, which is not clear, we increase the parameters until we see it achieve the correct score. Then the time is recorded and a higher accuracy is dually implied in a lower time. Where excessive time is required and the correct combination has not been met, there will be an indication of failure to meet score. 
-Excessive time is defined as greater than 10s for an image space of 12. 
+Excessive time is defined relatively as 5 images above 5 seconds. 
 
 \begin{table}[H]
     \centering
@@ -86,4 +95,147 @@ Excessive time is defined as greater than 10s for an image space of 12.
     \caption{KNN Matching: Search Space vs. Runtime}
     \end{table}
 
-For BF_matching with KNN search, the run-time per image is roughly half a second, and the time complexity is linear.   
+For BF\_matching with KNN search, the run-time per image is roughly half a second, and the time complexity is linear.   
+Flann\_matcher does not get the correct result even with excessive time
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Matcher} & \textbf{Mean Normalized Error} & \textbf{Total Runtime (seconds)} \\ \hline
+    \textbf{Graph Matcher} & 45.79188281755529 & 73.0386 \\ \hline 88.3136 seconds
+    \textbf{Flann Matcher} & 47.32259915429281 & 124.3599 \\ \hline
+    \textbf{BF Matcher} & 45.90913 & 85.0412 \\ \hline
+    \end{tabular}
+    \caption{Mean Normalized Error and Total Runtime for GraphMatcher, FlannMatcher, and BFMatcher}
+\end{table}
+    
+    
+    This is for 13 images, given all other parameters constant for each test. As visible FLANN\_matcher and BF\_matcher perform the best, with FLANN slightly edging out BF. However, BF\_matcher is significantly faster than FLANN\_matcher. Graph\_matcher is slower and more inaccurate than both other methods. 
+    These results are largely unexpected. The first point to note is that BF\_matcher, an exhaustive search, takes less time than the approximate matchers. 
+
+    However, without any best image finder, the code runs in 20s.       
+
+
+
+
+
+ORB detects less accurate and more noisy keypoints. AKAZE detects more accurate and robust keypoints. This means the homography model will be more accurate with AKAZE. As such, when using homography to determine the relative pose between images, one cannot employ a single outlier threshold for both. AKAZE requires a lower threshold due to its higher accuracy. However, ORB requires a higher threshold to remove the noise.
+eg 1.0 for AKAZE and 35.0 for ORB. 
+
+
+
+
+0 is bf, 1 is flann, 2 is graph
+
+global+local matching with akaze (all with global graph 2 which is best)
+[45.909132551707636] FOR 0 which is BF 85.0412 seconds
+[45.86020977142852] FOR 1 which is flann 105.3263 seconds
+[47.24097141956378] FOR 2 (RUN-FIRST) WHICH IS graph 115.4037 seconds
+
+
+global+local matching with ORB
+
+[45.69197059475034] 81.0717 seconds Detector: ORB, Global Matcher: GraphMatcher, Local Matcher: BFMatcher
+
+46.09923686293978 202.3633 seconds Detector: ORB, Global Matcher: GraphMatcher, Local Matcher: FlannMatcher  
+
+[46.04487996277007] Time taken to execute the code: 77.1281 seconds Detector: ORB, Global Matcher: GraphMatcher, Local Matcher: GraphMatcher
+
+
+Global matchers via local matcher retrofit grid
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Detector} & \textbf{Local Matcher} & \textbf{Error Score} & \textbf{Time (seconds)} \\ \hline
+    \multirow{3}{*}{AKAZE} & BFMatcher & 45.9091 & 85.0412 \\ \cline{2-4}
+                           & FlannMatcher & 45.8602 & 105.3263 \\ \cline{2-4}
+                           & GraphMatcher & 47.2409 & 115.4037 \\ \hline
+    \multirow{3}{*}{ORB}   & BFMatcher & 45.6920 & 81.0717 \\ \cline{2-4}
+                           & FlannMatcher & 46.0992 & 202.3633 \\ \cline{2-4}
+                           & GraphMatcher & 46.0449 & 77.1281 \\ \hline
+    \end{tabular}
+    \caption{Error Scores and Execution Times for AKAZE and ORB Detectors with Different Local Matchers (Global Matcher: GraphMatcher)}
+    \end{table}
+    
+
+
+global ssim etc
+
+score 1 gets out of 13: 12  [51.1096468381182]
+
+GLOBAL MATCHERS ACCuracy TEST:
+
+[49.795912607427425]
+
+score1: histograms
+[51.1096468381182]
+Time taken to execute the code: 92.5421 seconds
+Detector: AKAZE, Global Matcher: 1, Local Matcher:FlannMatcher
+
+
+score2: ssim
+[49.795912607427425]
+Time taken to execute the code: 81.6834 seconds
+Detector: AKAZE, Global Matcher: 2, Local Matcher: FlannMatcher
+
+score 3: hash\_comparison
+[140.40491102472984]
+Time taken to execute the code: 85.8228 seconds
+Detector: AKAZE, Global Matcher: 3, Local Matcher: FlannMatcher
+
+these guys use near nothing with akaze for matching the global images. like a second 
+[49.795912607427425]
+
+All of these are done with BF
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Global Matcher} & \textbf{Error Score} & \textbf{Time (seconds)} & \textbf{Detector} \\ \hline
+    Histogram Comparison (1) & 51.1003587945317 &  71.0535 & AKAZE \\ \hline
+    SSIM (2)                 & 49.8271 & 69.9308 & AKAZE \\ \hline
+    Hash Comparison (3)      & 140.4049 & 85.8228 & AKAZE \\ \hline
+    \end{tabular}
+    \caption{Global Matchers with AKAZE Detector and FlannMatcher as Local Matcher}
+    \end{table}
+
+
+note that the relativity hereof is crucial. A single image mistmatch can be the reason for either small or dramatic changes. 
+
+Baseliine time with global matcher off: 28.6975
+    
+
+ORB FAILS dramatically in the above methods. 
+
+
+\begin{table}[H]
+    \centering
+    \small  % Reduce font size
+    \setlength{\tabcolsep}{4pt}  % Adjust column spacing
+    \renewcommand{\arraystretch}{1.2}  % Adjust row spacing
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Matcher Type} & \textbf{Matcher} & \textbf{Error Score} & \makecell{\textbf{Adjusted} \\ \textbf{Time (seconds)}} \\ \hline
+    \makecell{Local Matcher \\ (Global: GraphMatcher)} & BFMatcher (ORB) & 45.6920 & 52.3742 \\ \hline
+    \makecell{Local Matcher \\ (Global: GraphMatcher)} & BFMatcher (AKAZE) & 45.9091 & 56.3437 \\ \hline
+    \makecell{Local Matcher \\ (Global: GraphMatcher)} & FlannMatcher (AKAZE) & 45.8602 & 76.6288 \\ \hline
+    \makecell{Local Matcher \\ (Global: GraphMatcher)} & GraphMatcher (ORB) & 46.0449 & 48.4306 \\ \hline
+    \makecell{Local Matcher \\ (Global: GraphMatcher)} & FlannMatcher (ORB) & 46.0992 & 173.6658 \\ \hline
+    \makecell{Local Matcher \\ (Global: GraphMatcher)} & GraphMatcher (AKAZE) & 47.2409 & 86.7062 \\ \hline
+    \makecell{Global Matcher \\ (BF, AKAZE)} & SSIM (2) & 49.8271 & 41.2333 \\ \hline
+    \makecell{Global Matcher \\ (BF, AKAZE)} & Histogram Comparison (1) & 51.1004 & 42.3560 \\ \hline
+    \makecell{Global Matcher \\ (BF, AKAZE)} & Hash Comparison (3) & 140.4049 & 57.1253 \\ \hline
+    \end{tabular}
+    \caption{Error Scores and Adjusted Execution Times for Various Global and Local Matchers (Sorted by Error Score)}
+\end{table}
+
+
+
+Detector: AKAZE, Global Matcher: GraphMatcher, Local Matcher: BFMatcher
+Time taken to execute the code: 41.3234 seconds
+total match analysis time: 26.0431 seconds
+[51.1003587945317]

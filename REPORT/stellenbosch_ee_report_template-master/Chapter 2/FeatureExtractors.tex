@@ -360,6 +360,10 @@ In this analysis, we compare two feature extraction and matching techniques used
 In this comparison, we observe that the SuperPoint + LightGlue combination provides lower deviation norms in 6 out of 9 cases for the X deviations, suggesting better performance in those instances. The unoptimized parameters may have affected the overall performance, but the results indicate that SuperPoint + LightGlue could offer more accurate estimates under the same conditions.
 
 
+
+
+
+
 \subsection*{Percentile Outliers removal}
 
 
@@ -407,6 +411,8 @@ In this comparison, we observe that the SuperPoint + LightGlue combination provi
 \end{table}
 
 
+15 seconds fat run w.out global matcher. 
+
 All parameter choices
 
 1. feature extractor
@@ -423,3 +429,17 @@ All parameter choices
 12. Scaling factor for GPS to pixels
 13. Speed / runtime
 14. Accuracy   
+
+
+
+[45.69197059475034]
+Time taken to execute the code: 94.5152 seconds - ORB
+
+
+[47.40683503538506]
+Time taken to execute the code: 77.3410 seconds - AKAZE
+
+
+
+[45.79188281755529] - 
+Time taken to execute the code: 78.6795 seconds - Still akaze 
