@@ -12,7 +12,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # Initialize SuperPoint and LightGlue
 extractor = SuperPoint(
     max_num_keypoints=2048,  # Maximum number of keypoints
-    detection_threshold=0.0000015,  # Detection threshold
+    detection_threshold=0.0000015,  # Detection threshold. lower is more keypoints
     nms_radius=5  # Non-maximum suppression radius
 ).eval().to(device)  # Set the model to evaluation mode and move it to the device
 
@@ -45,16 +45,16 @@ def detect_and_compute_superpoint(image):
     feats = extractor.extract(normalized_image)
     return feats
 
-def match_features_superpoint(featsA, featsB):
+def match_features_lightglue(featsA, featsB):
     """Match features using LightGlue."""
     matches = matcher({'image0': featsA, 'image1': featsB})
     featsA, featsB, matches = [rbd(x) for x in [featsA, featsB, matches]]
     return featsA, featsB, matches['matches']
 
-def best_match_superpoint(featsA, featsB):
+def best_match_lightglue(featsA, featsB):
     """Match features using LightGlue for best matches."""
     matches = best_matches_matcher({'image0': featsA, 'image1': featsB})
-    featsA, featsB, matches = [rbd(x) for x in [featsA, featsB, matches]]
+    featsA, featsB, matches = [rbd(x) for x in [featsA, featsB, matches]] #rbd is a utility function that removes the batch dimension. full dimension: (1, 1, H, W) -> (H, W). 
     return featsA, featsB, matches['matches']
 
 class UAVNavigator:
@@ -95,6 +95,7 @@ class UAVNavigator:
             cropped_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
         
         features = detect_and_compute_superpoint(cropped_image)
+        # in algorithmic techniques, extractors extract keypoints and descriptors. Here, features are returned from the detect_and_compute_superpoint function. Features have many keys inside including: keypoints, scores, descriptors, etc. we can use the scores to do initial keypoint screening. 
         self.stored_images.append(cropped_image)
         self.stored_features.append(features)
         self.stored_gps.append(gps_coordinates)
@@ -105,7 +106,7 @@ class UAVNavigator:
         # Prepare data for linear regression
         x_estimates = np.array(self.estimations_x).reshape(-1, 1)
         y_estimates = np.array(self.estimations_y).reshape(-1, 1)
-        
+            
         x_actual = np.array(self.actuals_x)
         y_actual = np.array(self.actuals_y)
         
@@ -129,11 +130,11 @@ class UAVNavigator:
     def compute_pixel_shifts_and_rotation(self, feats1, feats2, mode, lower_percentile=20, upper_percentile=80):
         """Compute pixel shifts and rotation using matched features."""
         if mode == 0:
-            feats1, feats2, matches = best_match_superpoint(feats1, feats2)
+            feats1, feats2, matches = best_match_lightglue(feats1, feats2)
         else:
-            feats1, feats2, matches = match_features_superpoint(feats1, feats2)
+            feats1, feats2, matches = match_features_lightglue(feats1, feats2)
 
-        keypoints1 = feats1['keypoints'].cpu().numpy()
+        keypoints1 = feats1['keypoints'].cpu().numpy() # the .cpu() is used to move the tensor to the cpu. The .numpy() is used to convert the tensor to a numpy array
         keypoints2 = feats2['keypoints'].cpu().numpy()
         matches = matches.cpu().numpy()
 

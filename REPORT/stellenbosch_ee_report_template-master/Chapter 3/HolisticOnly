@@ -1,0 +1,38 @@
+Testing the following
+
+Feature Extraction Method
+
+[1] ORB
+[2] goodFeaturesToTrack - CHECK
+[3] AKAZE
+[4] SuperPoint
+
+Feature Descriptor Method (SAME???)
+
+[1] AKAZE
+[3] DAISY - CHECK
+[4] SuperPoint
+
+GLOBAL Matcher Method
+[1] Brute-Force Matcher (BF)
+[2] Fast Library for Approximate Nearest Neighbors Matcher (FLANN)
+[3] GraphMatcher
+
+
+LOCAL MATCHER METHOD
+[1] Brute-Force Matcher (BF)
+[2] Fast Library for Approximate Nearest Neighbors Matcher (FLANN)
+[3] GraphMatcher
+[4] LightGLue
+[5] SuperGLUE -check
+
+
+Matching search technique
+[1] vanilla match (VANILLA) -  CHECK
+[2] knn match (KNN)
+[3] radius match (RADIUS) - CHECK
+
+Outlier Rejection Method
+[1] findFundamentalMatrix (FM) - HOMOGRAPHY (SEE)
+[2] vector field consensus (VFC) - CHECK
+[3] RANSAC - with homog

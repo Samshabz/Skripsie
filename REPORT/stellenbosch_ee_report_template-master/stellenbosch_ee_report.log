@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  17 SEP 2024 16:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  20 SEP 2024 23:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -824,40 +824,18 @@ Chapter 3.
 [19]
 
 [20]) (Chapter 3/FeatureMatchers.tex
-Chapter 3/FeatureMatchers.tex:2: Misplaced alignment tab character &.
-l.2 https://www.youtube.com/watch?v=bFM9HHB9JXI&
-                                                ab_channel=DrBenMiles
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-Chapter 3/FeatureMatchers.tex:2: Missing $ inserted.
-<inserted text> 
-                $
-l.2 ...s://www.youtube.com/watch?v=bFM9HHB9JXI&ab_
-                                                  channel=DrBenMiles
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-Chapter 3/FeatureMatchers.tex:3: Missing $ inserted.
-<inserted text> 
-                $
-l.3 
-    
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 444--3
+Underfull \hbox (badness 10000) in paragraph at lines 444--4
 []\OT1/lmr/m/n/12 (+20) [45.79188281755529] - Time taken to ex-e-cute the code: 78.6795 sec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 444--3
+Underfull \hbox (badness 10000) in paragraph at lines 444--4
 \OT1/lmr/m/n/12 (+20) onds - Still akaze  av-er-age 900 flights a day spoofed check source
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 444--4
+\OT1/lmr/m/n/12 (+20) https://www.youtube.com/watch?v=bFM9HHB9JXI&ab[]channel=DrBenMiles re-
  []
 
 
@@ -869,14 +847,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 444--3
 [23]
 
 [24]
-Overfull \hbox (42.40259pt too wide) in paragraph at lines 104--111
+Overfull \hbox (42.40259pt too wide) in paragraph at lines 105--112
  [][] 
  []
 
 
 
 [25]
-Underfull \hbox (badness 1931) in paragraph at lines 132--136
+Underfull \hbox (badness 1931) in paragraph at lines 133--137
 []\OT1/lmr/m/n/12 (+20) global+local match-ing with akaze (all with global graph 2 which is best)
  []
 
@@ -884,10 +862,15 @@ Underfull \hbox (badness 1931) in paragraph at lines 132--136
 
 [26]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 220.
-) (Chapter 3/Concept.tex
+(Font)              <10.95> on input line 221.
 
-[27]
+Overfull \hbox (14.83382pt too wide) in paragraph at lines 221--234
+ [][] 
+ []
+
+
+
+[27]) (Chapter 3/Concept.tex
 
 [28]
 
@@ -939,13 +922,13 @@ Package rerunfilecheck Info: File `stellenbosch_ee_report.out' has not changed.
 Here is how much of TeX's memory you used:
  22161 strings out of 473904
  424106 string characters out of 5720901
- 1941908 words of memory out of 5000000
+ 1942908 words of memory out of 5000000
  44353 multiletter control sequences out of 15000+600000
  631290 words of font info for 175 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,15n,80p,1203b,1102s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbo10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbx10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on stellenbosch_ee_report.pdf (46 pages, 463344 bytes).
+Output written on stellenbosch_ee_report.pdf (46 pages, 463136 bytes).
 PDF statistics:
  579 PDF objects out of 1000 (max. 8388607)
  114 named destinations out of 1000 (max. 500000)

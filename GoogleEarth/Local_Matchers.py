@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 
+
 # best matchers: (this is plussed by 1) 8 is 6, 13 is 11, 11 is 9 
 
 
@@ -9,13 +10,19 @@ class BaseMatcher:
     def find_matches(self, des1, des2, kp1, kp2, detector_choice):
         raise NotImplementedError("This method should be overridden by subclasses")
 
+
+
 # BFMatcher class for binary descriptors
 class BFMatcher(BaseMatcher):
-    def __init__(self):
+    def __init__(self, neural_net_on=False):
+        
+
         self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
 
     def find_matches(self, des1, des2, kp1, kp2, detector_choice, global_matcher_true):
-        # KNN Matching
+        # Remove batch dimension if present
+
+        # Perform matching
         return self.matcher.knnMatch(des1, des2, k=2)
 
 # FLANN Matcher class for binary descriptors
@@ -44,9 +51,10 @@ class FlannMatcher(BaseMatcher):
 
 # Graph Matcher using RANSAC for geometric consistency
 class GraphMatcher(BaseMatcher):
-    def __init__(self):
-        self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
+    def __init__(self, neural_net_on=False):
 
+        self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
+        
     def find_matches(self, des1, des2, kp1, kp2, detector_choice, global_matcher_true):
         # Check if descriptors and keypoints are valid
         if des1 is None or des2 is None or len(kp1) < 2 or len(kp2) < 2:
@@ -76,17 +84,21 @@ class GraphMatcher(BaseMatcher):
         good_matches = [m for i, m in enumerate(matches) if mask[i]]
         return good_matches
 
+
+
+
 # Set matcher function to return the correct matcher object
-def set_matcher(matcher_choice):
+def set_matcher(matcher_choice, neural_net_on=False):
     """
     Returns the correct matcher based on the user's choice.
     Supported options: "bf_matcher", "flann_matcher", "lsh_matcher", "ann_matcher", "graph_matcher"
     """
     if matcher_choice == "bf_matcher":
-        return BFMatcher()
+        return BFMatcher(neural_net_on=neural_net_on)
     elif matcher_choice == "flann_matcher":
         return FlannMatcher()
     elif matcher_choice == "graph_matcher":
-        return GraphMatcher()
+        return GraphMatcher(neural_net_on=neural_net_on)
+
     else:
         raise ValueError(f"Invalid matcher choice: {matcher_choice}")

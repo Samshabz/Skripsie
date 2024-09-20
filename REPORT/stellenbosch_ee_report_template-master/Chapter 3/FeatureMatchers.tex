@@ -1,5 +1,6 @@
 average 900 flights a day spoofed check source
-https://www.youtube.com/watch?v=bFM9HHB9JXI&ab_channel=DrBenMiles
+https://www.youtube.com/watch?v=bFM9HHB9JXI\&ab\_channel=DrBenMiles
+remove the backslashes in the above link
 
 
 
@@ -209,7 +210,7 @@ note that the relativity hereof is crucial. A single image mistmatch can be the 
 Baseliine time with global matcher off: 28.6975
     
 
-ORB FAILS dramatically in the above methods. 
+ORB FAILS dramatically in the global matching methods. 
 
 
 \begin{table}[H]
@@ -220,18 +221,28 @@ ORB FAILS dramatically in the above methods.
     \begin{tabular}{|c|c|c|c|}
     \hline
     \textbf{Matcher Type} & \textbf{Matcher} & \textbf{Error Score} & \makecell{\textbf{Adjusted} \\ \textbf{Time (seconds)}} \\ \hline
-    \makecell{Local Matcher \\ (Global: GraphMatcher)} & BFMatcher (ORB) & 45.6920 & 52.3742 \\ \hline
-    \makecell{Local Matcher \\ (Global: GraphMatcher)} & BFMatcher (AKAZE) & 45.9091 & 56.3437 \\ \hline
-    \makecell{Local Matcher \\ (Global: GraphMatcher)} & FlannMatcher (AKAZE) & 45.8602 & 76.6288 \\ \hline
-    \makecell{Local Matcher \\ (Global: GraphMatcher)} & GraphMatcher (ORB) & 46.0449 & 48.4306 \\ \hline
-    \makecell{Local Matcher \\ (Global: GraphMatcher)} & FlannMatcher (ORB) & 46.0992 & 173.6658 \\ \hline
-    \makecell{Local Matcher \\ (Global: GraphMatcher)} & GraphMatcher (AKAZE) & 47.2409 & 86.7062 \\ \hline
-    \makecell{Global Matcher \\ (BF, AKAZE)} & SSIM (2) & 49.8271 & 41.2333 \\ \hline
-    \makecell{Global Matcher \\ (BF, AKAZE)} & Histogram Comparison (1) & 51.1004 & 42.3560 \\ \hline
-    \makecell{Global Matcher \\ (BF, AKAZE)} & Hash Comparison (3) & 140.4049 & 57.1253 \\ \hline
+    \makecell{Global: Local Adaption  \\ (Local: GraphMatcher)} & BFMatcher (ORB) & 45.6920 & 52.3742 \\ \hline
+    \makecell{Global: Local Adaption \\ (Local: GraphMatcher)} & BFMatcher (AKAZE) & 45.9091 & 56.3437 \\ \hline
+    \makecell{Global: Local Adaption  \\ (Local: GraphMatcher)} & FlannMatcher (AKAZE) & 45.8602 & 76.6288 \\ \hline
+    \makecell{Global: Local Adaption \\ (Local: GraphMatcher)} & GraphMatcher (ORB) & 46.0449 & 48.4306 \\ \hline
+    \makecell{Global: Local Adaption \\ (Local: GraphMatcher)} & FlannMatcher (ORB) & 46.0992 & 173.6658 \\ \hline
+    \makecell{Global: Local Adaption \\ (Local: GraphMatcher)} & GraphMatcher (AKAZE) & 47.2409 & 86.7062 \\ \hline
+    \makecell{Global: SSIM \\ (Local: BF, (Detector, AKAZE))} & SSIM (2) & 49.8271 & 41.2333 \\ \hline
+    \makecell{Global: Histogram \\ (Local: BF (Detector, AKAZE))} & Histogram Comparison (1) & 51.1004 & 42.3560 \\ \hline
+    \makecell{Global: Hash \\ (Local: BF, (Detector, AKAZE))} & Hash Comparison (3) & 140.4049 & 57.1253 \\ \hline
     \end{tabular}
     \caption{Error Scores and Adjusted Execution Times for Various Global and Local Matchers (Sorted by Error Score)}
 \end{table}
+
+
+[32.21786664268455]
+Time taken to execute the code: 335.3992 seconds
+Local Detector: Superpoint, Local Matcher: AKAZE, Global Detector: ORB, GLOBAL Matcher: BFMatcher
+
+
+[124.24910955944776]
+Time taken to execute the code: 391.6816 seconds
+Local Detector: Superpoint, Local Matcher: AKAZE, Global Detector: ORB, GLOBAL Matcher: graphmatcher
 
 
 
@@ -239,3 +250,12 @@ Detector: AKAZE, Global Matcher: GraphMatcher, Local Matcher: BFMatcher
 Time taken to execute the code: 41.3234 seconds
 total match analysis time: 26.0431 seconds
 [51.1003587945317]
+
+
+
+LIGHTGLUE:
+light glue, with Superpoint, even with highly optimized parameters runs extremely slow on a CPU. As such, on a CPU, it is not feasible to use SuperGlue over Light Glue for near real-time applications. Further, any global matcher used with LightGlue should be highly efficient to compensate for the slow performance of the formers. As such, local matching grid adaption will not be tested and instead, SSIM and histogram image comparison will be tested. Future implementations can involve a GPU for SuperGlue and LightGlue, as well as local matcher adaption for effective global matching. 
+
+[28.164948628902334]. params are very simple for this: 256 extractions, low matching thresholds. 0.0x for the two. and 0.5155 for threshold. 
+Time taken to execute the code: 150.6657 seconds
+Detector: ORB, Global Matcher: SSIM, Local Matcher: LightGlue. 
