@@ -1,0 +1,28 @@
+
+
+\section*{Global Matchers}
+
+Global matchers aim to capture the overall similarity between images. Many techniques, like local matchers, do not inherently test similarity evenly across the image and therefore may tend to compare local zones instead of the entire context. This leads to sub-par matching and pose inference. 
+To ensure full context, we can either choose a global matcher that considers the entire image space evenly, or use a local matching technique and modify it to have full context, like dividing the image into grids. For the former, images need to be preprocessed by normalizing the relative pose by using a global detector and matcher. For the latter, the image needs to be rotated prior to grid division to ensure the grid is not biased by the image's orientation.
+There is a large array of global matchers available, each with its own strengths and weaknesses. However, to maintain scope, I will only focus on global matchers that meet the following criteria:
+\begin{itemize}
+    \item The matcher must be computationally efficient on a CPU.
+    \item Initial tests, which are not shown, show the matcher to be reasonably effective at the given problem.
+    \item The matcher must not require any pre- or live-training.
+    \item The inherent global matchers must inherently penalize translation, so as to have a computational advantage over grid-matching with local matchers.
+
+
+\subsection*{Local detectors and matcher conversion techniques}
+These are techniques which convert local matchers, which are translation invariant, into techniques which penalize translation in its score. From the above local matchers, tests will be conducted on ORB and AKAZE with BF, FLANN AND GRAPH matchers. Superpoint \& Lightglue, as well as other neural network-based approaches, will not be tested due to their computational time cost making grid-analysis on multiple images infeasible. 
+
+\subsection*{Histograms}  
+Histograms compare images by analyzing the distribution of pixel intensities, which represents how many pixels fall into different intensity levels. This method focuses on global color and brightness information, making it less sensitive to spatial shifts like translation but effective for comparing overall image content.
+
+\subsection*{SSIM (Structural Similarity Index)}  
+SSIM compares images based on luminance, contrast, and structural information, making it sensitive to spatial shifts like translation. 
+
+\subsection*{KNN or other local Matching}  
+Adapting local matchers, such as AKAZE, for global matching allows for high accuracy. 
+
+Use low threshold, per-grid matching, and count the amount of matches. This is point-to-point and can be computationally expensive when comparing many images. 
+

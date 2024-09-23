@@ -19,9 +19,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 Contracted_matcher = LightGlue(  # Initialize LightGlue. This is used for estimating rotations. 
     features='superpoint',  # Use SuperPoint features
-    depth_confidence=0.195, #553 with extra 01
-    width_confidence=0.199,
-    filter_threshold=0.45  # Custom filter threshold. A lower threshold definitely implies more matches, ie is less accurate / more leniant. The correlation matching is worse with less accuracy. 
+    depth_confidence=0.0000195, #553 with extra 01 # 0.95, -1 IS DEF
+    width_confidence=0.0000199, #0.99
+    filter_threshold=0.45  # Custom filter threshold. A lower threshold definitely implies more matches, ie is less accurate / more leniant. The correlation matching is worse with less accuracy. 0.0045. 
 ).eval().to(device)
 
 Expanded_matcher = LightGlue(  # Initialize LightGlue
@@ -64,6 +64,8 @@ class UAVNavigator:
         
         self.algglobalmatcher = None
         self.algdetector_name = ""
+        self.stored_alg_keypoints = []
+        self.stored_alg_descriptors = []
         
         self.localmatcher = None
         self.global_matcher_choice = 0
@@ -99,7 +101,7 @@ class UAVNavigator:
 
 
         # set dual matchers
-        self.global_matcher_choice = global_matcher_choice # 0 is Lightglue
+        self.global_matcher_choice = global_matcher_choice # 0 is Pass through. 3 is histogram, 4 is SSIM. 
         self.algglobal_matcher_choice = global_matcher_choice # 0 is BFMatcher, 1 is FlannMatcher, 2 is GraphMatcher
         
 
@@ -124,10 +126,11 @@ class UAVNavigator:
             
 
             stored_image = pull_image(i)
-            kp_current, descriptors_current = self.algdetector.get_keydes(current_image)
+            kp_current = self.stored_alg_keypoints[image_index]
+            descriptors_current = self.stored_alg_descriptors[image_index]
 
-
-            kp_stored, descriptors_stored = self.algdetector.get_keydes(stored_image)
+            kp_stored = self.stored_alg_keypoints[i]
+            descriptors_stored = self.stored_alg_descriptors[i]
 
 
             # Match descriptors between the current image and the stored image
@@ -231,8 +234,8 @@ class UAVNavigator:
          
 
     def find_best_match(self, image_index, image_space, grid_size=(5, 5), lower_percentile=20, upper_percentile=100-20):
-        print(f"Self detector name: {self.algdetector_name}")
-        """Finds the best matching stored image for the given image index, using homography for rotation correction and grid-based ORB feature matching."""
+        
+        """Finds the best matching stored image for the given image index, using homography for rotation correction and grid-based ORB feature matching.""" # akaze, 0
 
         # Start timer to measure performance
         start_time = time.time()
@@ -255,9 +258,11 @@ class UAVNavigator:
         max_corr_score = -np.inf
 
         current_image = pull_image(image_index)
+        keypoints_current = self.stored_alg_keypoints[image_index]
+        descriptors_current = self.stored_alg_descriptors[image_index]
         current_grids = divide_into_grids(current_image, grid_size)
-        keypoints_current, descriptors_current = self.algdetector.get_keydes(current_image)
-
+        
+        
         for i in image_space:
             if i == image_index:
                 continue
@@ -265,7 +270,9 @@ class UAVNavigator:
             stored_image = pull_image(i)
             # compute the keypoints and descriptors for both indices
             
-            keypoints_stored, descriptors_stored = self.algdetector.get_keydes(stored_image)
+            keypoints_stored = self.stored_alg_keypoints[i]
+            descriptors_stored = self.stored_alg_descriptors[i]
+
 
             detector_choice = 1 if self.algdetector_name == "ORB" else 2
             matches = self.algglobalmatcher.find_matches(descriptors_current, descriptors_stored, keypoints_current, keypoints_stored, detector_choice, global_matcher_true=1)
@@ -344,6 +351,8 @@ class UAVNavigator:
         
         return best_index
 
+
+
     def find_image_space(self, image_index):
         # this should look through the GPS values of all other images and return the indices, as an array, of all images with a corresponding GPS location within a radial distance of 100m of the current image.
         # this will be used to reduce the search space for the best match function.
@@ -376,6 +385,14 @@ class UAVNavigator:
         self.estimations_y = []
         self.actuals_x = []
         self.actuals_y = []
+        self.stored_image_count = 0
+        self.stored_alg_descriptors = []
+        self.stored_alg_keypoints = []
+        self.inferred_factor_x = 1
+        self.inferred_factor_y = 1
+        self.time_best_match_function = 0
+
+
 
     def crop_image(self, image, kernel_to_test):
         """Crop the top and bottom 10% of the image."""
@@ -402,6 +419,13 @@ class UAVNavigator:
         self.stored_feats.append(feats)
         self.stored_gps.append(gps_coordinates)
         self.stored_image_count += 1
+
+        # NOW ADDING THE ALGORITHMIC DESCRIPTORS AND KEYPOINTS
+        kp_current, descriptors_current = self.algdetector.get_keydes(gray_image)
+        self.stored_alg_keypoints.append(kp_current)
+        self.stored_alg_descriptors.append(descriptors_current)
+
+
 
 
     def compute_linear_regression_factors(self):
@@ -436,10 +460,7 @@ class UAVNavigator:
         featsA, featsB, matches = expanded_lightglue(featsA, featsB)
 
 
-        good_matches = []
-        
-        for match_pair in matches:     
-            good_matches.append(match_pair)  # Handle single or list of matches
+        good_matches = matches[:]
 
         if len(good_matches) < 4:
             print("Warning: Less than 4 matches found.")
@@ -469,7 +490,7 @@ class UAVNavigator:
             return shifts, angle, len(good_matches)
         # lets print the angle we would have gotten if we used affine2Dpartial
 
-        print("Warning: Homography could not be estimated.")
+        print("Warning: Homography could not be estimated; ")
         return shifts, None, len(good_matches)
 
     def filter_outliers_joint(self, shifts, lower_percentile, upper_percentile, std_devs=2):
@@ -518,24 +539,11 @@ class UAVNavigator:
         deviation_norms_x = []
         deviation_norms_y = []
         rotations_arr = []
-        # first we add X images to infer. That should go on until we meet the required count
-        # then we add Y images if GPS is available. 
-        # then we add Z images if GPS is not available. 
-        # in the test data we have a limited amount of images. 
-
-        # in our test case:
-        # we have 13 images.
-        # the first 6 infers the factors. 
-        # we then add the remaining 7 images.
-        # we then analyze backwards from the 13th image, only looking at prior images OR:
-        # we start with the images after the 13th which are distinctly different as they are on the flight back. We then start from 13+1 -> end of images e.g., 26. then range_im = self.stored_image_count + 1 (=14) -> 26
 
         range_im = num_images_analyze if bool_infer_factor else 13
-        # if we have lost GPS, we stream the latest image which is the 13th+1th image.
         num_correct_matches = 0
         for i in reversed(range(1, range_im)):  # iterate through all images in reverse order
             best_index = -1   
-            #best_index = i - 1
             image_space = self.find_image_space(i)
             if self.global_matcher_choice < 3:
                 best_index = self.find_best_match(i, image_space)
@@ -694,7 +702,7 @@ def pull_image(index):
     # read in grey 
     #image = cv2.imread(image_path, cv2.IMREAD_COLOR)  # Read the image in color
     # read in grey
-    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # Read the image in
+    image = cv2.imread(image_path, cv2.IMREAD_COLOR)  # Read the image in
     cropped_image = crop_outer_image(image, 3)
         
         # Convert to grayscale for detectors if not already
@@ -708,25 +716,48 @@ def convert_to_decimal(deg, min, sec, dir):
         decimal = -decimal
     return decimal
 
-def print_choices(detector_choice, global_matcher_choice, local_matcher_choice):
-    printable_detector = ""
-    printable_global_matcher = ""
-    printable_local_matcher = ""
-    if detector_choice == 1:
-        printable_detector = "Superpoint"
+def print_choices(detector_choice, global_matcher_choice, local_matcher_choice, alg_detector_choice, alg_matcher_choice):
+    # In the global matching stage I have: preprocessing stage to normalize rotations: preproc_local_alg_detector, preproc_local_alg_matcher; Then I do the global matching stage: with either a global_matcher or a local_matcher - defined generally as global_matcher. Finally, I use the matched image to perform the local matching stage: with a local_detector and a local_matcher.
+
+
     
-    if global_matcher_choice == 0:
-        printable_global_matcher = "Lightglue"
-    elif global_matcher_choice == 1:
-        printable_global_matcher = "SuperGLue"
+    
+    printable_preproc_local_alg_detector = ""
+    printable_preproc_local_alg_matcher = ""
+    printable_global_matcher = ""
+    printable_local_detector = ""
+    printable_local_matcher = ""
+
+
+    if alg_detector_choice == 1:
+        printable_preproc_local_alg_detector = "ORB"
+    elif alg_detector_choice == 2:
+        printable_preproc_local_alg_detector = "AKAZE"
+
+    if alg_matcher_choice == 0:
+        printable_preproc_local_alg_matcher = "BF"
+    elif alg_matcher_choice == 1:
+        printable_preproc_local_alg_matcher = "FLANN"
+    elif alg_matcher_choice == 2:
+        printable_preproc_local_alg_matcher = "GRAPH"
+
+
+    if detector_choice == 1:
+        printable_local_detector = "Superpoint"
+    
+    if global_matcher_choice == 0 or global_matcher_choice == 1: # ie if im using grid divide then it is for eg "ORB" and "BF"
+        printable_global_matching_technique = "Same as Preprocessing"
+
     elif global_matcher_choice == 2:
-        printable_global_matcher = "NONE"
+        printable_global_matcher = "ERROR_NOT_A_CHOICE"
     elif global_matcher_choice == 3:
         printable_global_matcher = "Histogram"
     elif global_matcher_choice == 4:
         printable_global_matcher = "SSIM"
 
-    
+
+
+
     if local_matcher_choice == 0:
         printable_local_matcher = "Lightglue"
     elif local_matcher_choice == 1:
@@ -735,7 +766,8 @@ def print_choices(detector_choice, global_matcher_choice, local_matcher_choice):
         printable_local_matcher = "NONE"
 
 
-    print(f"Detector: {printable_detector}, Global Matcher: {printable_global_matcher}, Local Matcher: {printable_local_matcher}")
+    print(f"Preprocessing Local Algorithmic Detector: {printable_preproc_local_alg_detector}, Preprocessing Local Algorithmic Matcher: {printable_preproc_local_alg_matcher}, Global Matcher: {printable_global_matching_technique}, Local Detector: {printable_local_detector}, Local Matcher: {printable_local_matcher}")
+
         
 
 def main():
@@ -746,8 +778,9 @@ def main():
     print(f"Setting up")
     super_detector_choice = 1  # extractor. # Set 1 for Superpoint. 
     alg_detector_choice = 2  # Set 1 for ORB, 2 for AKAZE
-    alg_matcher_choice = 1 # this is for if using lightglue or superglue. We use this to efficiently calculate grid search global match. Choose 0 for BF, 1 for FLANN, 2 for GRAPH_matcher. will only run if global matcher is less than 3. 
-    global_matcher_choice = 0  # This is for rotational analysis or multimodal # Set 0 for Lightglue, 1 for SuperGLue, 2 for NONE_CHOSEN, 3 for Histogram, 4 for SSIM. Set 0 to use the algorithmic detector and matcher.
+    alg_matcher_choice = 2 # Choose 0 for BF, 1 for FLANN, 2 for GRAPH_matcher. will only run if global matcher is less than 3. 
+
+    global_matcher_choice = 0  # This  # Set 0-2 (actually only 0 works) for Pass-Through to alg_matcher choice, 3 for Histogram, 4 for SSIM. If 0 or 1, This is irrelevant. Global matcher is = algorithmic matcher. add this logic to printable. 
     
     graph_global_matcher_true = True if alg_matcher_choice == 2 else False
     # neural currently working with flann and graph (degreed), not BF, multimodal 3 seems to have no descriptors with bflocal
@@ -760,7 +793,7 @@ def main():
     navigator = UAVNavigator(super_detector_choice, global_matcher_choice, local_matcher_choice, alg_detector_choice, alg_matcher_choice, graph_global_matcher_true)
     
     
-    print_choices(super_detector_choice, global_matcher_choice, local_matcher_choice)
+    print_choices(super_detector_choice, global_matcher_choice, local_matcher_choice, alg_detector_choice, alg_matcher_choice)
     directory = './GoogleEarth/SET1'
     num_images = 13
     inference_images = 7 # make 7 just for testing
@@ -772,7 +805,6 @@ def main():
 
     for local_matcher_choice in local_matchers_to_test:
         kernel = 3
-        local_matcher_choice = kernel
         normalized_errors_percentiles = []
         iteration_count += 1
         for lower_percentile in lower_percentiles:
@@ -824,9 +856,10 @@ def main():
     print(normalized_errors_percentiles)
     main_end_time = time.time()
     elapsed_time = main_end_time - main_start_time
+    print_choices(super_detector_choice, global_matcher_choice, local_matcher_choice, alg_detector_choice, alg_matcher_choice)
     print(f"Time taken to execute the code: {elapsed_time:.4f} seconds")
     print(f"total match analysis time: {navigator.time_best_match_function:.4f} seconds")
-    print_choices(super_detector_choice, global_matcher_choice, local_matcher_choice)
+    
 
 
 if __name__ == "__main__":

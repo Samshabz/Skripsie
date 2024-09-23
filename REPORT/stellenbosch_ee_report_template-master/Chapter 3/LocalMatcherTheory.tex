@@ -1,0 +1,23 @@
+
+Broadly speaking there are two types of feature matchers: local and global. Local matchers are used to find the relative pose between two images. Global matchers are used to find the correlation between two images.
+
+\section*{Local Matchers}
+\subsection*{Brute-Force Matcher (BFMatcher)} BFMatcher compares every descriptor from one image with all descriptors in another image to find the closest match. It calculates the distance between descriptors using a chosen metric (e.g., Euclidean for SIFT, Hamming for ORB). Matches are sorted by distance, and the best ones are selected. While simple and effective, it can be slow with large datasets. Best suited for smaller datasets or when precision is prioritized over speed.
+
+\subsection*{FLANN (Fast Library for Approximate Nearest Neighbors)} FLANN is an efficient matcher that uses approximate nearest neighbor search, speeding up the matching process, especially for large datasets. It uses tree-based algorithms or k-means clustering to quickly find matches. FLANN is often preferred for tasks involving large datasets where speed is critical, such as real-time applications with SIFT or SURF descriptors. FLANN must be used with Local-sensitivity hashing to allow for operations on its binary descriptors. 
+
+\subsection*{Light Glue} Light Glue is a lightweight, relative to other neural network approaches, neural network-based matcher that uses deep learning to match features across images. It is optimized for speed and memory efficiency, making it suitable for mobile and embedded systems. Light Glue provides robust matches even under challenging conditions, such as significant viewpoint changes or lighting variations. This is a significant improvement over traditional feature matching methods like BF or FLANN matchers, however, it increases computational time and risks an inability to generalize well, especially in this context which is unlikely to have training data based off UAV images.
+
+\section*{Matching technique}
+Different matchers use different algorithms to optimize the searching process for matches. For ORB and AKAZE, since the descriptors are binary, the only reliable, pre-made algorithm is knn matching which finds the best k matches. These are then filtered to a single match in additional steps (see Lowes ratio). 
+
+\section*{Improvements to Matching techniques}
+\subsection*{Cross-Check Matching} Cross-check matching performs matching in both directions (from image A to B and B to A) and only retains matches that are consistent in both directions. This reduces false positives and increases the reliability of matches. However, this doubles the computation time.
+
+\subsection*{Lowe's ratio}
+This technique involves comparing the distance of the best match to the distance of the second-best match. If the ratio is below a certain threshold, the match is considered valid. This helps filter out both low-quality and similar matches. 
+
+\subsection*{RANSAC (Random Sample Consensus)} RANSAC is used to refine matches by identifying and removing outliers. It works by iteratively selecting a subset of matches, estimating a model (like homography), and checking how well the remaining matches fit this model. Matches that deviate significantly are considered outliers and discarded. RANSAC is crucial in tasks like image stitching, where accurate geometric transformations are required.
+
+
+\subsection*{SuperGlue} SuperGlue is a more advanced neural network-based matcher that leverages attention mechanisms, dynamically aggregating local features based on their inferred importance, to enhance the matching process. It works by learning to match keypoints directly from image data, providing superior performance in complex scenarios with large changes in scale, rotation, or perspective. SuperGlue is well-suited for high-precision applications like 3D reconstruction. 

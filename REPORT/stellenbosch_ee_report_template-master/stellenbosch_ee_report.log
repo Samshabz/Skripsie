@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  20 SEP 2024 23:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  23 SEP 2024 16:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -841,36 +841,46 @@ Underfull \hbox (badness 10000) in paragraph at lines 444--4
 
 
 [21]
-
-[22]
-
-[23]
-
-[24]
-Overfull \hbox (42.40259pt too wide) in paragraph at lines 105--112
+Overfull \hbox (42.40259pt too wide) in paragraph at lines 57--64
  [][] 
  []
 
 
 
-[25]
-Underfull \hbox (badness 1931) in paragraph at lines 133--137
+[22]
+Underfull \hbox (badness 1931) in paragraph at lines 85--89
 []\OT1/lmr/m/n/12 (+20) global+local match-ing with akaze (all with global graph 2 which is best)
  []
 
 
 
-[26]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 221.
-
-Overfull \hbox (14.83382pt too wide) in paragraph at lines 221--234
- [][] 
+[23]
+Underfull \hbox (badness 3803) in paragraph at lines 187--191
+[]\OT1/lmr/m/n/12 (+20) FULL NEU-RAL TEST Lo-cal[]Alg[]Detector[]Choices = [ORB, AKAZE] Lo-
  []
 
 
 
-[27]) (Chapter 3/Concept.tex
+[24]
+
+[25]
+Underfull \hbox (badness 10000) in paragraph at lines 261--264
+
+ []
+
+
+
+[26]
+
+[27]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 375.
+
+Overfull \hbox (25.46921pt too wide) in paragraph at lines 375--392
+ [][] 
+ []
+
+) (Chapter 3/Concept.tex
 
 [28]
 
@@ -880,21 +890,23 @@ Overfull \hbox (14.83382pt too wide) in paragraph at lines 221--234
 
 [31]
 
-[32]) (conclusion/conclusion.tex
+[32]
 
-[33]
+[33]) (conclusion/conclusion.tex
+
+[34]
 Chapter 4.
 )
 No file stellenbosch_ee_report.bbl.
 (appendices/appendices.tex
 
-[34
+[35
 
 ]
 Appendix A.
 
 
-[35
+[36
 
 ]
 Appendix B.
@@ -905,7 +917,7 @@ See the caption package documentation for explanation.
 
 
 
-[36
+[37
 
 ] (stellenbosch_ee_report.aux)
  ***********
@@ -920,17 +932,17 @@ Package rerunfilecheck Info: File `stellenbosch_ee_report.out' has not changed.
 (rerunfilecheck)             Checksum: 6C528758BFE0A90CC36548326D621AC1;5354.
  ) 
 Here is how much of TeX's memory you used:
- 22161 strings out of 473904
- 424106 string characters out of 5720901
+ 22167 strings out of 473904
+ 424175 string characters out of 5720901
  1942908 words of memory out of 5000000
  44353 multiletter control sequences out of 15000+600000
- 631290 words of font info for 175 fonts, out of 8000000 for 9000
+ 631467 words of font info for 177 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,15n,80p,1203b,1102s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,15n,80p,1331b,1102s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbo10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbx10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on stellenbosch_ee_report.pdf (46 pages, 463136 bytes).
+Output written on stellenbosch_ee_report.pdf (47 pages, 467764 bytes).
 PDF statistics:
- 579 PDF objects out of 1000 (max. 8388607)
- 114 named destinations out of 1000 (max. 500000)
+ 585 PDF objects out of 1000 (max. 8388607)
+ 116 named destinations out of 1000 (max. 500000)
  43814 words of extra memory for PDF output out of 51595 (max. 10000000)
 

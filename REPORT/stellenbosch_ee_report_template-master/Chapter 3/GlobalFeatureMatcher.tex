@@ -1,0 +1,152 @@
+Algorithmic model best global matcher
+
+\begin{table}[H]
+    \centering
+    \small  % Reduce font size
+    \setlength{\tabcolsep}{4pt}  % Adjust column spacing
+    \renewcommand{\arraystretch}{1.2}  % Adjust row spacing
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Global Detector} & \textbf{Global Matcher} & \makecell{\textbf{Global Matching} \\ \textbf{Technique}} & \textbf{Time [seconds]} & \textbf{Error Score} \\ \hline
+    ORB & GRAPH & Same as Global Matcher & 126.0975 & 33.0940 \\ \hline
+    ORB & BF & \makecell{Same as \\ Global Matcher} & 71.1368 & 36.3775 \\ \hline
+    ORB & FLANN & \makecell{Same as \\ Global Matcher} & 261.3577 & 36.4970 \\ \hline
+    AKAZE & BF & \makecell{Same as \\ Global Matcher} & 68.8457 & 40.2379 \\ \hline
+    AKAZE & FLANN & \makecell{Same as \\ Global Matcher} & 126.9023 & 40.1029 \\ \hline
+    AKAZE & BF & Histogram & 87.7977 & 45.8565 \\ \hline
+    AKAZE & BF & SSIM & 52.2356 & 45.8565 \\ \hline
+    AKAZE & FLANN & Histogram & 111.3775 & 45.8565 \\ \hline
+    AKAZE & FLANN & SSIM & 150.3223 & 45.8565 \\ \hline
+    AKAZE & GRAPH & Histogram & 79.3778 & 45.8565 \\ \hline
+    AKAZE & GRAPH & SSIM & 74.2499 & 45.8565 \\ \hline
+    AKAZE & GRAPH & \makecell{Same as \\ Global Matcher} & 98.8956 & 45.1304 \\ \hline
+    ORB & BF, Flann, Graph & \makecell{Histogram \\ and SSIM (Fails)} & FAIL & FAIL \\ \hline
+    \end{tabular}
+    \caption{Error Scores, Execution Times, and Global Matching Techniques for Various Configurations}
+\end{table}
+
+All above use AKAZE AND BF
+
+
+Neural best global matcher
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \makecell{\textbf{Preprocessing \&} \\ \textbf{Global Detector}} & \makecell{\textbf{Preprocessing \&} \\ \textbf{Global Matcher}} & \textbf{Error Score} & \textbf{Time (seconds)} \\ \hline
+    ORB   & BF    & 32.5026 & 202.7905 \\ \hline
+    ORB   & FLANN & 32.7126 & 383.5403 \\ \hline
+    ORB   & GRAPH & 35.9608 & 215.8990 \\ \hline
+    AKAZE & BF    & 37.6239 & 170.9718 \\ \hline
+    AKAZE & FLANN & 37.4836 & 275.1002 \\ \hline
+    AKAZE & GRAPH & 41.3403 & 246.5933 \\ \hline
+    \end{tabular}
+\end{table}
+
+    
+\textbf{Local Detector:} Superpoint \\
+\textbf{Local Matcher:} Lightglue \\
+\textbf{Global Matcher:} Same as Preprocessing, no isoglob matchers \\
+
+
+
+
+
+
+
+
+
+Global Matchers test (after preproc):
+score1-score3 always choose the same image 
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+[45.33213023333922]
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Time taken to execute the code: 157.4892 seconds
+
+score4, SSIM:
+[130.13426353467494]
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Time taken to execute the code: 125.3945 seconds
+
+
+
+
+
+
+
+
+
+
+FULL TEST WITH GLOBAL MATCHERS
+
+GLOBAL\_DETECTOR = ORB, GLOBAL\_Matcher = BF:
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: ORB, Local Matcher: GRAPH
+Linear regression inferred factor x: 3.611814260482788
+Linear regression inferred factor y: 3.0250885486602783
+Mean normalized error: 39.286139650943475
+Time taken to execute The Method: 96.7062 seconds
+End of Iteration: 1
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Cross Correlation, Local Detector: ORB, Local Matcher: GRAPH
+Linear regression inferred factor x: 3.611814260482788
+Linear regression inferred factor y: 3.0250885486602783
+Mean normalized error: 45.74594107113671
+Time taken to execute The Method: 96.7477 seconds
+End of Iteration: 2
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: GRAPH
+Linear regression inferred factor x: 3.611814260482788
+Linear regression inferred factor y: 3.0250885486602783
+Mean normalized error: 45.74594107113671
+Time taken to execute The Method: 98.4917 seconds
+End of Iteration: 3
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: SSIM, Local Detector: ORB, Local Matcher: GRAPH
+Linear regression inferred factor x: 3.611814260482788
+Linear regression inferred factor y: 3.0250885486602783
+Mean normalized error: 45.74594107113671
+Time taken to execute The Method: 114.5124 seconds
+End of Iteration: 4
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Hash, Local Detector: ORB, Local Matcher: GRAPH
+Linear regression inferred factor x: 3.644649028778076
+Linear regression inferred factor y: 2.9554238319396973
+Mean normalized error: 133.8068101421158
+Time taken to execute The Method: 94.4367 seconds
+End of Iteration: 5
+
+GLOBAL\_DETECTOR = ORB, GLOBAL\_Matcher = FLANN:
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: ORB, Local Matcher: GRAPH
+Linear regression inferred factor x: 3.611814260482788
+Linear regression inferred factor y: 3.0250885486602783
+Mean normalized error: 39.32684155205993
+Time taken to execute The Method: 293.2587 seconds
+End of Iteration: 1
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Cross Correlation, Local Detector: ORB, Local Matcher: GRAPH
+Linear regression inferred factor x: 3.611814260482788
+Linear regression inferred factor y: 3.0250885486602783
+Mean normalized error: 45.74594107113671
+Time taken to execute The Method: 323.3782 seconds
+End of Iteration: 2
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: GRAPH
+Linear regression inferred factor x: 3.611814260482788
+Linear regression inferred factor y: 3.0250885486602783
+Mean normalized error: 45.74594107113671
+Time taken to execute The Method: 305.6781 seconds
+End of Iteration: 3
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: SSIM, Local Detector: ORB, Local Matcher: GRAPH
+Linear regression inferred factor x: 3.611814260482788
+Linear regression inferred factor y: 3.0250885486602783
+Mean normalized error: 45.74594107113671
+Time taken to execute The Method: 378.8857 seconds
+End of Iteration: 4
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Hash, Local Detector: ORB, Local Matcher: GRAPH
+Linear regression inferred factor x: 3.644649028778076
+Linear regression inferred factor y: 2.9554238319396973
+Mean normalized error: 133.8068101421158
+Time taken to execute The Method: 379.8127 seconds
+End of Iteration: 5
+
+
+GLOBAL\_DETECTOR = ORB, GLOBAL\_Matcher = GRAPH:
+

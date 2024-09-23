@@ -40,6 +40,6 @@
 \contentsline {subsection}{\numberline {2.5.2}Recommended Feature Extractor}{16}{subsection.2.5.2}%
 \contentsline {section}{\numberline {2.6}Conclusion}{16}{section.2.6}%
 \contentsline {chapter}{\numberline {3}Results}{17}{chapter.3}%
-\contentsline {chapter}{\numberline {4}Summary and Conclusion}{34}{chapter.4}%
-\contentsline {chapter}{\numberline {A}Project Planning Schedule}{35}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Outcomes Compliance}{36}{appendix.B}%
+\contentsline {chapter}{\numberline {4}Summary and Conclusion}{35}{chapter.4}%
+\contentsline {chapter}{\numberline {A}Project Planning Schedule}{36}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Outcomes Compliance}{37}{appendix.B}%
