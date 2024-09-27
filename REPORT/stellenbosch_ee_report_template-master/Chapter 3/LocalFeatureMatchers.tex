@@ -13,3 +13,88 @@ code is 2, 1
 [34.37359598719063]
 Preprocessing Global Detector: ORB, Preprocessing Global Matcher: GRAPH, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
 Time taken to execute the code: 164.2891 seconds
+
+OVERHEADS XXX BF TO FLANN
+
+XXX - put somewhere how much metres the images were moved by on average
+
+
+
+
+
+
+
+testing diff angle 
+Mean normalized GPS error: [42.42830582761002]
+Mean Heading Error: 0.10959092087089649
+Time taken to execute The Method: 109.8872 seconds
+
+Mean normalized GPS error: [41.938316766611244]
+Mean Heading Error: 0.10959092087089649
+Time taken to execute The Method: 80.4725 seconds
+
+
+0.09676174312989283 
+
+
+REDONE:::
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [40.51783973214321]
+Mean Heading Error: 0.09676174312989283
+Time taken to execute The Method: 24.5006 seconds
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: FLANN
+Mean normalized GPS error: [40.44967224183749]
+Mean Heading Error: 0.09676174312989283
+Time taken to execute The Method: 63.2306 seconds
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: GRAPH
+Mean normalized GPS error: [40.04114576791721]
+Mean Heading Error: 0.09676174312989283
+Time taken to execute The Method: 32.6537 seconds
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [37.603604183736394]
+Mean Heading Error: 0.09676174312989283
+Time taken to execute The Method: 26.3826 seconds
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [37.597872430625884]
+Mean Heading Error: 0.09676174312989283
+Time taken to execute The Method: 29.2198 seconds
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: GRAPH
+Mean normalized GPS error: [40.67106048208091]
+Mean Heading Error: 0.09676174312989283
+Time taken to execute The Method: 26.4537 seconds
+
+LOWEST IS AKAZE with FLANN - local matcher. 
+
+redoing with global akaze and flann:
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [37.47066195417462]
+Mean Heading Error: 0.09691744808578011
+Time taken to execute The Method: 45.4717 seconds
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [37.61104187921054]
+Mean Heading Error: 0.09805780734952092
+Time taken to execute The Method: 53.8853 seconds
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: GRAPH
+Mean normalized GPS error: [40.67496954404282]
+Mean Heading Error: 0.09835982151749345
+Time taken to execute The Method: 51.6638 seconds
+
+Best is AKAZE with FLANN - local matcher.
+
+
+A local 

@@ -33,8 +33,8 @@ class ORBFeatureExtractor(BaseFeatureExtractor):
 # AKAZE Feature Extractor
 class AKAZEFeatureExtractor(BaseFeatureExtractor):
     def __init__(self):
-        self.detector = cv2.AKAZE_create(threshold=0.0005)
-
+        self.detector = cv2.AKAZE_create(threshold=0.0008) # 0.0005
+    # higher is more aggresive filtering. 
     def get_keydes(self, image):
         keypoints, descriptors = self.detector.detectAndCompute(image, None)
         return keypoints, descriptors

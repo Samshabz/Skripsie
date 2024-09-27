@@ -1,0 +1,14 @@
+param effects on neural net angle estimation
+RANSAC 5 = -171 not -180
+RANSAC 0.5 -> 148 way worse
+RANSAC 30 -> -165 soworse than 5 better than 0.5
+
+loop them 
+
+
+other params
+    depth_confidence=0.195, #553 with extra 0. 
+    width_confidence=0.199,
+    filter_threshold=0.45 
+
+keypoints @ 2048 -> fine

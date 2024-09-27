@@ -1,0 +1,166 @@
+
+
+
+
+
+\section{Rotational Estimators}
+
+\subsection{Introduction}
+Rotational estimators are critical in image alignment and pose estimation tasks. In this project, rotational estimators are employed to align UAV-captured images when GPS data is unreliable. The accuracy of rotational alignment directly impacts the estimation of translational shifts and image similarity. These steps are crucial to ensuring reliable navigation in GPS-denied environments.
+
+Four methods were selected for rotational estimation based on their applicability, computational efficiency, and accuracy. Other methods were considered but ultimately excluded due to their efficiency or accuracy.   
+
+\subsection{Methods}
+\begin{itemize}
+    \item \textbf{Homography Estimation}: A method supporting 8 degrees of freedom (DoF), accounting for rotation, scaling, translation, and perspective correction. It is suitable for complex transformations but may introduce unnecessary errors when perspective correction is not needed.
+    \item \textbf{Affine Estimation}: A method with 6 degrees of freedom that handles rotation, scaling, and translation without perspective correction. It is computationally efficient and offers sufficient transformation handling for most tasks.
+    \item \textbf{2x2 Rotation Matrix}: A simplified method that accounts only for rotational and translational freedom. It lacks support for scaling and perspective, making it less effective for complex transformations.
+    \item \textbf{Vector-based Estimation}: A direct estimation of rotation using vectors derived from image points. This method lacks robust outlier removal and complexity, limiting its effectiveness for real-world applications.
+\end{itemize}
+
+\textbf{Conclusion:} These methods were chosen to provide a range of complexity and computational efficiency, with homography and affine estimation being the primary focus due to their broader applicability in image transformations.
+
+\subsection{Improvement Techniques}
+To enhance the accuracy and robustness of these methods, the following improvement techniques were applied:
+\begin{itemize}
+    \item \textbf{Lowe's Ratio with KNN}: Filters out ambiguous matches by comparing the best match with the second-best match, effectively eliminating outliers, especially in repetitive or noisy data.
+    \item \textbf{RANSAC (Random Sample Consensus)}: A robust outlier removal technique that iteratively refines the inlier set to accurately estimate transformations.
+    \item \textbf{Confidence Thresholds}: Filters out matches or keypoints below a certain confidence level. In practice, this technique performed worse than Lowe's Ratio and RANSAC, and when used alongside them, it reduced accuracy due to over-filtering.
+    \item \textbf{Confidence Weightings}: Adjusts the influence of each match based on its confidence score. Similar to confidence thresholds, this technique led to decreased stability by over-filtering.
+\end{itemize}
+
+\textbf{Conclusion:} The combination of Lowe's Ratio and RANSAC was the most effective in improving accuracy and robustness. Confidence thresholds and weightings were found to be redundant.
+
+\subsection{Initial Accuracy Testing}
+Initial tests were conducted using relatively optimal parameters, and the performance of each method was evaluated based on its Mean Absolute Error (MAE) in heading relative to the ground truth. The results are summarized below:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Method} & \textbf{MAE (heading)} & \textbf{Result} \\
+        \hline
+        Homography & 0.1207 & Accurate \\  
+        Affine & 0.1129 & Best-performing \\  
+        2x2 Rotation Matrix & 1.0277 & Poor performance \\  
+        Vector-based & 7.3571 & Poor performance \\  
+        \hline
+    \end{tabular}
+    \caption{Initial Testing Results (MAE - Mean Absolute GPS Error)}
+\end{table}
+
+\textbf{Conclusion:} The affine method achieved the lowest MAE, making it the most accurate for aligning images. Homography performed slightly worse due to its additional degrees of freedom, which introduced unnecessary errors. The 2x2 rotation matrix and vector-based methods were unsuitable for the task due to their lack of transformation handling complexity. Based on these results, affine and homography were selected for further testing.
+
+\subsection{Accuracy in Global and Local Matching}
+To assess the overall suitability of the rotational estimators, it is crucial to evaluate their impact on the system as a whole. Focusing solely on heading errors does not capture the full extent of how minor inaccuracies propagate through the system. By examining the Mean Normalized Error (MNE) in GPS coordinates, a more realistic understanding of the cumulative effect of small rotational errors and their influence on overall system performance is obtained.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Global Method} & \textbf{Local Method} & \textbf{Mean Normalized Error (GPS)} \\  
+        \hline
+        Homography & Homography & 48.90 \\  
+        Homography & Affine & 41.80 \\  
+        Affine & Homography & 42.37 \\  
+        Affine & Affine & 41.28 \\  
+        \hline
+    \end{tabular}
+    \caption{Accuracy Comparison for Global and Local Matching Techniques (MNE - Mean Normalized Error)}
+\end{table}
+
+\textbf{Conclusion:} The affine method consistently outperforms homography in both global and local matching scenarios. The significant reductions in GPS error, even with relatively minor decreases in rotational error, highlight the sensitivity of both methods to rotational inaccuracies. This underscores the critical importance of optimizing the accuracy of the rotational stage.
+
+
+\subsection{Time Constraints}
+Time efficiency was evaluated to assess the computational performance of each method. The table below summarizes the average, minimum, median, and maximum runtimes for each approach. Lower computation times enable higher frame rates, provide greater tolerance for minor errors, and allow for faster processing of larger search spaces, ultimately improving accuracy.
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Method} & \makecell{\textbf{Mean Time} \\ \textbf{(ms)}} & \makecell{\textbf{Max Time} \\ \textbf{(ms)}} & \makecell{\textbf{Min Time} \\ \textbf{(ms)}} & \makecell{\textbf{Median Time} \\ \textbf{(ms)}} \\
+        \hline
+        Affine & 1.276 & 11.55 & 0.00 & 0.999 \\  
+        Homography & 22.58 & 50.74 & 0.98 & 10.80 \\  
+        \hline
+    \end{tabular}
+    \caption{Time Analysis for Affine and Homography Methods}
+\end{table}
+
+\textbf{Conclusion:} Affine is significantly faster than homography, with a much lower mean and median runtime. The greater variability in homography’s runtime (indicated by the difference between mean and median) is due to its handling of more complex transformations. Affine’s speed makes it particularly well-suited for real-time UAV applications.
+
+\subsection{Robustness Testing}
+Robustness testing was performed to assess each method's sensitivity to different parameter settings, such as RANSAC thresholds, Lowe’s ratio for match filtering, and keypoint confidence thresholds. These tests are essential to determine the methods’ reliability under varying conditions and data quality.
+
+\subsubsection{RANSAC Threshold Testing}
+We varied RANSAC thresholds to evaluate how sensitive each method is to outlier removal. A lower threshold implies more aggressive filtering, which reduces the number of keypoints but increases the reliability of those retained.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Threshold} & \makecell{\textbf{Homography (Mean} \\ \textbf{Heading Error)}} & \makecell{\textbf{Affine (Mean} \\ \textbf{Heading Error)}} \\
+        \hline
+        0.2 & 0.1384 & 0.1089 \\  
+        0.5 (Default) & 0.1207 & 0.1129 \\  
+        5 & 0.1249 & 0.1003 \\  
+        25 & 0.1222 & 0.0997 \\  
+        50 & 0.1226 & 0.1112 \\  
+        \hline
+    \end{tabular}
+    \caption{Effect of RANSAC Thresholds on Heading Error}
+\end{table}
+
+\textbf{Conclusion:} Both methods are robust to RANSAC threshold changes, but homography exhibits greater variability at lower thresholds, suggesting a weaker estimation capability when fewer keypoints are available.
+
+\subsubsection{Lowe's Ratio Testing}
+We evaluated Lowe's ratio to assess its impact on match filtering and rotational estimation accuracy. A lower ratio implies more aggressive filtering, reducing the number of matches but increasing their quality.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Lowe's Ratio} & \makecell{\textbf{Homography (Mean} \\ \textbf{Heading Error)}} & \makecell{\textbf{Affine (Mean} \\ \textbf{Heading Error)}} \\
+        \hline
+        0.6 & 0.1289 & 0.1098 \\  
+        0.7 & 0.1255 & 0.1006 \\  
+        0.8 & 0.1207 & 0.0997 \\  
+        0.9 & 0.1139 & 0.1111 \\  
+        0.95 & 0.1211 & 0.1054 \\  
+        \hline
+    \end{tabular}
+    \caption{Effect of Lowe's Ratio on Heading Error}
+\end{table}
+
+\textbf{Conclusion:} Both methods are robust to changes in Lowe’s ratio. 
+
+\subsubsection{Keypoint Confidence Threshold Testing}
+Keypoint confidence thresholds were varied to evaluate how each method performs with different levels of keypoint quality. Lower thresholds admit more keypoints but decrease the reliability of individual keypoints.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \makecell{\textbf{Keypoint Confidence} \\ \textbf{Threshold}} & \makecell{\textbf{Homography (Mean} \\ \textbf{Heading Error)}} & \makecell{\textbf{Affine (Mean} \\ \textbf{Heading Error)}}\\
+        \hline
+        0.001 & 0.1404 & 0.1019 \\  
+        0.0008 & 0.1207 & 0.0974 \\  
+        0.0005 & 0.1247 & 0.0997 \\  
+        0.0002 & 0.1247 & 0.1024 \\  
+        \hline
+    \end{tabular}
+    \caption{Effect of Keypoint Confidence Thresholds on Heading Error}
+\end{table}
+
+\textbf{Conclusion:} Both methods are robust to changes in keypoint confidence thresholds, but affine remains more consistent at lower thresholds, maintaining lower mean errors with noisier keypoints.
+
+\subsubsection{Overall Robustness}
+In summary, affine consistently outperforms homography in terms of robustness, particularly in scenarios involving noisier or fewer keypoints. This makes affine the preferred method for handling datasets with varying quality and practical applications requiring stability under changing conditions.
+
+\subsection{Conclusion}
+Affine estimation is selected as the primary method for future work due to its superior accuracy, faster computation, and greater robustness. Its 6 degrees of freedom provide sufficient understanding of image transformations without introducing unnecessary errors from perspective correction. 
+
+
+Best Rotator: Affine, AKAZE AND BF

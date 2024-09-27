@@ -42,7 +42,8 @@
         "skimage",
         "ssim",
         "superpoint"
-    ]
+    ],
+    "cmake.ignoreCMakeListsMissing": true
 
 
 }

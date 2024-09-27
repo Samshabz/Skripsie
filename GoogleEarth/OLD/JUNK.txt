@@ -1,0 +1,2 @@
+Linear regression inferred factor x: 3.638991117477417
+Linear regression inferred factor y: 3.0456948280334473

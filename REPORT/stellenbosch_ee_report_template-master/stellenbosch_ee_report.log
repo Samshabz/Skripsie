@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  23 SEP 2024 16:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  27 SEP 2024 00:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -683,7 +683,7 @@ Package hyperref Info: Link coloring ON on input line 110.
 \openout3 = `stellenbosch_ee_report.out'.
 
  (frontmatter/skripsie_title_page.tex
-<USlogo-top.pdf, id=147, 560.0925pt x 183.68625pt>
+<USlogo-top.pdf, id=183, 560.0925pt x 183.68625pt>
 File: USlogo-top.pdf Graphic file (type pdf)
 <use USlogo-top.pdf>
 Package pdftex.def Info: USlogo-top.pdf  used on input line 7.
@@ -892,21 +892,29 @@ Overfull \hbox (25.46921pt too wide) in paragraph at lines 375--392
 
 [32]
 
-[33]) (conclusion/conclusion.tex
+[33]) (Chapter 3/RotationalEstimators.tex
 
 [34]
+
+[35]
+
+[36]
+
+[37]) (conclusion/conclusion.tex
+
+[38]
 Chapter 4.
 )
 No file stellenbosch_ee_report.bbl.
 (appendices/appendices.tex
 
-[35
+[39
 
 ]
 Appendix A.
 
 
-[36
+[40
 
 ]
 Appendix B.
@@ -917,7 +925,7 @@ See the caption package documentation for explanation.
 
 
 
-[37
+[41
 
 ] (stellenbosch_ee_report.aux)
  ***********
@@ -929,20 +937,20 @@ L3 programming layer <2024-05-27>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `stellenbosch_ee_report.out' has not changed.
-(rerunfilecheck)             Checksum: 6C528758BFE0A90CC36548326D621AC1;5354.
+(rerunfilecheck)             Checksum: 1DDA66EB2BD75F414740F4543EBDA125;6773.
  ) 
 Here is how much of TeX's memory you used:
- 22167 strings out of 473904
- 424175 string characters out of 5720901
+ 22219 strings out of 473904
+ 425144 string characters out of 5720901
  1942908 words of memory out of 5000000
- 44353 multiletter control sequences out of 15000+600000
- 631467 words of font info for 177 fonts, out of 8000000 for 9000
+ 44365 multiletter control sequences out of 15000+600000
+ 632104 words of font info for 184 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,15n,80p,1331b,1102s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbo10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbx10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on stellenbosch_ee_report.pdf (47 pages, 467764 bytes).
+Output written on stellenbosch_ee_report.pdf (51 pages, 495216 bytes).
 PDF statistics:
- 585 PDF objects out of 1000 (max. 8388607)
- 116 named destinations out of 1000 (max. 500000)
- 43814 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 683 PDF objects out of 1000 (max. 8388607)
+ 139 named destinations out of 1000 (max. 500000)
+ 43886 words of extra memory for PDF output out of 51595 (max. 10000000)
 

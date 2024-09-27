@@ -1,0 +1,113 @@
+    def find_best_match(self, image_index, graph_matcher_true, image_space, grid_size=(5, 5), lower_percentile=20, upper_percentile=100-20):
+        print(f"starting match finding")
+        
+        """Finds the best matching stored image for the given image index, using homography for rotation correction and grid-based ORB feature matching."""
+
+        # Start timer to measure performance
+        start_time = time.time()
+
+        # Function to divide image into grids
+        def divide_into_grids(image, grid_size):
+            """Divides the given image into grid_size (rows, cols) and returns the grid segments."""
+            height, width = image.shape[:2]
+            grid_height = height // grid_size[0]
+            grid_width = width // grid_size[1]
+            grids = []
+
+            for i in range(grid_size[0]):
+                for j in range(grid_size[1]):
+                    grid = image[i*grid_height:(i+1)*grid_height, j*grid_width:(j+1)*grid_width]
+                    grids.append(grid)
+            return grids
+
+        best_index = -1
+        max_corr_score = -np.inf
+
+        current_image = pull_image(image_index)
+        current_grids = divide_into_grids(current_image, grid_size)
+
+        for i in image_space:
+            if i == image_index:
+                continue
+
+            stored_image = pull_image(i)
+            feats_current = self.stored_feats[image_index]
+
+            feats_stored = self.stored_feats[i]
+
+            # Match descriptors between the current image and the stored image
+           
+            featsA, featsB, matches = contracted_lightglue(feats_current, feats_stored) 
+
+             #knnMatch(descriptors_current, descriptors_stored, k=2)
+            
+            good_matches = []
+            for match_pair in matches:
+                good_matches.append(match_pair)  # Handle single or list of matches
+            
+            if len(good_matches) < 4:
+                print("Warning: Less than 4 matches found.")
+                continue
+            keypoints1 = featsA['keypoints'].cpu().numpy() # the .cpu() is used to move the tensor to the cpu. The .numpy() is used to convert the tensor to a numpy array
+            keypoints2 = featsB['keypoints'].cpu().numpy()
+            matches = matches.cpu().numpy()
+
+            src_pts = keypoints1[matches[:, 0]]
+            dst_pts = keypoints2[matches[:, 1]]
+            shifts = dst_pts - src_pts   
+            
+
+            # initial rotating of image. 
+            if len(good_matches) > 10:
+                # Find homography to estimate transformation
+                M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
+
+                if M is not None:
+                    # Rotate the stored image using the homography matrix
+                    h, w = stored_image.shape[:2]
+                    rotated_image_stored = cv2.warpPerspective(stored_image, M, (w, h))
+
+                    # Now divide both current and rotated stored image into grids
+                    rotated_grids_stored = divide_into_grids(rotated_image_stored, grid_size)
+
+                    total_good_matches = 0
+                    
+
+                    # Perform grid-wise matching
+                    for current_grid, stored_grid in zip(current_grids, rotated_grids_stored):
+                        print(f"starting this loop")
+                        feats_current_grid = self.detector.get_features(current_grid)
+                        #detectAndCompute(current_grid, None)
+                        feats_stored_grid = self.detector.get_features(stored_grid)
+                        #.detectAndCompute(stored_grid, None)
+
+                        if feats_current_grid is None or feats_stored_grid is None:
+                            continue
+
+                        # Match descriptors between grids using knnMatch
+                        
+                        # now use lightglue to match
+                        feats_current_grid, feats_stored_grid, matches_grid = contracted_lightglue(feats_current_grid, feats_stored_grid)
+                        # simply set all matches as good matches.
+                        good_matches_grid = []
+                        for match in matches_grid:
+                            good_matches_grid.append(match)
+
+
+                        total_good_matches += len(good_matches_grid) if len(good_matches_grid) < 50 else 50
+
+                    # Score based on total good matches across all grids
+                    score = total_good_matches
+
+                    if score > max_corr_score:
+                        max_corr_score = score
+                        best_index = i
+                    print(f"get heeere")
+        # End timer and calculate time taken
+        total_time = time.time() - start_time
+
+
+        print(f"Best match for image {image_index+1} is image {best_index+1} with a total of {max_corr_score} good matches.")
+        # print(f"Time taken: {total_time:.2f} seconds")
+        
+        return best_index

@@ -1,0 +1,534 @@
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [36.03411458185457]
+Mean Heading Error: 0.06765177105436256
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: ORB, Local Matcher: FLANN
+Mean normalized GPS error: [36.12904842805535]
+Mean Heading Error: 0.06765177105436256
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: ORB, Local Matcher: GRAPH
+Mean normalized GPS error: [34.25310768705849]
+Mean Heading Error: 0.06765177105436256
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [37.874670559427365]
+Mean Heading Error: 0.06765177105436256
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [37.56644847604102]
+Mean Heading Error: 0.06765177105436256
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: GRAPH
+Mean normalized GPS error: [35.01578305582912]
+Mean Heading Error: 0.06765177105436256
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Cross Correlation, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [41.79750442061442]
+Mean Heading Error: 0.11766343430810333
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Cross Correlation, Local Detector: ORB, Local Matcher: FLANN
+Mean normalized GPS error: [41.624436713287416]
+Mean Heading Error: 0.11766343430810333
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Cross Correlation, Local Detector: ORB, Local Matcher: GRAPH
+Mean normalized GPS error: [39.89169030309348]
+Mean Heading Error: 0.11766343430810333
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [184.62230100413925]
+Mean Heading Error: 12.144002793678482
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [184.62230100413925]
+Mean Heading Error: 12.144002793678482
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [184.62230100413925]
+Mean Heading Error: 4.413159850845039
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [184.62230100413925]
+Mean Heading Error: 18.583329369863325
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [217.0778218186433]
+Mean Heading Error: 22.525730821812708
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [217.0778218186433]
+Mean Heading Error: 28.92293070977246
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [217.0778218186433]
+Mean Heading Error: 37.44537286807241
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [184.62230100413925]
+Mean Heading Error: 26.21047124997357
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [184.62230100413925]
+Mean Heading Error: 26.21047124997357
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [182.21871681025974]
+Mean Heading Error: 26.118420526861655
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [182.21871681025974]
+Mean Heading Error: 26.018420526861654
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [182.21871681025974]
+Mean Heading Error: 26.018420526861654
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [215.79484905645342]
+Mean Heading Error: 25.884374373179753
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [nan]
+Mean Heading Error: nan
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [77.70497846120634]
+Mean Heading Error: 26.018420526861654
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [190.0647414392125]
+Mean Heading Error: 26.018420526861654
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [76.40582187436067]
+Mean Heading Error: 26.018420526861654
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [82.3058220096005]
+Mean Heading Error: 25.705471249973574
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [342.3086378018841]
+Mean Heading Error: 14.11688280757657
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [342.3086378018841]
+Mean Heading Error: 14.11688280757657
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [707.3095015321147]
+Mean Heading Error: 16.520949972140052
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [66.29218288616711]
+Mean Heading Error: 21.424924363623386
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [57.742175322702664]
+Mean Heading Error: 21.72928363712789
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [46.5315435417319]
+Mean Heading Error: 21.442885290206895
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [46.5315435417319]
+Mean Heading Error: 21.442885290206895
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [127.57111180511492]
+Mean Heading Error: 21.442885290206895
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [127.57111180511492]
+Mean Heading Error: 21.442885290206895
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [158.72482660231]
+Mean Heading Error: 0.12572173571611742
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [127.57111180511492]
+Mean Heading Error: 21.442885290206895
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [159.48313414246084]
+Mean Heading Error: 12.98248312151382
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [89.86801428691011]
+Mean Heading Error: 12.98248312151382
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [127.57111180511492]
+Mean Heading Error: 21.442885290206895
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [89.86801428691011]
+Mean Heading Error: 12.98248312151382
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [89.86801428691011]
+Mean Heading Error: 12.98248312151382
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [89.86801428691011]
+Mean Heading Error: 12.98248312151382
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [358.0486333703641]
+Mean Heading Error: 0.5414004431377795
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [144.11813224754752]
+Mean Heading Error: 0.12572173571611636
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: FLANN
+Mean normalized GPS error: [46.53154354173204]
+Mean Heading Error: 0.12572173571611636
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2013.39355707217]
+Mean Heading Error: 20.211719728639732
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2032.5262623123056]
+Mean Heading Error: 20.211719728639732
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2054.792052612317]
+Mean Heading Error: 16.06065351715226
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [nan]
+Mean Heading Error: nan
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [nan]
+Mean Heading Error: nan
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [nan]
+Mean Heading Error: nan
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2379.2331723402826]
+Mean Heading Error: 1.1020805924994381
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2173.492038729653]
+Mean Heading Error: 0.024188724670210604
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2173.492038729653]
+Mean Heading Error: 0.024188724670210604
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2402.49355984576]
+Mean Heading Error: 0.024188724670210604
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2447.7521417403545]
+Mean Heading Error: 0.024188724670210604
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2448.197053516526]
+Mean Heading Error: 0.025474005148083734
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2448.197053516526]
+Mean Heading Error: 0.026588813265448152
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2402.49355984576]
+Mean Heading Error: 0.024188724670210604
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [1957.0559149592161]
+Mean Heading Error: 0.024218823383620247
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [1957.0559149592161]
+Mean Heading Error: 0.024218823383620247
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [1959.4692696058498]
+Mean Heading Error: 0.024218823383620247
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [521.0243706449385]
+Mean Heading Error: 0.7775823273625014
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2888.2739292550787]
+Mean Heading Error: 36.45399422038901
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2888.2739292550787]
+Mean Heading Error: 36.45399422038901
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2888.2739292550787]
+Mean Heading Error: 36.45399422038901
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2888.2739292550787]
+Mean Heading Error: 36.45399422038901
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2888.2739292550787]
+Mean Heading Error: 36.45399422038901
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [0.02598794238975588]
+Mean Heading Error: 36.45399422038901
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2283.718562814989]
+Mean Heading Error: 36.45399422038901
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [3315.588289674636]
+Mean Heading Error: 41.8773067703326
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [3489.978403944919]
+Mean Heading Error: 41.8773067703326
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [nan]
+Mean Heading Error: nan
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [1532.3036134293982]
+Mean Heading Error: 41.8773067703326
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [427.7756772655463]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [427.7756772655463]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [460.05164224436123]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [460.05164224436123]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [626.3535986342184]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [559.3197947423372]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [1435.983080032544]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2035.1500434033965]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [996.2806138008516]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [2035.1500434033965]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [996.2806138008516]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [996.2806138008516]
+Mean Heading Error: 0.019015408931758366
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [5749.709028374094]
+Mean Heading Error: 0.0
+
+
+
