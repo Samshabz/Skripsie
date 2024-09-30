@@ -43,7 +43,10 @@
         "ssim",
         "superpoint"
     ],
-    "cmake.ignoreCMakeListsMissing": true
+    "cmake.ignoreCMakeListsMissing": true,
+    "python.analysis.extraPaths": [
+        "./lightglue/LightGlue"
+    ]
 
 
 }

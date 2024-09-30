@@ -14,7 +14,7 @@ class BaseMatcher:
 
 # BFMatcher class for binary descriptors
 class BFMatcher(BaseMatcher):
-    def __init__(self, neural_net_on=False):
+    def __init__(self):
         
 
         self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
@@ -22,8 +22,9 @@ class BFMatcher(BaseMatcher):
     def find_matches(self, des1, des2, kp1, kp2, detector_choice, global_matcher_true):
         # Remove batch dimension if present
 
-        # Perform matching
-        return self.matcher.knnMatch(des1, des2, k=2)
+        # Perform matching  
+        matches = self.matcher.knnMatch(des1, des2, k=2) 
+        return matches
 
 # FLANN Matcher class for binary descriptors
 class FlannMatcher(BaseMatcher):
@@ -51,7 +52,7 @@ class FlannMatcher(BaseMatcher):
 
 # Graph Matcher using RANSAC for geometric consistency
 class GraphMatcher(BaseMatcher):
-    def __init__(self, neural_net_on=False):
+    def __init__(self):
 
         self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
         
@@ -88,17 +89,17 @@ class GraphMatcher(BaseMatcher):
 
 
 # Set matcher function to return the correct matcher object
-def set_matcher(matcher_choice, neural_net_on=False):
+def set_matcher(matcher_choice):
     """
     Returns the correct matcher based on the user's choice.
     Supported options: "bf_matcher", "flann_matcher", "lsh_matcher", "ann_matcher", "graph_matcher"
     """
     if matcher_choice == "bf_matcher":
-        return BFMatcher(neural_net_on=neural_net_on)
+        return BFMatcher()
     elif matcher_choice == "flann_matcher":
         return FlannMatcher()
     elif matcher_choice == "graph_matcher":
-        return GraphMatcher(neural_net_on=neural_net_on)
+        return GraphMatcher()
 
     else:
         raise ValueError(f"Invalid matcher choice: {matcher_choice}")
