@@ -42,15 +42,17 @@ def get_shifts(featsA=None, featsB=None, kp1=None, kp2=None, des1=None, des2=Non
         # Apply Lowe's ratio test to filter good matches
         good_matches = []
         for m, n in matches:
-            if m.distance < 0.8 * n.distance:
+            if m.distance < 0.999 * n.distance:
                 good_matches.append(m)
 
         # Extract matched keypoints
         src_pts = np.float32([kp1[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
         dst_pts = np.float32([kp2[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
-        shifts = dst_pts - src_pts
-        shift_x = np.mean(shifts[0])
-        shift_y = np.mean(shifts[1])
+        # shifts = dst_pts - src_pts
+        # shift_x = np.mean(shifts[0])
+        # shift_y = np.mean(shifts[1])
+        shift_x, shift_y = get_src_shifts(src_pts, dst_pts)
+        print(f"RATREM: {shift_y}")
         return shift_x, shift_y
 
 

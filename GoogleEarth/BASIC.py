@@ -73,7 +73,7 @@ def estimate_affine_rotation(image1_gray, image2_gray):
     dst_pts = np.float32([kp2[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
 
     # Estimate affine transformation using RANSAC
-    M, inliers = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.RANSAC)
+    M, inliers = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.RANSAC) # this is from the first image to the second image, in our case: inference to reference
 
     if M is None:
         raise ValueError("Affine transformation estimation failed.")
@@ -84,88 +84,25 @@ def estimate_affine_rotation(image1_gray, image2_gray):
     
     return angle
 
-def estimate_translation_phase_correlation(rotated_reference_image, inference_image, inference_heading, featsA=None, featsB=None, kp1=None, kp2=None, des1=None, des2=None):
+def estimate_translation_phase_correlation(ref_img, inference_image, reference_heading, featsA=None, featsB=None, kp1=None, kp2=None, des1=None, des2=None):
     """Estimate translation using Phase Correlation with consistent global heading."""
-    # if bool_garbage == True: # for inbasic testing 
-    #     rotation_angle = -estimate_affine_rotation(rotated_reference_image, inference_image) # this is from inf to ref. 
-    #     # 6 to 7 should be + 65-43.5 = + 21.5. 7 to 6 should be -21.5. actually 22.31
-    #     print(f"Rotation angle between images: {rotation_angle}")
-    #     # lets take 6->7, it should rotate +. however, 6 is ref, 7 is inf. and we want to rotate the ref to match the inference. so yes + 21.5
-    #     rotated_reference_image = rotate_image(rotated_reference_image, rotation_angle+inference_heading)
-    #     inference_image = rotate_image(inference_image, inference_heading)
-    #     rotation_anglecheck = -estimate_affine_rotation(rotated_reference_image, inference_image) # this is from inf to ref. 
-    #     print(f"Rotation angle between images: {rotation_anglecheck}") # this config is right.
-    # else:
-    rotation_angle = -estimate_affine_rotation(rotated_reference_image, inference_image) # this is from inf to ref. 
-    # 6 to 7 should be + 65-43.5 = + 21.5. 7 to 6 should be -21.5. actually 22.31
-    # print(f"Rotation angle between images: {rotation_angle}")
-    # lets take 6->7, it should rotate +. however, 6 is ref, 7 is inf. and we want to rotate the ref to match the inference. so yes + 21.5
-    rotated_reference_image = rotate_image(rotated_reference_image, rotation_angle + inference_heading)
-    inference_image = rotate_image(inference_image, inference_heading)
-    rotation_anglecheck = -estimate_affine_rotation(rotated_reference_image, inference_image) # this is from inf to ref. 
-    print(f"Rotation angle between images: {rotation_anglecheck}") # this config is right. 
-    
 
 
-    # print all lengths 
-    # translation_x, translation_y = get_shifts(None, None, kp1, kp2, des1, des2)
+    rotation_angle = -estimate_affine_rotation(inference_image, ref_img)
+    rot_inf_img = rotate_image(inference_image, rotation_angle + reference_heading)
+    rot_ref_img = rotate_image(ref_img, reference_heading)
+    rotation_anglecheck = -estimate_affine_rotation(rot_inf_img, rot_ref_img)
+    print(f"Rotation angle between images: {rotation_anglecheck}")
+    return rot_inf_img, rot_ref_img
+    # shift, response = cv2.phaseCorrelate(np.float32(rot_inf_img), np.float32(rot_ref_img))
+    # translation_x, translation_y = shift
+
+    translation_x, translation_y = get_shifts(None, None, kp1, kp2, des1, des2)
+
+    return translation_x, translation_y
 
 
 
-
-    # Step 3: Estimate translation using phase correlation 
-    shift, response = cv2.phaseCorrelate(np.float32(rotated_reference_image), np.float32(inference_image)) # this means from inference to reference
-    translation_x, translation_y = shift
-    
-
-
-
-
-
-    # Step 4: Correct the translation to account for the reference image's global heading
-    theta = np.radians(inference_heading)  # Use negative of the reference heading
-    rotation_matrix = np.array([[np.cos(theta), -np.sin(theta)], 
-                                [np.sin(theta),  np.cos(theta)]])
-    
-    # if we had negative x movement at +90, wed expect neg y at axis. so since cos90 = 0, and weve got a neg coeff, neg tx, and we want a neg. so sintheta is thereby also neg. this implies +90 must infact be -90. 
-    manually_tx_corrected = translation_x# * np.cos(theta) + translation_y * np.sin(theta)
-    manually_ty_corrected = translation_y#change to x# * np.sin(theta) + translation_y * np.cos(theta)
-    # translation_corrected = np.dot(rotation_matrix, np.array([translation_x, translation_y]))
-    # tx_auto = translation_corrected[0]
-    translation_corrected = np.array([manually_tx_corrected, manually_ty_corrected])    
-    # if tx_auto != manually_tx_corrected:
-    #     raise ValueError("Error in translation correction.")
-    
-    print(f"Phase Correlation estimated corrected translation: {translation_corrected}")
-    
-    # Return the corrected translation (translation_x, translation_y) in the global coordinate system
-    return translation_corrected
-
-
-
-def estimate_translation_optical_flow(image1_gray, image2_gray):
-    """Estimate translation using Optical Flow."""
-    # Detect good features to track using Shi-Tomasi corner detector
-    src_pts = cv2.goodFeaturesToTrack(image1_gray, maxCorners=1000000, qualityLevel=0.6, minDistance=0.00001)
-    
-    if src_pts is None:
-        print("No good features to track found.")
-        return None
-    
-    # Calculate optical flow using Lucas-Kanade method
-    dst_pts, status, err = cv2.calcOpticalFlowPyrLK(image1_gray, image2_gray, src_pts, None)
-    
-    # Filter valid points
-    valid_pts = np.where(status == 1)
-    
-    if len(valid_pts[0]) < 4:
-        print("Not enough valid points found after optical flow.")
-        return None
-
-    # Calculate average translation between points
-    translation = np.mean(dst_pts[valid_pts] - src_pts[valid_pts], axis=0).ravel()
-    print(f"Optical Flow estimated translation: {translation}")
-    return translation
 
 def estimate_translation_keypoint_affine(image1_gray, image2_gray):
     image2_gray = rotate_image(image2_gray, 15)
@@ -209,8 +146,6 @@ def main():
     choice='1'
     if choice == '1':
         estimate_translation_phase_correlation(image1_gray, image2_gray, angletouse, True)
-    elif choice == '2':
-        estimate_translation_optical_flow(image1_gray, image2_gray)
     elif choice == '3':
         estimate_translation_keypoint_affine(image1_gray, image2_gray)
     else:
