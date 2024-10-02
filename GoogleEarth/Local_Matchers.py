@@ -19,7 +19,7 @@ class BFMatcher(BaseMatcher):
 
         self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
 
-    def find_matches(self, des1, des2, kp1, kp2, detector_choice, global_matcher_true):
+    def find_matches(self, des1, des2, kp1=0, kp2=0, detector_choice=0, global_matcher_true=0):
         # Remove batch dimension if present
 
         # Perform matching  

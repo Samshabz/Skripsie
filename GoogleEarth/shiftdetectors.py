@@ -42,7 +42,7 @@ def get_shifts(featsA=None, featsB=None, kp1=None, kp2=None, des1=None, des2=Non
         # Apply Lowe's ratio test to filter good matches
         good_matches = []
         for m, n in matches:
-            if m.distance < 0.999 * n.distance:
+            if m.distance < 0.8 * n.distance: #0.999 for idk but 0.8 working for datsetcpt w/ akaze 0.0052
                 good_matches.append(m)
 
         # Extract matched keypoints
@@ -154,8 +154,8 @@ def get_shifts(featsA=None, featsB=None, kp1=None, kp2=None, des1=None, des2=Non
 
 def get_src_shifts(src_pts, dst_pts):
         shifts = dst_pts - src_pts
-        shift_x = np.mean(shifts[0])
-        shift_y = np.mean(shifts[1])
+        # shift_x = np.mean(shifts[0])
+        # shift_y = np.mean(shifts[1])
         
 
         center_src = np.mean(src_pts, axis=0)
@@ -171,6 +171,10 @@ def get_src_shifts(src_pts, dst_pts):
         H = np.dot(src_pts_centered.T, dst_pts_centered)
         U, S, Vt = np.linalg.svd(H)
         R = np.dot(U, Vt)
+
+        theta = np.arctan2(R[1, 0], R[0, 0])
+        theta_deg = np.degrees(theta)
+        # print(f"Rotation angle (degrees): {theta_deg}")
 
         # Apply the inverse rotation matrix to remove rotation from dst_pts
         dst_pts_rot_corrected = np.dot(dst_pts - center_dst, R.T) + center_dst
