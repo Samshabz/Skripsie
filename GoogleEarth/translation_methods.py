@@ -101,6 +101,7 @@ def homography_transformation(src_pts, dst_pts):
     return tx, ty, np.degrees(rotation_angle)
 
 
+    
 # RANSAC for Affine Transformation (Using OpenCV)
 def ransac_affine_transformation(src_pts, dst_pts):
     matrix, inliers = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.RANSAC)

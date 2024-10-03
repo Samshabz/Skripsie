@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 # Directory containing images
-image_directory = './GoogleEarth/DATASETS/DATSETROT/'
+image_directory = './GoogleEarth/DATASETS/DATSETROCK/'
 
 # Function to crop top and bottom 10% of the image
 def crop_image(img):
