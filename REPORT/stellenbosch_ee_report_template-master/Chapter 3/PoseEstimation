@@ -25,3 +25,5 @@ RANSAC is a robust method used to refine transformation estimation by iterativel
 
 \subsubsection*{Bundle Adjustment}
 Bundle Adjustment refines the estimated transformation by minimizing the re-projection error across multiple images. It is particularly useful in sequences of images where consistency in rotation, translation, and scale is required. Bundle Adjustment is often used in conjunction with feature-based methods for improved accuracy over time, but it is computationally intensive and typically used in post-processing rather than real-time applications.
+
+

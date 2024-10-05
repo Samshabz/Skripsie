@@ -35,8 +35,10 @@ class ORBFeatureExtractor(BaseFeatureExtractor):
 
 # AKAZE Feature Extractor
 class AKAZEFeatureExtractor(BaseFeatureExtractor):
-    def __init__(self, threshold=0.00252):
+    def __init__(self, threshold=0.0001):
         self.detector = cv2.AKAZE_create() # Lower implies more keypoints.0052
+        
+        self.detector.setThreshold(threshold)
     # higher is more aggressive filtering. 
     def get_keydes(self, image):
         keypoints, descriptors = self.detector.detectAndCompute(image, None)
@@ -49,7 +51,7 @@ class AKAZEFeatureExtractor(BaseFeatureExtractor):
 
 
 
-def set_feature_extractor(detector_choice, threshold=0.00252, device=None):
+def set_feature_extractor(detector_choice, threshold=0.0001, device=None):
     """
     Returns the correct feature extractor based on the user's choice.
     Supported options: 1 for ORB, 2 for AKAZE, 3 for SuperPoint.
@@ -57,7 +59,7 @@ def set_feature_extractor(detector_choice, threshold=0.00252, device=None):
     if detector_choice == 1:
         return ORBFeatureExtractor()
     elif detector_choice == 2:
-        if threshold !=0.00252:
+        if threshold !=0.0001:
             return AKAZEFeatureExtractor(threshold)
         else:
             return AKAZEFeatureExtractor()

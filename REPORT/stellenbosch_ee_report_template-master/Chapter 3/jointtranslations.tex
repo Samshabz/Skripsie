@@ -2,3 +2,49 @@ Estimating the translation between two images is crucial. In this task it is the
 
 USING SRC2: Mean normalized GPS error: [68.80609374]
 Mean normalized GPS error: [76.18316901]  with tx5 affine i think
+Mean normalized GPS error: [49.63202366] with 
+
+
+act_x: 54.01055886904801, src_x: 81.84672546386719, aff_x: 68.97981184336534, rig_x: 86.7923583984375, hom_x: 132.7956515564803, phase_xr: 926.1219608240385
+act_y: -313.6294952506629, src_y: -373.3643798828125, aff_y: -363.8604233196769, rig_y: -381.3812561035156, hom_y: -331.0842227192241, phase_yr: -0.19298670028166498
+
+Note, phase correlation is highly accurate for most cases. However, it has erratic performance for some cases. Phase correlation, unlike the other local matching methods which work on matched points, is a global matching method which works on the entire image. Subsequently, it has extreme sensitivity to rotational differences in images. In an ideal scenario, it proves extremely accurate, however, in the real world, heading estimations can be affected by a variety of external factors, and as such, it is not suitable due to lack of robustness.
+Leverage this as proof of lack of applicability for global matching techniques on local scale. 
+Note the issue was resolved with gaussian blur completely (3x3)
+further shown when using different keypoints: if low, slight decrease in rot acc, completely messes it up
+
+Linear regression inferred factor x: 5.040098667144775
+Linear regression inferred factor y: 4.487826824188232
+
+
+
+
+
+
+
+
+cross check for rotations is way too slow - like 10x or more
+    
+I did not have exact rotations - limited accuracy. I suppose it shows robustness of the method.
+
+
+using Gauss and phase: Mean normalized GPS error: [74.86584804]
+
+
+0.0052 gives 75 error 
+Mean normalized GPS error: [73.12837426] with 0.001
+
+
+[6.22015792] cpt [0.43360468] \%
+
+
+datsetrock
+Linear regression inferred factor x: 3.7235333919525146
+Linear regression inferred factor y: 3.291621208190918
+
+
+DATSETROCK
+
+Percentage Deviation: [2.0432787] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [19.5483201]
