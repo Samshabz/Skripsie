@@ -1,50 +1,5 @@
-# Procrustes Analysis (Using scipy)
-from scipy.spatial import procrustes
+
 import numpy as np
-
-# Input: src_pts and dst_pts should be numpy arrays with the same shape (N, 2)
-def procrustes_analysis(src_pts, dst_pts):
-    mtx1, mtx2, disparity = procrustes(src_pts, dst_pts)
-    
-    # Compute translation as the difference in centroids
-    tx = np.mean(mtx2[:, 0]) - np.mean(mtx1[:, 0])
-    ty = np.mean(mtx2[:, 1]) - np.mean(mtx1[:, 1])
-    
-    # Compute rotation (since Procrustes can involve scaling and rotation)
-    rotation_matrix = np.linalg.lstsq(mtx1, mtx2, rcond=None)[0][:2, :2]
-    rotation_angle = np.arctan2(rotation_matrix[1, 0], rotation_matrix[0, 0])
-    
-    return tx, ty, np.degrees(rotation_angle)
-
-
-# ICP (Using open3d)
-import open3d as o3d
-
-def icp_2d(src_pts, dst_pts, threshold=0.02):
-    src_pts = np.array(src_pts).reshape(-1, 2)
-    dst_pts = np.array(dst_pts).reshape(-1, 2)
-    
-    def create_point_cloud(pts):
-        pts_3d = np.hstack([pts, np.zeros((pts.shape[0], 1))])
-        pc = o3d.geometry.PointCloud()
-        pc.points = o3d.utility.Vector3dVector(pts_3d)
-        return pc
-
-    src_cloud = create_point_cloud(src_pts)
-    dst_cloud = create_point_cloud(dst_pts)
-
-    trans_init = np.eye(4)
-    icp_result = o3d.pipelines.registration.registration_icp(
-        src_cloud, dst_cloud, threshold, trans_init,
-        o3d.pipelines.registration.TransformationEstimationPointToPoint())
-
-    transformation = icp_result.transformation
-    tx = transformation[0, 3]
-    ty = transformation[1, 3]
-    rotation_matrix = transformation[:2, :2]
-    rotation_angle = np.arctan2(rotation_matrix[1, 0], rotation_matrix[0, 0])
-
-    return tx, ty, np.degrees(rotation_angle)
 
 
 # Affine Transformation Estimation (Using OpenCV)
@@ -52,7 +7,7 @@ import cv2
 
 # Input: src_pts and dst_pts should be numpy arrays with shape (N, 2)
 def affine_transformation(src_pts, dst_pts):
-    matrix, _ = cv2.estimateAffine2D(src_pts, dst_pts)
+    matrix, _ = cv2.estimateAffine2D(src_pts, dst_pts, method=cv2.RANSAC)
 
     # Translation components
     tx = matrix[0, 2]

@@ -48,3 +48,45 @@ DATSETROCK
 Percentage Deviation: [2.0432787] %
 Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
 Mean normalized GPS error: [19.5483201]
+
+
+
+
+DATSETROCK with tr
+
+
+with method 1, phase correlation: does not work on this dataset. dont mention this - but it works with larger rotations, which could be some adverse effect of adding black parts to the image. It might be aligning borders, since scale is equivalent- I think actually note that. it does work with 0.00252: Mean normalized GPS error: [52.81922868]
+lly. 
+ method 2: src pts : Mean normalized GPS error: [19.5483201]
+
+with affine method 3: [36.30962122] [3.79524558] - (infer the others) without outlier removal
+with affine and rasnac, and optimized threshold 25 - decreased acc, with def threshold too: overfiltration data set clean - speak abt why bad result. default is ransac actua
+
+with rigid method 4: [45.57627793]
+
+with homog method 5: [49.2125092]
+
+
+
+note: inference heading was used to show its practicality in real life accross different datasets. However, its lack of accuracy still introduces a systematic error. 
+
+note: average distance 500-1500m radial between inference and reference image - in reality could be much lower 
+
+
+Phase Correlation stability: 0.825 +/- 5565.873
+Linear Algebra stability: 1.000 +/- 254.384
+Affine stability: 1.047 +/- 161.125
+Rigid stability: 1.010 +/- 287.127
+Homography stability: 1.063 +/- 448.669
+mean relative to lowest scorer: linear Algebra
+variance is times a million. 
+Rigid stability has the closest mean, but a high variance. Affine is extremely stable, with sufficient degrees of freedom, but is more inaccurate. Phase correlation has a poor mean and variance. However, if the rotations are worked out precisely, it is the most accurate. 
+These results affirm that the data is sufficiently clean after extraction and matching, because of the method strength, and methods that add more nuanced filtration and transformations tend to only add inaccuracy. With that being said, if data is much less clean, for instance if the weather or lighting is bad, rigid or affine should be considered. If the camera is unstable and altitude varies, homography should be considered. If the altitude alone is unstable, affine. 
+
+
+0.00252 - phase corr works else fails, at 0.00
+
+
+Translation methods: Moments, cross-correlation, gradient methods - none worked well.
+
+Phase correlate method improvement techniques: Gauss blur, equalize, windowing, LPF \& HPF - however, none of these methods significantly improved its robustness to rotational inaccuracies.

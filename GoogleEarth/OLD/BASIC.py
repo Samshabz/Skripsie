@@ -91,13 +91,14 @@ def estimate_translation_phase_correlation(ref_img, inference_image, reference_h
     rotation_angle = -estimate_affine_rotation(inference_image, ref_img)
     rot_inf_img = rotate_image(inference_image, rotation_angle + reference_heading)
     rot_ref_img = rotate_image(ref_img, reference_heading)
+    print(f" ref, delta, inf: {reference_heading}, {rotation_angle}, {rotation_angle + reference_heading}")
     rotation_anglecheck = -estimate_affine_rotation(rot_inf_img, rot_ref_img)
-    print(f"Rotation angle between images: {rotation_anglecheck}")
-    return rot_inf_img, rot_ref_img
-    # shift, response = cv2.phaseCorrelate(np.float32(rot_inf_img), np.float32(rot_ref_img))
-    # translation_x, translation_y = shift
+    # print(f"Rotation angle between images: {rotation_anglecheck}")
+    # return rot_inf_img, rot_ref_img
+    shift, response = cv2.phaseCorrelate(np.float32(rot_inf_img), np.float32(rot_ref_img))
+    translation_x, translation_y = shift
 
-    translation_x, translation_y = get_shifts(None, None, kp1, kp2, des1, des2)
+    # translation_x, translation_y = get_shifts(None, None, kp1, kp2, des1, des2)
 
     return translation_x, translation_y
 

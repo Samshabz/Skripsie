@@ -1,0 +1,34 @@
+Pseudocode:
+
+stage 1: 
+while gps not lost and not bool infer camera parameters and factors:
+import image with stored telemetry data (GPS and heading)
+extract features of image
+Normalize image xy to global heading space
+
+
+stage 2:
+while gps not lost and BOOL_infer_factors:
+- Same as stage 1
+INFER GPS-TO-PIXEL-RATIO:
+    Global Matching (find a reference image):
+        Reduce reference image search space by GPS proximity  
+        Reduce to single reference image with global matching technique
+    Local Matching (infer transformations between):
+        Accurate relative angle between images with local matching technique
+        Accurate translation estimation between images with local matching technique
+
+Estimate factor of least error that aligns estimated pixel translation to GPS metre translation across samples(XXX - check least square 4 etc)
+
+stage 3:
+while GPS lost:
+extract features of image
+Global Matching (find a reference image):
+    Reduce reference image search space by GPS proximity  
+    Reduce to single reference image with global matching technique
+Local Matching (infer transformations between):
+    Accurate relative angle between images with local matching technique
+    Normalize image xy to global heading space with acquired angle. 
+    Accurate translation estimation between images with local matching technique
+    Infer GPS with inferred pixel ratio and global-space translation
+
