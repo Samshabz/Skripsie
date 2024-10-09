@@ -25,82 +25,96 @@ Note that some global matching techniques, retrofit to local, inherently infer r
 
 
 
-testing diff angle 
-Mean normalized GPS error: [42.42830582761002]
-Mean Heading Error: 0.10959092087089649
-Time taken to execute The Method: 109.8872 seconds
+OPTIMIZATION by filtering non-ambiguous matches:
 
-Mean normalized GPS error: [41.938316766611244]
-Mean Heading Error: 0.10959092087089649
-Time taken to execute The Method: 80.4725 seconds
+NO FILTER: AKAZE
 
 
-0.09676174312989283 
-
-
-REDONE:::
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
-Mean normalized GPS error: [40.51783973214321]
-Mean Heading Error: 0.09676174312989283
-Time taken to execute The Method: 24.5006 seconds
-
-
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: FLANN
-Mean normalized GPS error: [40.44967224183749]
-Mean Heading Error: 0.09676174312989283
-Time taken to execute The Method: 63.2306 seconds
-
-
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: GRAPH
-Mean normalized GPS error: [40.04114576791721]
-Mean Heading Error: 0.09676174312989283
-Time taken to execute The Method: 32.6537 seconds
-
-
+Percentage Deviation: [4.53573965] %
 Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
-Mean normalized GPS error: [37.603604183736394]
-Mean Heading Error: 0.09676174312989283
-Time taken to execute The Method: 26.3826 seconds
-
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
-Mean normalized GPS error: [37.597872430625884]
-Mean Heading Error: 0.09676174312989283
-Time taken to execute The Method: 29.2198 seconds
-
-
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: GRAPH
-Mean normalized GPS error: [40.67106048208091]
-Mean Heading Error: 0.09676174312989283
-Time taken to execute The Method: 26.4537 seconds
-
-LOWEST IS AKAZE with FLANN - local matcher. 
-
-redoing with global akaze and flann:
-
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
-Mean normalized GPS error: [37.47066195417462]
-Mean Heading Error: 0.09691744808578011
-Time taken to execute The Method: 45.4717 seconds
+Mean normalized GPS error: [61.64376568]
+ Mean Heading Error: 0.9238056255750251
+Mean Length of Keypoints: 2525.866666666667
+Mean Global Time to Extract Keypoints: 0.2387 s
+Mean Number of Good Matches: 300.0
+Range of Good Matches: 1524
+Time taken to execute The Method: 42.4276 seconds
 
 
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
-Mean normalized GPS error: [37.61104187921054]
-Mean Heading Error: 0.09805780734952092
-Time taken to execute The Method: 53.8853 seconds
+1000: AKAZE:
+Percentage Deviation: [3.64354199] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [49.51819675]
+ Mean Heading Error: 0.9238056255750251
+Mean Length of Keypoints: 2525.866666666667
+Mean Global Time to Extract Keypoints: 0.3093 s
+Mean Number of Good Matches: 300.0
+Range of Good Matches: 1524
+Time taken to execute The Method: 49.1734 seconds
+
+500 AKAZE :
+Percentage Deviation: [3.78754548] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [51.47530145]
+ Mean Heading Error: 0.9238056255750251
+Mean Length of Keypoints: 2525.866666666667
+Mean Global Time to Extract Keypoints: 0.3113 s
+Mean Number of Good Matches: 300.0
+Range of Good Matches: 1524
+Time taken to execute The Method: 46.8221 seconds
+
+
+300 AKAZE:
+Percentage Deviation: [3.78754548] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [51.47530145]
+ Mean Heading Error: 0.9238056255750251
+Mean Length of Keypoints: 2525.866666666667
+Mean Global Time to Extract Keypoints: 0.3010 s
+Mean Number of Good Matches: 300.0
+Range of Good Matches: 1524
+Time taken to execute The Method: 50.1302 seconds
 
 
 
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: GRAPH
-Mean normalized GPS error: [40.67496954404282]
-Mean Heading Error: 0.09835982151749345
-Time taken to execute The Method: 51.6638 seconds
 
-Best is AKAZE with FLANN - local matcher.
+NO FILTER ORB:
+Percentage Deviation: [3.44040283] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [46.75739834]
+ Mean Heading Error: 0.9238056255750251
+Mean Length of Keypoints: 2525.866666666667
+Mean Global Time to Extract Keypoints: 0.2305 s
+Mean Number of Good Matches: 300.0
+Range of Good Matches: 1524
+Time taken to execute The Method: 35.7340 seconds
+
+300 ORB:
+Percentage Deviation: [3.56667733] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [48.4735542]
+ Mean Heading Error: 0.9238056255750251
+Mean Length of Keypoints: 2525.866666666667
+Mean Global Time to Extract Keypoints: 0.2536 s
+Mean Number of Good Matches: 300.0
+Range of Good Matches: 1524
+Time taken to execute The Method: 39.0073 seconds
 
 
-A local 
+500 ORB:
+Percentage Deviation: [3.54085884] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [48.12266341]
+ Mean Heading Error: 0.9238056255750251
 
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE , Local Matcher: BF
-Mean normalized GPS error: [30.925733535478727]
-Mean Heading Error: 0.024694421641148285
-Time taken to execute The Method: 86.9061 seconds
+Range of Good Matches: 1524
+Time taken to execute The Method: 38.7855 seconds
+
+1000 ORB:
+Percentage Deviation: [3.47237348] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [47.19190112]
+ Mean Heading Error: 0.9238056255750251
+
+Range of Good Matches: 1524
+Time taken to execute The Method: 53.7941 seconds

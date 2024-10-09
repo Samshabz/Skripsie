@@ -21,8 +21,8 @@ class BaseFeatureExtractor:
 
 # ORB Feature Extractor
 class ORBFeatureExtractor(BaseFeatureExtractor):
-    def __init__(self):
-        self.detector = cv2.ORB_create(nfeatures=20000)
+    def __init__(self, nfeatures=3000):
+        self.detector = cv2.ORB_create(nfeatures=nfeatures)
 
     def get_keydes(self, image):
         keypoints, descriptors = self.detector.detectAndCompute(image, None)
@@ -57,7 +57,7 @@ def set_feature_extractor(detector_choice, threshold=0.0001, device=None):
     Supported options: 1 for ORB, 2 for AKAZE, 3 for SuperPoint.
     """
     if detector_choice == 1:
-        return ORBFeatureExtractor()
+        return ORBFeatureExtractor(threshold)
     elif detector_choice == 2:
         if threshold !=0.0001:
             return AKAZEFeatureExtractor(threshold)

@@ -40,11 +40,7 @@ class FlannMatcher(BaseMatcher):
         self.matcher = cv2.FlannBasedMatcher(index_params, search_params)
 
     def find_matches(self, des1, des2, kp1, kp2, detector_choice, global_matcher_true):
-        # Check if descriptors are valid and have enough keypoints
-        if des1 is None or des2 is None or len(des1) < 2 or len(des2) < 2:
-            return []  # No matches if not enough descriptors
 
-        # KNN Matching
         return self.matcher.knnMatch(des1, des2, k=2)
 
 # LSH Matcher for binary descriptors

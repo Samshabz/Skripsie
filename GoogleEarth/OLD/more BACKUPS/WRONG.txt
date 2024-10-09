@@ -1,3 +1,4 @@
+WRONG 
 import cv2  # OpenCV for image processing
 import numpy as np  # For numerical operations
 import os  # For file operations
@@ -9,12 +10,14 @@ from PIL import Image
 import time
 from Local_Matchers import set_matcher
 from Feature_Extractors import set_feature_extractor, set_neural_feature_extractor
-from shiftdetectors import get_src_shifts, get_neural_src_pts
+import torch
+from shiftdetectors import get_shifts, get_src_shifts
 from translation_methods import *
+from BASIC import estimate_translation_phase_correlation
 
 
 class UAVNavigator:
-    def __init__(self, global_detector_choice, local_detector_choice, global_matcher_choice, local_matcher_choice, global_matching_technique, dataset_name, global_detector_threshold=0.001, local_detector_threshold=0.001):
+    def __init__(self, global_detector_choice, local_detector_choice, global_matcher_choice, local_matcher_choice, global_matching_technique, dataset_name):
         self.stored_image_count = 0
         self.stored_global_keypoints = []
         self.stored_global_descriptors = []
@@ -55,39 +58,27 @@ class UAVNavigator:
         # Neural Network
         self.stored_feats = []
 
+        # Translation
+        self.estimated_translations_pixels = []
 
-        # Stability of translation estimations DEBUG
+        # Stability of translation estimations
         self.mag1_stability_arr = []
         self.mag2_stability_arr = []
         self.mag3_stability_arr = []
         self.mag4_stability_arr = []
         self.mag5_stability_arr = []
-        self.string_stability = []
 
         # Loss of GPS
         self.global_loss_keypoints = []
         self.global_loss_descriptors = []
         self.local_loss_keypoints = []
         self.local_loss_descriptors = []
-        self.local_loss_feats   = []
-
-        self.same_detector_threshold = False
-
-        # DEBUG 
-        self.keypoint_time = 0 
-        self.keypoint_iterations = 0
-        self.len_matches_arr = []
-        self.glob_mat_len_arr = []
-        self.loc_mat_len_arr = []
 
 
 
         if local_detector_choice == 3:
             self.neural_net_on = True
 
-        if global_detector_threshold == local_detector_threshold:
-            self.same_detector_threshold = True
-        
         # datasets
         self.dataset_name = dataset_name # pass as string
         self.directory = './GoogleEarth/DATASETS/{}'.format(self.dataset_name)
@@ -99,19 +90,41 @@ class UAVNavigator:
 
         if global_detector_choice == 1:
             self.global_detector_name = "ORB"
-            self.global_detector = set_feature_extractor(global_detector_choice, global_detector_threshold)
+            self.global_detector = set_feature_extractor(global_detector_choice)
+
         elif global_detector_choice == 2: 
             
             self.global_detector_name = "AKAZE"
-            self.global_detector = set_feature_extractor(global_detector_choice, global_detector_threshold)
+            dataset = self.dataset_name
+            if dataset == "DATSETROT" or dataset == "DATSETCPT": 
+                threshold=0.00252 # higher allows more keypoints with increased computation time.for cpt and rot use 0.0042. # note previously used 0.0042. To use phase correlate with datset rot, you need a specific threshold - # Naturally, the error only is relevant wrt with the global detector.
+                # REMOVING THRESH
+                self.global_detector = set_feature_extractor(global_detector_choice,threshold )
+            elif dataset == "DATSETROCK":
+                threshold=0.00042 # higher allows more keypoints with increased computation time.for cpt and rot use 0.0042. 
+                # REMOVING THRESH
+                self.global_detector = set_feature_extractor(global_detector_choice,threshold )
 
+            else:
+                self.global_detector = set_feature_extractor(global_detector_choice)
 
         if local_detector_choice == 1:                
             self.local_detector_name = "ORB"
-            self.local_detector = set_feature_extractor(local_detector_choice, local_detector_threshold)
+            self.local_detector = set_feature_extractor(local_detector_choice)
+
         elif local_detector_choice == 2: 
             self.local_detector_name = "AKAZE"
-            self.local_detector = set_feature_extractor(local_detector_choice, local_detector_threshold)
+            dataset = self.dataset_name
+            if dataset == "DATSETROT" or dataset == "DATSETCPT":
+                threshold=0.00252
+                self.local_detector = set_feature_extractor(global_detector_choice,threshold )
+            elif dataset == "DATSETROCK":
+                threshold=0.00042 # higher allows more keypoints with increased computation time.for cpt and rot use 0.0042.
+                # REMOVING THRESH
+                self.global_detector = set_feature_extractor(global_detector_choice,threshold )
+            else:
+                self.local_detector = set_feature_extractor(global_detector_choice)
+            self.local_detector = set_feature_extractor(local_detector_choice)
             
 
         elif local_detector_choice == 3:
@@ -209,54 +222,25 @@ class UAVNavigator:
 
             # Match keypoints using BFMatcher
             
-            matches = self.global_matcher.find_matches(des1, des2) if global_matcher_true else self.local_matcher.find_matches(des1, des2) 
+            matches = self.global_matcher.find_matches(des1, des2) 
 
             good_matches = []
-            while len(good_matches) < 300:
-                for match_pair in matches:
-                    if self.global_matcher_choice == 2: 
-                        # Graph matcher returns singles (cv2.DMatch objects)
-                        good_matches.append(match_pair)  # Handle single or list of matches
-                    else: 
-                        # BFMatcher and FlannMatcher return pairs (tuple of two matches)
-                        if len(match_pair) == 2:
-                            m, n = match_pair
-                            if m.distance < Lowes_thresh * n.distance:  # Lowe's ratio test, for rotations
-                                good_matches.append(m)
-                Lowes_thresh += 0.025
+            for match_pair in matches:
+                if self.global_matcher_choice == 2: 
+                    # Graph matcher returns singles (cv2.DMatch objects)
+                    good_matches.append(match_pair)  # Handle single or list of matches
+                else: 
+                    # BFMatcher and FlannMatcher return pairs (tuple of two matches)
+                    if len(match_pair) == 2:
+                        m, n = match_pair
+                        if m.distance < Lowes_thresh * n.distance:  # Lowe's ratio test, for rotations
+                            good_matches.append(m)
 
-            # take top 2000 matches if matches are more than 2000
-           
-            if global_matcher_true:
-                global_kp_allowed = 300
-                if len(good_matches) > global_kp_allowed: # XXX optimize this
-                    sorted_matches = sorted(good_matches, key=lambda x: x.distance)
-                    if self.global_detector_name == "AKAZE":
-                        good_matches = sorted_matches[:global_kp_allowed]
-                    elif self.global_detector_name == "ORB":
-                        good_matches = sorted_matches[:global_kp_allowed*5]
-            elif not global_matcher_true:
-                local_kp_allowed = 1000
-                if len(good_matches) > local_kp_allowed: 
-                    sorted_matches = sorted(good_matches, key=lambda x: x.distance)
-                    #  apply the same logic for local detector - improved results for transformations. 
-                    if self.local_detector_name == "AKAZE":
-                        good_matches = sorted_matches[:local_kp_allowed]
-                    elif self.local_detector_name == "ORB":
-                        good_matches = sorted_matches[:local_kp_allowed]
-            if global_matcher_true:
-                self.glob_mat_len_arr.append(len(good_matches)) 
-            elif not global_matcher_true:
-                self.loc_mat_len_arr.append(len(good_matches))
-            # Extract matched keypoints 
+            # Extract matched keypoints
             src_pts = np.float32([kp1[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
             dst_pts = np.float32([kp2[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
-
-            
             return src_pts, dst_pts
     
-    
-
     
 
 
@@ -270,69 +254,110 @@ class UAVNavigator:
             return max_corr
         """Finds the best matching stored image for the given image index using cross-correlation with rotational normalization."""
 
+        # Start timer to measure performance
+        if len(self.stored_global_descriptors) == 0:
+            raise ValueError("No descriptors available for matching.")
 
         best_index = -1
         max_corr_score = -np.inf  # Initial maximum correlation score
-        linked_angles = []
 
         inference_img = self.pull_image(image_index, self.directory, bool_rotate=False)  # Load the current image
         kp_inf, des_inf = self.global_detector.get_keydes(inference_img)
         
+        if image_index >= len(self.global_loss_keypoints):
+            self.global_loss_keypoints.extend([None] * (image_index + 1 - len(self.global_loss_keypoints)))
+        self.global_loss_keypoints[image_index] = kp_inf
 
-        
+        if image_index >= len(self.global_loss_descriptors):
+            self.global_loss_descriptors.extend([None] * (image_index + 1 - len(self.global_loss_descriptors)))
+        self.global_loss_descriptors[image_index] = des_inf
+
+
+        linked_angles = []
+        linked_translations = []
         for ref in image_space:
+            score = 0
             
             if ref == image_index:  # Can change this to if i >= image_index to only infer from lower indices
                 continue  
-            ref_img = self.pull_image(ref, self.directory, bool_rotate=True)
+            stored_image = self.pull_image(ref, self.directory, bool_rotate=True)
             kp_stored = self.stored_global_keypoints[ref]
             descriptors_stored = self.stored_global_descriptors[ref]
-            Lowes_ratio = 0.8 if self.global_detector_name == "AKAZE" else 0.7
-            src_pts, dst_pts = self.get_src_dst_pts(kp_inf, kp_stored, des_inf, descriptors_stored, Lowes_ratio)
+            if len(kp_stored) < 10 or len(kp_inf) < 10:
+                print("Not enough keypoints.")
+                
+
+            global_detector_choice = 1 if self.global_detector_name == "ORB" else 2
+
+            src_pts, dst_pts = self.get_src_dst_pts(kp_inf, kp_stored, des_inf, descriptors_stored, 0.8)
 
             method_to_use = 0 # 0 is affine, 1 is homography
             M, amt_inliers, _ = self.get_rotations(src_pts, dst_pts, method_to_use) # inf = src = img_index, dst = ref = i = stored
-            # print(f"AMT INLIERS: {amt_inliers}\n")
             
             if amt_inliers < 80 or M is None:
                 continue
             
 
-            h, w = ref_img.shape[:2]
+            input_image = stored_image
             if method_to_use == 0:
-                rot_ref = cv2.warpAffine(ref_img, M[:2, :], (w, h))
+                rotated_image_stored = cv2.warpAffine(input_image, M[:2, :], (input_image.shape[1], input_image.shape[0]))
             elif method_to_use == 1 or method_to_use == 2:
-                rot_ref = cv2.warpAffine(ref_img, M,  (w, h))
+                rotated_image_stored = cv2.warpPerspective(input_image, M, (input_image.shape[1], input_image.shape[0]))
 
             # Perform cross-correlation directly on the full image
             if self.global_matching_technique == 3:
-                score = cross_correlate(inference_img, rot_ref)
+                score = cross_correlate(inference_img, rotated_image_stored)
 
 
-            elif self.global_matching_technique == 4 or 1==1:
-                score = self.compare_histograms(inference_img, rot_ref)
+            elif self.global_matching_technique == 4:
+                score = self.compare_histograms(inference_img, rotated_image_stored)
                 
 
             elif self.global_matching_technique == 5:
-                score = self.compare_ssim(inference_img, rot_ref)
+                score = self.compare_ssim(inference_img, rotated_image_stored)
                 
 
 
             elif self.global_matching_technique == 6:
-                score = self.compare_hash(inference_img, rot_ref)
+                score = self.compare_hash(inference_img, rotated_image_stored)
                 
             if score > max_corr_score:
                 max_corr_score = score
                 best_index = ref
                 temp_angle = np.arctan2(M[1, 0], M[0, 0]) * (180 / np.pi)
+                # tx, ty = M[0, 2], M[1, 2]
+
+            
+
+                tx,ty = get_src_shifts(src_pts, dst_pts)
+
                 linked_angles.append(temp_angle)
-                
+                print(f"TEMP ANGLE: {temp_angle}\n")
+                linked_translations.append((tx, ty))
 
 
+
+
+        # pull the last value from linked_angles array
         heading_change = 0
         if len(linked_angles) > 0:
-            heading_change = -linked_angles[-1]
+            heading_change = linked_angles[-1]
             self.compare_headings(image_index, best_index, heading_change)
+
+            tx, ty = linked_translations[-1]
+            # 
+
+            if image_index >= len(self.estimated_translations_pixels):
+                # Extend the list with None or a default value up to the required index
+                self.estimated_translations_pixels.extend([None] * (image_index + 1 - len(self.estimated_translations_pixels)))
+            self.estimated_translations_pixels[image_index] = (tx, ty)
+        
+
+
+        # print(f"Best match for image {image_index+1} is image {best_index+1}")
+        if best_index == -1:
+            print("No best match found.")
+            return None
         
         return best_index, -heading_change
 
@@ -445,6 +470,7 @@ class UAVNavigator:
         best_index = -1
         max_corr_score = -np.inf
         linked_angles = []
+        linked_translations = []
 
 
 
@@ -453,21 +479,33 @@ class UAVNavigator:
         inference_img = self.pull_image(image_index, self.directory, bool_rotate=False)  # Load the current image
         kp_inf, des_inf = self.global_detector.get_keydes(inference_img)
         
+        if image_index >= len(self.global_loss_keypoints):
+            self.global_loss_keypoints.extend([None] * (image_index + 1 - len(self.global_loss_keypoints)))
+        self.global_loss_keypoints[image_index] = kp_inf
+
+        if image_index >= len(self.global_loss_descriptors):
+            self.global_loss_descriptors.extend([None] * (image_index + 1 - len(self.global_loss_descriptors)))
+        self.global_loss_descriptors[image_index] = des_inf
+
         
 
         current_grids = divide_into_grids(inference_img, grid_size)
 
         for ref in image_space:
-            if ref == image_index: 
+            if ref == image_index: #XXX
                 continue
             
             ref_img = self.pull_image(ref, self.directory, bool_rotate=True)
             kp_stored = self.stored_global_keypoints[ref]
             descriptors_stored = self.stored_global_descriptors[ref]
 
+
+            # Match descriptors between the current image and the stored image
             detector_choice = 1 if self.global_detector_name == "ORB" else 2
-            Lowes_Ratio = 0.8 if self.global_detector_name == "AKAZE" else 0.7
-            src_pts, dst_pts = self.get_src_dst_pts(kp_inf, kp_stored, des_inf, descriptors_stored, Lowes_Ratio)
+            # matches = self.global_matcher.find_matches(descriptors_current, descriptors_stored, kp_current, kp_stored, detector_choice, global_matcher_true=1)
+
+            # good_matches = self.find_good_matches(matches, 0.8)
+            src_pts, dst_pts = self.get_src_dst_pts(kp_inf, kp_stored, des_inf, descriptors_stored, 0.8)
  
 
             # initial rotating of image. 
@@ -476,7 +514,6 @@ class UAVNavigator:
 
                 method_to_use = 0 # 0 is affine, 1 is homography # 2 is partial affine
                 M, amt_inliers, _ = self.get_rotations(src_pts, dst_pts, method_to_use) 
-                # print(f"AMT INLIERSBM: {amt_inliers}\n")
                 
                 if amt_inliers < 80 or M is None:
                     continue
@@ -516,15 +553,29 @@ class UAVNavigator:
                     max_corr_score = score
                     best_index = ref
                     temp_angle = np.arctan2(M[1, 0], M[0, 0]) * (180 / np.pi)
-                    # print(f"TEMP ANGLE1: {temp_angle}\n")
+                    tx,ty = get_src_shifts(src_pts, dst_pts)
                     linked_angles.append(temp_angle)
+                    linked_translations.append((tx, ty))
 
 
+        # End timer and calculate time taken
         heading_change = 0
         if len(linked_angles) > 0:
+            # we need to think about how we deal with the angle and relativity. That is, we need to develop a standard initial image in the forward direction. 
+
             heading_change = -linked_angles[-1]
             self.compare_headings(image_index, best_index, heading_change)
 
+            tx, ty = linked_translations[-1]
+            if image_index >= len(self.estimated_translations_pixels):
+                # Extend the list with None or a default value up to the required index
+                self.estimated_translations_pixels.extend([None] * (image_index + 1 - len(self.estimated_translations_pixels)))
+            self.estimated_translations_pixels[image_index] = (tx, ty)
+
+
+        # print(f"Best match for image {image_index+1} is image {best_index+1} with a total of {max_corr_score} good matches.")
+        # print(f"Time taken: {total_time:.2f} seconds")
+        # - (i_estim - best_actual)
         return best_index, -heading_change
 
 
@@ -598,6 +649,7 @@ class UAVNavigator:
         self.estimated_gps_y = []
         self.norm_GPS_error = []
         self.actual_GPS_deviation = []
+        self.estimated_translations_pixels = []
         self.stored_feats = []
         self.runtime_rotational_estimator = []
         
@@ -623,36 +675,37 @@ class UAVNavigator:
         gray_image = rotate_image(gray_image, heading)
         #1920 x 972 = 1080 * 0.9 = 972
         # lets normalize first based on stored headings 
-        temp_time_1 = time.time()
         keypoints, descriptors = self.global_detector.get_keydes(gray_image)
-        temp_time_2 = time.time() - temp_time_1
-        self.keypoint_time += temp_time_2
-        self.keypoint_iterations += 1
         if len(keypoints) < 10:
             print(f"WarningA: Not enough keypoints found for image {index}. Skipping.")
 
         self.stored_global_keypoints.append(keypoints)
         self.stored_global_descriptors.append(descriptors)
 
-        # LOCAL PHASE
+
         kp1, des1 = None, None
-                
-        if (self.global_detector_name == self.local_detector_name and self.same_detector_threshold == True) and self.neural_net_on == False:
-            kp1, des1 = keypoints, descriptors
-            if len(kp1) < 10:
-                print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold)")
-            self.stored_local_keypoints.append(kp1)
-            self.stored_local_descriptors.append(des1)
-
-
-        elif (self.global_detector_name != self.local_detector_name or self.same_detector_threshold == False) and self.neural_net_on == False:
+        if self.global_detector_name != self.local_detector_name and self.neural_net_on == False:
             kp1, des1 = self.local_detector.get_keydes(gray_image)
             self.stored_local_keypoints.append(kp1)
             self.stored_local_descriptors.append(des1)
-            if len(kp1) < 10:
-                print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold)")
+        else:
+            kp1, des1 = keypoints, descriptors
+
+        if len(kp1) < 10:
+            print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold)")
+        
+
+        # Check if descriptors are None
+        if descriptors is None:
+            print(f"Warning: No descriptors found for one image. Skipping.")
+            return
 
 
+        
+
+        if self.global_detector_name == self.local_detector_name and self.neural_net_on == False:
+            self.stored_local_keypoints.append(keypoints)
+            self.stored_local_descriptors.append(descriptors)
         elif self.neural_net_on == True:
                 # extract features with Superpoint
                 features = self.local_detector.get_features(gray_image)
@@ -752,19 +805,19 @@ class UAVNavigator:
         gray_image = self.pull_image(index, directory, bool_rotate=True, use_estimate=True)
         #1920 x 972 = 1080 * 0.9 = 972
         # lets normalize first based on stored headings 
-        keypoints, descriptors = self.global_detector.get_keydes(gray_image)
-        if len(keypoints) < 10:
-            print(f"WarningA: Not enough keypoints found for image {index}. Skipping.")
+        # keypoints, descriptors = self.global_detector.get_keydes(gray_image)
+        # if len(keypoints) < 10:
+        #     print(f"WarningA: Not enough keypoints found for image {index}. Skipping.")
 
 
 
-        if index >= len(self.global_loss_keypoints):
-            self.global_loss_keypoints.extend([None] * (index + 1 - len(self.global_loss_keypoints)))
-        self.global_loss_keypoints[index] = keypoints
+        # if index >= len(self.global_loss_keypoints):
+        #     self.global_loss_keypoints.extend([None] * (index + 1 - len(self.global_loss_keypoints)))
+        # self.global_loss_keypoints[index] = keypoints
 
-        if index >= len(self.global_loss_descriptors):
-            self.global_loss_descriptors.extend([None] * (index + 1 - len(self.global_loss_descriptors)))
-        self.global_loss_descriptors[index] = descriptors
+        # if index >= len(self.global_loss_descriptors):
+        #     self.global_loss_descriptors.extend([None] * (index + 1 - len(self.global_loss_descriptors)))
+        # self.global_loss_descriptors[index] = descriptors
 
 
         kp1, des1 = None, None
@@ -776,8 +829,6 @@ class UAVNavigator:
             if index >= len(self.local_loss_descriptors):
                 self.local_loss_descriptors.extend([None] * (index + 1 - len(self.local_loss_descriptors)))
             self.local_loss_descriptors[index] = des1
-            if len(kp1) < 100:
-                print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold)")            
 
         elif self.global_detector_name == self.local_detector_name and self.neural_net_on == False:
             kp1, des1 = self.global_loss_keypoints[index], self.global_loss_descriptors[index]
@@ -788,16 +839,15 @@ class UAVNavigator:
             if index >= len(self.local_loss_descriptors):
                 self.local_loss_descriptors.extend([None] * (index + 1 - len(self.local_loss_descriptors)))
             self.local_loss_descriptors[index] = self.global_loss_descriptors[index]
-            if len(kp1) < 100:
-                print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold)")
 
 
-
+        if len(kp1) < 100:
+            print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold)")
 
         if self.neural_net_on == True:
                 # extract features with Superpoint
                 features = self.local_detector.get_features(gray_image)
-                if index >= len(self.local_loss_feats):
+                if index >= len(self.stored_feats):
                     self.local_loss_feats.extend([None] * (index + 1 - len(self.local_loss_feats)))
                 self.local_loss_feats[index] = features
 
@@ -810,15 +860,13 @@ class UAVNavigator:
         self.actuals_y.append(actual_pixel_change_y_m)
     
     def print_stability_analysis(self):
-        print("Stability analysis mean (relative to src - best result) and var*10e6")
+        print("Stability analysis mean (relative to src - best result) and var*1000")
         print(f"Phase Correlation stability: {np.mean(self.mag1_stability_arr)/np.mean(self.mag2_stability_arr):.3f} +/- {(np.var(self.mag1_stability_arr, ddof=1)*1000000):.3f}")
         print(f"Linear Algebra stability: {np.mean(self.mag2_stability_arr)/np.mean(self.mag2_stability_arr):.3f} +/- {(np.var(self.mag2_stability_arr, ddof=1)*1000000):.3f}")
         print(f"Affine stability: {np.mean(self.mag3_stability_arr)/np.mean(self.mag2_stability_arr):.3f} +/- {(np.var(self.mag3_stability_arr, ddof=1)*1000000):.3f}")
         print(f"Rigid stability: {np.mean(self.mag4_stability_arr)/np.mean(self.mag2_stability_arr):.3f} +/- {(np.var(self.mag4_stability_arr, ddof=1)*1000000):.3f}")
         print(f"Homography stability: {np.mean(self.mag5_stability_arr)/np.mean(self.mag2_stability_arr):.3f} +/- {(np.var(self.mag5_stability_arr, ddof=1)*1000000):.3f}")
         print("")
-        string_stability = f"Stability analysis mean (relative to src - best result) and var*10e6\nPhase Correlation: {np.mean(self.mag1_stability_arr)/np.mean(self.mag2_stability_arr):.3f} +/- {(np.var(self.mag1_stability_arr, ddof=1)*1000000):.3f}\nSVD: {np.mean(self.mag2_stability_arr)/np.mean(self.mag2_stability_arr):.3f} +/- {(np.var(self.mag2_stability_arr, ddof=1)*1000000):.3f}\nAffine Transform: {np.mean(self.mag3_stability_arr)/np.mean(self.mag2_stability_arr):.3f} +/- {(np.var(self.mag3_stability_arr, ddof=1)*1000000):.3f}\nRigid Transform: {np.mean(self.mag4_stability_arr)/np.mean(self.mag2_stability_arr):.3f} +/- {(np.var(self.mag4_stability_arr, ddof=1)*1000000):.3f}\nHomography Transform: {np.mean(self.mag5_stability_arr)/np.mean(self.mag2_stability_arr):.3f} +/- {(np.var(self.mag5_stability_arr, ddof=1)*1000000):.3f}\n"
-        self.string_stability = string_stability
 
 
 
@@ -836,14 +884,13 @@ class UAVNavigator:
             timeAS = time.time()
             match_time_1 = time.time()
             if self.global_matching_technique < 3:
-                best_index, internal_angle = self.find_best_match(i, image_space)           
+                best_index, internal_angle = self.find_best_match(i, image_space)
               
             else: 
                 best_index, internal_angle = self.find_best_match_multimethod(i, image_space)
             match_time_2 = time.time() - match_time_1
             
             if best_index != -1 and internal_angle is not None:
-                time_rand = time.time()
                 if not bool_infer_factor:
                     self.add_no_GPS_image(i, self.directory)
                 # please note: the images in this dataset have assumed headings based on testing, as such they are not exact, and images that were meant to have perfect reference headings have estimated ones, thus adding a partial error to the system. 
@@ -852,70 +899,69 @@ class UAVNavigator:
                 actual_gps_diff_meters = (np.array(self.stored_gps[i]) - np.array(self.stored_gps[best_index])) * 111139
                 actual_pixel_change_x_m, actual_pixel_change_y_m = actual_gps_diff_meters[0], actual_gps_diff_meters[1]
                 self.actual_GPS_deviation.append((np.abs(actual_pixel_change_x_m), np.abs(actual_pixel_change_y_m)))
-                Lowes_ratio = 0.8 if self.local_detector_name == "AKAZE" else 0.7
+
                 if bool_infer_factor:
-                    src_pts, dst_pts = self.get_src_dst_pts(self.stored_local_keypoints[i], self.stored_local_keypoints[best_index], self.stored_local_descriptors[i], self.stored_local_descriptors[best_index], Lowes_ratio, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(self.stored_feats[i], self.stored_feats[best_index])
+                    src_pts, dst_pts = self.get_src_dst_pts(self.stored_local_keypoints[i], self.stored_local_keypoints[best_index], self.stored_local_descriptors[i], self.stored_local_descriptors[best_index], 0.8)
                 elif not bool_infer_factor:
-                    src_pts, dst_pts = self.get_src_dst_pts(self.local_loss_keypoints[i], self.stored_local_keypoints[best_index], self.local_loss_descriptors[i], self.stored_local_descriptors[best_index], Lowes_ratio, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(self.local_loss_feats[i], self.stored_feats[best_index])
-                    len_matches = len(src_pts)
-                    self.len_matches_arr.append(len_matches)
+                    if len(self.local_loss_descriptors) < 10:
+                        raise ValueError("Insufficient inference image features")
+                    src_pts, dst_pts = self.get_src_dst_pts(self.local_loss_keypoints[i], self.stored_local_keypoints[best_index], self.local_loss_descriptors[i], self.stored_local_descriptors[best_index], 0.8)
                     
 
                 if len(src_pts) < 100 or len(dst_pts) < 100:
                     print("Low number of keypoints found.")
-                time_rand_2 = time.time() - time_rand
-                print("Time to get src and dst points: ", time_rand_2)
+
                 shift_time_1 = time.time()
                 translation_x, translation_y = 0, 0
-                # if self.neural_net_on == True:
-                #     translation_x, translation_y = get_shifts(self.local_loss_feats[i], self.stored_feats[best_index]) 
-                # else:  
-                translation_method = 0
-                tx1, ty1, tx2, ty2, tx3, ty3, deg3, tx4, ty4, deg4, tx5, ty5, deg5 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                if 1==1: #translation_method == 0:
-                    # phase corr
-                    temp_err_est_act_heading = np.abs(self.stored_headings[i]) - np.abs(self.estimated_headings[i])
-                    if temp_err_est_act_heading > 2.5:
-                        print("Heading estimation error too high.")
-                    image_to_infer_normed = None
-                    if bool_infer_factor:
-                        image_to_infer_normed = self.pull_image(i, self.directory, bool_rotate=True, use_estimate=False) # comparison with reference images
-                    else:
-                        image_to_infer_normed = self.pull_image(i, self.directory, bool_rotate=True, use_estimate=True) # comparison between ref and inference
-                    reference_image_normed = self.pull_image(best_index, self.directory, bool_rotate=True) # ref 
+                if self.neural_net_on == True:
+                    translation_x, translation_y = get_shifts(self.local_loss_feats[i], self.stored_feats[best_index]) 
+                else:  
+                    translation_method = 0
+                    tx1, ty1, tx2, ty2, tx3, ty3, deg3, tx4, ty4, deg4, tx5, ty5, deg5 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                    if 1==1: #translation_method == 0:
+                        # phase corr
+                        temp_err_est_act_heading = np.abs(self.stored_headings[i]) - np.abs(self.estimated_headings[i])
+                        if temp_err_est_act_heading > 1:
+                            print("Heading estimation error too high.")
+                        image_to_infer_normed = None
+                        if bool_infer_factor:
+                            image_to_infer_normed = self.pull_image(i, self.directory, bool_rotate=True, use_estimate=False) # comparison with reference images
+                        else:
+                            image_to_infer_normed = self.pull_image(i, self.directory, bool_rotate=True, use_estimate=True) # comparison between ref and inference
+                        reference_image_normed = self.pull_image(best_index, self.directory, bool_rotate=True) # ref comparison
 
-                    # image_to_infer_normed = cv2.GaussianBlur(image_to_infer_normed, (3, 3), 0)
-                    # reference_image_normed = cv2.GaussianBlur(reference_image_normed, (3, 3), 0) # global matching is highly noise variant
-                    shift, _ = cv2.phaseCorrelate(np.float32(image_to_infer_normed), np.float32(reference_image_normed))
-                    
-                    tx1, ty1 = shift
-                    # translation_x, translation_y = tx1, ty1
-
-                #elif translation_method == 1:
-                    # direct src normalization and computation
-                    tx2, ty2 = get_src_shifts(src_pts, dst_pts)
-                    
-                                                        
-                #elif translation_method == 2:
-                    src_pts = src_pts.reshape(-1,2)
-                    dst_pts = dst_pts.reshape(-1,2)
-                    # affine: translation, rotation, scale, shear
-                    tx3, ty3, deg3 = affine_transformation(src_pts, dst_pts)
-                    # translation_x, translation_y = tx5, ty5 
-                #elif translation_method == 3:
-                    # rigid: translation, rotation (manual method)
-                    # src_pts = src_pts.reshape(-1,2)
-                    # dst_pts = dst_pts.reshape(-1,2)
-                    tx4, ty4, deg4 = rigid_transformation(src_pts, dst_pts)
-                    # translation_x, translation_y = tx6, ty6
-                #elif translation_method == 4:
-                    # homography: translation, rotation, scale, shear, perspective
-                    src_pts = src_pts.reshape(-1,2)
-                    dst_pts = dst_pts.reshape(-1,2)
-                    tx5, ty5, deg5 = homography_transformation(src_pts, dst_pts)
-                    # translation_x, translation_y = tx7, ty7 
-            
-                    translation_x, translation_y = tx2, ty2
+                        # image_to_infer_normed = cv2.GaussianBlur(image_to_infer_normed, (3, 3), 0)
+                        # reference_image_normed = cv2.GaussianBlur(reference_image_normed, (3, 3), 0) # global matching is highly noise variant
+                        shift, _ = cv2.phaseCorrelate(np.float32(image_to_infer_normed), np.float32(reference_image_normed))
+                        
+                        tx1, ty1 = shift
+                        # translation_x, translation_y = tx1, ty1
+                        
+                    #elif translation_method == 1:
+                        # direct src normalization and computation
+                        tx2, ty2 = get_src_shifts(src_pts, dst_pts)
+                        
+                                                            
+                    #elif translation_method == 2:
+                        src_pts = src_pts.reshape(-1,2)
+                        dst_pts = dst_pts.reshape(-1,2)
+                        # affine: translation, rotation, scale, shear
+                        tx3, ty3, deg3 = affine_transformation(src_pts, dst_pts)
+                        # translation_x, translation_y = tx5, ty5 
+                    #elif translation_method == 3:
+                        # rigid: translation, rotation (manual method)
+                        # src_pts = src_pts.reshape(-1,2)
+                        # dst_pts = dst_pts.reshape(-1,2)
+                        tx4, ty4, deg4 = rigid_transformation(src_pts, dst_pts)
+                        # translation_x, translation_y = tx6, ty6
+                    #elif translation_method == 4:
+                        # homography: translation, rotation, scale, shear, perspective
+                        src_pts = src_pts.reshape(-1,2)
+                        dst_pts = dst_pts.reshape(-1,2)
+                        tx5, ty5, deg5 = homography_transformation(src_pts, dst_pts)
+                        # translation_x, translation_y = tx7, ty7 
+                
+                        translation_x, translation_y = tx2, ty2
                 if not bool_infer_factor:
                     self.store_and_append_stability(actual_pixel_change_x_m, actual_pixel_change_y_m, tx1, ty1, tx2, ty2, tx3, ty3, tx4, ty4, tx5, ty5)    
 
@@ -1171,21 +1217,16 @@ def main():
     
 
 
-# ASD
+# super_ ASD
     # Settings (curr_best: akaze,bf, affine, histo, akaze,flann)
-    global_detector_choice = 1  # # Set 1 for ORB, 2 for AKAZE
+    global_detector_choice = 2  # # Set 1 for ORB, 2 for AKAZE
     global_matcher_choice = 0  # Set 0 for BFMatcher, 1 for FlannMatcher, 2 for GraphMatcher
-    global_matcher_technique = 4  # Set 0 for Pass Through grid counter, 3 for correlation, 4 for histogram, 5 for SSIM, 6 for Hash (DONT USE HASHING). 
-    local_detector_choice = 1  # Set 1 for ORB, 2 for AKAZE 3 for NEURAL (lightglue matcher)
+    global_matcher_technique = 0  # Set 0 for Pass Through grid counter, 3 for correlation, 4 for histogram, 5 for SSIM, 6 for Hash. 
+    local_detector_choice = 2  # Set 1 for ORB, 2 for AKAZE 3 for NEURAL (lightglue matcher)
     local_matcher_choice = 0  # Set 0 for BFMatcher, 1 for FlannMatcher, 2 for GraphMatcher
 
     main_dataset_name = "DATSETROT" 
-    if main_dataset_name == "DATSETROT" or main_dataset_name == "DATSETCPT": 
-        glob_thresh=0.00352 if global_detector_choice == 2 else 3000 if global_detector_choice == 1 else 0
-    elif main_dataset_name == "DATSETROCK":
-        glob_thresh=0.001  if global_detector_choice == 2 else 3000 if global_detector_choice == 1 else 0
-    loc_det_thresh = 0.001 if local_detector_choice == 2 else 3000 if local_detector_choice == 1 else 0
-    # AKAZE thresh, ORB kp. 
+    
     num_images = 15
     inference_images = 7
 
@@ -1198,7 +1239,7 @@ def main():
     directory = './GoogleEarth/DATASETS/{}'.format(main_dataset_name)
     if 1==1:
     # for global_detector_choice in global_detector_arr:
-    #     for global_matcher_c hoice in global_matcher_arr:
+    #     for global_matcher_choice in global_matcher_arr:
     #         for global_matcher_technique in global_matcher_technique_arr:
     #             for local_detector_choice in local_detector_arr:
     #                 for local_matcher_choice in local_matcher_arr:
@@ -1210,7 +1251,7 @@ def main():
                             navigator.reset_all_data()
                             print(f'End of Iteration: {iteration_count}') 
                         main_start_time = time.time()
-                        navigator = UAVNavigator(global_detector_choice, local_detector_choice , global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, glob_thresh, loc_det_thresh) # INITIALIZATION
+                        navigator = UAVNavigator(global_detector_choice, local_detector_choice , global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name) # INITIALIZATION
                         init_time = time.time() - main_start_time
                         _ = print_choices(global_detector_choice,global_matcher_choice, global_matcher_technique, local_detector_choice, local_matcher_choice)
 
@@ -1244,25 +1285,12 @@ def main():
                         # find swing percentage
                         swing_percent = np.array(100*np_est_dev/mean_radial_movement)
                         print(f"Percentage Deviation: {swing_percent} %")
-                        string_percent_GPS_dev = f"Percentage GPS Deviation: {swing_percent} %"
                         string_params = print_choices(global_detector_choice,global_matcher_choice, global_matcher_technique, local_detector_choice, local_matcher_choice)
                         string_GPS_error = f"Mean normalized GPS error: {np_est_dev}"
                         string_heading_error = f"Mean Heading Error: {np.mean(navigator.estimated_heading_deviations)}"
                         print(string_GPS_error, '\n', string_heading_error)
-                        num_keypoints_per_image = [len(kps) for kps in navigator.stored_global_keypoints]
-                        string_mean_len_kp = f"Mean Length of Keypoints: {np.mean(num_keypoints_per_image)}"
-                        print(string_mean_len_kp) # XXX append this later to file
-                        string_mean_time_kp = f"Mean Global Time to Extract Keypoints: {navigator.keypoint_time/navigator.keypoint_iterations:.4f} s"
-                        print(string_mean_time_kp) # XXX append this later to file
-                        mean_good_matches = np.mean(navigator.glob_mat_len_arr)
-                        string_mean_good_matches = f"Mean Number of Good Matches: {mean_good_matches}"
-                        print(string_mean_good_matches) # XXX append this later to file
-                        max_min_range_matches = np.max(num_keypoints_per_image) - np.min(num_keypoints_per_image)
-                        string_max_min_range_matches = f"Range of Good Matches: {max_min_range_matches}"
-                        print(string_max_min_range_matches) # XXX append this later to file
-
-                        append_to_file("results.txt", string_params, string_GPS_error, string_percent_GPS_dev, string_heading_error, navigator.string_stability, "\n\n")
-
+                        append_to_file("results.txt", string_params, string_GPS_error, string_heading_error, "\n\n")
+                        
                         # print the mean, max and min of the navigator, runtime rotational normalizer runtime_rotational_estimator
                         # print(f"Mean Rotational Normalizer Time: {np.mean(navigator.runtime_rotational_estimator)} , Max Rotational Normalizer Time: {np.max(navigator.runtime_rotational_estimator)}, Min Rotational Normalizer Time: {np.min(navigator.runtime_rotational_estimator)} ms, median: {np.median(navigator.runtime_rotational_estimator)}") if 
 

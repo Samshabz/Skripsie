@@ -190,3 +190,110 @@ Time taken to execute The Method: 59.0487 seconds
 HASH UNUSED IN FUTURE
 
 BEST global matching technique: Histogram
+
+
+
+
+
+\section*{Results}
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Cross Correlation, Local Detector: AKAZE, Local Matcher: BF
+
+ON CPTSET
+
+\subsection*{Local}
+
+Percentage Deviation: [0.31225962] \%
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [4.10924432]
+ Mean Heading Error: 0.01402104774480506
+
+\subsection*{Cross-correlation}
+Percentage Deviation: [0.6647988] \%
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Cross Correlation, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [8.02045142]
+ Mean Heading Error: 0.010777802670986603
+
+
+\subsection*{Histograms}
+Percentage Deviation: [0.6647988] \%
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [8.02045142]
+ Mean Heading Error: 0.010777802670986603
+
+
+\subsection*{SSIM}
+Percentage Deviation: [0.602858] \%
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: SSIM, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [7.37591842]
+ Mean Heading Error: 0.012741519218860731
+
+
+ ON ROTSET
+ LOCAL
+Percentage Deviation: [4.02463161] \%
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [52.81922868]
+Mean Heading Error: 0.8321993766400311
+
+
+
+\subsubsection*{Cross-correlation}
+Percentage Deviation: [6.1435566] \%
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Cross Correlation, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [88.10290814]
+ Mean Heading Error: 1.0255152627187532
+Time taken to execute The Method: 49.9806 seconds
+
+Stability analysis mean (relative to src - best result) and var*1000
+Phase Correlation stability: 1.346 +/- 338.755
+Linear Algebra stability: 1.000 +/- 3166.574
+Affine stability: 2.862 +/- 87422.270
+Rigid stability: 2.858 +/- 79133.710
+Homography stability: 2.887 +/- 83390.184
+
+\subsubsection*{Histograms}
+Phase Correlation stability: 1.388 +/- 329.804
+Linear Algebra stability: 1.000 +/- 2900.437
+Affine stability: 3.374 +/- 85646.633
+Rigid stability: 3.062 +/- 106080.070
+Homography stability: 3.400 +/- 82223.348
+
+Percentage Deviation: [5.19037757] \%
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [70.54073714]
+ Mean Heading Error: 0.9488659512725632
+Time taken to execute The Method: 46.9889 seconds
+
+\subsubsection*{SSIM}
+Percentage Deviation: [5.23976611]\%
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: SSIM, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [71.04284132]
+ Mean Heading Error: 0.9958768512848991
+
+ Phase Correlation stability: 1.357 +/- 333.593
+Linear Algebra stability: 1.000 +/- 4440.838
+Affine stability: 2.712 +/- 85546.679
+Rigid stability: 3.318 +/- 87038.503
+Homography stability: 2.721 +/- 84266.185
+stability far-off
+
+\subsubsection*{Hashing}
+Phase Correlation stability: 1.120 +/- 1926.792
+Linear Algebra stability: 1.000 +/- 4183.729
+Affine stability: 2.458 +/- 123532.915
+Rigid stability: 2.831 +/- 90554.234
+Homography stability: 2.468 +/- 123256.348
+
+Percentage Deviation: [60.15177095] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Hash, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [1243.77607188]
+ Mean Heading Error: 1.1050056390247618
+Time taken to execute The Method: 59.0546 seconds
+
+
+\subsection*{Complex Issue}
+Mean Heading Error: 0.9488659512725632 - this is for histograms, the stability of non-phase methods are severely off. Poor stability except for phase-correlation
+
+
+
+XXX - mention these are at high loads ie multi-method simultaneous testing - times are relative. 

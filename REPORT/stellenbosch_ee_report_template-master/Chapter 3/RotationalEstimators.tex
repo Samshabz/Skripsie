@@ -1,6 +1,8 @@
 
 
-
+XXX - flat earth buildings assumption
+XXX - try 512 x 512
+XXX - different datasets
 
 
 \section{Rotational Estimators}
@@ -164,3 +166,90 @@ Affine estimation is selected as the primary method for future work due to its s
 
 
 Best Rotator: Affine, AKAZE AND BF
+
+
+
+
+\subsection*{Matching filtration techniques}
+Global point matching. In order to find an accurate rotational estimate, we need to ensure that the points we use in the inference are of sufficient quality and quantity. This involves filtering out lower quality keypoints while considering sufficient keypoints are still needed to remove noise from resolution and computation limits and distortion-based point differences. This means we need to filter the matches between images. The first is to remove ambiguous matches. This involves using Lowes Ratio's Test to ensure the two best potential matches are sufficiently different based on their descriptors. Then, we can sort the matches according to how close the match is to its actual corresponding keypoint based on their descriptors. Finally, we can use homography and RANSAC to firstly estimate a model for the data points and reject any outliers to this model. Together, these steps remove ambiguity, ensure matches are of high quality, and remove outliers to ensure the best possible rotational estimate.
+The three parameters associated with each of these steps are:
+\begin{itemize}
+    \item \textbf{Lowes Ratio Test}: This is the ratio of the distance of the best match to the second-best match. If this ratio is above a certain similarity allowed threshold, the match is considered ambiguous and removed. 
+    \item \textbf{Homography and RANSAC}: The homography and RANSAC model is used to estimate the transformation between the two images. The RANSAC threshold is the maximum distance a point can be from the model to be considered an inlier. 
+    \item \textbf{Keypoint Confidence Threshold}: This is the minimum confidence a keypoint must have to be considered in the matching process. This may be only keeping some number of the highest quality keypoints or keeping all keypoints above a certain similarity threshold. The former will be used as this ensures that we do not have to constantly adjust the threshold based on the dataset and quality, instead we are guaranteed to have a certain number of keypoints which is more important than being pedantic about the quality of the keypoints.
+\end{itemize}
+    
+Note, this is tested on only the global matcher, and with multimethod, implying isolation in its effect on the rotational estimation. XXX this still now needs to be tested with the global matcher being the local matcher (added inferred effect) and on the local matcher. 
+    Testing Kp threshold confidences:
+
+
+
+    
+AKAZE NO FILTER:
+Percentage Deviation: [4.91698283] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [65.07094916]
+ Mean Heading Error: 0.8556339319426911
+Mean Length of Keypoints: 2525.866666666667
+Mean Global Time to Extract Keypoints: 0.2709 s
+Mean Number of Good Matches: 802.4396551724138
+Range of Good Matches: 1524
+Time taken to execute The Method: 45.7884 seconds
+
+AKAZE 500
+Percentage Deviation: [4.58746506] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [62.34674896]
+ Mean Heading Error: 0.9235667588307905
+Mean Length of Keypoints: 2525.866666666667
+Mean Global Time to Extract Keypoints: 0.4008 s
+Mean Number of Good Matches: 500.0
+Range of Good Matches: 1524
+Time taken to execute The Method: 62.8682 seconds
+
+
+
+AKAZZE 300
+Percentage Deviation: [4.53573965] %
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [61.64376568]
+ Mean Heading Error: 0.9238056255750251
+Mean Length of Keypoints: 2525.866666666667
+Mean Global Time to Extract Keypoints: 0.2578 s
+Mean Number of Good Matches: 300.0
+Range of Good Matches: 1524
+Time taken to execute The Method: 45.2109 seconds
+
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \makecell{\textbf{Keypoints} \\ \textbf{Allowed}} & \textbf{No Filter} & \textbf{500} & \textbf{300} & \textbf{No Filter} & \textbf{500} & \textbf{300} \\ 
+        \hline
+        \multicolumn{1}{|c|}{\textbf{Method}} & \multicolumn{3}{c|}{\textbf{AKAZE}} & \multicolumn{3}{c|}{\textbf{ORB}} \\
+        \hline
+        \makecell{\textbf{GPS Error}} & 65.07 & 62.35 & 61.64 & 54.10 & 56.72 & 60.64 \\  
+        \hline
+        \makecell{\textbf{Mean Number} \\ \textbf{of Good Matches}} & 802.44 & 500.0 & 300.0 & 718.15 & 500.0 & 300.0 \\  
+        \hline
+        \makecell{\textbf{Range of} \\ \textbf{Good Matches}} & 1524 & 1524 & 1524 & 0 & 0 & 0 \\  
+        \hline
+        \makecell{\textbf{Mean Length} \\ \textbf{of Keypoints}} & 2525.87 & 2525.87 & 2525.87 & 3000.0 & 3000.0 & 3000.0 \\  
+        \hline
+        \makecell{\textbf{Time Per Keypoint} \\ \textbf{Extraction (s)}} & 0.2709 & 0.4008 & 0.2578 & 0.0636 & 0.0916 & 0.0571 \\  
+        \hline
+        \makecell{\textbf{Time Taken} \\ \textbf{(seconds)}} & 45.79 & 62.87 & 45.21 & 48.08 &  47.3382 & 46.04 \\  
+        \hline
+    \end{tabular}
+    \caption{Comparison of AKAZE and ORB Feature Matching Performance}
+\end{table}
+
+
+
+
+From this table, its clear the optimal point for ORB is without filtering the matches given that ORB was running with only 3000 keypoints. For AKAZE, this point is at 300. This optimal point is based mainly on accuracy with consideration for no large time difference. As visible, ORB outperforms AKAZE in accuracy given roughly similar time constraints. 
+
+
+As visible, ORB outperforms AKAZE in accuracy given roughly similar time constraints. The time is also more consistent accross different datasets implying more robustness. 
