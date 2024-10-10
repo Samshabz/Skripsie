@@ -87,9 +87,18 @@ class SuperPointFeatureExtractor(BaseFeatureExtractor):
     def __init__(self, device):
         self.device = device
         self.extractor = SuperPoint(
-            max_num_keypoints=1024, #2048,
+            # max_num_keypoints=1024, #2048,
             # detection_threshold=0.0000015,# lower implies more keypoints - prior: 0000015
-            # nms_radius=5
+            # nms_radius=1 # lower implies more keypoints
+
+            nms_radius= 4,  # Increase to suppress more keypoints
+            max_num_keypoints = 1000,  # Limit the number of keypoints to extract
+            detection_threshold =0.000015,  # Increase threshold for more robust keypoints
+            # remove_borders =1,  # Increase border distance to filter more edge keypoints
+            # descriptor_dim =128,  # Cannot change, it was trained with 256
+            # channels =[8, 8, 16, 16, 32],  # Reduce channels for faster processing. 127 seconds / 29 mean error (with channel reduction on) vs runtime of 116 with off. but 31 error with off. 
+
+
         ).eval().to(device)
 
     def normalize_image(self, image):

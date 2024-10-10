@@ -1482,3 +1482,1123 @@ Homography Transform: 1.014 +/- 309.928
 
 
 
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [400.75264946]
+Percentage GPS Deviation: [17.83469638] %
+Mean Heading Error: 0.34178372153714537
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.863 +/- 5170.058
+SVD: 1.000 +/- 1649.436
+Affine Transform: 1.173 +/- 49.146
+Rigid Transform: 0.950 +/- 3936.047
+Homography Transform: 1.205 +/- 385.873
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [762.27195767]
+Percentage GPS Deviation: [65.99908787] %
+Mean Heading Error: 9.82059179709315
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 2.242 +/- 76692.602
+SVD: 1.000 +/- 3733.185
+Affine Transform: 4.458 +/- 134218.574
+Rigid Transform: 6.715 +/- 335486.093
+Homography Transform: 6.532 +/- 450405.564
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [42.54975912]
+Percentage GPS Deviation: [4.3744624] %
+Mean Heading Error: 0.7990768884659651
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.767 +/- 86845.105
+SVD: 1.000 +/- 168.814
+Affine Transform: 1.020 +/- 422.539
+Rigid Transform: 0.972 +/- 870.583
+Homography Transform: 0.975 +/- 1470.784
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [929.29115875]
+Percentage GPS Deviation: [80.45995688] %
+Mean Heading Error: 9.82059179709315
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 2.594 +/- 76692.602
+SVD: 1.000 +/- 4111.454
+Affine Transform: 4.788 +/- 97740.402
+Rigid Transform: 6.498 +/- 247808.637
+Homography Transform: 5.294 +/- 219975.938
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [339.30144164]
+Percentage GPS Deviation: [35.53807346] %
+Mean Heading Error: 0.7399681669933965
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.275 +/- 76558.492
+SVD: 1.000 +/- 5899.480
+Affine Transform: 1.761 +/- 872.411
+Rigid Transform: 1.532 +/- 119825.207
+Homography Transform: 1.683 +/- 1695.696
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [134.45160506]
+Percentage GPS Deviation: [13.82272198] %
+Mean Heading Error: 0.6904403953482714
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.897 +/- 87571.574
+SVD: 1.000 +/- 2130.745
+Affine Transform: 1.200 +/- 730.010
+Rigid Transform: 0.933 +/- 4840.381
+Homography Transform: 1.167 +/- 1562.847
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [53.61083573]
+Percentage GPS Deviation: [5.61514213] %
+Mean Heading Error: 0.8758027575212516
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.014 +/- 105469.754
+SVD: 1.000 +/- 605.704
+Affine Transform: 1.069 +/- 635.695
+Rigid Transform: 0.962 +/- 1740.736
+Homography Transform: 1.020 +/- 1575.017
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [44.31499246]
+Percentage GPS Deviation: [4.64150535] %
+Mean Heading Error: 0.8198001154352124
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.007 +/- 103085.206
+SVD: 1.000 +/- 364.630
+Affine Transform: 1.038 +/- 515.925
+Rigid Transform: 0.972 +/- 1219.296
+Homography Transform: 0.991 +/- 1517.095
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [23.21998024]
+Percentage GPS Deviation: [3.38002234] %
+Mean Heading Error: 1.545597672500035
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.338 +/- 86143.013
+SVD: 1.000 +/- 73.790
+Affine Transform: 0.974 +/- 2201.766
+Rigid Transform: 0.995 +/- 136.996
+Homography Transform: 1.106 +/- 6131.805
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [23.43861876]
+Percentage GPS Deviation: [3.41184852] %
+Mean Heading Error: 1.7209986976919993
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.798 +/- 23458.221
+SVD: 1.000 +/- 78.854
+Affine Transform: 1.025 +/- 1454.510
+Rigid Transform: 0.991 +/- 112.277
+Homography Transform: 1.102 +/- 6354.499
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [32.2031617]
+Percentage GPS Deviation: [4.68766144] %
+Mean Heading Error: 1.7209986976919993
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.798 +/- 23458.221
+SVD: 1.000 +/- 78.854
+Affine Transform: 1.025 +/- 1454.510
+Rigid Transform: 0.991 +/- 112.277
+Homography Transform: 1.102 +/- 6354.499
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [23.21998024]
+Percentage GPS Deviation: [3.38002234] %
+Mean Heading Error: 1.545597672500035
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.338 +/- 86143.013
+SVD: 1.000 +/- 73.790
+Affine Transform: 0.974 +/- 2201.766
+Rigid Transform: 0.995 +/- 136.996
+Homography Transform: 1.106 +/- 6131.805
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [26.30879346]
+Percentage GPS Deviation: [3.82964623] %
+Mean Heading Error: 1.545597672500035
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.349 +/- 86143.013
+SVD: 1.000 +/- 444.606
+Affine Transform: 0.951 +/- 2931.179
+Rigid Transform: 0.987 +/- 707.789
+Homography Transform: 1.114 +/- 6390.017
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [25.80556213]
+Percentage GPS Deviation: [3.75639323] %
+Mean Heading Error: 1.545597672500035
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.352 +/- 86143.013
+SVD: 1.000 +/- 464.162
+Affine Transform: 0.951 +/- 2886.062
+Rigid Transform: 0.985 +/- 759.982
+Homography Transform: 1.117 +/- 6356.230
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [25.69666603]
+Percentage GPS Deviation: [3.74054174] %
+Mean Heading Error: 1.545597672500035
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.353 +/- 86143.013
+SVD: 1.000 +/- 468.620
+Affine Transform: 0.948 +/- 2862.681
+Rigid Transform: 0.983 +/- 780.029
+Homography Transform: 1.121 +/- 6127.479
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [26.30879346]
+Percentage GPS Deviation: [3.82964623] %
+Mean Heading Error: 1.545597672500035
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.349 +/- 86143.013
+SVD: 1.000 +/- 444.606
+Affine Transform: 0.951 +/- 2931.179
+Rigid Transform: 0.987 +/- 707.789
+Homography Transform: 1.114 +/- 6390.017
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [26.30879346]
+Percentage GPS Deviation: [3.82964623] %
+Mean Heading Error: 1.545597672500035
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.349 +/- 86143.013
+SVD: 1.000 +/- 444.606
+Affine Transform: 0.951 +/- 2931.179
+Rigid Transform: 0.987 +/- 707.789
+Homography Transform: 1.114 +/- 6390.017
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [27.3619536]
+Percentage GPS Deviation: [3.54491642] %
+Mean Heading Error: 1.877399996627176
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.003 +/- 38323.363
+SVD: 1.000 +/- 113.231
+Affine Transform: 1.011 +/- 1734.993
+Rigid Transform: 0.993 +/- 229.526
+Homography Transform: 1.102 +/- 5162.952
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [24.86177763]
+Percentage GPS Deviation: [3.22100261] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.159 +/- 68807.336
+SVD: 1.000 +/- 56.929
+Affine Transform: 1.020 +/- 921.300
+Rigid Transform: 0.995 +/- 160.067
+Homography Transform: 1.108 +/- 5592.924
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [24.07484528]
+Percentage GPS Deviation: [3.11905048] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.163 +/- 68807.336
+SVD: 1.000 +/- 43.544
+Affine Transform: 1.026 +/- 595.532
+Rigid Transform: 0.994 +/- 195.841
+Homography Transform: 1.111 +/- 5592.908
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [27.40311611]
+Percentage GPS Deviation: [3.55024929] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.165 +/- 68807.336
+SVD: 1.000 +/- 105.928
+Affine Transform: 1.086 +/- 1067.074
+Rigid Transform: 0.995 +/- 264.834
+Homography Transform: 1.118 +/- 6005.083
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [25.64942035]
+Percentage GPS Deviation: [3.32304677] %
+Mean Heading Error: 1.877399996627176
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.997 +/- 38323.363
+SVD: 1.000 +/- 63.706
+Affine Transform: 1.042 +/- 1290.038
+Rigid Transform: 0.993 +/- 176.308
+Homography Transform: 1.103 +/- 5830.889
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [24.19890351]
+Percentage GPS Deviation: [3.13512302] %
+Mean Heading Error: 1.877399996627176
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.003 +/- 38323.363
+SVD: 1.000 +/- 42.484
+Affine Transform: 1.027 +/- 679.513
+Rigid Transform: 0.993 +/- 235.416
+Homography Transform: 1.111 +/- 5826.885
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [24.86177763]
+Percentage GPS Deviation: [3.22100261] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.159 +/- 68807.336
+SVD: 1.000 +/- 56.929
+Affine Transform: 1.020 +/- 921.300
+Rigid Transform: 0.995 +/- 160.067
+Homography Transform: 1.108 +/- 5592.924
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [25.64942035]
+Percentage GPS Deviation: [3.32304677] %
+Mean Heading Error: 1.877399996627176
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.997 +/- 38323.363
+SVD: 1.000 +/- 63.706
+Affine Transform: 1.042 +/- 1290.038
+Rigid Transform: 0.993 +/- 176.308
+Homography Transform: 1.103 +/- 5830.889
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [24.07484528]
+Percentage GPS Deviation: [3.11905048] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.163 +/- 68807.336
+SVD: 1.000 +/- 43.544
+Affine Transform: 1.026 +/- 595.532
+Rigid Transform: 0.994 +/- 195.841
+Homography Transform: 1.111 +/- 5592.908
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [24.86177763]
+Percentage GPS Deviation: [3.22100261] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.159 +/- 68807.336
+SVD: 1.000 +/- 56.929
+Affine Transform: 1.020 +/- 921.300
+Rigid Transform: 0.995 +/- 160.067
+Homography Transform: 1.108 +/- 5592.924
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [24.86177763]
+Percentage GPS Deviation: [3.22100261] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.159 +/- 68807.336
+SVD: 1.000 +/- 56.929
+Affine Transform: 1.020 +/- 921.300
+Rigid Transform: 0.995 +/- 160.067
+Homography Transform: 1.108 +/- 5592.924
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [24.07484528]
+Percentage GPS Deviation: [3.11905048] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.163 +/- 68807.336
+SVD: 1.000 +/- 43.544
+Affine Transform: 1.026 +/- 595.532
+Rigid Transform: 0.994 +/- 195.841
+Homography Transform: 1.111 +/- 5592.908
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [27.46317092]
+Percentage GPS Deviation: [3.55802978] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.166 +/- 68807.336
+SVD: 1.000 +/- 114.001
+Affine Transform: 1.094 +/- 2212.894
+Rigid Transform: 0.994 +/- 263.306
+Homography Transform: 1.110 +/- 5310.883
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [27.16244139]
+Percentage GPS Deviation: [3.51906834] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.162 +/- 68807.336
+SVD: 1.000 +/- 164.996
+Affine Transform: 1.068 +/- 1749.398
+Rigid Transform: 0.998 +/- 265.603
+Homography Transform: 1.108 +/- 5379.544
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [23.9832073]
+Percentage GPS Deviation: [3.10717819] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.166 +/- 68807.336
+SVD: 1.000 +/- 116.787
+Affine Transform: 1.073 +/- 1782.696
+Rigid Transform: 0.994 +/- 307.640
+Homography Transform: 1.117 +/- 5518.892
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [25.07155304]
+Percentage GPS Deviation: [3.24818036] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.165 +/- 68807.336
+SVD: 1.000 +/- 128.877
+Affine Transform: 1.081 +/- 2002.940
+Rigid Transform: 0.998 +/- 270.740
+Homography Transform: 1.107 +/- 5351.454
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [24.89026022]
+Percentage GPS Deviation: [3.22469271] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.166 +/- 68807.336
+SVD: 1.000 +/- 149.407
+Affine Transform: 1.077 +/- 2196.961
+Rigid Transform: 0.997 +/- 323.140
+Homography Transform: 1.115 +/- 5550.510
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [28.29900977]
+Percentage GPS Deviation: [3.66631806] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.168 +/- 68807.336
+SVD: 1.000 +/- 112.475
+Affine Transform: 1.052 +/- 1096.391
+Rigid Transform: 0.992 +/- 265.272
+Homography Transform: 1.113 +/- 5485.276
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [28.66939735]
+Percentage GPS Deviation: [3.71430414] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.168 +/- 68807.336
+SVD: 1.000 +/- 101.878
+Affine Transform: 1.063 +/- 1591.144
+Rigid Transform: 0.993 +/- 243.443
+Homography Transform: 1.120 +/- 6049.746
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [28.64810814]
+Percentage GPS Deviation: [3.71154599] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.167 +/- 68807.336
+SVD: 1.000 +/- 100.053
+Affine Transform: 1.040 +/- 951.793
+Rigid Transform: 0.993 +/- 240.563
+Homography Transform: 1.118 +/- 5789.837
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [28.87995227]
+Percentage GPS Deviation: [3.74158288] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.169 +/- 68807.336
+SVD: 1.000 +/- 103.106
+Affine Transform: 1.068 +/- 1083.191
+Rigid Transform: 0.993 +/- 235.447
+Homography Transform: 1.117 +/- 5714.443
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [26.83321961]
+Percentage GPS Deviation: [3.47641555] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.164 +/- 68807.336
+SVD: 1.000 +/- 120.120
+Affine Transform: 0.985 +/- 3458.983
+Rigid Transform: 0.995 +/- 280.945
+Homography Transform: 1.110 +/- 5547.234
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [29.57792105]
+Percentage GPS Deviation: [3.83200921] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.172 +/- 68807.336
+SVD: 1.000 +/- 164.288
+Affine Transform: 1.092 +/- 2143.633
+Rigid Transform: 0.988 +/- 389.034
+Homography Transform: 1.122 +/- 5993.038
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [31.6286088]
+Percentage GPS Deviation: [4.09768895] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.175 +/- 68807.336
+SVD: 1.000 +/- 197.539
+Affine Transform: 1.091 +/- 1425.062
+Rigid Transform: 0.989 +/- 423.991
+Homography Transform: 1.122 +/- 5600.289
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [31.6286088]
+Percentage GPS Deviation: [4.09768895] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.175 +/- 68807.336
+SVD: 1.000 +/- 197.539
+Affine Transform: 1.091 +/- 1425.062
+Rigid Transform: 0.989 +/- 423.991
+Homography Transform: 1.122 +/- 5600.289
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [22.15629059]
+Percentage GPS Deviation: [2.87048942] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.184 +/- 68807.336
+SVD: 1.000 +/- 151.569
+Affine Transform: 1.078 +/- 2663.019
+Rigid Transform: 0.988 +/- 396.128
+Homography Transform: 1.128 +/- 5473.821
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [23.70591639]
+Percentage GPS Deviation: [3.07125338] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.192 +/- 68807.336
+SVD: 1.000 +/- 208.524
+Affine Transform: 1.080 +/- 1547.698
+Rigid Transform: 1.000 +/- 438.920
+Homography Transform: 1.143 +/- 5953.925
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [26.65153153]
+Percentage GPS Deviation: [3.45287669] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.196 +/- 68807.336
+SVD: 1.000 +/- 307.778
+Affine Transform: 1.083 +/- 2498.047
+Rigid Transform: 0.993 +/- 572.843
+Homography Transform: 1.141 +/- 5456.683
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [38.68191307]
+Percentage GPS Deviation: [5.01148971] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.191 +/- 68807.336
+SVD: 1.000 +/- 365.648
+Affine Transform: 1.111 +/- 2555.941
+Rigid Transform: 1.015 +/- 787.641
+Homography Transform: 1.146 +/- 6482.198
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [59.17688881]
+Percentage GPS Deviation: [7.66674515] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.246 +/- 68807.336
+SVD: 1.000 +/- 200.728
+Affine Transform: 1.155 +/- 1934.904
+Rigid Transform: 0.988 +/- 705.393
+Homography Transform: 1.185 +/- 5477.482
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [24.55548879]
+Percentage GPS Deviation: [3.18132093] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.199 +/- 68807.336
+SVD: 1.000 +/- 234.886
+Affine Transform: 1.025 +/- 4214.304
+Rigid Transform: 0.990 +/- 599.875
+Homography Transform: 1.144 +/- 5526.697
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [21.99611986]
+Percentage GPS Deviation: [2.84973828] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.184 +/- 68807.336
+SVD: 1.000 +/- 150.998
+Affine Transform: 1.108 +/- 1786.254
+Rigid Transform: 0.990 +/- 396.330
+Homography Transform: 1.127 +/- 5451.818
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [26.91164769]
+Percentage GPS Deviation: [3.48657641] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.164 +/- 68807.336
+SVD: 1.000 +/- 116.305
+Affine Transform: 0.978 +/- 2556.980
+Rigid Transform: 0.995 +/- 277.345
+Homography Transform: 1.108 +/- 5259.159
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [21.27876627]
+Percentage GPS Deviation: [2.75680053] %
+Mean Heading Error: 1.9734131972502695
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.190 +/- 68807.336
+SVD: 1.000 +/- 176.334
+Affine Transform: 1.101 +/- 2279.378
+Rigid Transform: 0.989 +/- 473.279
+Homography Transform: 1.141 +/- 5715.823
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [22.38084523]
+Percentage GPS Deviation: [2.89958192] %
+Mean Heading Error: 1.877399996627176
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.033 +/- 38323.363
+SVD: 1.000 +/- 126.286
+Affine Transform: 1.091 +/- 983.933
+Rigid Transform: 0.986 +/- 353.347
+Homography Transform: 1.153 +/- 6562.560
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [20.64342049]
+Percentage GPS Deviation: [3.05771815] %
+Mean Heading Error: 1.7089258086216432
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.877 +/- 70819.259
+SVD: 1.000 +/- 62.694
+Affine Transform: 0.998 +/- 1355.790
+Rigid Transform: 0.987 +/- 181.514
+Homography Transform: 1.044 +/- 6260.942
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
+Mean normalized GPS error: [18.75224969]
+Percentage GPS Deviation: [2.77759658] %
+Mean Heading Error: 1.7089258086216432
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.905 +/- 70819.259
+SVD: 1.000 +/- 166.490
+Affine Transform: 1.044 +/- 2069.720
+Rigid Transform: 0.983 +/- 324.556
+Homography Transform: 1.077 +/- 6339.018
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [380.41971307]
+Percentage GPS Deviation: [56.34803891] %
+Mean Heading Error: 1.7089258086216432
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.878 +/- 70819.259
+SVD: 1.000 +/- 72893.750
+Affine Transform: 1.036 +/- 3256.613
+Rigid Transform: 1.775 +/- 294340.905
+Homography Transform: 1.046 +/- 6292.226
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [429.00747871]
+Percentage GPS Deviation: [63.54489337] %
+Mean Heading Error: 1.7089258086216432
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.631 +/- 70819.259
+SVD: 1.000 +/- 219445.107
+Affine Transform: 0.745 +/- 3075.815
+Rigid Transform: 1.242 +/- 160440.471
+Homography Transform: 0.752 +/- 6256.160
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [429.00747871]
+Percentage GPS Deviation: [63.54489337] %
+Mean Heading Error: 1.7089258086216432
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.631 +/- 70819.259
+SVD: 1.000 +/- 219445.107
+Affine Transform: 0.745 +/- 3075.815
+Rigid Transform: 1.242 +/- 160440.471
+Homography Transform: 0.752 +/- 6256.160
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [429.00747871]
+Percentage GPS Deviation: [63.54489337] %
+Mean Heading Error: 1.7089258086216432
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.631 +/- 70819.259
+SVD: 1.000 +/- 219445.107
+Affine Transform: 0.745 +/- 3075.815
+Rigid Transform: 1.242 +/- 160440.471
+Homography Transform: 0.752 +/- 6256.160
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [441.60981192]
+Percentage GPS Deviation: [65.41155994] %
+Mean Heading Error: 1.7089258086216432
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.619 +/- 70819.259
+SVD: 1.000 +/- 242717.885
+Affine Transform: 0.741 +/- 2943.063
+Rigid Transform: 1.167 +/- 272982.139
+Homography Transform: 0.840 +/- 27519.191
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [20.64342049]
+Percentage GPS Deviation: [3.05771815] %
+Mean Heading Error: 1.7089258086216432
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.877 +/- 70819.259
+SVD: 1.000 +/- 62.694
+Affine Transform: 0.998 +/- 1355.790
+Rigid Transform: 0.987 +/- 181.514
+Homography Transform: 1.044 +/- 6260.942
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [26.28245674]
+Percentage GPS Deviation: [3.82581252] %
+Mean Heading Error: 1.545597672500035
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.336 +/- 86143.013
+SVD: 1.000 +/- 81.534
+Affine Transform: 1.038 +/- 3304.933
+Rigid Transform: 0.996 +/- 144.669
+Homography Transform: 1.105 +/- 6130.540
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [18.24802137]
+Percentage GPS Deviation: [2.65627788] %
+Mean Heading Error: 1.545597672500035
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 1.336 +/- 86143.013
+SVD: 1.000 +/- 35.021
+Affine Transform: 1.007 +/- 897.628
+Rigid Transform: 0.993 +/- 146.574
+Homography Transform: 1.105 +/- 6138.586
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [24.65129959]
+Percentage GPS Deviation: [3.58837271] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.905 +/- 46811.385
+SVD: 1.000 +/- 74.336
+Affine Transform: 1.007 +/- 1047.994
+Rigid Transform: 0.983 +/- 181.687
+Homography Transform: 1.117 +/- 5844.044
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Mean normalized GPS error: [19.27412787]
+Percentage GPS Deviation: [2.80564334] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.902 +/- 46811.385
+SVD: 1.000 +/- 38.748
+Affine Transform: 1.023 +/- 805.875
+Rigid Transform: 0.986 +/- 202.970
+Homography Transform: 1.114 +/- 5841.347
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [21.67853279]
+Percentage GPS Deviation: [3.15564115] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.899 +/- 46811.385
+SVD: 1.000 +/- 66.521
+Affine Transform: 1.016 +/- 1245.862
+Rigid Transform: 0.985 +/- 129.460
+Homography Transform: 1.110 +/- 5856.261
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [22.48890794]
+Percentage GPS Deviation: [3.27360362] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.899 +/- 46811.385
+SVD: 1.000 +/- 67.044
+Affine Transform: 1.022 +/- 1175.769
+Rigid Transform: 0.985 +/- 126.122
+Homography Transform: 1.110 +/- 5857.381
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [22.48890794]
+Percentage GPS Deviation: [3.27360362] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.899 +/- 46811.385
+SVD: 1.000 +/- 67.044
+Affine Transform: 1.022 +/- 1175.769
+Rigid Transform: 0.985 +/- 126.122
+Homography Transform: 1.110 +/- 5857.381
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [22.48890794]
+Percentage GPS Deviation: [3.27360362] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.899 +/- 46811.385
+SVD: 1.000 +/- 67.044
+Affine Transform: 1.022 +/- 1175.769
+Rigid Transform: 0.985 +/- 126.122
+Homography Transform: 1.110 +/- 5857.381
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [25.45356779]
+Percentage GPS Deviation: [3.29767281] %
+Mean Heading Error: 2.011976491007154
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.891 +/- 46759.696
+SVD: 1.000 +/- 67.069
+Affine Transform: 1.031 +/- 1115.578
+Rigid Transform: 0.997 +/- 278.278
+Homography Transform: 1.102 +/- 5990.388
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [32.55539052]
+Percentage GPS Deviation: [4.73893372] %
+Mean Heading Error: 1.61937140057233
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.943 +/- 36293.644
+SVD: 1.000 +/- 92.178
+Affine Transform: 1.035 +/- 1888.306
+Rigid Transform: 0.984 +/- 181.022
+Homography Transform: 1.119 +/- 5912.435
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [31.15025876]
+Percentage GPS Deviation: [4.53439536] %
+Mean Heading Error: 1.61937140057233
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.935 +/- 36293.644
+SVD: 1.000 +/- 80.098
+Affine Transform: 1.014 +/- 1403.999
+Rigid Transform: 0.985 +/- 133.048
+Homography Transform: 1.110 +/- 5941.986
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [21.67853279]
+Percentage GPS Deviation: [3.15564115] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.899 +/- 46811.385
+SVD: 1.000 +/- 66.521
+Affine Transform: 1.016 +/- 1245.862
+Rigid Transform: 0.985 +/- 129.460
+Homography Transform: 1.110 +/- 5856.261
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [21.49701592]
+Percentage GPS Deviation: [3.1292186] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.899 +/- 46811.385
+SVD: 1.000 +/- 65.522
+Affine Transform: 1.028 +/- 1209.089
+Rigid Transform: 0.986 +/- 122.733
+Homography Transform: 1.110 +/- 5823.821
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [21.38597299]
+Percentage GPS Deviation: [3.11305461] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.899 +/- 46811.385
+SVD: 1.000 +/- 63.106
+Affine Transform: 1.019 +/- 1233.780
+Rigid Transform: 0.987 +/- 113.169
+Homography Transform: 1.110 +/- 5826.698
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [20.7656413]
+Percentage GPS Deviation: [3.02275587] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.899 +/- 46811.385
+SVD: 1.000 +/- 60.711
+Affine Transform: 1.028 +/- 886.150
+Rigid Transform: 0.987 +/- 111.495
+Homography Transform: 1.109 +/- 5851.251
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [20.72563058]
+Percentage GPS Deviation: [3.0169317] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.898 +/- 46811.385
+SVD: 1.000 +/- 55.643
+Affine Transform: 1.029 +/- 987.550
+Rigid Transform: 0.987 +/- 116.109
+Homography Transform: 1.109 +/- 5814.994
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [20.05131784]
+Percentage GPS Deviation: [2.91877519] %
+Mean Heading Error: 1.6004082453122863
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.898 +/- 46811.385
+SVD: 1.000 +/- 56.762
+Affine Transform: 1.022 +/- 1042.826
+Rigid Transform: 0.987 +/- 119.341
+Homography Transform: 1.109 +/- 5842.314
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [19.97127087]
+Percentage GPS Deviation: [2.90712314] %
+Mean Heading Error: 1.5449450047719977
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.915 +/- 30863.850
+SVD: 1.000 +/- 50.344
+Affine Transform: 1.006 +/- 915.555
+Rigid Transform: 0.989 +/- 128.654
+Homography Transform: 1.106 +/- 5925.595
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [20.90354395]
+Percentage GPS Deviation: [3.0428297] %
+Mean Heading Error: 1.5449450047719977
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.916 +/- 30863.850
+SVD: 1.000 +/- 46.175
+Affine Transform: 1.003 +/- 1055.148
+Rigid Transform: 0.991 +/- 141.660
+Homography Transform: 1.106 +/- 5932.502
+
+
+
+
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
+Mean normalized GPS error: [19.97127087]
+Percentage GPS Deviation: [2.90712314] %
+Mean Heading Error: 1.5449450047719977
+Stability analysis mean (relative to src - best result) and var*10e6
+Phase Correlation: 0.915 +/- 30863.850
+SVD: 1.000 +/- 50.344
+Affine Transform: 1.006 +/- 915.555
+Rigid Transform: 0.989 +/- 128.654
+Homography Transform: 1.106 +/- 5925.595
+
+
+
+

@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 # Directory containing images
-image_directory = './GoogleEarth/DATASETS/DATSETROT/'
+image_directory = './GoogleEarth/DATASETS/DATSETAMAZ/'
 
 # Function to crop top and bottom 10% of the image
 def crop_image(img):
@@ -15,22 +15,24 @@ def crop_image(img):
 def estimate_affine_rotation(image1_gray, image2_gray):
     """Estimate the rotation angle between two images using a more accurate affine transformation with AKAZE."""
     # Detect keypoints and descriptors using AKAZE
-    akaze = cv2.AKAZE_create()
+    akaze = cv2.ORB_create(nfeatures=10000)
+    # akaze.setThreshold(0.00001)
     kp1, des1 = akaze.detectAndCompute(image1_gray, None)
     kp2, des2 = akaze.detectAndCompute(image2_gray, None)
 
     # BFMatcher for matching keypoints
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)  # Use crossCheck for more accurate matches
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)  # Use crossCheck for more accurate matches
     matches = bf.match(des1, des2)
 
     # Sort matches by distance (lower distance is better)
     matches = sorted(matches, key=lambda x: x.distance)
 
     # Filter top matches (limit to 400 max for performance)
-    top_matches = matches[:min(len(matches), 400)]
+    top_matches = matches[:2000]
+    print(len(top_matches))
 
     # Only return if we have enough matches
-    if len(top_matches) < 250:
+    if len(top_matches) < 50:
         return None, len(top_matches)
 
     # Extract matched keypoints
@@ -38,7 +40,7 @@ def estimate_affine_rotation(image1_gray, image2_gray):
     dst_pts = np.float32([kp2[m.trainIdx].pt for m in top_matches]).reshape(-1, 1, 2)
 
     # Estimate affine transformation using RANSAC
-    M, inliers = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.RANSAC, ransacReprojThreshold=3.0)
+    M, inliers = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.RANSAC)
 
     if M is None:
         return None, len(top_matches)

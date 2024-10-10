@@ -10,9 +10,16 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 Light_Matcher = LightGlue(  # Initialize LightGlue. This is used for estimating rotations. 
     features='superpoint',  # Use SuperPoint features
-    depth_confidence=-1, #553 with extra 01 # 0.95, -1 IS DEF
-    width_confidence=-1, #0.99
-    filter_threshold=0.0005  # Custom filter threshold. A lower threshold definitely implies more matches, ie is less accurate / more leniant. The correlation matching is worse with less accuracy. 0.0045. 
+    # depth_confidence=0.95, #553 with extra 01 # 0.95, -1 IS DEF
+    # width_confidence=0.99, #0.99
+    filter_threshold=0.000005,  # Custom filter threshold. A lower threshold definitely implies more matches, ie is less accurate / more leniant. The correlation matching is worse with less accuracy. 0.0045. 
+    n_layers = 6,  # Reduce layers for faster inference
+    flash = False,  # FlashAttention remains enabled for speed. check if it needs CUDA
+    mp = True,  # Enable mixed precision for faster inference. check if it needs CUDA
+    depth_confidence = 0.9,  # Stop earlier to speed up
+    width_confidence = 0.95  # Prune points earlier for efficiency
+    # filter_threshold = 0.2  # Increase match confidence for fewer but more robust matches
+
 ).eval().to(device)
 
 def Light_Solver(featsA, featsB):
@@ -30,7 +37,7 @@ def get_neural_src_pts(featsA=None, featsB=None, kp1=None, kp2=None, des1=None, 
 
         raise ValueError("Not enough keypoints for matching.")
         return None
-
+    print(len(featsA['keypoints'][0]))
     featsA, featsB, matches = Light_Solver(featsA, featsB)
 
 

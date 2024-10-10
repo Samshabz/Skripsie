@@ -11,6 +11,8 @@ from Local_Matchers import set_matcher
 from Feature_Extractors import set_feature_extractor, set_neural_feature_extractor
 from shiftdetectors import get_src_shifts, get_neural_src_pts
 from translation_methods import *
+import gc
+
 
 
 class UAVNavigator:
@@ -146,6 +148,7 @@ class UAVNavigator:
         mask = None
         rotation_angle = 0
         if method_to_use == 0:
+            # This needs to actually be tuned. 
             M, mask = cv2.estimateAffine2D(src_pts, dst_pts, method=cv2.RANSAC)
             A = M[:2, :2]
             
@@ -210,9 +213,10 @@ class UAVNavigator:
             # Match keypoints using BFMatcher
             
             matches = self.global_matcher.find_matches(des1, des2) if global_matcher_true else self.local_matcher.find_matches(des1, des2) 
-
+            if self.local_detector_name == "ORB" and not global_matcher_true and self.dataset_name != "DATSETSAND":
+                Lowes_thresh -= 0.3
             good_matches = []
-            while len(good_matches) < 300:
+            while len(good_matches) < 500:
                 for match_pair in matches:
                     if self.global_matcher_choice == 2: 
                         # Graph matcher returns singles (cv2.DMatch objects)
@@ -225,7 +229,8 @@ class UAVNavigator:
                                 good_matches.append(m)
                 Lowes_thresh += 0.025
 
-            # take top 2000 matches if matches are more than 2000
+            # the above generally ensures the 500 most non-amiguous matches are returned. At least with ORB, having a dynamically increasing ambiguity threshold seems extremely beneficial.
+            # the following limits the matches based on similarity to its match
            
             if global_matcher_true:
                 global_kp_allowed = 300
@@ -243,7 +248,7 @@ class UAVNavigator:
                     if self.local_detector_name == "AKAZE":
                         good_matches = sorted_matches[:local_kp_allowed]
                     elif self.local_detector_name == "ORB":
-                        good_matches = sorted_matches[:local_kp_allowed]
+                        good_matches = sorted_matches[:local_kp_allowed*2]
             if global_matcher_true:
                 self.glob_mat_len_arr.append(len(good_matches)) 
             elif not global_matcher_true:
@@ -618,8 +623,7 @@ class UAVNavigator:
         
         # Convert to grayscale for detectors if not already
         gray_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY) if len(cropped_image.shape) == 3 else cropped_image
-        im_w = gray_image.shape[1]
-        im_h = gray_image.shape[0]
+
         gray_image = rotate_image(gray_image, heading)
         #1920 x 972 = 1080 * 0.9 = 972
         # lets normalize first based on stored headings 
@@ -640,7 +644,7 @@ class UAVNavigator:
         if (self.global_detector_name == self.local_detector_name and self.same_detector_threshold == True) and self.neural_net_on == False:
             kp1, des1 = keypoints, descriptors
             if len(kp1) < 10:
-                print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold)")
+                print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold - cond 1)")
             self.stored_local_keypoints.append(kp1)
             self.stored_local_descriptors.append(des1)
 
@@ -650,7 +654,7 @@ class UAVNavigator:
             self.stored_local_keypoints.append(kp1)
             self.stored_local_descriptors.append(des1)
             if len(kp1) < 10:
-                print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold)")
+                print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold - cond 2)")
 
 
         elif self.neural_net_on == True:
@@ -753,8 +757,8 @@ class UAVNavigator:
         #1920 x 972 = 1080 * 0.9 = 972
         # lets normalize first based on stored headings 
         keypoints, descriptors = self.global_detector.get_keydes(gray_image)
-        if len(keypoints) < 10:
-            print(f"WarningA: Not enough keypoints found for image {index}. Skipping.")
+        if len(keypoints) < 100:
+            print(f"WarningA: Not enough keypoints found for image {index}. cond - A.")
 
 
 
@@ -768,7 +772,7 @@ class UAVNavigator:
 
 
         kp1, des1 = None, None
-        if self.global_detector_name != self.local_detector_name and self.neural_net_on == False:
+        if (self.global_detector_name != self.local_detector_name) and self.neural_net_on == False:
             kp1, des1 = self.local_detector.get_keydes(gray_image)
             if index >= len(self.local_loss_keypoints):
                 self.local_loss_keypoints.extend([None] * (index + 1 - len(self.local_loss_keypoints)))
@@ -777,9 +781,9 @@ class UAVNavigator:
                 self.local_loss_descriptors.extend([None] * (index + 1 - len(self.local_loss_descriptors)))
             self.local_loss_descriptors[index] = des1
             if len(kp1) < 100:
-                print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold)")            
+                print(f"WarningB: Kp under 100 for image {index}. Decrease keypoint threshold - cond 3)")            
 
-        elif self.global_detector_name == self.local_detector_name and self.neural_net_on == False:
+        elif (self.global_detector_name == self.local_detector_name and self.same_detector_threshold == True) and self.neural_net_on == False:
             kp1, des1 = self.global_loss_keypoints[index], self.global_loss_descriptors[index]
             if index >= len(self.local_loss_keypoints):
                 self.local_loss_keypoints.extend([None] * (index + 1 - len(self.local_loss_keypoints)))
@@ -789,7 +793,18 @@ class UAVNavigator:
                 self.local_loss_descriptors.extend([None] * (index + 1 - len(self.local_loss_descriptors)))
             self.local_loss_descriptors[index] = self.global_loss_descriptors[index]
             if len(kp1) < 100:
-                print(f"WarningB: Not enough keypoints found for image {index}. Decrease keypoint threshold)")
+                print(f"WarningB: Kp under 100 for image {index}. Decrease keypoint threshold - cond 4)")
+        
+        elif  (self.global_detector_name == self.local_detector_name and self.same_detector_threshold != True) and self.neural_net_on == False:
+            kp1, des1 = self.local_detector.get_keydes(gray_image)
+            if index >= len(self.local_loss_keypoints):
+                self.local_loss_keypoints.extend([None] * (index + 1 - len(self.local_loss_keypoints)))
+            self.local_loss_keypoints[index] = kp1
+            if index >= len(self.local_loss_descriptors):
+                self.local_loss_descriptors.extend([None] * (index + 1 - len(self.local_loss_descriptors)))
+            self.local_loss_descriptors[index] = des1
+            if len(kp1) < 100:
+                print(f"WarningB: Kp under 100 for image {index}. Decrease keypoint threshold - cond 5)")
 
 
 
@@ -854,17 +869,19 @@ class UAVNavigator:
                 self.actual_GPS_deviation.append((np.abs(actual_pixel_change_x_m), np.abs(actual_pixel_change_y_m)))
                 Lowes_ratio = 0.8 if self.local_detector_name == "AKAZE" else 0.7
                 if bool_infer_factor:
+                    # print(f"len feats: {len(self.stored_feats[i]['keypoints'])}") if self.neural_net_on == True 
                     src_pts, dst_pts = self.get_src_dst_pts(self.stored_local_keypoints[i], self.stored_local_keypoints[best_index], self.stored_local_descriptors[i], self.stored_local_descriptors[best_index], Lowes_ratio, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(self.stored_feats[i], self.stored_feats[best_index])
                 elif not bool_infer_factor:
                     src_pts, dst_pts = self.get_src_dst_pts(self.local_loss_keypoints[i], self.stored_local_keypoints[best_index], self.local_loss_descriptors[i], self.stored_local_descriptors[best_index], Lowes_ratio, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(self.local_loss_feats[i], self.stored_feats[best_index])
                     len_matches = len(src_pts)
                     self.len_matches_arr.append(len_matches)
-                    
+                
+                print(f"len matches: {len(src_pts)}")    
 
                 if len(src_pts) < 100 or len(dst_pts) < 100:
                     print("Low number of keypoints found.")
                 time_rand_2 = time.time() - time_rand
-                print("Time to get src and dst points: ", time_rand_2)
+                
                 shift_time_1 = time.time()
                 translation_x, translation_y = 0, 0
                 # if self.neural_net_on == True:
@@ -920,7 +937,7 @@ class UAVNavigator:
                     self.store_and_append_stability(actual_pixel_change_x_m, actual_pixel_change_y_m, tx1, ty1, tx2, ty2, tx3, ty3, tx4, ty4, tx5, ty5)    
 
                 shift_time_2 = time.time() - shift_time_1
-
+                
              
 
 
@@ -944,11 +961,11 @@ class UAVNavigator:
                 deviation_y_meters = translation_y_m - actual_pixel_change_y_m
                 deviation_norms_x.append((deviation_x_meters))
                 deviation_norms_y.append(np.abs(deviation_y_meters))
-                print(f"DEV-X,Y (m): {deviation_x_meters}, {deviation_y_meters}  for im {i+1} wrt {best_index+1}, angle: {((self.stored_headings[i])-(self.estimated_headings[i])):.4f} deg, actual deviation (m): {actual_pixel_change_x_m}, {actual_pixel_change_y_m}")
+                # print(f"DEV-X,Y (m): {deviation_x_meters}, {deviation_y_meters}  for im {i+1} wrt {best_index+1}, angle: {((self.stored_headings[i])-(self.estimated_headings[i])):.4f} deg, actual deviation (m): {actual_pixel_change_x_m}, {actual_pixel_change_y_m}")
 
 
                 time_BB = time.time() - timeAS
-                print("Match time: ", match_time_2, "Shift time: ", shift_time_2, "Total time: ", time_BB)
+                # print("Match time: ", match_time_2, "Shift time: ", shift_time_2, "Total time: ", time_BB)
 
        
         mean_x_dev, mean_y_dev = np.mean(deviation_norms_x), np.mean(deviation_norms_y)
@@ -1173,18 +1190,16 @@ def main():
 
 # ASD
     # Settings (curr_best: akaze,bf, affine, histo, akaze,flann)
-    global_detector_choice = 1  # # Set 1 for ORB, 2 for AKAZE
+    global_detector_choice = 2  # # Set 1 for ORB, 2 for AKAZE
     global_matcher_choice = 0  # Set 0 for BFMatcher, 1 for FlannMatcher, 2 for GraphMatcher
     global_matcher_technique = 4  # Set 0 for Pass Through grid counter, 3 for correlation, 4 for histogram, 5 for SSIM, 6 for Hash (DONT USE HASHING). 
     local_detector_choice = 1  # Set 1 for ORB, 2 for AKAZE 3 for NEURAL (lightglue matcher)
     local_matcher_choice = 0  # Set 0 for BFMatcher, 1 for FlannMatcher, 2 for GraphMatcher
 
-    main_dataset_name = "DATSETROT" 
-    if main_dataset_name == "DATSETROT" or main_dataset_name == "DATSETCPT": 
-        glob_thresh=0.00352 if global_detector_choice == 2 else 3000 if global_detector_choice == 1 else 0
-    elif main_dataset_name == "DATSETROCK":
-        glob_thresh=0.001  if global_detector_choice == 2 else 3000 if global_detector_choice == 1 else 0
-    loc_det_thresh = 0.001 if local_detector_choice == 2 else 3000 if local_detector_choice == 1 else 0
+
+    # DATASET optimization
+    main_dataset_name = "DATSETAMAZ" 
+
     # AKAZE thresh, ORB kp. 
     num_images = 15
     inference_images = 7
@@ -1197,22 +1212,42 @@ def main():
     iteration_count = 0
     directory = './GoogleEarth/DATASETS/{}'.format(main_dataset_name)
     if 1==1:
-    # for global_detector_choice in global_detector_arr:
-    #     for global_matcher_c hoice in global_matcher_arr:
+    
+        # for global_matcher_choice in global_matcher_arr:
     #         for global_matcher_technique in global_matcher_technique_arr:
-    #             for local_detector_choice in local_detector_arr:
+                # for local_detector_choice in local_detector_arr:
+                #     for global_detector_choice in global_detector_arr:
     #                 for local_matcher_choice in local_matcher_arr:
     #                     # We only want to run one instance of neural mode, others are redundant.
     #                     if local_detector_choice == 3 and local_matcher_choice !=0:
     #                         continue
                         # if the navigator object exists
                         if 'navigator' in locals():
-                            navigator.reset_all_data()
+                            # navigator.reset_all_data()
+                            del navigator
+                            gc.collect()
                             print(f'End of Iteration: {iteration_count}') 
+                            
+                        if main_dataset_name == "DATSETROT" or main_dataset_name == "DATSETCPT": 
+                            glob_thresh=0.00352 if global_detector_choice == 2 else 3000 if global_detector_choice == 1 else 0
+                        elif main_dataset_name == "DATSETROCK":
+                            glob_thresh=0.001  if global_detector_choice == 2 else 3000 if global_detector_choice == 1 else 0
+                        loc_det_thresh = 0.001 if local_detector_choice == 2 else 3000 if local_detector_choice == 1 else 0
+
+                        if main_dataset_name == "DATSETROT":
+                            glob_thresh = 0.000017 if global_detector_choice == 2 else 20000 if global_detector_choice == 1 else 0
+                            loc_det_thresh = 0.00001 if local_detector_choice == 2 else 20000 if local_detector_choice == 1 else 0
+                        elif main_dataset_name == "DATSETAMAZ":
+                            glob_thresh = 0.00027 if global_detector_choice == 2 else 20000 if global_detector_choice == 1 else 0
+                            loc_det_thresh = 0.00007 if local_detector_choice == 2 else 20000 if local_detector_choice == 1 else 0
+
+
+
+
                         main_start_time = time.time()
                         navigator = UAVNavigator(global_detector_choice, local_detector_choice , global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, glob_thresh, loc_det_thresh) # INITIALIZATION
                         init_time = time.time() - main_start_time
-                        _ = print_choices(global_detector_choice,global_matcher_choice, global_matcher_technique, local_detector_choice, local_matcher_choice)
+                        # _ = print_choices(global_detector_choice,global_matcher_choice, global_matcher_technique, local_detector_choice, local_matcher_choice) XXX put back
 
                         iteration_count += 1
                         
@@ -1249,17 +1284,30 @@ def main():
                         string_GPS_error = f"Mean normalized GPS error: {np_est_dev}"
                         string_heading_error = f"Mean Heading Error: {np.mean(navigator.estimated_heading_deviations)}"
                         print(string_GPS_error, '\n', string_heading_error)
-                        num_keypoints_per_image = [len(kps) for kps in navigator.stored_global_keypoints]
-                        string_mean_len_kp = f"Mean Length of Keypoints: {np.mean(num_keypoints_per_image)}"
-                        print(string_mean_len_kp) # XXX append this later to file
+                        
+
+
+
+
+                        num_global_keypoints_per_image = [len(kps) for kps in navigator.stored_global_keypoints] # XXX sort out
+                                              
+                        string_mean_glob_len_kp = f"Mean Length of Global Keypoints: {np.mean(num_global_keypoints_per_image)}"
+                        print(string_mean_glob_len_kp) # XXX append this later to file
+                        
+                        num_local_keypoints_per_image = [len(kps) for kps in navigator.stored_local_keypoints] if local_detector_choice != 3 else [len(kps) for kps in navigator.stored_feats[0]['keypoints']]
+                        string_mean_len_local_kp = f"Mean Length of Local Keypoints: {np.mean(num_local_keypoints_per_image)}"
+                        print(string_mean_len_local_kp) # XXX append this later to file
+                        max_min_loc_range_kp = np.max(num_local_keypoints_per_image) - np.min(num_local_keypoints_per_image)
+                        string_max_min_range_matches = f"Range of Local kp: {max_min_loc_range_kp}"
+                        print(string_max_min_range_matches) # XXX append this later to file
+                        mean_loc_matches = np.mean(navigator.len_matches_arr) 
+                        
                         string_mean_time_kp = f"Mean Global Time to Extract Keypoints: {navigator.keypoint_time/navigator.keypoint_iterations:.4f} s"
                         print(string_mean_time_kp) # XXX append this later to file
                         mean_good_matches = np.mean(navigator.glob_mat_len_arr)
-                        string_mean_good_matches = f"Mean Number of Good Matches: {mean_good_matches}"
+                        string_mean_good_matches = f"Mean Number of Glob good Matches: {mean_good_matches}"
                         print(string_mean_good_matches) # XXX append this later to file
-                        max_min_range_matches = np.max(num_keypoints_per_image) - np.min(num_keypoints_per_image)
-                        string_max_min_range_matches = f"Range of Good Matches: {max_min_range_matches}"
-                        print(string_max_min_range_matches) # XXX append this later to file
+
 
                         append_to_file("results.txt", string_params, string_GPS_error, string_percent_GPS_dev, string_heading_error, navigator.string_stability, "\n\n")
 
