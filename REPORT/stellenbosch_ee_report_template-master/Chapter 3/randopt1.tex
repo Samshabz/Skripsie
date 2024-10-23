@@ -1,0 +1,138 @@
+
+
+test (lowes, ransac) - for both translational and rotational
+
+
+
+
+--------------------------------------
+THESE tests are for the rot estimator section, they tested robustness for affine and homog to RANSAC, LOWES, and AKAZE detector thresholds. 
+-----------------------------------
+
+-\subsubsection{RANSAC Threshold Testing}
+-We varied RANSAC thresholds to evaluate how sensitive each method is to outlier removal i.e. amt of false positives and false negatives in the dataset. A lower threshold implies more aggressive filtering, which reduces the number of keypoints but increases the reliability of those retained. A higher threshold retains more keypoints but may introduce more noise.
+
+-\begin{table}[H]
+-    \centering
+-    \begin{tabular}{|c|c|c|}
+-        \hline
+-        \textbf{Threshold} & \makecell{\textbf{Homography (Mean} \\ \textbf{Heading Error)}} & \makecell{\textbf{Affine (Mean} \\ \textbf{Heading Error)}} \\
+-        \hline
+-        0.2 & 0.1384 & 0.1089 \\
+-        0.5 (Default) & 0.1207 & 0.1129 \\
+-        5 & 0.1249 & 0.1003 \\
+-        25 & 0.1222 & 0.0997 \\
+-        50 & 0.1226 & 0.1112 \\
+-        \hline
+-    \end{tabular}
+-    \caption{Effect of RANSAC Thresholds on Heading Error}
+-\end{table}
+
+-\textbf{Conclusion:} Both methods are robust to changes in keypoint quality and number, but homography exhibits greater variability at lower thresholds, as it requires more datapoints to accurately estimate its increased degrees of freedom.
+
+-\subsubsection{Lowe's Ratio Robustness Testing}
+-Evaluations were done for different Lowe's ratios. This tests the ability for the method to handle incorrect matches caused by ambiguity, as well as perform when too many matches are filtered out.
+
+-\begin{table}[H]
+-    \centering
+-    \begin{tabular}{|c|c|c|}
+-        \hline
+-        \textbf{Lowe's Ratio} & \makecell{\textbf{Homography (Mean} \\ \textbf{Heading Error)}} & \makecell{\textbf{Affine (Mean} \\ \textbf{Heading Error)}} \\
+-        \hline
+-        0.6 & 0.1289 & 0.1098 \\
+-        0.7 & 0.1255 & 0.1006 \\
+-        0.8 & 0.1207 & 0.0997 \\
+-        0.9 & 0.1139 & 0.1111 \\
+-        0.95 & 0.1211 & 0.1054 \\
+-        \hline
+-    \end{tabular}
+-    \caption{Effect of Lowe's Ratio on Heading Error}
+-\end{table}
+
+-\textbf{Conclusion:} Both methods are robust to changes in Lowe’s ratio, handling variations in match quality and quantity effectively, as before.
+
+-\subsubsection{Keypoint Count Testing} xxx redo this with varied amt of kps.
+-Keypoint confidence thresholds were varied to evaluate how each method performs with different levels of keypoint quality. Lower thresholds admit more keypoints but decrease the reliability of individual keypoints.
+
+-\begin{table}[H]
+-    \centering
+-    \begin{tabular}{|c|c|c|}
+-        \hline
+-        \makecell{\textbf{Keypoint Confidence} \\ \textbf{Threshold}} & \makecell{\textbf{Homography (Mean} \\ \textbf{Heading Error)}} & \makecell{\textbf{Affine (Mean} \\ \textbf{Heading Error)}}\\
+-        \hline
+-        0.001 & 0.1404 & 0.1019 \\
+-        0.0008 & 0.1207 & 0.0974 \\
+-        0.0005 & 0.1247 & 0.0997 \\
+-        0.0002 & 0.1247 & 0.1024 \\
+-        \hline
+-    \end{tabular}
+-    \caption{Effect of Keypoint Confidence Thresholds on Heading Error}
+-\end{table}
+
+
+NOW for ORB, to specifically 1500 kps, low, across datasets. 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Dataset}   & \multicolumn{2}{c|}{\textbf{Homography (Low KPs)}} & \multicolumn{2}{c|}{\textbf{Affine (Low KPs)}} \\ \hline
+    & \textbf{RMSE GPS} & \textbf{Runtime (s)} & \textbf{RMSE GPS} & \textbf{Runtime (s)} \\ \hline
+    CITY1 & 128.5415                        & 51.7418           & 187.7395           & 38.2758           \\ \hline
+    CITY2 & 598.1981                        & 46.6510           & 158.8294           & 36.2138           \\ \hline
+    ROCKY & 367.3510                        & 37.2356           & 346.2586           & 28.6250           \\ \hline
+    DESERT & 205.7383                       & 28.1695           & 226.7285           & 17.4181           \\ \hline
+    AMAZON & 172.2767                       & 36.5202           & 172.1220           & 25.3083           \\ \hline
+    \end{tabular}
+\end{table}
+
+
+
+To enhance the accuracy and robustness of these methods, the following improvement techniques were applied:
+\begin{itemize}
+    \item \textbf{RANSAC (Random Sample Consensus)}: A robust outlier removal technique that iteratively refines the inlier set to accurately estimate transformations.
+\end{itemize}
+
+
+
+Time not really robustness:
+
+\subsection{Time}
+Time efficiency was evaluated to assess the computational performance of each method on a given datset xxx. The table below summarizes the average, minimum, median, and maximum runtimes for each approach. Lower computation times enable higher frame rates, provide greater tolerance for minor errors, and allow for faster processing of larger search spaces, ultimately improving accuracy.
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Method} & \makecell{\textbf{Mean Time} \\ \textbf{(ms)}} & \makecell{\textbf{Max Time} \\ \textbf{(ms)}} & \makecell{\textbf{Min Time} \\ \textbf{(ms)}} & \makecell{\textbf{Median Time} \\ \textbf{(ms)}} \\
+        \hline
+        Affine & 1.276 & 11.55 & 0.00 & 0.999 \\  
+        Homography & 22.58 & 50.74 & 0.98 & 10.80 \\  
+        \hline
+    \end{tabular}
+    \caption{Time Analysis for Affine and Homography Methods}
+\end{table}
+
+\textbf{Testing Conclusion:} Affine is significantly faster than homography, with a much lower mean and median runtime. The greater variability in homography’s runtime (indicated by the difference between mean and median), and mean runtime was seen and is as a result of its greater degrees of freedom. Affine’s speed makes it particularly well-suited for real-time UAV applications.
+end "time". 
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+
+
+
+FEATURE Matching
+
+After initial matching, additional filtering techniques are applied to improve match quality. The goal is to maximize correspondences while minimizing false positives. These optimization methods include Lowe’s ratio test, cross-checking, and RANSAC filtering.
+
+
+
+
+--------------------------------------------

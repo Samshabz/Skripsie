@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  9 OCT 2024 15:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  23 OCT 2024 01:10
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -565,6 +565,9 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__pdf_internal_box=\box70
 ) (stellenbosch_ee_report.aux
 
+LaTeX Warning: Label `fig:divergence_plot' multiply defined.
+
+
 LaTeX Warning: Label `appen:derivations_bigramseg' multiply defined.
 
 )
@@ -683,7 +686,7 @@ Package hyperref Info: Link coloring ON on input line 110.
 \openout3 = `stellenbosch_ee_report.out'.
 
  (frontmatter/skripsie_title_page.tex
-<USlogo-top.pdf, id=71, 560.0925pt x 183.68625pt>
+<USlogo-top.pdf, id=207, 560.0925pt x 183.68625pt>
 File: USlogo-top.pdf Graphic file (type pdf)
 <use USlogo-top.pdf>
 Package pdftex.def Info: USlogo-top.pdf  used on input line 7.
@@ -717,72 +720,163 @@ LaTeX Font Info:    Font shape `OT1/lmss/bx/it' in size <17.28> not available
 
 [3
 
-] (stellenbosch_ee_report.toc)
+] (stellenbosch_ee_report.toc
+
+[4
+
+])
 \tf@toc=\write4
 \openout4 = `stellenbosch_ee_report.toc'.
 
 
 
-[4
-
-] (stellenbosch_ee_report.lof)
+[5] (stellenbosch_ee_report.lof)
 \tf@lof=\write5
 \openout5 = `stellenbosch_ee_report.lof'.
 
 
 
-[5
+[6
 
-] (stellenbosch_ee_report.lot)
+] (stellenbosch_ee_report.lot
+
+[7
+
+])
 \tf@lot=\write6
 \openout6 = `stellenbosch_ee_report.lot'.
 
  (frontmatter/nomenclature.tex
 
-[6
+[8]
 
-]
-
-[7
+[9
 
 {C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}])
 
-[8] (Chapter 3/RotationalEstimators.tex
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 17.
- (C:\Users\Sameer Shaboodien\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
-File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
+[10] (Chapter 3/FeatureExtractors.tex
+Chapter 1.
 
-[1{C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
+Overfull \hbox (39.69777pt too wide) in paragraph at lines 48--63
+ [][] 
+ []
+
+
+
+[1
+
+]
 
 [2]
 
 [3]
 
-[4]
+[4]) (Chapter 4/testing.tex
 
 [5]
+Chapter 2.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 14.
+(C:\Users\Sameer Shaboodien\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
 
-[6]
-Overfull \hbox (4.2404pt too wide) in paragraph at lines 227--246
+[6
+
+{C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
+
+[7]
+
+[8]
+
+[9]
+
+[10]
+
+[11]
+<./Graphs/Divergence_BF_FLANN_KPS.png, id=543, 901.11656pt x 598.48593pt>
+File: ./Graphs/Divergence_BF_FLANN_KPS.png Graphic file (type png)
+<use ./Graphs/Divergence_BF_FLANN_KPS.png>
+Package pdftex.def Info: ./Graphs/Divergence_BF_FLANN_KPS.png  used on input line 209.
+(pdftex.def)             Requested size: 455.24411pt x 302.3563pt.
+
+
+[12]
+
+[13 <./Graphs/Divergence_BF_FLANN_KPS.png>]
+
+[14]
+
+[15]
+
+[16]
+
+[17]
+Overfull \hbox (23.13634pt too wide) in paragraph at lines 385--395
  [][] 
  []
 
-) (conclusion/conclusion.tex
 
-[7]
-Chapter 1.
+
+[18]
+
+[19]
+
+[20]
+
+[21]) (Chapter 3/LocalMatchers.tex
+
+[22]
+Chapter 3.
+
+
+[23
+
+]
+Overfull \hbox (38.86632pt too wide) in paragraph at lines 35--56
+ [][] 
+ []
+
+
+
+[24]
+
+[25]
+
+[26]
+File: ./Graphs/Divergence_BF_FLANN_KPS.png Graphic file (type png)
+<use ./Graphs/Divergence_BF_FLANN_KPS.png>
+Package pdftex.def Info: ./Graphs/Divergence_BF_FLANN_KPS.png  used on input line 159.
+(pdftex.def)             Requested size: 455.24411pt x 302.3563pt.
+
+
+[27]
+Overfull \hbox (4.27219pt too wide) in paragraph at lines 196--220
+ [][] 
+ []
+
+
+
+[28]
+
+[29]) (Chapter 3/RotationalEstimators.tex
+
+[30]
+
+[31]) (conclusion/conclusion.tex
+
+[32]
+Chapter 4.
 )
 No file stellenbosch_ee_report.bbl.
 (appendices/appendices.tex
 
-[8
+[33
 
 ]
 Appendix A.
 
 
-[9
+[34
 
 ]
 Appendix B.
@@ -793,7 +887,7 @@ See the caption package documentation for explanation.
 
 
 
-[10
+[35
 
 ] (stellenbosch_ee_report.aux)
  ***********
@@ -805,20 +899,20 @@ L3 programming layer <2024-05-27>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `stellenbosch_ee_report.out' has not changed.
-(rerunfilecheck)             Checksum: DE49D0DD1ED0254C6909649EBF484C16;2427.
+(rerunfilecheck)             Checksum: 0AD5376C1152DFE1F0A64B34AFF007C7;8778.
  ) 
 Here is how much of TeX's memory you used:
- 21944 strings out of 473904
- 420294 string characters out of 5720901
- 1939908 words of memory out of 5000000
- 44251 multiletter control sequences out of 15000+600000
- 628289 words of font info for 152 fonts, out of 8000000 for 9000
+ 22195 strings out of 473904
+ 424729 string characters out of 5720901
+ 1949908 words of memory out of 5000000
+ 44327 multiletter control sequences out of 15000+600000
+ 631945 words of font info for 193 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,15n,80p,1207b,1012s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,17n,80p,1123b,1094s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbo10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbx10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb>
-Output written on stellenbosch_ee_report.pdf (19 pages, 308380 bytes).
+Output written on stellenbosch_ee_report.pdf (46 pages, 525042 bytes).
 PDF statistics:
- 304 PDF objects out of 1000 (max. 8388607)
- 54 named destinations out of 1000 (max. 500000)
- 43150 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 745 PDF objects out of 1000 (max. 8388607)
+ 136 named destinations out of 1000 (max. 500000)
+ 43427 words of extra memory for PDF output out of 51595 (max. 10000000)
 

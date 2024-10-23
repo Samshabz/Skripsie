@@ -28,11 +28,11 @@ Then,
     \end{itemize}
     \item \textbf{Problem Statement:}
     \begin{itemize}
-        \item Traditional UAV navigation systems are GPS-based, which is susceptible to new GPS-denial technology. Additionally, existing solutions mainly involve emission technology (e.g., LIDAR) which can be detected by adversaries.
+        \item Traditional GPS-based navigation systems are being increasingly jammed or spoofed, leading to an inability to localize and return to base. Additionally, other known solutions are prone to drift or are extremely expensive. 
     \end{itemize}
     \item \textbf{Motivation:!!!}
     \begin{itemize}
-        \item There is a need for a navigation redundancy system that avoids detection in GPS-denied environments. Intertial reference units drift over time FIX LATER. weighted based on confidence level flip. 
+        \item There is a need for a navigation redundancy system that avoids detection in GPS-denied environments. 
     \end{itemize}
 \end{itemize}
 
@@ -40,15 +40,14 @@ Then,
 \begin{itemize}
     \item \textbf{Aim:}
     \begin{itemize}
-        \item Develop a robust and accurate image-based GPS location estimator for UAV navigation post-GPS signal loss. 
+        \item Develop an accurate and generalizable image-based GPS localization system for UAV navigation in GPS-denied environments. 
     \end{itemize}
     \item \textbf{Objectives:}
     \begin{itemize}
-        \item Design, develop and test algorithms for efficient, robust and accurate feature extraction. The system shall have a good feature count of at least 1000 per image.
-        \item Design, develop and test algorithms for efficient, robust and accurate feature matching. The system requires at least 500 good matches to be sufficiently confident. 
-        \item Use the matching algorithms to infer the changes in translation and rotation between the current and prior images when GPS signal is lost. This ultimately allows for the estimation of the UAV's new GPS location and heading. The system shall have a normalized x-y error under 100m and a heading error under 10 degrees for all estimations.
-        \item Improve the above method by utilizing stereo vision for depth awareness and increased accuracy. The system shall have a less than half the error of the monocular system.
-        \item Implement the system on a single-board computer (SBC) for real-time operation. The system shall have a processing time of under 10s per frame in the forward flight, and under 3s per frame in the backward flight.
+        \item Find the most optimal pipeline to solve the given problem. That is, determine the most optimal parameter and method set that subtends the most accurate solution while maintaining real-time and generalizable operation.
+        \item Determine the GPS of the UAV, using only prior telemetry and image features. The radial error must be below 10\% of the given movement, or 50m, whichever is higher. xxx, thi is if there is minimal movement
+        \item Ensure the system can operate in real-time. The response time, post-GPS loss, must be below 2s. 
+        \item Ascertain whether the system is generalizable to different environments. Specifically, the method should meet the above requirements under the condition that static or dynamically-tuned parameters are not tuned, directly or indirectly, for different environments.
     \end{itemize}
 \end{itemize}
 
@@ -56,11 +55,14 @@ Then,
 \begin{itemize}
     \item \textbf{Assumptions and Restrictions:}
     \begin{itemize}
-        \item Real-life footage from a UAV test-flight will be used. This camera shall be aimed perfectly downwards for all time, sufficiently detailed and distortion-free (e.g., warping, blurring, clouds, etc.).
-        \item The UAV will be flying at a constant altitude. 
-        \item There will therefore be limited depth warping. That is, the accuracy of the system using 2D estimation will be sufficiently accurate`' but there will still be some room for improvement in 3D.
+        \item The downwards facing camera shall be aimed perfectly downwards for all time
+        \item The datasets are at a reasonable resolution and distortion-free (e.g., warping, blurring, clouds, etc.).
+        \item The UAV will be flying over land with minimal, and if so, minor, dynamic objects. That is, the environment is sufficiently static to make the system feasible.
+        \item The UAV will be flying at a constant altitude. That is, scale estimation is not required.
+        \item The ground is significantly planar. That is, any perspective distortion is minimal and can be ignored.
         \item The UAV and its cameras will always be level with the ground. That is, no pitch and roll will occur. 
-        \item The system output is an estimated GPS location and heading estimate, not a control system. This is sufficient for the navigators to manually control the UAV.
+        \item The system aim is to navigate the UAV back to base using reference images taken during flight with known telemetry (GPS and heading). The UAV will return back to base 
+        \item The system output is an estimated GPS location and heading estimate, not a control system. This is sufficient for the pilots to manually control the UAV.
     \end{itemize}
 \end{itemize}
 

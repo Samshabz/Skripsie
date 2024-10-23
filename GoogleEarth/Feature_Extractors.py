@@ -22,7 +22,16 @@ class BaseFeatureExtractor:
 # ORB Feature Extractor
 class ORBFeatureExtractor(BaseFeatureExtractor):
     def __init__(self, nfeatures=3000):
-        self.detector = cv2.ORB_create(nfeatures=nfeatures)
+        self.detector = cv2.ORB_create(nfeatures=nfeatures) if nfeatures == -1 else cv2.ORB_create(
+            nfeatures=nfeatures,            # Capture more keypoints
+            scaleFactor=1.1,           # More scale layers. 1.3 gives an error. 
+            nlevels=64,                # Increase pyramid levels for different scales 64 abv 32
+            edgeThreshold=15,          # Lower to detect near image borders 15 above 5
+            WTA_K=2,                   # Faster keypoint detection. 4 is worse than 2
+            scoreType=cv2.ORB_HARRIS_SCORE  ,  # Lenient keypoint scoring # fast is slower but more accurate than harris
+            patchSize=21,              # Smaller patch size to capture fine features. 21 better than 11 by alot
+            fastThreshold=4           # Lower sensitivity for lenient detection. This and scale factor are big factors in the number of keypoints. 0, 1 is extremely slow not usable. 5 is fine. 3 has lots of matches but super slow. 4 seems decent. 
+        )
 
     def get_keydes(self, image):
         keypoints, descriptors = self.detector.detectAndCompute(image, None)
@@ -36,9 +45,27 @@ class ORBFeatureExtractor(BaseFeatureExtractor):
 # AKAZE Feature Extractor
 class AKAZEFeatureExtractor(BaseFeatureExtractor):
     def __init__(self, threshold=0.0001):
-        self.detector = cv2.AKAZE_create() # Lower implies more keypoints.0052
         
-        self.detector.setThreshold(threshold)
+        self.detector = cv2.AKAZE_create(
+            nOctaves=16,  
+            nOctaveLayers=6, 
+            descriptor_size=128,
+            threshold=threshold
+
+        )
+        # self.detector.setThreshold(threshold)
+    # if threshold == 0.0001 else cv2.AKAZE_create(
+    # descriptor_type=cv2.AKAZE_DESCRIPTOR_MLDB,  # Use MLDB descriptors for more accuracy
+    # descriptor_size=256,                        # Larger descriptor for more detail. 256 is better than 128. 512 doesnt run
+    # descriptor_channels=3,                      # Standard channels. 5 doesnt run
+    # ,                           # Lower threshold for more keypoints
+    # nOctaves=16,                                 # More octaves for scale robustness. 16 worse than 8
+    # nOctaveLayers=6,                            # More layers per octave for accurate multi-scale detection
+    # diffusivity=cv2.KAZE_DIFF_CHARBONNIER        # Most accurate diffusion process
+# )
+                      
+        
+        # self.detector.setThreshold(threshold)
     # higher is more aggressive filtering. 
     def get_keydes(self, image):
         keypoints, descriptors = self.detector.detectAndCompute(image, None)
@@ -93,7 +120,7 @@ class SuperPointFeatureExtractor(BaseFeatureExtractor):
 
             nms_radius= 4,  # Increase to suppress more keypoints
             max_num_keypoints = 1000,  # Limit the number of keypoints to extract
-            detection_threshold =0.000015,  # Increase threshold for more robust keypoints
+            detection_threshold =0.0000015,  # Increase threshold for more robust keypoints
             # remove_borders =1,  # Increase border distance to filter more edge keypoints
             # descriptor_dim =128,  # Cannot change, it was trained with 256
             # channels =[8, 8, 16, 16, 32],  # Reduce channels for faster processing. 127 seconds / 29 mean error (with channel reduction on) vs runtime of 116 with off. but 31 error with off. 

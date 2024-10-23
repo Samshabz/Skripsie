@@ -1,0 +1,92 @@
+
+
+
+
+
+
+\subsection*{GPS-Lost Pipeline Overview}
+This section details the UAV navigation process when GPS data is unavailable. In this situation, the UAV relies on visual inputs and stored features to estimate its position. Each stage in the pipeline serves a specific role to ensure precise localization and real-time navigation without GPS.
+
+\subsubsection*{Image Input:}
+
+The process starts by capturing a live image from the UAV’s downward-facing camera. This real-time visual input provides essential information about the UAV’s environment, forming the basis for position estimation and comparison with reference images.
+
+\subsubsection*{Feature Extraction:}
+Keypoints and descriptors are extracted from the current image to aid in matching it to reference images.
+\textbf{Keypoints:} These are distinctive points in the image that remain stable despite changes in lighting, scale, or orientation, making them ideal for comparison.
+\textbf{Descriptors:} These are numerical representations of the areas around each keypoint, which enable robust and efficient matching across images, even with small appearance variations.
+
+\subsubsection*{Proximity Search Space Reduction:}
+To increase computational efficiency, the system reduces the search space by using prior information (such as the UAV’s last known heading) to narrow down which stored images are likely to be relevant. Namely, the system filters out images that are geographically or temporally distant from the UAV’s last known position.
+
+\subsubsection*{Similarity Comparison:}
+The system compares the input image with the reference images identified from the reduced search space to identify the best match. The matching in this stage prioritizes efficiency over accuracy as the task requires less precision and processes multiple images. 
+
+\textbf{Feature Matching:} Corresponding keypoints between the input image and each reference image are identified using their descriptors. 
+\textbf{Initial Rotational Estimate:} These matches are used to estimate the rotation between the input and reference images, aligning them for similarity comparison.
+\textbf{Best Match Identification:} A similarity score is computed between the input image and each candidate image, using global matching techniques on the aligned images. The image with the highest similarity score is identified as the best match, indicating the best candidate for accurate localization.
+
+
+\subsubsection*{Rotation and Translation Estimation:}
+Once the best match has been found, the system performs a more precise estimation of both the rotation and translation between the input and the matched reference image. This involves recomputing a denser layer of features and matches. Thereafter, a highly accurate rotational and translational estimation is performed to determine the UAV’s current orientation and movement.
+
+\subsubsection*{Estimate New GPS and Heading:}
+The calculated translation and rotation values are used to estimate the UAV's new GPS coordinates and heading.
+\textbf{Heading Update}
+The estimated rotation is used to update the UAV’s heading using the reference image’s known heading.
+\textbf{Conversion to NE Coordinates:} The translation vector is converted from the image's local coordinates (XY) to real-world North-East (NE) coordinates using the estimated heading. This conversion ensures that the estimated movement aligns with the UAV’s actual heading in geographic terms.
+\textbf{Output:} The updated GPS position and heading are outputted to the UAV’s navigation system, enabling the system or pilot to navigate back to base in real-time, with quick corrections. This information is critical for the UAV’s return-to-base functionality in GPS-denied environments.
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection*{GPS Available Pipeline Overview}
+The aim of this pipeline is to extract and store relevant information to be used as references when GPS is lost. Further, it is to ensure that the system parameters are adjusted based on the landscape. 
+When GPS is available, the system minimizes future computational load to ensure efficient localization in the event of GPS loss. The UAV extracts and stores keypoints and descriptors of all reference images prior to GPS loss. A rate of one image per two seconds is sufficient relative to typical UAV speeds. 
+
+\subsubsection*{Image Input:}
+As explained in the No GPS Pipeline, the UAV’s downward-facing camera captures real-time images, forming the foundation for feature extraction and future comparisons.
+
+\subsubsection*{Feature Extraction:}
+\textbf{Keypoints and Descriptors:}
+Keypoints and descriptors are extracted from the input images. These represent the critical image information used for feature matching later, especially when GPS is lost. Storing these features ahead of time ensures efficient matching without the need for redundant processing during critical moments.
+
+\subsubsection*{Telemetry (GPS and Heading):}
+The UAV’s current GPS position and heading are captured at this stage. These readings serve as ground truth for navigation, and they are stored for future reference.
+
+\subsubsection*{Storage:}
+Extracted keypoints, descriptors, and telemetry data are stored to ensure efficient access during GPS loss.
+
+\subsubsection*{Dynamic Parameter Adjustment (Using Pipeline 2):}
+This stage leverages the No GPS Pipeline to dynamically adjust the UAV's camera parameters using the available GPS data as ground truth.
+
+\textbf{Input:}
+Estimated translations and headings from the No GPS Pipeline are compared with real GPS and heading data.
+
+\textbf{Why it’s Needed:}
+This step allows for precise calibration of parameters such as pixel-to-meter conversions, which are vital for improving localization accuracy across varying landscapes.
+
+\textbf{Output:}
+The adjusted parameters are integrated back into the system to enhance navigation during periods of GPS loss, improving overall performance in future missions.
+
+
+
+
+
+
+
+
+\subsection*{Future Work}
+- In future, higher frame rates and resolutions may be employed to improve accuracy. However, a more dynamic discarding method, or a larger storage space should be utilized to ensure no storage overload. 
+
+
+% xxx - pixels not metres for final results. 
+% xxx - comments on resolution

@@ -1,0 +1,120 @@
+
+
+
+LIT-review + background concept (4th year)
+- Previous Work done in this field or goal
+which other solutions exist that try to do the same thing. 
+1. related work - summary of other solutions (academia or industry). 1.  What their objectives were (vaguely similar). What method did they employ (how go abt or measuring the thing or validating their solution). what were their results. What were there shortcomings - what did they not do that answers ur prob statement. E.g. wont work in africa (remaining challenges).
+
+2. What information did u draw from or acquire to solve problem. What did I learn not from EE engineering. Additional to undergrad. 
+
+e.g. water quality: UV spectrum, optical sensing, color spectrum moving signals. Capture additional technologies and information to do design. Anything beyond scope of EE, lecturer might not know. I needed to know this before addressing problem. 
+
+
+1. related work
+quantum sensing navigator - expensive
+Odometry solutions: There are various odometry solutions out there. Some track wheels some track acceleration, ultimately they all track the movement of the UAV. They are not accurate over long distances, as they drift due to accumulation of error. 
+general homography solutions - many - not for UAV navigation or navigation at all. 
+the point is basically that there are lots of homography estimations between images but none are for UAV navigation. IE they might not work on large scale, where we have different types of keypoints, and not every detail of every object. We might also have more repetitive patterns in the environment.
+The goal is to take the developed methods, and see if they can be applied to UAV navigation.
+its to see if they are real-time although this is clearly more than possible
+Its also important to see how generalizable these methods are. Will they work if I move across multiple environments
+
+limitations of camera nav: 
+- It cannot work if the environment has poor visibility, clouds darkness etc
+- note scope says same height but doesnt matter. 
+- It is prone to estimation error if the UAV is experience lots of turbulence or wind.
+- It can mainly be used for reverse path navigation and very short distances due to drift. Specifically, the UAV may not continue its mission for much longer, and it must follow the same path back to base.
+- The current method does not do short term navigation. It might lose GPS if the turn is too slow or it loses the path. This would however not be difficult to implement and fix. 
+
+
+the goal of this project is to develop a low-cost, accurate, and robust solution for UAV navigation in GPS-denied environments.
+
+
+what did i draw from?
+- Homography: its the transformation between two planes, in this case two images from the UAV, and its used to infer translation and rotation - heading and GPS
+- Feature extraction: cannot use all pixels, its noisy and memory intensive and slow. We have to find good keypoints, they must be very unique so they can be found again in other images  - they must also be unique in the sense they can be found irrespective of distortions like illumination or rotation changes. 
+- Feature Matching - to estimate a homographic model, we need a point cloud that can be used to estimate the transformation between images. This must only include points in both images so we can map out an accurate transformation. This involves finding all potential matches and filtering it until we are pretty certain there are no false matches.
+- optimization: These methods are meant for a variety of applications. For this reason, it must be optimized for the specific application. It must still be generalizable to different datasets. 
+- baseline knowledge of GPS and heading: explain that GPS is latitude and longitude,
+conversions between spaces needed to be done carefully
+for one the conversion from GPS to meters, is 111320 for lat and 111320*cos(lat) for long. This is because the earth is not a perfect sphere, and the distance between longitudes decreases as you move towards the poles. One could infer this too but its not necessary. 
+- When updating GPS after finding translations theres three steps: The first is to convert internal image pair coordinates, like xy, into a global space, lat long system. Importanly note that the magnitude has not been changed yet, only the angle of the vector, ie the translations the same, but importantly rotates the vector to match the global space. 
+Secondly, these globally aligned translations in pixels need to be converted to metres. This is dependent on the camera parameters and flight parameters like altitude. This is inferred using error estimates during the flight while GPS is present. It remains constant under the assumption that the UAV remains at the same altitude, but it can be updated or scaled in a different scoped project. 
+Thirdly, these metres must be added to the GPS of the ref image, this requires a conversion from metres to GPS. Its in the global heading angle, and in metres, but it needs to be converted to the magnitude space of GPS. For the lon this is done by saying metres / 111320*cos(lat) and for lat its metres / 111320. This is because the earth is not a perfect sphere, and the distance between longitudes decreases as you move towards the poles. Although it seems like an unnecessary step, when moving at these altitudes this, as seen in empiricial tests, has a significant impact on the final GPS estimate.
+
+ --- GPS 
+
+- drift: The strength of this method is that it cannot drift. It constantly uses the closest reference image, which has known heading and GPS data. If we did not use this data, heading would be prone to drift from error and curvature, and GPS would be prone to error drift. Specifically, there is a constant error assuming we are always a similar distance from the reference image path. We remove this error by using only reference image data and not prior estimates. This works on the constraint that the UAV loses GPS and heads back to base, it does not navigate further. In future implementations, it is possible for the UAV to use its estimates for a short period of time, before drift accumulates. This can be used when turning the UAV around or navigating the last bit of the mission and not having access to any reference images. This would be something like if there are less than sufficient matches, rather use last estimate. 
+- etc
+
+
+opencv etc
+detailed intro of usage in extraction, matching, homography, optimization
+
+Lightglue - how did I find. 
+
+
+In order to solve the problem, the following components were used. Their purpose and how they were used is explained in the following sections.
+
+INSERT METHODOLOGY
+
+
+Testing the following
+
+Feature Extraction Method
+
+[1] ORB
+[2] goodFeaturesToTrack - CHECK
+[3] AKAZE
+[4] SuperPoint
+
+Feature Descriptor Method (SAME???)
+
+[1] AKAZE
+[3] DAISY - CHECK
+[4] SuperPoint
+
+GLOBAL Matcher Method
+[1] Brute-Force Matcher (BF)
+[2] Fast Library for Approximate Nearest Neighbors Matcher (FLANN)
+[3] GraphMatcher
+
+
+LOCAL MATCHER METHOD
+[1] Brute-Force Matcher (BF)
+[2] Fast Library for Approximate Nearest Neighbors Matcher (FLANN)
+[3] GraphMatcher
+[4] LightGLue
+[5] SuperGLUE -check
+
+
+Matching search technique
+[1] vanilla match (VANILLA) -  CHECK
+[2] knn match (KNN)
+[3] radius match (RADIUS) - CHECK
+
+Outlier Rejection Method
+[1] findFundamentalMatrix (FM) - HOMOGRAPHY (SEE)
+[2] vector field consensus (VFC) - CHECK
+[3] RANSAC - with homog
+[4] RANSAC - with fundamental matrix
+[5] RANSAC - with essential matrix
+[6] RANSAC - with homog and fundamental matrix
+[7] RANSAC - with homog and essential matrix
+[8] RANSAC - with fundamental and essential matrix
+[9] RANSAC - with homog, fundamental and essential matrix
+[10] RANSAC - with homog and fundamental matrix and vector field consensus
+[11] RANSAC - with homog and essential matrix and vector field consensus
+[12] RANSAC - with fundamental and essential matrix and vector field consensus
+[13] RANSAC - with homog, fundamental and essential matrix and vector field consensus
+idk lol
+
+
+
+
+2. What information did u draw from or acquire to solve problem. What did I learn not from EE engineering. Additional to undergrad. 
+
+e.g. water quality: UV spectrum, optical sensing, color spectrum moving signals. Capture additional technologies and information to do design. Anything beyond scope of EE, lecturer might not know. I needed to know this before addressing problem. 
+
+eg i have these 3 options at my disposal or many. 

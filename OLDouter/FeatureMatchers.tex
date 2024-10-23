@@ -1,0 +1,401 @@
+average 900 flights a day spoofed check source
+https://www.youtube.com/watch?v=bFM9HHB9JXI\&ab\_channel=DrBenMiles
+remove the backslashes in the above link
+
+
+
+
+
+The next critical feature in an image-based navigation system is the feature matcher. The feature matcher serves two main purposes. The first is to find the most similar image to that being analyzed. The second is to estimate the relative pose (translation and rotation) between the two images. Thus, we break up this section into two components, global matching and local matching. 
+xxx check scale if or not if
+To compute matches, The descriptor first transforms each feature individually to a normalized space. This process aligns the feature’s orientation, adjusts scale, and normalizes other factors like intensity, ensuring that each descriptor is in a consistent format for direct comparison during matching. The actual matching procedure involves comparing the descriptor of a keypoint to that of keypoints in the other image until the most similar keypoint is found in terms of their descriptors. There are, however, basic thresholds of accuracy which need to be met and further techniques to filter out bad matches. 
+
+
+Matches have specific confidence levels. When calculating transformations we can include confidence weightings to improve the accuracy of the estimations. 
+
+
+\subsubsection*{Plan}
+These methods offer complex tradeoffs within different accuracy and speed metrics. As such, tests will be conducted on individual methods as well as hybrid approaches. All of the above methods will be included in these tests except the deep-learning approaches which are too computationally intensive for the task of finding the most correlated image. The best method is that which results in the combination of image pairs (matches) which subtends the lowest mean squared deviation in actual and estimated GPS locations and heading. 
+
+
+To summarize: the invariant methods are: Hashing, BOVW; variant methods are 
+
+
+
+Intermediary results:
+
+These results indicate the time to complete the set of best correlated images. The score has not been used as the highly variant parameter set often, with enough computation, can achieve the correct score. So instead of holding computational time constant, which is not clear, we increase the parameters until we see it achieve the correct score. Then the time is recorded and a higher accuracy is dually implied in a lower time. Where excessive time is required and the correct combination has not been met, there will be an indication of failure to meet score. 
+Excessive time is defined relatively as 5 images above 5 seconds. 
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Search Space (Images)} & \textbf{Runtime (Seconds)} \\ \hline
+    12  & 5.04 \\ \hline
+    11  & 5.14 \\ \hline
+    10  & 4.90 \\ \hline
+    9   & 4.30 \\ \hline
+    8   & 3.74 \\ \hline
+    7   & 3.56 \\ \hline
+    6   & 3.12 \\ \hline
+    5   & 2.59 \\ \hline
+    4   & 1.99 \\ \hline
+    3   & 1.51 \\ \hline
+    2   & 0.98 \\ \hline
+    1   & 0.49 \\ \hline
+    \end{tabular}
+    \caption{KNN Matching: Search Space vs. Runtime}
+    \end{table}
+
+For BF\_matching with KNN search, the run-time per image is roughly half a second, and the time complexity is linear.   
+Flann\_matcher does not get the correct result even with excessive time
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Matcher} & \textbf{Mean Normalized Error} & \textbf{Total Runtime (seconds)} \\ \hline
+    \textbf{Graph Matcher} & 45.79188281755529 & 73.0386 \\ \hline 88.3136 seconds
+    \textbf{Flann Matcher} & 47.32259915429281 & 124.3599 \\ \hline
+    \textbf{BF Matcher} & 45.90913 & 85.0412 \\ \hline
+    \end{tabular}
+    \caption{Mean Normalized Error and Total Runtime for GraphMatcher, FlannMatcher, and BFMatcher}
+\end{table}
+    
+    
+    This is for 13 images, given all other parameters constant for each test. As visible FLANN\_matcher and BF\_matcher perform the best, with FLANN slightly edging out BF. However, BF\_matcher is significantly faster than FLANN\_matcher. Graph\_matcher is slower and more inaccurate than both other methods. 
+    These results are largely unexpected. The first point to note is that BF\_matcher, an exhaustive search, takes less time than the approximate matchers. 
+
+    However, without any best image finder, the code runs in 20s.       
+
+
+
+
+
+ORB detects less accurate and more noisy keypoints. AKAZE detects more accurate and robust keypoints. This means the homography model will be more accurate with AKAZE. As such, when using homography to determine the relative pose between images, one cannot employ a single outlier threshold for both. AKAZE requires a lower threshold due to its higher accuracy. However, ORB requires a higher threshold to remove the noise.
+eg 1.0 for AKAZE and 35.0 for ORB. 
+
+
+
+
+0 is bf, 1 is flann, 2 is graph
+
+global+local matching with akaze (all with global graph 2 which is best)
+[45.909132551707636] FOR 0 which is BF 85.0412 seconds
+[45.86020977142852] FOR 1 which is flann 105.3263 seconds
+[47.24097141956378] FOR 2 (RUN-FIRST) WHICH IS graph 115.4037 seconds
+
+
+global+local matching with ORB
+
+[45.69197059475034] 81.0717 seconds Detector: ORB, Global Matcher: GraphMatcher, Local Matcher: BFMatcher
+
+46.09923686293978 202.3633 seconds Detector: ORB, Global Matcher: GraphMatcher, Local Matcher: FlannMatcher  
+
+[46.04487996277007] Time taken to execute the code: 77.1281 seconds Detector: ORB, Global Matcher: GraphMatcher, Local Matcher: GraphMatcher
+
+
+Global matchers via local matcher retrofit grid
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Detector} & \textbf{Local Matcher} & \textbf{Error Score} & \textbf{Time (seconds)} \\ \hline
+    \multirow{3}{*}{AKAZE} & BFMatcher & 45.9091 & 85.0412 \\ \cline{2-4}
+                           & FlannMatcher & 45.8602 & 105.3263 \\ \cline{2-4}
+                           & GraphMatcher & 47.2409 & 115.4037 \\ \hline
+    \multirow{3}{*}{ORB}   & BFMatcher & 45.6920 & 81.0717 \\ \cline{2-4}
+                           & FlannMatcher & 46.0992 & 202.3633 \\ \cline{2-4}
+                           & GraphMatcher & 46.0449 & 77.1281 \\ \hline
+    \end{tabular}
+    \caption{Error Scores and Execution Times for AKAZE and ORB Detectors with Different Local Matchers (Global Matcher: GraphMatcher)}
+    \end{table}
+    
+
+
+global ssim etc
+
+score 1 gets out of 13: 12  [51.1096468381182]
+
+GLOBAL MATCHERS ACCuracy TEST:
+
+All of these are done with BF
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Global Matcher} & \textbf{Error Score} & \textbf{Time (seconds)} & \textbf{Detector} \\ \hline
+    Histogram Comparison (1) & 51.1003587945317 &  71.0535 & AKAZE \\ \hline
+    SSIM (2)                 & 49.8271 & 69.9308 & AKAZE \\ \hline
+    Hash Comparison (3)      & 140.4049 & 85.8228 & AKAZE \\ \hline
+    \end{tabular}
+    \caption{Global Matchers with AKAZE Detector and FlannMatcher as Local Matcher}
+    \end{table}
+
+
+note that the relativity hereof is crucial. A single image mistmatch can be the reason for either small or dramatic changes. 
+
+Baseline time with global matcher off: 28.6975
+    
+
+ORB FAILS dramatically in the global matching methods. 
+
+
+
+[32.21786664268455]
+Time taken to execute the code: 335.3992 seconds
+Local Detector: Superpoint, Local Matcher: AKAZE, Global Detector: ORB, GLOBAL Matcher: BFMatcher
+
+
+[124.24910955944776]
+Time taken to execute the code: 391.6816 seconds
+Local Detector: Superpoint, Local Matcher: AKAZE, Global Detector: ORB, GLOBAL Matcher: graphmatcher
+
+
+
+Detector: AKAZE, Global Matcher: GraphMatcher, Local Matcher: BFMatcher
+Time taken to execute the code: 41.3234 seconds
+total match analysis time: 26.0431 seconds
+[51.1003587945317]
+
+
+
+
+[40.32015300294837]
+Time taken to execute the code: 70.8431 seconds
+total match analysis time: 0.0000 seconds
+Detector: AKAZE, Global Matcher: BFMatcher, Local Matcher: BFMatcher
+
+kernel 1 subtends to much noise for acc matching. image 5 mathches 2. 
+
+LIGHTGLUE:
+light glue, with Superpoint, even with highly optimized parameters runs extremely slow on a CPU. As such, on a CPU, it is not feasible to use SuperGlue over Light Glue for near real-time applications. Further, any global matcher used with LightGlue should be highly efficient to compensate for the slow performance of the formers. As such, local matching grid adaption will not be tested and instead, SSIM and histogram image comparison will be tested. Future implementations can involve a GPU for SuperGlue and LightGlue, as well as local matcher adaption for effective global matching. 
+
+[28.164948628902334]. params are very simple for this: 256 extractions, low matching thresholds. 0.0x for the two. and 0.5155 for threshold. 
+Time taken to execute the code: 150.6657 seconds
+Detector: ORB, Global Matcher: SSIM, Local Matcher: LightGlue. 
+
+
+
+
+
+
+
+FULL NEURAL TEST
+Local\_Alg\_Detector\_Choices = [ORB, AKAZE]
+Local\_Alg\_Matcher\_Choices = [BFMatcher, FLANN, GraphMatcher]
+Global\_Matcher\_Choices = [Same as Local Matcher, Histogram, SSIM]
+
+Local\_Alg\_Detector\_Choices = [Superpoint]
+Local\_Alg\_Matcher\_Choices = [Lightglue]
+
+Total combinations = 2 * 3 * 3 * 1 * 1 = 18. Exhaustively, we could try each algorithmic combination in the prepoc and global matcher choice. Then there would be 5 options for Global matcher choice. We could also add neural approaches here but have decided against this for time cost. Further, we could add an extra step in local matching, which is currently implicit but there, to have different preproc and final local matching. That is, a different rotational and translational inference. Then we could use ORB, AKAZE, Superpoint for the local alg detector and we could use BF matcher, FLANN, graph matcher, LightGlue for the local alg matcher. This would take the 1x1 to a 3x4. This would take the total combinations to 2 * 3 * 5 * 3 * 4 = 360. This is too much. Instead we try make a few educated guesses. 
+
+This applies to both models. 
+
+Firstly, as discussed before, we remove neural network options from search space reduction because of computational cost. 
+Secondly, we make the assumption that each algorithmic-based local detector and matcher, considered jointly, is either better at both translation and rotational inference, or worse, but not better at one and worse at another than another algorithmic local matcher. This is not strictly true, but it is a good assumption that is crucial to limit the scope. This means that for all 4 possible stage choices: Rotational normalization in Global matching, Global Matching, Rotational inference in Local matching, and translational inference in local matching; If they are using an algorithmic combination of detectors and extractors, that combination is wholly better or worse for all the other stages if it is better or worse for one stage. 
+Thirdly, we make the assumption that 
+
+
+
+SELFCODE: PREPROCDET; PREPROCMAT; GLOBALMAT (LOCAL is the same: super, light)
+1 is ORB, 2 is AKAZE - rotational normalization detector for global matcher
+0 is BF, 1 is FLANN, 2 is GRAPH - rotational normalization matcher for global matcher
+0 is pass thru, 3 is histogram, 4 is SSIM - global matcher
+therefore the code ranges are [1-2], [0-2], [0-4]
+
+
+
+[32.502594573455845]
+Preprocessing Local Algorithmic Detector: ORB, Preprocessing Local Algorithmic Matcher: BF, Global Matcher: Same as Preprocessing, Local Detector: Superpoint, Local Matcher: Lightglue
+Time taken to execute the code: 202.7905 seconds
+code: 1, 0, 0
+
+[32.712598500355305]
+Preprocessing Local Algorithmic Detector: ORB, Preprocessing Local Algorithmic Matcher: FLANN, Global Matcher: Same as Preprocessing, Local Detector: Superpoint, Local Matcher: Lightglue
+Time taken to execute the code: 383.5403 seconds
+code: 1, 1, 0
+
+
+[35.96082195165782]
+Preprocessing Local Algorithmic Detector: ORB, Preprocessing Local Algorithmic Matcher: GRAPH, Global Matcher: Same as Preprocessing, Local Detector: Superpoint, Local Matcher: Lightglue
+Time taken to execute the code: 215.8990 seconds
+code: 1, 2, 0
+
+
+[37.623884922918975]
+Preprocessing Local Algorithmic Detector: AKAZE, Preprocessing Local Algorithmic Matcher: BF, Global Matcher: Same as Preprocessing, Local Detector: Superpoint, Local Matcher: Lightglue
+Time taken to execute the code: 170.9718 seconds
+code: 2, 0, 0
+
+
+[37.48360017845881]
+Time taken to execute the code: 275.1002 seconds
+Preprocessing Local Algorithmic Detector: AKAZE, Preprocessing Local Algorithmic Matcher: FLANN, Global Matcher: Same as Preprocessing , Local Detector: Superpoint, Local Matcher: Lightglue
+code 2, 1, 0
+
+[41.34034888283645]
+Preprocessing Local Algorithmic Detector: AKAZE, Preprocessing Local Algorithmic Matcher: GRAPH, Global Matcher: Same as Preprocessing, Local Detector: Superpoint, Local Matcher: Lightglue
+Time taken to execute the code: 246.5933 seconds
+code: 2, 2, 0
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \makecell{\textbf{Preprocessing \&} \\ \textbf{Global Detector}} & \makecell{\textbf{Preprocessing \&} \\ \textbf{Global Matcher}} & \textbf{Error Score} & \textbf{Time (seconds)} \\ \hline
+    ORB   & BF    & 32.5026 & 202.7905 \\ \hline
+    ORB   & FLANN & 32.7126 & 383.5403 \\ \hline
+    ORB   & GRAPH & 35.9608 & 215.8990 \\ \hline
+    AKAZE & BF    & 37.6239 & 170.9718 \\ \hline
+    AKAZE & FLANN & 37.4836 & 275.1002 \\ \hline
+    AKAZE & GRAPH & 41.3403 & 246.5933 \\ \hline
+    \end{tabular}
+\end{table}
+
+    
+\textbf{Local Detector:} Superpoint \\
+\textbf{Local Matcher:} Lightglue \\
+\textbf{Global Matcher:} Same as Preprocessing, no isoglob matchers \\
+    
+
+
+
+assume from prior table, and initial tests that the global matchers perform worse. good conclusion. 
+
+
+In this software, we have two distinct stages: global (preprocessing - rotational normalization, global matching) and local (rotational and subsequent translational inference) matching. Each stage operates independently. This modular structure allows us to evaluate the performance of each stage based on endpoint metrics, such as time and accuracy, and select the best method for each, without needing to test every possible combination of methods across stages.
+
+Within each of the two stages there are sub-stages which are interdependent. This is because the keypoints, and nuanced rotational patterns follow on from initial stages into latter ones. Global matchers lose a large portion of coupling due to recomputation of descriptors. However, between global and local matching, there may exist nuanced coupling in that global matchers may tend to have different levels of preferences to different patterns or feature distributions to that of the local matcher. However, in this scope we state that each potential match is either similar enough for mismatches to not have a significant effect on the estimation, or the potential matches are far enough apart that the minor preference difference in the local and global matchers becomes negligible; As such, the single combination of global matchers that performs the best in one local matcher will perform the best, or very close to that, in any other local matcher. If we wanted an extremely precise estimate, we would need to test all combinations. However, to maintain scope and still achieve a highly accurate estimate, we can make this assumption.
+
+
+
+
+
+
+ALG GLOBAL ISOTEST
+Algorithmic global testing 
+
+global\_detector\_choice Set 1 for ORB, 2 for AKAZE. 
+    global\_matcher\_choice = 1 Set 0 for BFMatcher, 1 for FlannMatcher, 2 for GraphMatcher
+    global\_matcher\_technique = 0 
+
+code range is [1-2], [0-2], [0,3-4]
+
+[36.37745610974454]
+should give same results as above. 
+
+[36.37745610974454]
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 71.1368 seconds
+code is 1, 0, 0
+
+
+
+[FAIL] X2
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Flann, Graph, Global Matching Techniques: Histograms and SSIM, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 71.1368 seconds
+Fails under conditions [1], [0,1,2], [3,4]
+
+
+[36.497046238519495]
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 261.3577 seconds
+code is 1, 1, 0
+
+
+[33.09399194594492]
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: GRAPH, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 126.0975 seconds
+code is 1, 2, 0
+
+
+[40.237965285920886]
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 68.8457 seconds
+code is 2, 0, 0
+
+
+[45.85650551390119]
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 87.7977 seconds
+code is 2, 0, 3
+
+
+[45.85650551390119]
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: SSIM, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 52.2356 seconds
+code is 2, 0, 4
+
+
+[40.10291200291962]
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 126.9023 seconds
+code is 2, 1, 0
+
+
+[45.85650551390119]
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 111.3775 seconds
+code is 2, 1, 3
+
+[45.85650551390119]
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: FLANN, Global Matching Technique: SSIM, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 150.3223 seconds
+code is 2, 1, 4
+
+[45.13035674520387]
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: GRAPH, Global Matching Technique: Same as Global Matcher, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 98.8956 seconds
+
+
+[45.85650551390119]
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: GRAPH, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 79.3778 seconds
+
+
+[45.85650551390119]
+Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: GRAPH, Global Matching Technique: SSIM, Local Detector: AKAZE, Local Matcher: BF
+Time taken to execute the code: 74.2499 seconds
+
+
+
+
+
+
+\begin{table}[H]
+    \centering
+    \small  % Reduce font size
+    \setlength{\tabcolsep}{4pt}  % Adjust column spacing
+    \renewcommand{\arraystretch}{1.2}  % Adjust row spacing
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Global Detector} & \textbf{Global Matcher} & \makecell{\textbf{Global Matching} \\ \textbf{Technique}} & \textbf{Time [seconds]} & \textbf{Error Score} \\ \hline
+    ORB & GRAPH & Same as Global Matcher & 126.0975 & 33.0940 \\ \hline
+    ORB & BF & \makecell{Same as \\ Global Matcher} & 71.1368 & 36.3775 \\ \hline
+    ORB & FLANN & \makecell{Same as \\ Global Matcher} & 261.3577 & 36.4970 \\ \hline
+    AKAZE & BF & \makecell{Same as \\ Global Matcher} & 68.8457 & 40.2379 \\ \hline
+    AKAZE & FLANN & \makecell{Same as \\ Global Matcher} & 126.9023 & 40.1029 \\ \hline
+    AKAZE & BF & Histogram & 87.7977 & 45.8565 \\ \hline
+    AKAZE & BF & SSIM & 52.2356 & 45.8565 \\ \hline
+    AKAZE & FLANN & Histogram & 111.3775 & 45.8565 \\ \hline
+    AKAZE & FLANN & SSIM & 150.3223 & 45.8565 \\ \hline
+    AKAZE & GRAPH & Histogram & 79.3778 & 45.8565 \\ \hline
+    AKAZE & GRAPH & SSIM & 74.2499 & 45.8565 \\ \hline
+    AKAZE & GRAPH & \makecell{Same as \\ Global Matcher} & 98.8956 & 45.1304 \\ \hline
+    ORB & BF, Flann, Graph & \makecell{Histogram \\ and SSIM (Fails)} & FAIL & FAIL \\ \hline
+    \end{tabular}
+    \caption{Error Scores, Execution Times, and Global Matching Techniques for Various Configurations}
+\end{table}
+
+
+
+
+Different global matchers:
+
+Fourier Mellin Transform with phase correlation - fail
+phase correlation with log polar transform - fail

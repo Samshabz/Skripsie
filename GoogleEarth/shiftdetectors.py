@@ -12,10 +12,10 @@ Light_Matcher = LightGlue(  # Initialize LightGlue. This is used for estimating 
     features='superpoint',  # Use SuperPoint features
     # depth_confidence=0.95, #553 with extra 01 # 0.95, -1 IS DEF
     # width_confidence=0.99, #0.99
-    filter_threshold=0.000005,  # Custom filter threshold. A lower threshold definitely implies more matches, ie is less accurate / more leniant. The correlation matching is worse with less accuracy. 0.0045. 
+    filter_threshold=0.0025,  # Custom filter threshold. A lower threshold definitely implies more matches, ie is less accurate / more leniant. The correlation matching is worse with less accuracy. 0.0045. 
     n_layers = 6,  # Reduce layers for faster inference
     flash = False,  # FlashAttention remains enabled for speed. check if it needs CUDA
-    mp = True,  # Enable mixed precision for faster inference. check if it needs CUDA
+    mp = False,  # Enable mixed precision for faster inference. check if it needs CUDA
     depth_confidence = 0.9,  # Stop earlier to speed up
     width_confidence = 0.95  # Prune points earlier for efficiency
     # filter_threshold = 0.2  # Increase match confidence for fewer but more robust matches
@@ -37,7 +37,6 @@ def get_neural_src_pts(featsA=None, featsB=None, kp1=None, kp2=None, des1=None, 
 
         raise ValueError("Not enough keypoints for matching.")
         return None
-    print(len(featsA['keypoints'][0]))
     featsA, featsB, matches = Light_Solver(featsA, featsB)
 
 
@@ -59,10 +58,6 @@ def get_neural_src_pts(featsA=None, featsB=None, kp1=None, kp2=None, des1=None, 
 
 def get_src_shifts(src_pts, dst_pts):
         # this code improves response by applying a secondary rotational normalization step, in theory it should have minimal impact. 
-        shifts = dst_pts - src_pts
-        # shift_x = np.mean(shifts[0])
-        # shift_y = np.mean(shifts[1])
-        
 
         center_src = np.mean(src_pts, axis=0)
         center_dst = np.mean(dst_pts, axis=0)
@@ -89,5 +84,5 @@ def get_src_shifts(src_pts, dst_pts):
         translation = np.mean(dst_pts_rot_corrected - src_pts, axis=0) 
         shift_x = translation[0]
         shift_y = translation[1]
-        return shift_x, shift_y
+        return shift_x, shift_y, theta_deg
 

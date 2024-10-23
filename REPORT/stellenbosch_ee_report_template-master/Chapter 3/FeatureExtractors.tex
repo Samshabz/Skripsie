@@ -1,99 +1,11 @@
 
-\subsection*{Feature Extractors}
-
-
-\subsubsection*{What is a feature Extractor}
-A feature extractor is a computer vision algorithm or deep-learning model that identifies and extracts key features in an image. A feature is a pixel or weight of multiple pixels that represents a highly unique and distinctive part of an image. For instance, this could be an edge between a wall and the sky. Feature extractors are characterized by a spatial coordinate and a descriptor. A descriptor is a vector which contains information about the helps it be uniquely identified again in a new image. This can include information about the size, shape, and intensity of the feature. One can also infer the scale and orientation of the feature from the descriptor. A feature extractor also commonly includes a confidence score which indicates a score of how unique and well-defined the feature is. Ultimately, a feature extractors goal is to find unique and well-defined features that can be used to develop a complex understanding of the nuances and details of an image.
-\subsubsection*{Usage in this task}
-In this task, feature extractors are used to extract keypoints in images. These are used for intra-image rotational and translational estimates, and matching similar images. 
-
-
-
-feature extractors are nb bc they r iinvariant to scale rotation and transformation. As opposed to simply correlating entire image. also less computationally expensive.
-https://baotramduong.medium.com/feature-extraction-in-computer-vision-using-python-358d7c9863cb
-
-
-
-common feature extraction techniques include edge detection, color histograms, and texture analysis
-
-
-
-\section{Choosing a Feature Extractor}
-When selecting a feature extractor, several critical factors must be considered:
-\begin{itemize}
-    \item \textbf{Accuracy:} The extractor needs to be accurate to ensure GPS inference is accurate. That is, the extractor should provide a sufficient quality and quantity of keypoints. This is quantified as subtending over 500 good matches from similar image pairs. 
-    \item \textbf{Speed:} Be capable of real-time processing to ensure timely navigation and decision-making in dynamic environments. Specifically, initial tests must extract features in less than 1 second on a CPU. For the neural network-based models, the time taken to extract features must be less than 3 second on a CPU since they may be implemented with a GPU and CUDA libraries to improve performance. 
-    \item \textbf{Robustness:} The feature extractor should exhibit invariance to changes in scale, rotation, illumination, perspective and noise to ensure accurate and repeatable performance across different flight datasets and conditions.
-\end{itemize}
-
-Feature extractors have different parameters trading-off accuracy and speed. For example, there are detection thresholds, descriptor sizes, and keypoint densities that can be adjusted to optimize performance. 
-
-\section{Types of Feature Extractors}
-\subsection{Traditional Feature Extractors}
-\subsubsection{SIFT (Scale-Invariant Feature Transform)}
-SIFT detects and describes local features in images. It is robust to changes in scale, rotation, and illumination, making it a reliable choice for many applications. However, its computational intensity can be a drawback in real-time scenarios.
-\begin{itemize}
-    \item \textbf{Advantages:} High accuracy and robustness due to its multi-scale approach and precise keypoint localization. SIFT's descriptors are highly distinctive, enabling reliable matching across different views and conditions.
-    \item \textbf{Disadvantages:} High computational cost and slower processing speed due to the extensive keypoint detection and descriptor computation steps, making it less suitable for real-time applications.
-\end{itemize}
-
-
-\subsubsection{SURF (Speeded-Up Robust Features)}
-SURF is a faster alternative to SIFT, utilizing integral images for rapid computation of image convolutions. It offers good accuracy and robustness while being computationally more efficient than SIFT.
-\begin{itemize}
-    \item \textbf{Advantages:} Faster than SIFT due to its use of Haar wavelets and integral images, providing good balance between speed and accuracy. It maintains robustness to scale and rotation changes.
-    \item \textbf{Disadvantages:} Still relatively computationally expensive compared to simpler methods like ORB, and can be less accurate than SIFT in certain complex scenarios.
-\end{itemize}
-
-
-
-\subsubsection{ORB (Oriented FAST and Rotated BRIEF)}
-ORB combines the FAST keypoint detector and the BRIEF descriptor, providing a highly efficient feature extraction method suitable for real-time applications. It is designed to be both fast and invariant to rotation and scale.
-\begin{itemize}
-    \item \textbf{Advantages:} High speed and efficiency, making it suitable for real-time applications. ORB's binary descriptors are computationally less intensive while providing sufficient discriminative power for many tasks.
-    \item \textbf{Disadvantages:} Lower accuracy compared to SIFT and SURF, especially in complex scenes with significant variations in lighting and scale. The binary nature of BRIEF descriptors can sometimes lead to higher false match rates.
-\end{itemize}
-
-\subsection{AKAZE (Accelerated-Keypoint-Affine-Zernike)}
-AKAZE is a feature extraction method that combines speed and accuracy by using nonlinear scale space and feature detection. It is designed to be robust to various transformations and lighting conditions.
-\begin{itemize}
-    \item \textbf{Advantages:} High speed and efficiency due to its nonlinear scale space and feature detection approach. AKAZE is robust to scale, rotation, and illumination changes, making it suitable for diverse environments.
-    \item \textbf{Disadvantages:} May not be as accurate as SIFT or SURF in certain scenarios, particularly those with complex textures or repetitive patterns. The trade-off between speed and accuracy may vary depending on the application.
-\end{itemize}
-
-\subsection{Deep Learning-Based Feature Extractors}
-Deep learning-based feature extractors leverage neural networks to learn feature representations directly from data. These models need to be trained on large datasets to capture complex and hierarchical features effectively. They offer high accuracy and the ability to adapt to specific tasks through transfer learning.
-    \item \textbf{Advantages:} High accuracy and the ability to learn complex and hierarchical features directly from data, enabling robust performance across diverse tasks and conditions. 
-    \item \textbf{Disadvantages:} Requires substantial computational resources for training and inference. The training process is data-intensive, requiring large labeled datasets to achieve optimal performance.
-\end{itemize}
-
-\subsubsection{Pre-trained Models (SuperPoint)}
-Utilizing pre-trained models, like Superpoint, that are trained on large datasets are often highly accurate relative to their efficiency. They are trained on a variety of datasets and aim to generalize well to a variety of tasks.
-\begin{itemize}
-    \item \textbf{Advantages:} High accuracy due to extensive pre-training on large and diverse datasets. 
-    \item \textbf{Disadvantages:} May not generalize well to specific datasets which are not representative of the application dataset.
-\end{itemize}
-
-
-
-\section{Evaluation for UAV-Based Navigation}
-\subsection{Requirements}
-For the Skripsie project, the feature extractor must meet the following initial requirements with default parameters:
-\begin{itemize}
-    \item 
-    \item 
-    \item Must be free to use and not require any pre-training or live-training. The former excludes SURF, SIFT, and the latter, deep learning-based models. 
-\end{itemize}
-
-\subsection{Recommended Feature Extractors}
-The feature extractor should be applicable to application specific requirements. In the case of this project, it should be free to use and not require any pre-training or live-training due to scope. As such, the following feature extractors are recommended:
-\begin{itemize}
-    \item ORB: A fast and efficient feature extractor that provides a good balance between speed and accuracy. It is suitable for real-time applications and can handle scale and rotation changes effectively.
-    \item AKAZE: A feature extraction method that combines speed and accuracy by using nonlinear scale space and feature detection. It is robust to various transformations and lighting conditions.
-    \item SuperPoint: A pre-trained model that offers high accuracy and efficiency for real-time applications. It learns feature representations directly from data, making it adaptable to specific tasks.
-
 
     
+
+
+
+
+
 
 
 \chapter{Results}
@@ -103,13 +15,9 @@ amt of keypoints for a specific runtime that are accepted as good matches
 overall accuracy for heading and GPS change estimation
 
 
-DATASET PARAMETERS:
-image resolution vs speed accuracy
-dataset terrain
-
-
 
 All parameter choices
+add a noise test to final results. 
 
 
 
@@ -131,18 +39,31 @@ XXX - say we are going to use histograms, its significantly faster, ensures no e
 
 
 
-
-
-On face value, ORB has more accuracy and less time per keypoint extracted, and less total time in the most recent example. However, one also notes how the time varies significantly as the maximum number of keypoints increases. 
-
-AKAZE has a filter threshold which is difficult to tune and highly sensitive to minor changes. Further, this threshold needs to be changed based on the dataset depending on the types of keypoints and visibility etc. As such, it is easier to use the more simple and consistent number of keypoints threshold that ORB uses. To summarize it, ORB is much easier to tune, and tends to have a higher accuracy to time ratio. To achieve the same top local minimum error, AKAZE subtends a runtime of 712 seconds, while ORB subtends a runtime of 271 seconds. This is a significant difference. 
-
-However, AKAZE is significantly more accurate at the same time to run and time per keypoint extracted. It is also more robust to changes in the dataset. Further, a change in time does not subtend a large change in accuracy. However, AKAZE extracts much less, and higher quality keypoints. This is advantageous for efficiency and accuracy, however, it makes AKAZE highly volatile to varying datasets as it will often not acquire sufficient keypoints. This can be mitigated by having an adaptive good match filtering threshold (this is implemented). However, the AKAZE threshold still needs to be manually tuned, this can also be made dynamic, at a time cost for constant re-estimation. 
-
 However, when trying different data sets etc - and perhaps when trying it with the local matcher, robustness might affect these end results. 
 
+Table 3 shows the results for confidence thresholding applied to AKAZE and ORB detectors.
 
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Threshold} & \multicolumn{2}{c|}{\textbf{AKAZE}} & \multicolumn{2}{c|}{\textbf{ORB}} \\
+\hline
+& \makecell{\textbf{RMSE GPS (error)}} & \makecell{\textbf{Runtime (s)}} & \makecell{\textbf{RMSE GPS (error)}} & \makecell{\textbf{Runtime (s)}} \\
+\hline
+\textbf{No Filter} & 61.64 & 42.43 & 46.76 & 35.73 \\
+\hline
+\textbf{1000} & 49.52 & 49.17 & 47.19 & 53.79 \\
+\hline
+\textbf{500} & 51.48 & 46.82 & 48.12 & 38.79 \\
+\hline
+\textbf{300} & 51.48 & 50.13 & 48.47 & 39.01 \\
+\hline
+\end{tabular}
+\caption{RMSE GPS Error and Runtime for AKAZE and ORB with Different Confidence Match Limits}
+\end{table}
 
+\textbf{Observations}: AKAZE performed optimally with a threshold of 1000 matches, while ORB performed best with a threshold of 300 matches. AKAZE achieving optimal performance at higher thresholds suggests that its keypoints are more distinctive and less ambiguous than ORB's. This aids the case that AKAZE requires less optimization after extraction than ORB.
 
 
 NOTE ORB simply does not work on the desert dataset 
@@ -154,187 +75,185 @@ NOTE ORB simply does not work on the desert dataset
 Please note that these tests are run without optimal settings - i.e. for debug purposes certain parts run which normally would not. 
 
 
-
-
-TEST 1:
-Heading estimation error too high.
-Heading estimation error too high.
-Linear regression inferred factor x: 3.207310914993286
-Linear regression inferred factor y: 3.526571035385132 
-
-Heading estimation error too high.
-Heading estimation error too high.
-Heading estimation error too high.
-Heading estimation error too high.
-Stability analysis mean (relative to src - best result) and var*10e6
-Phase Correlation stability: 1.159 +/- 68807.336
-Linear Algebra stability: 1.000 +/- 56.929
-Affine stability: 1.020 +/- 921.300
-Rigid stability: 0.995 +/- 160.067
-Homography stability: 1.108 +/- 5592.924
-
-Percentage Deviation: [3.22100261] %
-Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
-Mean normalized GPS error: [24.86177763]
- Mean Heading Error: 1.9734131972502695
-Mean Length of Global Keypoints: 5426.8
-Mean Length of Local Keypoints: 5426.8
-Mean Global Time to Extract Keypoints: 0.0295 s
-Mean Number of Good Matches: 604.5387931034483
-Range of Good Matches: 7310
-Time taken to execute The Method: 57.5468 seconds
-
-
-
-END 1
-
-Heading estimation error too high.
-Heading estimation error too high.
-Linear regression inferred factor x: 3.2284045219421387
-Linear regression inferred factor y: 3.480206251144409
-
-Heading estimation error too high.
-Heading estimation error too high.
-Heading estimation error too high.
-Heading estimation error too high.
-Stability analysis mean (relative to src - best result) and var*10e6
-Phase Correlation stability: 1.163 +/- 68807.336
-Linear Algebra stability: 1.000 +/- 43.544
-Affine stability: 1.026 +/- 595.532
-Rigid stability: 0.994 +/- 195.841
-Homography stability: 1.111 +/- 5592.908
-
-Percentage Deviation: [3.11905048] %
-Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
-Mean normalized GPS error: [24.07484528]
- Mean Heading Error: 1.9734131972502695
-Mean Length of Global Keypoints: 5426.8
-Mean Length of Local Keypoints: 9987.666666666666
-Mean Global Time to Extract Keypoints: 0.0337 s
-Mean Number of Good Matches: 604.5387931034483
-Range of Good Matches: 7310
-Time taken to execute The Method: 67.8058 seconds
-
-
-END 2
-
-Stability analysis mean (relative to src - best result) and var*10e6
-Phase Correlation stability: 1.190 +/- 68807.336
-Linear Algebra stability: 1.000 +/- 176.334
-Affine stability: 1.101 +/- 2279.378
-Rigid stability: 0.989 +/- 473.279
-Homography stability: 1.141 +/- 5715.823
-
-Percentage Deviation: [2.75680053] %
-Preprocessing Global Detector: ORB, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
-Mean normalized GPS error: [21.27876627]
- Mean Heading Error: 1.9734131972502695
-Type: Numpy Array
-Shape: torch.Size([1, 1000, 2])
-Mean Length of Global Keypoints: 5426.8
-Mean Length of Local Keypoints: 1000.0
-Range of Local kp: 0
-Mean Global Time to Extract Keypoints: 0.0342 s
-Mean Number of Glob good Matches: 604.5387931034483
-Time taken to execute The Method: 130.9345 seconds
-
-Note that superpoint and Lightglue have various tunable parameters. However, there is no way to reduce the time taken to extract and match keypoints to the point of the algorithmic models without significantly reducing accuracy. However, these models are significantly faster on GPU's and CUDA libraries. There is a decent range where one can increase time cost and gain a reasonable increase in accuracy. Superpoint and LightGLue parameters are relatively hard to tune, as there are many. However, XXX, its yet to be seen how robust these parameters are to different datasets. 
-
-END 3
-
-
-Heading estimation error too high.
-Stability analysis mean (relative to src - best result) and var*10e6
-Phase Correlation stability: 0.877 +/- 70819.259
-Linear Algebra stability: 1.000 +/- 62.694
-Affine stability: 0.998 +/- 1355.790
-Rigid stability: 0.987 +/- 181.514
-Homography stability: 1.044 +/- 6260.942
-
-Percentage Deviation: [3.05771815] %
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: ORB, Local Matcher: BF
-Mean normalized GPS error: [20.64342049]
- Mean Heading Error: 1.7089258086216432
-Mean Length of Global Keypoints: 55.53333333333333
-Mean Length of Local Keypoints: 5426.8
-Range of Local kp: 7310
-Mean Global Time to Extract Keypoints: 0.2273 s
-Mean Number of Glob good Matches: 300.0
-Time taken to execute The Method: 26.1905 seconds
-
-
-END 4
-
-
-Stability analysis mean (relative to src - best result) and var*10e6
-Phase Correlation stability: 0.905 +/- 70819.259
-Linear Algebra stability: 1.000 +/- 166.490
-Affine stability: 1.044 +/- 2069.720
-Rigid stability: 0.983 +/- 324.556
-Homography stability: 1.077 +/- 6339.018
-
-Percentage Deviation: [2.77759658] %
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: SUPERPOINT, Local Matcher: LightGlue
-Mean normalized GPS error: [18.75224969]
- Mean Heading Error: 1.7089258086216432
-Mean Length of Global Keypoints: 55.53333333333333
-Mean Length of Local Keypoints: 1000.0
-Range of Local kp: 0
-Mean Global Time to Extract Keypoints: 0.2408 s
-Mean Number of Glob good Matches: 300.0
-Time taken to execute The Method: 77.1795 seconds
-
-END 5
-
-
-
-
-
-
-
-
 Another note, this data is run in debug mode, with many methods running sequentially instead of a single method. Further, this is ran in a high accuracy mode for both, with an aim to get good results for both while keeping the time between methods reasonably similar without moving far off optimal points. 
 
 
 
 
 
+The first is the rotational estimator, the latter the translational estimator
 
 
 
-ADDITIONAL TEST:
-Percentage Deviation: [2.65627788] %
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
-Mean normalized GPS error: [18.24802137]
- Mean Heading Error: 1.545597672500035
-Mean Length of Global Keypoints: 4083.133333333333
-Mean Length of Local Keypoints: 15055.266666666666
-Range of Local kp: 12695
-Mean Global Time to Extract Keypoints: 0.2440 s
-Mean Number of Glob good Matches: 300.0
-Time taken to execute The Method: 113.2767 seconds
-with akaze 0.00017, and 0.00007 for local. 
+XXX make note abt dynamic adjustment for ORB - ambig match minimum
+
+XXX note global local is actually rot and translation. Say how rot is used for global matching and translational estimation. 
+
+TEST 1:
+ Ideally better points should subtend better estimations on all transformations. 
+
+
+NOTE that these methods are fully optimized within the constraint of having similar runtimes. However, orb performs optimally at higher speeds naturally - it loses acc with too many forced keypoints. lets note after these initial results we dont want to go down a rabbit hole of optimization as that will take too long. 
+This is on datsetrot
+
+
+datsetrot
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Rotational stage Detector} & \multicolumn{2}{c|}{\textbf{ORB}} & \multicolumn{2}{c|}{\textbf{AKAZE}} \\ 
+        \hline
+        \textbf{Translational stage Detector} & \textbf{ORB} & \textbf{AKAZE} & \textbf{ORB} & \textbf{AKAZE} \\ 
+        \hline
+        \textbf{Mean Global Good Matches} & 661.24 & 661.24 & 736.86 & 736.86 \\ 
+        \hline
+        \textbf{Mean Local Good Matches} & 898.05 & 12557.3 & 882.3 & 12256.30 \\ 
+        \hline
+        \textbf{RMSE (GPS Error) (radial)} & 75.78 & 76.18 & 73.31 & 68.94 \\ 
+        \hline
+        \textbf{MAE (GPS Error)} & 53.02 & 53.53 & 51.30 & 48.31 \\ 
+        \hline
+        \textbf{Runtime (seconds)} & 31.62 & 73.14 & 47.67 & 68.18 \\ 
+        \hline
+    \end{tabular}
+    \caption{Comparison of Rotational and Translational Inference Methods with Good Matches, Error Metrics, and MAE}
+\end{table}
+
+
+From whats above, we firsly see how AKAZE finds significantly more keypoints than ORB. note the stages are not exactly the same, other parameters have been tuned to find the highest accuracy for the specific task. 
+In terms of accuracy, all methods perform well. Because of the difficulty in perfect optimization, and trying to keep the runtime similar, we see that the MAE and RMSE are similar. Therefore, we will test the accuracy on a different dataset. We will keep the parameter set optimized for dataset x and test on dataset y to see how it performs with unoptimized parameters. 
 
 
 
-akaze akaze:
-Phase Correlation stability: 0.902 +/- 46811.385
-Linear Algebra stability: 1.000 +/- 38.748
-Affine stability: 1.023 +/- 805.875
-Rigid stability: 0.986 +/- 202.970
-Homography stability: 1.114 +/- 5841.347
 
-Percentage Deviation: [2.80564334] %
-Preprocessing Global Detector: AKAZE, Preprocessing Global Matcher: BF, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: BF
-Mean normalized GPS error: [19.27412787]
- Mean Heading Error: 1.6004082453122863
-Mean Length of Global Keypoints: 1296.9333333333334
-Mean Length of Local Keypoints: 15055.266666666666
-Range of Local kp: 12695
-Mean Global Time to Extract Keypoints: 0.2092 s
-Mean Number of Glob good Matches: 300.0
-Time taken to execute The Method: 56.3528 seconds
+XXX include MAE
+XXX test CUDA
+
+ORB performs the best. But note this result is not perfect. Firstly, there are an extremely large number of interdependent parameters which can be optimized for every dataset or dynamically adjusted within datasets for optimal performance. Finding the perfect strategy for dynamic and static adjustment is out of the scope of this project. However, we have found well-optimized parameters wherever possible. 
+
+Test 3:
+General robustness. AKAZE worked better out of the box. When using default parameters and only changing the main threshold, AKAZE worked on the low feature desert dataset, while ORB required changing many parameters. 
 
 
-akaze orb (local):
-XXX make note abt dynamic adjustment 
+In order to test robustness, we will use the optimized parameter set for the initial dataset (CPT rotations) on the other 4 datasets, that is, amazon rain forest, desert, city without rotations, and minor rotation rocky environment. 
+
+xxx - we could test non planar, and low - coverage. both not essential as the outcome is relatively obvious. 
+xxx - we need to do a dynamic thresholding similar to inference. its not as simple as more or less features. different datasets will perform optimally with different numbers of features. we need a balance between quality and quantity. This must be done through testing errors in forward path and adjusting based on that. not implemented. 
+time intensive to iteratively update, can be done - weak to changes in landscape. increasing far abv minimum req kps is best option. but long-term in flight might be better to have a dynamic threshold.
+This is the single most sensitive stage. Param choices here are critical. Maybe a benefit to superpoint. 
+
+test across one dataset.     
+
+datset 
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \makecell{\textbf{Metric}} & \textbf{CityROT} & \textbf{CityTR} & \textbf{Rocky} & \textbf{Desert} & \textbf{Amazon} \\ 
+        \hline
+        \makecell{\textbf{Mean Global} \\ \textbf{Good Matches}} & 661.24 & 680.56 & 630.29 & 656.40 & 628.30 \\ 
+        \hline
+        \makecell{\textbf{Mean Local} \\ \textbf{Good Matches}} & 615.35 & 639.75 & 683.90 & 669.55 & 569.15 \\ 
+        \hline
+        \makecell{\textbf{RMSE - GPS} \\ \textbf{error}} & 75.78 & 18.12 & 28.10 & 357.19 & 76.30 \\ 
+        \hline
+        \makecell{\textbf{MAE - GPS} \\ \textbf{error}} & 53.02 & 12.51 & 19.84 & 249.82 & 51.86 \\ 
+        \hline
+        \makecell{\textbf{Runtime} \\ \textbf{(seconds)}} & 35.84 & 36.65 & 31.89 & 26.11 & 33.54 \\ 
+        \hline
+    \end{tabular}
+    \caption{Robustness testing of ORB (Rotational) and ORB (Translational) across datasets with Parameters Optimized for CityROT dataset}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \makecell{\textbf{Metric}} & \textbf{CityROT} & \textbf{CityTR} & \textbf{Rocky} & \textbf{Desert} & \textbf{Amazon} \\ 
+        \hline
+        \makecell{\textbf{Mean Global} \\ \textbf{Good Matches}} & 661.24 & 680.56 & 630.29 & \textbf{FAIL} & \textbf{FAIL} \\ 
+        \hline
+        \makecell{\textbf{Mean Local} \\ \textbf{Good Matches}} & 1000.0 & 1000.0 & 974.05 & \textbf{FAIL} & \textbf{FAIL} \\ 
+        \hline
+        \makecell{\textbf{RMSE - GPS} \\ \textbf{error}} & 72.44 & 6.32 & 63.77 & \textbf{FAIL} & \textbf{FAIL} \\ 
+        \hline
+        \makecell{\textbf{MAE - GPS} \\ \textbf{error}} & 50.94 & 4.32 & 43.01 & \textbf{FAIL} & \textbf{FAIL} \\ 
+        \hline
+        \makecell{\textbf{Runtime} \\ \textbf{(seconds)}} & 64.37 & 157.77 & 60.39 & \textbf{FAIL} & \textbf{FAIL} \\ 
+        \hline
+    \end{tabular}
+    \caption{Robustness testing of ORB (Rotational) and AKAZE (Translational) across datasets with Parameters Optimized for CityROT dataset}
+\end{table}
+
+
+Further tests with AKAZE as the rotational estimator fail in the same cases. Although certain parameter sets will work with AKAZE for all cases, the issue lies in the fact AKAZE takes extensive time already, and said parameter set will cause even more delays. This is because the AKAZE thresholds do not dynamically adjust based on the amount of keypoints in the scene. ORB, however, does. This is a significant advantage of ORB in terms of robustness. 
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \makecell{\textbf{Metric}} & \textbf{CityROT} & \textbf{CityTR} & \textbf{Rocky} & \textbf{Desert} & \textbf{Amazon} \\ 
+        \hline
+        \makecell{\textbf{Mean Global} \\ \textbf{Good Matches}} & 661.24 & 680.56 & 630.29 & 656.40 & 628.30 \\ 
+        \hline
+        \makecell{\textbf{Mean Local} \\ \textbf{Good Matches}} & nan & nan & nan & nan & nan \\ 
+        \hline
+        \makecell{\textbf{RMSE - GPS} \\ \textbf{error}} & 78.42 & 14.24 & 23.03 & 39.64 & 42.02 \\ 
+        \hline
+        \makecell{\textbf{MAE - GPS} \\ \textbf{error}} & 55.43 & 9.79 & 16.07 & 27.20 & 28.10 \\ 
+        \hline
+        \makecell{\textbf{Mean Heading} \\ \textbf{Error}} & 0.90 & 0.016 & 0.17 & 0.88 & 1.97 \\ 
+        \hline
+        \makecell{\textbf{Runtime} \\ \textbf{(seconds)}} & 106.61 & 120.39 & 109.36 & 115.53 & 108.83 \\ 
+        \hline
+    \end{tabular}
+    \caption{Robustness testing of ORB (Rotational) and SUPERPOINT-LightGlue (Translational) across datasets with Parameters Optimized for CityROT dataset}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \makecell{\textbf{Translational} \\ \textbf{Detector}} & \textbf{CityROT} & \textbf{CityTR} & \textbf{Rocky} & \textbf{Desert} & \textbf{Amazon} \\ 
+        \hline
+        \textbf{ORB} & 75.78 & 18.12 & 28.10 & 357.19 & 76.30 \\ 
+        \hline
+        \textbf{AKAZE} & 72.44 & 6.32 & 63.77 & \textbf{FAIL} & \textbf{FAIL} \\ 
+        \hline
+        \textbf{SUPERPOINT-LightGlue} & 78.42 & 14.24 & 23.03 & 39.64 & 42.02 \\ 
+        \hline
+    \end{tabular}
+    \caption{RMSE (GPS error) for different Translational Detectors (ORB as Rotational Detector) across datasets}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \makecell{\textbf{Translational} \\ \textbf{Detector}} & \textbf{CityROT} & \textbf{CityTR} & \textbf{Rocky} & \textbf{Desert} & \textbf{Amazon} \\ 
+        \hline
+        \textbf{ORB} & 35.84 & 36.65 & 31.89 & 26.11 & 33.54 \\ 
+        \hline
+        \textbf{AKAZE} & 64.37 & 157.77 & 60.39 & \textbf{FAIL} & \textbf{FAIL} \\ 
+        \hline
+        \textbf{SUPERPOINT-LightGlue} & 106.61 & 120.39 & 109.36 & 115.53 & 108.83 \\ 
+        \hline
+    \end{tabular}
+    \caption{Runtime (seconds) for different Translational Detectors (ORB as Rotational Detector) across datasets}
+\end{table}

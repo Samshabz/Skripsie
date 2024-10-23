@@ -7,7 +7,8 @@ import cv2
 
 # Input: src_pts and dst_pts should be numpy arrays with shape (N, 2)
 def affine_transformation(src_pts, dst_pts):
-    matrix, _ = cv2.estimateAffine2D(src_pts, dst_pts, method=cv2.RANSAC)
+    ransac_threshold = 25
+    matrix, _ = cv2.estimateAffine2D(src_pts, dst_pts, method=cv2.RANSAC, ransacReprojThreshold=ransac_threshold)
 
     # Translation components
     tx = matrix[0, 2]
@@ -44,7 +45,7 @@ def rigid_transformation(src_pts, dst_pts):
 
 # Homography Estimation (Using OpenCV)
 def homography_transformation(src_pts, dst_pts):
-    H, _ = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC)
+    H, _ = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, ransacReprojThreshold=15)
     
     # Translation components from the homography matrix
     tx = H[0, 2]
@@ -59,7 +60,7 @@ def homography_transformation(src_pts, dst_pts):
     
 # RANSAC for Affine Transformation (Using OpenCV)
 def ransac_affine_transformation(src_pts, dst_pts):
-    matrix, inliers = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.RANSAC)
+    matrix, inliers = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.RANSAC, ransacReprojThreshold=25)
     
     # Translation components
     tx = matrix[0, 2]
