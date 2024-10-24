@@ -42,6 +42,27 @@ class ORBFeatureExtractor(BaseFeatureExtractor):
         keypoints, _ = self.detector.detectAndCompute(image, None)
         return keypoints
 
+
+class SIFTdetector(BaseFeatureExtractor):
+    def __init__(self):
+        self.detector = cv2.SIFT_create(
+            nfeatures=3000,            # Capture more keypoints
+            nOctaveLayers=4,           # Increase pyramid layers for different scales
+            contrastThreshold=0.04,    # Lower contrast threshold for more keypoints
+            edgeThreshold=10,          # Lower to detect near image borders
+            sigma=1.6                  # Standard deviation for Gaussian blur
+        )
+
+
+    def get_keydes(self, image):
+        keypoints, descriptors = self.detector.detectAndCompute(image, None)
+        return keypoints, descriptors
+    
+    def get_features(self, image):
+        keypoints, _ = self.detector.detectAndCompute(image, None)
+        return keypoints
+
+
 # AKAZE Feature Extractor
 class AKAZEFeatureExtractor(BaseFeatureExtractor):
     def __init__(self, threshold=0.0001):
@@ -90,8 +111,8 @@ def set_feature_extractor(detector_choice, threshold=0.0001, device=None):
             return AKAZEFeatureExtractor(threshold)
         else:
             return AKAZEFeatureExtractor()
-    else:
-        raise ValueError(f"Invalid detector choice: {detector_choice}")
+    elif detector_choice == 4:
+        return SIFTdetector()
 
 
 # SuperPoint Feature Extractor

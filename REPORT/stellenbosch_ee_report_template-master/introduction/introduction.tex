@@ -22,15 +22,15 @@ Then,
 
 \section{Introduction}
 \begin{itemize}
-    \item \textbf{Background:}
+    \item \textbf{Background:} longer / other solutions / SA military UAVs not planes 
     \begin{itemize}
         \item To maintain state safety, Unmanned Aerial Vehicles (UAVs) are used in military missions for surveillance, reconnaissance, and intelligence gathering. However, they rely on GPS for navigation, which can be jammed, spoofed, or otherwise lost in adversarial environments. This severely limits the scope of where these missions can be conducted, as well as the safety of the UAVs.
     \end{itemize}
     \item \textbf{Problem Statement:}
     \begin{itemize}
-        \item Traditional GPS-based navigation systems are being increasingly jammed or spoofed, leading to an inability to localize and return to base. Additionally, other known solutions are prone to drift or are extremely expensive. 
+        \item Traditional GPS-based navigation systems are being increasingly jammed or spoofed, leading to an inability to localize no and return to base. Additionally, other known solutions are prone to drift or are extremely expensive. 
     \end{itemize}
-    \item \textbf{Motivation:!!!}
+    \item \textbf{Motivation:!!!} no
     \begin{itemize}
         \item There is a need for a navigation redundancy system that avoids detection in GPS-denied environments. 
     \end{itemize}
@@ -42,16 +42,26 @@ Then,
     \begin{itemize}
         \item Develop an accurate and generalizable image-based GPS localization system for UAV navigation in GPS-denied environments. 
     \end{itemize}
-    \item \textbf{Objectives:}
-    \begin{itemize}
+    \item \textbf{Objectives:} xxx - separate 50 m
+    \begin{itemize} enum, sub-pts
         \item Find the most optimal pipeline to solve the given problem. That is, determine the most optimal parameter and method set that subtends the most accurate solution while maintaining real-time and generalizable operation.
-        \item Determine the GPS of the UAV, using only prior telemetry and image features. The radial error must be below 10\% of the given movement, or 50m, whichever is higher. xxx, thi is if there is minimal movement
-        \item Ensure the system can operate in real-time. The response time, post-GPS loss, must be below 2s. 
+        \item Determine the GPS of the UAV, using only prior telemetry and image features. The radial error must be below 10\% of the given movement, or 50 m, whichever is higher. xxx, thi is if there is minimal movement
+        \item Ensure the system can operate in real-time. The response time, post-GPS loss, must be below 2s. slower. perform 
         \item Ascertain whether the system is generalizable to different environments. Specifically, the method should meet the above requirements under the condition that static or dynamically-tuned parameters are not tuned, directly or indirectly, for different environments.
     \end{itemize}
 \end{itemize}
 
+reason - no solution, feasibility - not difficult other add-ons
 \section{Scope}
+
+
+xxx - add in scope that no methods are used that require pre- or live-training.
+
+
+practical limitations: split. 
+
+The following scope requirements aim to make the project feasible and manageable within the given time frame. Although they simplify the real-world conditions, largely by removing the need for scale estimation, it is not excessive in time or effort to add these additional correction techniques to account for these conditions in future work. It is only through the main practical limitations of the image-system, such as significantly adverse weather conditions or a majority of features being dynamic (e.g., water), that the system cannot apply a correction technique.  
+
 \begin{itemize}
     \item \textbf{Assumptions and Restrictions:}
     \begin{itemize}
@@ -59,6 +69,7 @@ Then,
         \item The datasets are at a reasonable resolution and distortion-free (e.g., warping, blurring, clouds, etc.).
         \item The UAV will be flying over land with minimal, and if so, minor, dynamic objects. That is, the environment is sufficiently static to make the system feasible.
         \item The UAV will be flying at a constant altitude. That is, scale estimation is not required.
+        \item The overlap between images being compared for inference is greater than 60\%. This ensures that the system does not have to have extremely precise outlier rejection techniques.
         \item The ground is significantly planar. That is, any perspective distortion is minimal and can be ignored.
         \item The UAV and its cameras will always be level with the ground. That is, no pitch and roll will occur. 
         \item The system aim is to navigate the UAV back to base using reference images taken during flight with known telemetry (GPS and heading). The UAV will return back to base 
@@ -123,7 +134,7 @@ Then,
 \end{itemize}
 
 
-
+Leave out 
 \section{Potential Impact}
 \begin{itemize}
     \item \textbf{Societal Impact:}

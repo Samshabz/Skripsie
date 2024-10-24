@@ -2599,3 +2599,885 @@ TestingDetectors
 
 
 
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [62.89305443]
+Percentage GPS Deviation: [5.6911793] %
+Mean Heading Error: 51.86974564318295
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.33178203]
+Percentage GPS Deviation: [0.59489805] %
+Mean Heading Error: 0.39503778657490896
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [19.62691912]
+Percentage GPS Deviation: [2.16985254] %
+Mean Heading Error: 4.702623186737943
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [31.84030797]
+Percentage GPS Deviation: [3.56314753] %
+Mean Heading Error: 22.091030487227123
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [43.84315306]
+Percentage GPS Deviation: [6.7353894] %
+Mean Heading Error: 57.58398058941119
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [57.87251085]
+Percentage GPS Deviation: [5.29893091] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [5.6812089]
+Percentage GPS Deviation: [0.53377392] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [18.58392462]
+Percentage GPS Deviation: [2.05454436] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [32.2565368]
+Percentage GPS Deviation: [3.60972638] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [42.2533361]
+Percentage GPS Deviation: [6.49115432] %
+Mean Heading Error: 57.574736067565745
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [56.08343882]
+Percentage GPS Deviation: [5.13511965] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [7.68772692]
+Percentage GPS Deviation: [0.72229489] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [81.93905508]
+Percentage GPS Deviation: [7.50251519] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [277.8628927]
+Percentage GPS Deviation: [25.44172094] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [57.52643154]
+Percentage GPS Deviation: [5.26724315] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [57.5893393]
+Percentage GPS Deviation: [5.27300312] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [4.74874752]
+Percentage GPS Deviation: [0.44616518] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [20.66781926]
+Percentage GPS Deviation: [2.28492917] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [31.8143344]
+Percentage GPS Deviation: [3.56024091] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [57.49157379]
+Percentage GPS Deviation: [5.2640515] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [4.74732074]
+Percentage GPS Deviation: [0.44603113] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [20.67936576]
+Percentage GPS Deviation: [2.28620569] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [55.84350179]
+Percentage GPS Deviation: [5.1131505] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [5.25841994]
+Percentage GPS Deviation: [0.49405109] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [20.64108921]
+Percentage GPS Deviation: [2.28197403] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [35.05952704]
+Percentage GPS Deviation: [3.92340009] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [50.84014542]
+Percentage GPS Deviation: [4.65503249] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [5.93204255]
+Percentage GPS Deviation: [0.55734082] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [20.86746275]
+Percentage GPS Deviation: [2.30700074] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [32.0205216]
+Percentage GPS Deviation: [3.58331467] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [38.02932065]
+Percentage GPS Deviation: [5.84224139] %
+Mean Heading Error: 57.574736067565745
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [56.29539485]
+Percentage GPS Deviation: [5.1545268] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.33732791]
+Percentage GPS Deviation: [0.59541911] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [21.23169749]
+Percentage GPS Deviation: [2.34726869] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [50.51332783]
+Percentage GPS Deviation: [4.62510837] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.87096952]
+Percentage GPS Deviation: [0.64555703] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [21.49457019]
+Percentage GPS Deviation: [2.37633056] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [50.43329691]
+Percentage GPS Deviation: [4.61778057] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.91039146]
+Percentage GPS Deviation: [0.64926089] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [51.71812807]
+Percentage GPS Deviation: [4.73542246] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.39110259]
+Percentage GPS Deviation: [0.60047147] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [52.44290976]
+Percentage GPS Deviation: [4.80178502] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [55.30866987]
+Percentage GPS Deviation: [5.06418015] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [54.88819808]
+Percentage GPS Deviation: [5.02568085] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [55.06712523]
+Percentage GPS Deviation: [5.0420638] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [50.88585566]
+Percentage GPS Deviation: [4.65921781] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [7.18424054]
+Percentage GPS Deviation: [0.67499018] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [21.1651617]
+Percentage GPS Deviation: [2.33991283] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [35.66742839]
+Percentage GPS Deviation: [3.9914284] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [30.53502933]
+Percentage GPS Deviation: [4.69093344] %
+Mean Heading Error: 57.574736067565745
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [51.10686836]
+Percentage GPS Deviation: [4.67945421] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [7.27944235]
+Percentage GPS Deviation: [0.6839348] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [21.05698248]
+Percentage GPS Deviation: [2.32795308] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [35.06028076]
+Percentage GPS Deviation: [3.92348444] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [30.45574727]
+Percentage GPS Deviation: [4.67875376] %
+Mean Heading Error: 57.574736067565745
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [51.46131777]
+Percentage GPS Deviation: [4.71190836] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.45437332]
+Percentage GPS Deviation: [0.60641603] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [21.62196336]
+Percentage GPS Deviation: [2.3904145] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [35.87846819]
+Percentage GPS Deviation: [4.01504519] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [30.38159007]
+Percentage GPS Deviation: [4.66736139] %
+Mean Heading Error: 57.574736067565745
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [51.46131777]
+Percentage GPS Deviation: [4.71190836] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [51.92202372]
+Percentage GPS Deviation: [4.75409158] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.35623933]
+Percentage GPS Deviation: [0.59719592] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [21.46294472]
+Percentage GPS Deviation: [2.37283421] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [36.06891667]
+Percentage GPS Deviation: [4.03635767] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [30.95387772]
+Percentage GPS Deviation: [4.75527888] %
+Mean Heading Error: 57.574736067565745
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [58.26163063]
+Percentage GPS Deviation: [5.33455955] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.08637058]
+Percentage GPS Deviation: [0.5718406] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [20.05102301]
+Percentage GPS Deviation: [2.21673931] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [32.31438581]
+Percentage GPS Deviation: [3.61620007] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [41.83335756]
+Percentage GPS Deviation: [6.42663526] %
+Mean Heading Error: 57.574736067565745
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [58.26163063]
+Percentage GPS Deviation: [5.33455955] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [58.26163063]
+Percentage GPS Deviation: [5.33455955] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.08637058]
+Percentage GPS Deviation: [0.5718406] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [50.25658193]
+Percentage GPS Deviation: [4.60160017] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.80978024]
+Percentage GPS Deviation: [0.63980803] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [21.64161066]
+Percentage GPS Deviation: [2.39258661] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [35.80093677]
+Percentage GPS Deviation: [4.0063689] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [29.83722662]
+Percentage GPS Deviation: [4.58373374] %
+Mean Heading Error: 57.574736067565745
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [52.44856923]
+Percentage GPS Deviation: [4.80230321] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [5.98271288]
+Percentage GPS Deviation: [0.56210151] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [51.73962736]
+Percentage GPS Deviation: [4.73739098] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [5.97524375]
+Percentage GPS Deviation: [0.56139975] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [21.17613962]
+Percentage GPS Deviation: [2.34112649] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [36.26927016]
+Percentage GPS Deviation: [4.05877859] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [30.83972644]
+Percentage GPS Deviation: [4.73774243] %
+Mean Heading Error: 57.574736067565745
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [58.86917476]
+Percentage GPS Deviation: [5.16035923] %
+Mean Heading Error: 53.195150125293125
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.34856201]
+Percentage GPS Deviation: [0.59197994] %
+Mean Heading Error: 0.3248599898938494
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [59.57070543]
+Percentage GPS Deviation: [5.22185407] %
+Mean Heading Error: 53.195150125293125
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [5.83717192]
+Percentage GPS Deviation: [0.5442947] %
+Mean Heading Error: 0.3248599898938494
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [18.59173954]
+Percentage GPS Deviation: [2.05540834] %
+Mean Heading Error: 4.996391624047099
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [35.90042886]
+Percentage GPS Deviation: [4.01750274] %
+Mean Heading Error: 22.1139815427776
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [34.48396677]
+Percentage GPS Deviation: [4.75707857] %
+Mean Heading Error: 59.654109505356494
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [342.60174481]
+Percentage GPS Deviation: [31.36934875] %
+Mean Heading Error: 49.63114456836291
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [5.44264716]
+Percentage GPS Deviation: [0.51136002] %
+Mean Heading Error: 0.40016550857288563
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [120.18555467]
+Percentage GPS Deviation: [13.28710477] %
+Mean Heading Error: 4.73517374280308
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [201.20463582]
+Percentage GPS Deviation: [22.51617045] %
+Mean Heading Error: 22.12857212608078
+TestingDetectors
+
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [420.06332998]
+Percentage GPS Deviation: [64.5320855] %
+Mean Heading Error: 57.574736067565745
+TestingDetectors
+
+
+
+

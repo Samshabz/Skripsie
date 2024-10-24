@@ -1,43 +1,49 @@
 % Pipeline
 
-
+Since reference images maintain fixed headings and accurate GPS locations, adjustments for Earth's curvature are unnecessary in this context.
+xxx - speak in intro abt why must reduce search space.  the image could have been distorted or messed up etc. 
+    
 feature extractors are nb bc they r iinvariant to scale rotation and transformation. As opposed to simply correlating entire image. also less computationally expensive.
 https://baotramduong.medium.com/feature-extraction-in-computer-vision-using-python-358d7c9863cb
 
 
 
+\section*{Planar Transforms}
 
-General selection criteria:
+When GPS is lost, the system relies on planar transforms to infer the UAV's location and heading based on these reference images. This is the key component to allow navigation back to base. Two primary approaches to estimate planar transforms are direct methods and feature-based methods, each with different strengths and limitations. \cite{lindenberger2023lightglue}
 
-\begin{itemize}
-    \item \textbf{Accuracy}: The method should provide accurate results, judged by the error passed down the pipeline. 
-    \item \textbf{Speed}: Real-time applications require fast, scalable processing, judged by their entire effect on the pipeline runtime.
-    \item \textbf{Price}: The method should be free. This excludes popular detectors like SIFT and SURF, which require licensing fees.
-    \item \textbf{Robustness}: The methods should be invariant to changes in scale, rotation, illumination, and noise to ensure reliable performance across varied environments. Further, the method should ensure repeatability. 
-\end{itemize}
+Direct methods use the entire image to estimate planar transforms by comparing pixel intensities and minimizing the differences through optimization techniques like gradient descent. While this makes them robust for small viewpoint changes, these methods are computationally expensive and can be sensitive to noise from bad pixels. However, the key limitation is that they work under an assumption of smooth, incremental movements between frames. When the UAV turns back to base, the large changes in rotation, perspective and translation cause the method to become unreliable. \cite{lindenberger2023lightglue}
 
+In contrast, feature-based methods extract and match keypoints from both reference and real-time images, often using RANSAC to estimate planar transforms and reject outliers. This approach is more suitable for large viewpoint changes and rotations, as it does not rely on processing every pixel but focuses on distinctive features. Feature-based methods are computationally efficient and robust to large transformations and many forms of distortion. This makes them ideal for scenarios like this, where the UAV's flight path involves substantial changes in orientation and positioning. Therefore, feature-based methods were chosen for this system to ensure reliable navigation back to the base under varying conditions. \cite{lindenberger2023lightglue}
 
+Feature-based matching involves feature detection, description, and matching. These matches form a point cloud which is used to estimate the planar transform. In this context, planar transformations involves the estimation of rotation and translation only, as per scope. Rotation and Translational estimations are tested separately, as they often require different strategies for optimal performance.  
 
+The methods for each of these are chosen based on the following criteria: accuracy, speed, and robustness to different datasets and conditions. Further, the methods must be free to use, namely excluding state-of-the-art detectors SIFT and SURF, which require licensing fees. Finally, the methods must have credibility in the field, as they are used in a safety-critical application.
 
 
-\section*{Feature Detectors} 
+
+
+
 
 %https://mikhail-kennerley.medium.com/a-comparison-of-sift-surf-and-orb-on-opencv-59119b9ec3d0
 
 
-Feature extraction plays a vital role in image-based UAV navigation, where estimating transformations such as rotation and translation between consecutive images is crucial. Feature extractors detect keypoints—distinct, repeatable points in an image—and generate descriptors that encode information about the surrounding region. These keypoints and descriptors enable accurate matching across multiple frames, allowing the system to track movement while remaining invariant to changes in scale, rotation, and illumination. This process enables precise estimation of motion, including both rotational and translational shifts between images.
+\section{Feature Detectors}
 
+Feature extraction is pivotal in image-based UAV navigation, enabling the estimation of transformations such as rotation and translation between consecutive images. Feature extractors identify \textbf{keypoints}—distinct, repeatable points within an image—and generate \textbf{descriptors} that encode information about the local image region surrounding each keypoint. These keypoints and descriptors facilitate accurate matching across multiple frames, allowing the system to track movement while maintaining invariance to changes in scale, rotation, and illumination. This precision is essential for accurately inferring both rotational and translational shifts between images.
 
-\subsection*{Types of Feature Extractors}
+The selected feature extractors—\textbf{ORB}, \textbf{AKAZE}, and \textbf{SuperPoint with LightGlue}—represent a diverse spectrum of approaches, offering different levels of accuracy, computational efficiency, and machine learning integration. Alternative methods were excluded to maintain scope or due to licensing fees. 
+
+\subsection{Types of Feature Extractors}
 
 \subsubsection{ORB (Oriented FAST and Rotated BRIEF)}
-ORB consists of two main components: the FAST keypoint detector and the BRIEF descriptor. FAST (Features from Accelerated Segment Test) detects keypoints by examining a circular region of pixels around a candidate point and checking whether a segment of these pixels is significantly brighter or darker than the center. This allows ORB to quickly identify potential keypoints. Once detected, BRIEF (Binary Robust Independent Elementary Features) describes these keypoints by creating a binary string, where pixel intensity comparisons within a small patch around each keypoint are encoded. ORB also adds rotational invariance by aligning the keypoints based on their dominant orientation before computing the BRIEF descriptor. This process ensures that ORB is fast and invariant to scale and in-plane rotation, though it may struggle with repetitive textures or complex lighting changes.
+\textbf{ORB} combines the \textbf{FAST} keypoint detector with the \textbf{BRIEF} descriptor, enhanced for rotation invariance. \textbf{FAST} rapidly identifies keypoints by analyzing pixel intensity differences in a circular region around each candidate point. Once detected, \textbf{BRIEF} encodes the local image patch into a binary string through intensity comparisons. ORB adds rotational invariance by aligning keypoints based on their dominant orientation before descriptor computation. This makes ORB both fast and robust to scale and in-plane rotation, although it may struggle with repetitive textures or complex lighting variations.
 
-\subsubsection*{AKAZE (Accelerated-KAZE)}
-AKAZE operates by constructing a nonlinear scale space using efficient filtering based on diffusion processes. This nonlinear scale space captures fine image details more effectively than linear methods. AKAZE computes the local contrast of an image using a specialized filter that adapts to intensity variations, allowing it to detect subtle keypoints that simpler detectors might miss. Once keypoints are detected, AKAZE uses the Modified Local Difference Binary (MLDB) descriptor, which encodes the neighborhood of each keypoint into a binary vector by comparing pixel intensity differences in the region. This approach is fast and compact, but AKAZE’s sensitivity to its detection threshold can vary across environments, leading to inconsistent keypoint detection. To address this, dynamic thresholding is applied, adjusting the threshold based on the environment to maintain a consistent number of keypoints across different datasets, improving generalization.
+\subsubsection{AKAZE (Accelerated-KAZE)}
+\textbf{AKAZE} constructs a nonlinear scale space using diffusion-based filtering, capturing finer image details more effectively than linear methods. It detects keypoints by assessing local contrast with a specialized adaptive filter, enabling the identification of subtle features that simpler detectors might miss. The \textbf{Modified Local Difference Binary (MLDB)} descriptor encodes the neighborhood of each keypoint into a binary vector based on pixel intensity differences. While AKAZE is both fast and compact, its performance can be sensitive to detection thresholds across different environments. To ensure consistency, dynamic thresholding is applied, adjusting based on the environment to maintain a stable number of keypoints across diverse datasets.
 
-\subsubsection*{SuperPoint with LightGlue}
-SuperPoint is a deep learning-based keypoint detector and descriptor. It uses a convolutional neural network (CNN) to detect keypoints and generate descriptors in a single forward pass. The network is pre-trained on large image datasets, learning to recognize stable and distinctive keypoints across a variety of conditions. However, being pre-trained, it may not generalize well to datasets that differ significantly from its training set. SuperPoint pairs best with LightGlue, a machine-learning-based matcher that improves matching accuracy using deep learning techniques. LightGlue optimizes keypoint correspondences between images through advanced graph-based techniques, ensuring accurate matches, even in challenging conditions. The primary downside of SuperPoint and LightGlue is computational expense, making them slower than traditional methods unless GPU acceleration is utilized. LightGlue was tested with SuperPoint during the detector testing phase and was not retested during the matcher testing phase.
+\subsubsection{SuperPoint with LightGlue}
+\textbf{SuperPoint} is a deep learning-based keypoint detector and descriptor that leverages convolutional neural networks (CNNs) to identify and describe keypoints in a single forward pass. Pre-trained on extensive image datasets, SuperPoint excels at recognizing stable and distinctive keypoints under varied conditions. \cite{rpaultrat2023superpoint} However, its performance may degrade on datasets significantly different from its training data. Pairing SuperPoint with \textbf{LightGlue}, a machine-learning-based matcher, enhances matching accuracy through advanced graph-based techniques. \cite{cvg2023lightglue} Despite their high accuracy, SuperPoint and LightGlue are computationally intensive, necessitating GPU acceleration for real-time applications; They are tested primarily to see if they subtend significantly more accurate results. During the testing phase, LightGlue was evaluated alongside SuperPoint and not retested during the matcher evaluation. 
 
 
 
@@ -101,77 +107,94 @@ TABLE:
     
 
 
+\section{Feature Matching}
 
-\section*{Feature Matching}
-Feature matching identifies correspondences between keypoints across images. After matching, these correspondences are filtered to remove ambiguities, and the remaining reliable matches are used to estimate transformations such as translation and rotation. Local feature matching, unlike global methods, focuses on matching individual keypoints, and not the entire image context, to achieve noise-invariant geometric transformations between images.
-Each matcher outputs a list of potential matches, along with their similarity scores, represented by a descriptor-space distance metric.
+Feature matching establishes correspondences between keypoints in different images. After identifying these correspondences, ambiguities are removed to retain only the most reliable matches, which are then used to estimate transformations such as translation and rotation. This filtering ensures that transformation estimations are based solely on mutual information between images.
 
+Unlike global matching methods, which assess the entire image context, \textbf{local feature matching} focuses on individual keypoints. This approach enables noise-invariant geometric transformations without relying on the assumption that most information is shared between images. Consequently, locally matched features are preferred for precise inference, while global matching is preferred for efficient image similarity comparisons.
 
-\subsection*{Types Of Feature Matchers}
+Each matcher generates a list of potential matches along with their similarity scores, quantified using a descriptor-space distance metric. These scores help in determining the quality of the matches and play a crucial role in the subsequent filtering and transformation estimation processes.
 
+\subsection{Types of Feature Matchers}
 
-\begin{itemize}
-    \item \textbf{Brute-Force Matcher (BFMatcher):}  
-    The BFMatcher compares each feature in one image with every feature in the second image. While it guarantees the best match, it is computationally expensive.
+Two primary feature matchers are employed: the \textbf{Brute-Force Matcher (BFMatcher)} and the \textbf{Fast Library for Approximate Nearest Neighbours (FLANN)}. Additionally, \textbf{LightGlue}, a machine-learning-based matcher, is utilised for its enhanced accuracy despite its higher computational demands.
 
-    \item \textbf{Fast Library for Approximate Nearest Neighbors (FLANN):}  
-    FLANN speeds up nearest neighbor search in high-dimensional descriptor space using KD-trees or clustering. It offers fast, approximate matching with minimal accuracy loss, ideal for real-time use with large datasets.
+The \textbf{Brute-Force Matcher} compares each feature in one image with every feature in the second image, ensuring the best possible match. While this guarantees accuracy, it is computationally expensive, especially with large numbers of keypoints. \textbf{FLANN}, on the other hand, accelerates the nearest neighbour search in high-dimensional descriptor spaces using KD-trees or clustering algorithms. This approximate matching approach offers significant speed improvements with minimal loss in accuracy, making it ideal for real-time applications with many datapoints. \textbf{LightGlue} leverages deep learning to improve matching accuracy further. Although highly effective, its structure necessitates using it in conjunction with other neural network-based feature extractors like SuperPoint to realize its full potential. This matcher is tested in conjunction with SuperPoint during the detector testing phase and is not retested during the matcher testing phase.
 
-    \item \textbf{LightGlue:}  
-    LightGlue is a machine-learning-based matcher that improves matching accuracy through deep learning. Although highly effective, it is computationally expensive. It is tested alongside SuperPoint in the feature extraction chapter, as its true potential is only realized when paired with neural network-based feature extractors. 
-\end{itemize}
+\subsection{Search Techniques}
 
-\subsection*{Search Techniques}
-The search technique determines which potential matches are retained. Techniques such as radius matching, vanilla matching, and KNN-based matching are explored. This stage allows the matcher to control the number and quality of matches passed for further filtering.
+The search technique determines which potential matches are retained for further processing. Various methods, including \textbf{Radius Search}, \textbf{Vanilla Matching}, and \textbf{K-Nearest Neighbours (KNN) Matching}, are explored to control the number and quality of matches.
 
-\begin{itemize}
-    \item \textbf{Radius Search:}  
-    Radius search retains matches within a specified distance in descriptor space, filtering out weak matches. However, it doesn't ensure a fixed number of matches per keypoint, leading to inconsistent results. Due to this limitation, it was not used in further experiments.
+\textbf{Radius Search} retains matches within a specified distance in descriptor space, effectively filtering out weaker matches. However, it does not guarantee a fixed number of matches per keypoint, leading to inconsistent results. Due to this limitation, radius search was excluded from further experiments.
 
-    \item \textbf{Vanilla Matching:}  
-    Returns the single best match for each keypoint. Empirical testing showed that this approach provided poor accuracy due to its inability to remove ambiguity with further processing. It was not further investigated.
+\textbf{Vanilla Matching} returns the single best match for each keypoint. Empirical testing demonstrated that this approach provided poor accuracy because it fails to remove ambiguities effectively, resulting in unreliable matches. Consequently, vanilla matching was not pursued further.
 
-    \item \textbf{K-Nearest Neighbors (KNN):}  
-    Retains the top \textit{K} matches for each keypoint, allowing the use of post-filtering techniques like Lowe’s ratio test to remove ambiguous matches. Matches with only one neighbor were discarded to avoid compromising accuracy when Lowe’s ratio could not be applied. Empirical tests showed that values above \textit{K=2} introduced impractical computational overheads. This method was used for further experiments with \textit{K=2}.
-\end{itemize}
+\textbf{K-Nearest Neighbours (KNN) Matching} retains the top \( K \) matches for each keypoint, allowing the application of post-filtering techniques such as Lowe’s ratio test to eliminate ambiguous matches. Matches with only one neighbour were discarded to avoid compromising accuracy when Lowe’s ratio could not be applied. Empirical tests indicated that values of \( K \) above 2 introduced impractical computational overheads. Therefore, \( K=2 \) was selected for subsequent experiments, balancing match quality and computational efficiency.
 
-\subsection*{Optimization Techniques}
-\begin{itemize}
-    \item \textbf{Lowe’s Ratio Test:}  
-    Filters matches based on the ratio between the best match’s distance and the second-best match’s distance. If the ratio is below a given threshold, in other words, the matches are sufficiently different, the match is retained. While effective at removing ambiguity, Lowe’s ratio is moderately sensitive to datasets and parameters. A dynamic threshold was implemented, adjusting iteratively until a sufficient number of matches were retained while keeping iterations to a minimum.
-
-    \item \textbf{Cross-Check:}  
-    Filters matches by retaining only those that are mutual in both matching directions. This ensures that matches are one-to-one, as is often not the case due to imperfections in the dataset, reducing false positives.
-
-    \item \textbf{RANSAC:}  
-    Filters outliers by estimating transformations between images using the Random Sample Consensus (RANSAC) algorithm. It is more closely tied to the rotational and translational estimation stages, where it is tested further.
-
-    \item \textbf{Confidence Thresholding or Weighting:}  
-    Matches were filtered based on their confidence scores, determined by similarity in descriptor space. However, confidence-based filtering proved extremely sensitive to changes in parameters and datasets, limiting its applicability. This method was not further pursued.
-\end{itemize}
+\textbf{Cross-Check Filtering} accompanies the above search techniques by ensuring that matches are mutual; only those matches that are consistent in both directions are retained. This mutual verification reduces the likelihood of false positives by ensuring that each match is one-to-one, thereby increasing the reliability of the correspondences. This was not pursued due to exorbitant computational costs.
 
 
+\section{Image Similarity Computation}
 
-\section*{Rotational Estimators}
+Selecting the most similar reference image is critical for accurately inferring the UAV's current location. This process involves comparing the current image captured by the UAV with all images stored in the database to identify the one with the highest similarity. While geographical proximity often correlates with image similarity, factors such as image distortion or significant UAV movement can disrupt this relationship, necessitating robust similarity measures.
 
-Rotational estimators are crucial for aligning UAV-captured images when GPS data is unreliable. Accurate rotation alignment directly affects the estimation of translational shifts and image similarity, both of which are sensitive to small rotational errors. By determining the angular difference between consecutive images, the UAV's heading relative to a known reference point can be inferred. Since reference images have fixed headings, adjustments for Earth's curvature are unnecessary.
+\subsection{Search Space Reduction}
 
-Three rotational estimation methods were selected for their balance between computational efficiency and accuracy. Other methods, such as direct rigid transformation via SVD, were excluded due to poor performance or outlier rejection in empirical tests. The following methods use OpenCV and RANSAC for robust estimation:
+To achieve real-time performance, the search space is initially narrowed to a subset of images likely to be similar to the current image. This reduction is based on the UAV's last known location, filtering images within a dynamic search radius that adapts to the UAV's speed and frame rate. Instead of using a fixed radius, which may be unsuitable across varying conditions, the radius expands incrementally until a predefined number of potential matches—typically five—are identified. This approach balances computational efficiency with the need to minimize the inclusion of irrelevant images.
 
-\begin{itemize}
-    \item \textbf{Homography Estimation (3x3 matrix)}: 
-    Homography supports 8 DoF, including translation, rotation, scaling, shear, and perspective distortion. However, in this application, the added complexity from scaling and perspective effects introduces unnecessary error. Since these transformations are not relevant to the dataset, homography is less efficient in this context.
+\subsection{Global Matching Techniques}
 
-    \item \textbf{Affine Estimation (2x3 matrix)}:
-    Affine transformation provides 6 DoF: translation, rotation, scaling, and shear. It efficiently handles rotation and translation, which are the primary transformations in the dataset, without adding unnecessary complexity from perspective effects. Affine estimation strikes a good balance between accuracy and computational speed.
+Once the search space is reduced, a more precise similarity computation is performed on the remaining candidates to ensure accurate localization. This step must be both efficient and effective in capturing the overall context of the images. Prior to comparison, images are aligned to account for any rotational discrepancies, ensuring that similarity metrics are not adversely affected by misalignment.
 
-    \item \textbf{Partial Affine Transformation (2x3 matrix)}:
-    Partial affine estimation allows for translation and rotation, providing 3 DoF. It is a simplified model, ideal for cases where minor scaling or shearing is irrelevant. This method offers a compromise between the complexity of affine transformations and the limitations of rigid transformations, providing accuracy with computational efficiency.
-\end{itemize}
+Several global matching techniques are employed to evaluate image similarity:
+
+\subsubsection{Local Detectors and Matcher Conversion Techniques}
+
+Local feature matching involves identifying keypoints in both images and determining correspondences based on descriptor similarity. However, this method alone does not guarantee an even distribution of matches across the image, potentially leading to biased similarity scores. To address this, grid matching is applied, dividing the image into grids and limiting the number of matches per grid. Although computationally intensive, this technique enhances robustness against distortions and rotations by ensuring a uniform distribution of matches. In practice, ORB detectors combined with FLANN matchers have proven to be both accurate and efficient for this purpose.
+
+\subsubsection{Cross-Correlation}
+
+Cross-correlation measures similarity by sliding one image over another and computing the sum of pixel-wise multiplications at each position. The peak value indicates the best alignment, reflecting the highest similarity. While straightforward, this method is sensitive to noise and illumination changes, which can affect the reliability of the similarity measure.
+
+\subsubsection{Histograms}
+
+Histogram comparison assesses similarity by analyzing the distribution of pixel intensities. Each image's histogram is divided into bins (typically 256 for 8-bit images), and the similarity is quantified using metrics such as Chi-Square or Bhattacharyya distance. This method focuses on global color and brightness distributions but ignores spatial information, making it less effective for images with similar color profiles but different structures.
+
+\subsubsection{Structural Similarity Index (SSIM)}
+
+SSIM evaluates similarity by decomposing images into luminance, contrast, and structure components. It computes local statistics within small windows and combines them into a single similarity score that reflects perceived image quality. SSIM effectively captures structural information like edges and textures, aligning well with human visual perception. This makes it a robust choice for measuring image similarity in varied conditions.
 
 
 
-    
+
+
+\section*{Planar Transformation Estimators}
+
+This section outlines the primary planar transformations used to compute the UAV's change in motion, specifically focusing on changes in rotation and translation derived from reference images. While the main goal is to estimate both rotation and translation, rotational estimation is also used independently in other stages of the pipeline. This process helps infer the UAV's location and heading. The estimators were carefully chosen for their balance of computational efficiency and accuracy, ensuring robust performance in the navigation system.
+
+The transforms are applied onto matched points. To further improve the final GPS and heading inference, an important enhancement was introduced by splitting the final transformation estimation into two stages. First, the overall alignment between images is computed, followed by rotational alignment of one image to the other. This step implicitly removes non-common information, significantly reducing false positive matches. After this, matching and filtration are reapplied to the refined images, resulting in a substantial improvement in accuracy.
+
+\subsection{Affine Transformation}
+
+Affine transformation captures translation, rotation, scaling, and shear, providing six degrees of freedom. It is computed by estimating the affine transformation matrix between two sets of points using OpenCV. RANSAC is used to handle outliers by selecting random subsets of keypoints and fitting them to the affine model. RANSAC is also applied to the other OpenCV transformations, including Partial Affine and homography transformations. \cite{opencv_warp_affine}
+
+
+\subsection{Rigid Transformation Estimation (SVD)}
+
+Rigid transformation preserves the shape and size of objects by estimating only rotation and translation, excluding scaling and shear. Using Singular Value Decomposition (SVD), it minimizes the least-squares error between two point sets. This involves computing the weighted centroid of both point sets, centres the points by subtracting their centroids. Thereafter, the covariance matrix is computed, followed by Singular Value Decomposition (SVD) and subsequently used determine the rotation matrix. Finally, the translation vector is computed. This method is computationally efficient and well-suited for this application, where only rotation and translation are required. This method is computationally efficient and well-suited for this application, where only rotation and translation are required. \cite{sorkine2017least_squares}
+
+
+\subsection{Partial Affine Transformation}
+
+Partial affine transformation reduces the full affine model by focusing solely on translation and rotation, offering three degrees of freedom. It strikes a balance between the complexity of affine transformations and the limitations of rigid transformations. Using OpenCV in conjunction with RANSAC, it is ideal for this application, where only rotation and translation are important. \cite{opencv_warp_affine}
+
+\subsection{Homography Transformation}
+
+Homography transformation captures translation, rotation, scaling, shear, and perspective distortion, offering eight degrees of freedom. It is estimated using OpenCV, with RANSAC applied for outlier rejection. While homography provides greater flexibility, its additional degrees of freedom introduce unnecessary errors and computational overhead for this application, where only rotation and translation are required. \cite{opencv_homography}
+
+
+
+
 \subsection*{Rotational Normalization Strategies}
 
 Rotational normalization is essential for aligning images and translating estimations accurately in image-based UAV navigation systems. Two primary strategies were considered for normalizing rotations during the flight back to the base. The first involves applying rotational normalization during image capture, which aligns both images to a global North-East (NE) reference space before keypoint detection. The second method avoids normalization at the point of capture, aligning the images relative to one another and applying normalization only after translation estimation.
@@ -219,121 +242,39 @@ Given the UAV's typical flight pattern and the need to minimize information loss
 
 
 
-\section*{Image Similarity Computation}
-
-In order to choose which image to infer location based on, the image with the highest similarity to the current image must be chosen. This is done by comparing the current image to all images in the database. The image with the highest similarity is then chosen.
-To ensure this computation is efficient, a two-stage process is employed:
-- Proximity search space reduction
-- Similarity computation
-
-
-\subsection*{Search Space Reduction}
-This stage involves reducing the space to only images that the UAV could likely be close to. This is based on the UAV's last known location. However, a fixed radius is susceptible to errors if the frame rate or UAV speed is not fixed. As such, a dynamic search radius is employed, increasing until a certain number of images are found. 
-
-
-\subsection*{Global Matching Techniques}
-
-After initial search space reduction, a more accurate similarity computation is done for all potential image matches. Global techniques take the entire image as context to compute similarity. Its critical that this similarity estimation is efficient as multiple images will be compared. Further, to ensure matches are truly similar, the image context should be captured evenly across the image. 
-Prior to similarity computation, images are rotated to be aligned together, as the global matching methods require. 
-
-
-xxx - add in scope that no methods are used that require pre- or live-training.
-
-
-
-
-\subsubsection*{Local detectors and matcher conversion techniques}
-Retrofitting local matching techniques, which operate on keypoints, to a global matching context is done by computing the similarity using the amount of good matches between images. 
-However, this does not guarantee an even distribution of matching across the image, leading to sub-par similarity computation. 
-To combat this, grid matching is used, and a maximum number of matches is set per grid. This method is computationally expensive, but it is extremely robust to distortions and rotational changes. 
-The most accurate, while still computationally efficient, detector and matcher are employed, ORB and FLANN, respectively. xxx check.
-
-
-\subsubsection*{Cross-correlation}  
-Cross-correlation measures the similarity between two images by sliding one over the other and calculating a sum of pixel-wise multiplications at each position. The maximum sum occurs when the two images are best aligned, indicating the point of greatest similarity. 
-
-\subsubsection*{Histograms}  
-Histograms compare images by analyzing the distribution of pixel intensities across a set of bins, typically 256 for an 8-bit image. Each bin represents a range of pixel intensities, and the method counts how many pixels fall into each bin. The comparison is performed by calculating the difference between the histograms of two images, often using metrics like Chi-Square or Bhattacharyya distance. This method is based on global color and brightness distributions, and not spatial shifts. 
-
-\subsubsection*{SSIM (Structural Similarity Index)}  
-SSIM compares two images by breaking down their similarities into three components: luminance, contrast, and structure. It first calculates the local means (for luminance), variances (for contrast), and covariances (for structure) over small windows. The similarity in luminance, contrast, and structure between corresponding windows is then measured and combined into a single score. SSIM is designed to model how humans perceive image quality, focusing on structural information like edges and textures.
-
-\subsubsection*{Phase Correlation}  
-Phase correlation is used to determine the similarity between two images by analyzing the confidence in a given maximum likelihood translational offset. It is similar to cross-correlation but operates in the frequency domain, where it uses only the phase information. This means it focuses on global structural as opposed to local ones, becoming robust to noise and illumination changes but losing some resolution. It also has a lower time complexity since it cross-correlation involves convolution (O($n^2$)) while phase correlation involves multiplication (O(nlogn)). 
-To compare the images, the phase components are extracted and the cross-power spectrum is computed. This is done by multiplying the phase of one image by the complex conjugate of the phase of the other image, which effectively cancels out the magnitude information and highlights the phase differences. The result is then normalized to remove any bias introduced by varying magnitudes. After computing the cross-power spectrum, an inverse Fourier transform is applied to convert the result back into the spatial domain, where a sharp peak appears. The height and sharpness of this peak reflect the confidence of the match, while the position of the peak indicates the translational offset between the two images.
-doesnt work well 
-
-
-
-
-\subsubsection*{Hashing}  
-Hashing provides a compact representation of an image by converting its pixel data into a fixed-size hash value, which simplifies comparison. In average hashing (for example), the image is resized, converted to grayscale, and the average pixel value is computed. Each pixel is compared to this average, and a binary string (hash) is generated by assigning 1s and 0s depending on whether the pixel value is above or below the average. Hashing is useful for quickly comparing images to detect similarities or duplicates, with differences measured via Hamming distance between the hash values. However, from empirical testing, hashing was found to be much less accurate than other methods, and was not further pursued.
-
-\subsection*{}
-
-\subsubsection*{Future Work}
-In future, using a single image to infer location will be replaced by a more complex system that weights the estimate given by multiple images to infer location. Further, this will not increase runtime significantly. This method is not tested in this study, due to time constraints and the fact it is likely to make the solution too easy, without having to put much effort into the accuracy of the pipeline. xxx maybe ill test this out later. 
-
-
-\section*{Translational Estimators}
-
-Estimating the translation between two images is crucial, as it directly infers the GPS shift between frames. 
-Prior to translation estimation, images and point clouds are aligned together. Empirical tests show that separating rotation and translation improves accuracy, even with methods designed to estimate both simultaneously. Estimating fewer transformations reduces the potential for errors, leading to more precise results.
-After estimation, the translation values are aligned to the global heading space. 
-Given the altitude of the UAV, the main transformations in the images are rotation and translation, with minor perspective distortions in some cases. 
-Empirical tests show global matchers, which operate on the entire image, are much less robust, and have variances in estimations hundreds of times larger than local matchers. For this reason, local matchers are used for translation estimation.
-xxx - this is also true for rotational estimators.
-xxx- need to merge these
-
-
-
-\subsection*{Primary Methods for Estimating Transformations}
-
-
-
-\subsubsection*{Direct Source Normalization with Rotation Correction}
-This method first normalizes the source and destination points by centering them around their means. It then uses Singular Value Decomposition (SVD) to estimate the rotation, correcting for any minor rotational discrepancies. The translation is calculated by averaging the differences between the aligned points.  
-DoF: 3 (translation in x and y, and rotation). 
-
-\subsubsection*{Affine Transformation with RANSAC}
-Affine transformation, estimated via `cv2.estimateAffine2D`, captures translation, rotation, and scaling simultaneously. RANSAC is applied to filter outliers. While flexible, the combined estimation of multiple transformations may lead to less accurate translation estimates, as rotation and scaling adjustments may interfere with precise translation calculation.  
-DoF: 6 (translation in x and y, rotation, scaling in x and y, shear).
-
-\subsubsection*{Rigid Transformation Estimation (SVD)}
-This method preserves the shape of the object by using SVD to estimate both rotation and translation. It first centers the points and then determines the rotation matrix, followed by the translation.  
-DoF: 3 (translation in x and y, and rotation). 
-
-\subsubsection*{Homography Transformation}
-Homography estimates a transformation that maps points between two planes, capturing translation, rotation, scaling, and perspective distortion. It is estimated using `cv2.findHomography`.  
-DoF: 8 (translation, rotation, scaling, and perspective changes in x and y).
 
 
 
 
 
+\section*{Optimization Techniques}
+
+Optimizing parameter sets is crucial for enhancing the performance and robustness of the UAV navigation system. Given the significant variability in optimal parameters across different pipeline stages and datasets, an optimal, but not perfect, parameter configuration was determined for the entire pipeline. The objective was not to achieve the absolute best performance for each individual parameter set, as this would limit the system's generalizability and take extremely long. Further, if the method or pipeline does not perform well with a non-optimal parameter set, it is likely not robust enough to be used.
+
+To maintain fairness and avoid parameter bias, methods were given parameters that ensure their own optimal operation.
+
+\subsection*{RANSAC for Planar Transformation}
+RANSAC (Random Sample Consensus) for planar transformation is a robust estimation technique that iteratively selects random subsets of point correspondences to fit a model and identify inliers. By randomly choosing a few point pairs, RANSAC estimates the affine transformation that fits these points and checks how well the remaining points align with the model. The method calculates the number of inliers—points that fit the transformation within a set threshold—and repeats the process for a predefined number of iterations or until it achieves a sufficient inlier ratio. This approach is highly effective in datasets with significant outliers, as it focuses on finding a model that works for the largest subset of inliers. However, due to its iterative nature and need to sample repeatedly, RANSAC can result in increased runtime, particularly in larger datasets or when dealing with numerous outliers.
 
 
-% General 
+\subsection{LMEDS (Local Maxima Extrema Density Selection) for Planar Transformation}
+LMEDS (Local Maxima Extrema Density Selection) is a method designed to select keypoints based on areas of high feature density, identifying local maxima as keypoints for further matching. The technique focuses on regions where feature density peaks, selecting these local maxima to ensure the most significant and distinctive points are used in the matching process. By concentrating on areas of high feature concentration, LMEDS adapts to the feature distribution within the image, ensuring keypoints represent important regions while filtering out less significant points. This approach improves both accuracy and performance by reducing redundant keypoints and improving the quality of matches, particularly in areas with high feature variability. LMEDS is effective in outlier rejection, leading to more reliable transformations.
 
-feature detection dynamic optimization is fine bc it does not use prior kniowledge of the dataset, and is not far enough down the pipeline to force false positives into the dataset, it detects alot of keypoints and allows the future stages to deal with it. 
-
-
-\section*{optimization Techniques}
-Due to the large variance of optimal parameter sets as any prior pipeline method or parameter is varied, this set is only calculated once for the optimal pipeline. Further, the idea is not to get the absolute best value, as this depends on the dataset. The idea is to rather find a parameter that works well, and given the other stages being well-chosen, this crude parameter choice should work well without full optimization. More specifically, if the optimization stage only works well with highly tuned parameters, then the entire pipeline and task cannot be considered robust or generalizable.  
-However, note that for the above tests, crude estimates for the most optimal parameter set per parameter set were used to ensure each method was tested under optimal conditions, and optimization techniques did not add bias to any specific methods. More specifically, optimization was applied to every technique and method above to ensure they were tested near their full potential. 
-
-\subsubsection*{RANSAC for Affine Transformation}
-RANSAC is used to improve the robustness of affine transformation estimation by iteratively selecting random subsets of points and fitting it to a model estimation like affine. This filters out outliers, ensuring only the most reliable matches contribute to the final transformation matrix. 
-Its main parameter choice is a reprojected error threshold, which determines how far a point can be from the model to be considered an inlier. This method is extremely sensitive to the quality and number of keypoints found. This parameter WAS xxx. Using dynamic thresholding until a sufficient number of inliers were found, was not pursued, as it forces unatural matches into the dataset. That is, in sparse datasets it will force in false positives, and in dense datasets it will force out true positives. Since this is the final stage prior to the rotational and translational estimation, forcing false positives into the dataset will introduce massive errors. 
 
 \subsection*{Lowe's Ratio Test}
-Lowe's ratio test is used to filter matches based on the ratio of the best match's distance to the second-best match's distance. If the ratio is below a certain threshold, the match is retained. This test is crucial for removing ambiguous matches, ensuring only the most reliable correspondences are used for further processing. Lowe's ratio works on the basis that if a match is the best match, it should be sufficiently closer to the target keypoint than the second-best match. However, if it is not the best match, and is a false positive, then it is likely that the second-best match, also a false positive, is not significantly further, in descriptor space, from the target keypoint. Since almost every keypoint in the source image is matched with another keypoint in the destination image, there will be many false positives considering many matches are moved off the image as the UAV moves. If RANSAC was applied prior to this, many false positives would be included, and RANSACs model will be flooded with false positive, rendering it unable to find the correct model. This is why Lowe's ratio test is crucial. However, Lowe's ratio is also extremely sensitive to the number and quality of keypoints found. If there are very many keypoints relative to the ratio, correct matches might be removed due to the high number of keypoints implying a higher likelihood that the second-best match is very close in descriptor space. If Lowe's ratio is however too lenient it will allow through too many false positives. Dynamic thresholding was applied here. The aim was to minimize its impact, since it is somewhere in the middle of the pipeline so it does have a decent effect on the final estimation. Lowe's ratio was chosen such that it should ideally generalize well and only run once. However, if insufficient matches were found, the threshold is slowly made more lenient until a sufficient number of matches were found. This does run a risk of adding false positives into the dataset, however, it is necessary to ensure stability and enough matches are found in varying datasets. 
 
+Lowe's ratio test is utilized to filter keypoint matches based on the ratio of the distance of the best match to the second-best match. A match is retained if this ratio falls below a predefined threshold, indicating that the best match is significantly better than the alternatives. This test is essential for eliminating ambiguous or false matches, ensuring that only the most reliable correspondences are used in subsequent processing stages.
 
-Empirical Testing Only:
-Confidence based matching - threshold based on number of matches in sorted distance. This was not pursued as it was extremely sensitive to the number of keypoints found, and the quality of the keypoints. There is no way to know, for each dataset in general, how many good matches there are. This forces a number which might work well for one dataset, but completely fail for another. It runs the main risk of removing too many good matches.
-absolute thrseholding matches: This was based on absolute distance thresholding. ie there has to be an absolute closeness thrsehold met between the two kps in descriptor space. However, it was seen in empirical tests to be redundant given Lowe's ratio accounts for this implicitly, and it also led to instability, ie no effect or too few matches. The above number of matches is more robust. However, the above still not great bc xyz. this one either had no effect, or negative. highly unstable across tested thresholds. 
+However, Lowe's ratio test is sensitive to the number and quality of detected keypoints. An excessively stringent ratio may discard valid matches, especially in scenarios with a high density of keypoints, while a lenient ratio might allow too many false positives. To address this, a dynamic thresholding approach was implemented. The threshold starts at a conservative value and is gradually relaxed until a sufficient number of matches is achieved. This strategy strikes a balance between minimizing false positives and ensuring enough reliable matches are available for stable transformation estimation. While there is a risk of introducing some false positives, this approach is necessary to maintain robustness across diverse datasets.
 
+\subsection*{Parallel Flow Filtering}
 
+Parallel Flow Filtering enhances match consistency by ensuring that feature matches align with the average motion flow resulting from the UAV's rotation and translation. In typical UAV movements, the flow of features is linear and parallel to the direction of motion, assuming no scale as per scope. This technique calculates an average motion vector by combining mean and median motion vectors and filters out matches that deviate beyond a specified angular threshold from this average flow. By removing inconsistent matches, Parallel Flow Filtering ensures that only matches conforming to the expected motion pattern contribute to the transformation estimation, thereby improving overall accuracy and reliability.
+
+\subsection*{n-Match Thresholding} 
+This method involves setting a threshold based on allowing a specific number of matches with the smallest descriptor distances. 
+
+\subsection*{Absolute Thresholding of Matches} 
+Absolute thresholding filters matches based on a fixed distance in descriptor space, retaining only those matches that meet a minimum closeness criterion. 
 
 

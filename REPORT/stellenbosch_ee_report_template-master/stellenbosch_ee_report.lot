@@ -16,21 +16,23 @@
 \contentsline {table}{\numberline {2.4}{\ignorespaces Runtime for ORB (8000 keypoints) and AKAZE (6000 keypoints) (in seconds)}}{10}{table.caption.17}%
 \contentsline {table}{\numberline {2.5}{\ignorespaces RMSE GPS Accuracy for BFMatcher and FLANN (in meters)}}{11}{table.caption.18}%
 \contentsline {table}{\numberline {2.6}{\ignorespaces Runtime Comparison for BFMatcher and FLANN (in seconds)}}{12}{table.caption.19}%
-\contentsline {table}{\numberline {2.7}{\ignorespaces RMSE Comparison Across Datasets for Partial Affine 2D, Affine 2D, and Homography}}{15}{table.caption.21}%
-\contentsline {table}{\numberline {2.8}{\ignorespaces Runtime Comparison Across Datasets for Partial Affine 2D, Affine 2D, and Homography}}{15}{table.caption.22}%
-\contentsline {table}{\numberline {2.9}{\ignorespaces RMSE Comparison Across Datasets for Various Global Matching Techniques (in meters)}}{17}{table.caption.23}%
-\contentsline {table}{\numberline {2.10}{\ignorespaces Runtime Comparison Across Global Matching Techniques (in seconds)}}{18}{table.caption.24}%
-\contentsline {table}{\numberline {2.11}{\ignorespaces RMSE (GPS Error) and Percentage Change with 10-degree Rotational Offset}}{19}{table.caption.25}%
-\contentsline {table}{\numberline {2.12}{\ignorespaces RMSE GPS Error Comparison Across Datasets for Different Translation Methods}}{20}{table.caption.26}%
-\contentsline {table}{\numberline {2.13}{\ignorespaces Runtime Comparison Across Datasets for Different Translation Methods (in seconds)}}{21}{table.caption.27}%
-\contentsline {table}{\numberline {2.14}{\ignorespaces RMSE Variance Across Datasets for Different Translation Methods (Robustness Test)}}{21}{table.caption.28}%
+\contentsline {table}{\numberline {2.7}{\ignorespaces RMSE Comparison Across Datasets for Different Rotational Estimators}}{14}{table.caption.21}%
+\contentsline {table}{\numberline {2.8}{\ignorespaces Runtime Comparison Across Datasets for Different Rotational Estimators}}{15}{table.caption.22}%
+\contentsline {table}{\numberline {2.9}{\ignorespaces RMSE Comparison Across Datasets for Various Global Matching Techniques (in meters)}}{16}{table.caption.23}%
+\contentsline {table}{\numberline {2.10}{\ignorespaces Runtime Comparison Across Global Matching Techniques (in seconds)}}{17}{table.caption.24}%
+\contentsline {table}{\numberline {2.11}{\ignorespaces RMSE (GPS Error) and Percentage Change with 10-degree Rotational Offset}}{17}{table.caption.25}%
+\contentsline {table}{\numberline {2.12}{\ignorespaces RMSE GPS Error Comparison Across Datasets for Different Translation Methods}}{19}{table.caption.26}%
+\contentsline {table}{\numberline {2.13}{\ignorespaces Runtime Comparison Across Datasets for Different Translation Methods (in seconds)}}{20}{table.caption.27}%
+\contentsline {table}{\numberline {2.14}{\ignorespaces RMSE Variance Across Datasets for Different Translation Methods (Robustness Test)}}{20}{table.caption.28}%
+\contentsline {table}{\numberline {2.15}{\ignorespaces RMSE Comparison Across Datasets for LMEDS and RANSAC}}{21}{table.caption.29}%
+\contentsline {table}{\numberline {2.16}{\ignorespaces Runtime Comparison Across Datasets for LMEDS and RANSAC}}{21}{table.caption.30}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Comparison of FLANN with and without Post-Lowe’s Cross-Check across Datasets (MAE GPS and Runtime)}}{24}{table.caption.29}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces Performance Comparison of BFMatcher and FLANN Under Limited Post-Filtering}}{26}{table.caption.32}%
-\contentsline {table}{\numberline {3.3}{\ignorespaces Performance comparison of optimized BFMatcher and FLANN Across Datasets}}{28}{table.caption.34}%
-\contentsline {table}{\numberline {3.4}{\ignorespaces RMSE Comparison Across Datasets for Partial Affine 2D, Affine 2D, and Homography}}{30}{table.caption.35}%
-\contentsline {table}{\numberline {3.5}{\ignorespaces Runtime Comparison Across Datasets for Partial Affine 2D, Affine 2D, and Homography}}{30}{table.caption.36}%
-\contentsline {table}{\numberline {3.6}{\ignorespaces Initial Testing Results (MAE - Mean Absolute GPS Error)}}{31}{table.caption.37}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Comparison of FLANN with and without Post-Lowe’s Cross-Check across Datasets (MAE GPS and Runtime)}}{25}{table.caption.31}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Performance Comparison of BFMatcher and FLANN Under Limited Post-Filtering}}{27}{table.caption.34}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces Performance comparison of optimized BFMatcher and FLANN Across Datasets}}{29}{table.caption.36}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces RMSE Comparison Across Datasets for Partial Affine 2D, Affine 2D, and Homography}}{31}{table.caption.37}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces Runtime Comparison Across Datasets for Partial Affine 2D, Affine 2D, and Homography}}{31}{table.caption.38}%
+\contentsline {table}{\numberline {3.6}{\ignorespaces Initial Testing Results (MAE - Mean Absolute GPS Error)}}{32}{table.caption.39}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

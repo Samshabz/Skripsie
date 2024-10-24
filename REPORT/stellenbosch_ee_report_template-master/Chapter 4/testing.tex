@@ -7,8 +7,7 @@
 This section outlines the framework used to evaluate the performance of the proposed UAV navigation methods. The evaluation focuses on three primary metrics: accuracy, runtime, and robustness. These metrics are critical to ensure that the navigation system can reliably operate under diverse and challenging conditions, reflecting real-world scenarios where the UAV may encounter varying environmental factors.
 
 \subsection{Datasets}
-
-Five distinct datasets were selected to comprehensively test the methods' ability to generalize and perform in different environments:
+Five distinct datasets were selected to rigorously test the methods' generalization and performance across different environments. These datasets were captured using Google Earth at constant altitudes within each dataset, ranging from 5.5 to 6.5 km across datasets. The frames had an average radial movement of approximately 600 pixels between them, with a fixed resolution of 1920x972. This setup ensured that the inference task remained challenging but within practical limitations. In real-world scenarios, the higher frame rate and altitude would result in a greater number of images, which would increase overlap and improve inference accuracy. The datasets used for testing are as follows:
 
 \begin{itemize}
     \item \textbf{CITY1 and CITY2} (Cape Town): Both datasets originate from Cape Town. CITY1 incorporates both rotational and translational changes between frames, while CITY2 includes only translational changes. This distinction allows for the isolation of performance under rotational loads.
@@ -39,9 +38,6 @@ Parameters were held constant across tests and chosen to ensure optimal performa
 
 This section presents the evaluation results of three feature detectors: ORB, AKAZE, and SuperPoint with LightGlue. The primary objective of this evaluation is to identify the most suitable detector for a UAV navigation system tasked with estimating rotational and translational transformations. Key performance metrics, including RMSE (Root Mean Square Error), runtime, and robustness across multiple datasets, were considered to assess each detector's effectiveness and suitability.
 
-\subsection{Testing Overview}
-
-The feature detectors were assessed based on their ability to accurately estimate transformations under various conditions. Consistent parameters were maintained across all datasets to ensure a fair comparison. Notably, AKAZE lacked a built-in keypoint target parameter, resulting in highly variable runtimes across datasets due to the necessity of selecting a parameter that identified sufficient keypoints for each dataset. To address this variability, dynamic thresholding was implemented for AKAZE, enabling keypoint target thresholds comparable to those of the other detectors.
 
 The evaluation focused on three main criteria:
 \begin{itemize}
@@ -230,93 +226,65 @@ These selections ensure that the UAV navigation system leverages the most approp
 
 
 \section{Rotational Estimators}
-
-This section evaluates the performance of three rotational estimation methods: Partial Affine 2D, Affine 2D, and Homography. The objective is to identify the most suitable method for UAV navigation by comparing accuracy, runtime, and robustness across various datasets. These estimators are critical for accurately determining the rotational transformations required for precise navigation and alignment of UAV imagery.
-
-\subsection{Testing Overview}
-
-The rotational estimators were assessed based on their ability to accurately estimate rotations under diverse conditions. Consistent parameters were maintained across all datasets to ensure a fair comparison. The evaluation focused on three primary criteria:
-\begin{itemize}
-    \item \textbf{Accuracy (RMSE in GPS)}: Measures the precision of rotational estimates.
-    \item \textbf{Runtime}: Assesses the computational efficiency of each estimator.
-    \item \textbf{Robustness}: Evaluates the consistency and reliability of each method across different datasets.
-\end{itemize}
-
-Additionally, an improvement technique involving the application of a rigid transform using Singular Value Decomposition (SVD) was explored. Although initially less effective as a standalone method, the rigid transform consistently enhanced overall accuracy when applied after other estimation methods.
+xxx fix
+This section evaluates the performance of four rotational estimation methods: Partial Affine 2D, Affine 2D, Homography, and Rigid Via SVD. The objective is to identify the most suitable method for UAV navigation by comparing accuracy, runtime, and robustness across various datasets. These estimators are critical for accurately determining the rotational transformations required for precise navigation and alignment of UAV imagery.
 
 \subsection{Accuracy Evaluation}
 
-Root Mean Square Error (RMSE) was utilized to evaluate the estimation error of each method across five datasets. Table \ref{tab:rmse_comparison_rotestim} summarizes the RMSE values (in meters) for Partial Affine 2D, Affine 2D, and Homography.
+The Rigid transforms, SVD and Partial Affine 2D provided the most accurate and consistent results across datasets. They were subsequently tested in conjunction to see if their benefits could be added. However, the SVD only rigid transform performed marginally better across the datasets. Ultimately, the OpenCV methods using outlier rejection sometimes helped improve the estimate, but their use of static thresholds and increased degrees of freedom rendered them less able to maintain this accuracy across datasets. Table \ref{tab:rmse_comparison_rotestim} summarizes the RMSE values (in meters) for the given methods.
 
-\begin{table}[H]
-    \centering
-    \caption{RMSE Comparison Across Datasets for Partial Affine 2D, Affine 2D, and Homography}
-    \label{tab:rmse_comparison_rotestim}
-    \begin{tabular}{|c|c|c|c|}
-    \hline
-    \textbf{Dataset} & \textbf{Partial Affine 2D} & \textbf{Affine 2D} & \textbf{Homography} \\ \hline
-    CITY1   & 70.18 & 81.22 & 76.25 \\ \hline
-    CITY2   & 7.54  & 7.80  & 7.16  \\ \hline
-    ROCKY   & 27.98 & 22.10 & 24.40 \\ \hline
-    DESERT  & 44.94 & 43.11 & 48.56 \\ \hline
-    AMAZON  & 46.98 & 52.56 & 48.04 \\ \hline
-    \end{tabular}
+\begin{table}[H] 
+    \centering 
+    \caption{RMSE Comparison Across Datasets for Different Rotational Estimators} 
+    \label{tab:rmse_comparison_rotestim} 
+    \begin{tabular}{|c|c|c|c|c|c|} 
+        \hline
+        \textbf{Method} & \textbf{CITY1} & \textbf{CITY2} & \textbf{ROCKY} & \textbf{DESERT} & \textbf{AMAZON} \\ \hline
+        Partial Affine 2D & 70.18 & 7.54 & 27.98 & 44.94 & 46.98 \\ \hline 
+        Affine 2D & 81.22 & 7.80 & 22.10 & 43.11 & 52.56 \\ \hline 
+        Homography & 76.25 & 7.16 & 24.40 & 48.56 & 48.04 \\ \hline 
+        Rigid Affine + SVD & 51.72 & 5.98 & 21.18 & 36.27 & 30.84 \\ \hline 
+        \makecell{Rigid SVD} & 51.74 & 6.16 & 19.03 & 36.48 & 31.57 \\ \hline 
+    \end{tabular} 
 \end{table}
-
-\textbf{Observations:}  
-\begin{itemize}
-    \item \textbf{Partial Affine 2D Accuracy:} Partial Affine 2D exhibited the lowest combined normalized RMSE across all datasets, indicating superior overall accuracy.
-    \item \textbf{Affine 2D Accuracy:} Affine 2D demonstrated competitive accuracy, particularly excelling in the ROCKY dataset.
-    \item \textbf{Homography Accuracy:} Homography maintained respectable accuracy but was outperformed by Partial Affine 2D in most datasets.
-    \item \textbf{Dataset-Specific Performance:} The most accurate estimator varied per dataset, highlighting the importance of method selection based on specific environmental conditions.
-\end{itemize}
 
 \subsection{Runtime Evaluation}
 
-Table \ref{tab:runtime_comparison_rotestim} presents the runtime (in seconds) for each rotational estimator across the five datasets. The results reflect the computational efficiency of each method relative to their transformation complexity.
+The runtime results below relate mostly to the degrees of freedom in the method, with the simplest rigid transforms performing the best. The SVD only based method performs the fastest due to its lack of iterative optimization and singular method.
+Table \ref{tab:runtime_comparison_rotestim} presents the runtime (in seconds) for each rotational estimator across the five datasets. 
 
-\begin{table}[H]
-    \centering
-    \caption{Runtime Comparison Across Datasets for Partial Affine 2D, Affine 2D, and Homography}
-    \label{tab:runtime_comparison_rotestim}
-    \begin{tabular}{|c|c|c|c|}
-    \hline
-    \textbf{Dataset} & \textbf{Partial Affine 2D} & \textbf{Affine 2D} & \textbf{Homography} \\ \hline
-    CITY1   & 56.76 & 65.27 & 68.79 \\ \hline
-    CITY2   & 52.20 & 54.55 & 65.11 \\ \hline
-    ROCKY   & 69.44 & 76.16 & 78.92 \\ \hline
-    DESERT  & 56.40 & 71.52 & 69.97 \\ \hline
-    AMAZON  & 50.34 & 58.16 & 58.27 \\ \hline
-    \end{tabular}
+\begin{table}[H] 
+    \centering 
+    \caption{Runtime Comparison Across Datasets for Different Rotational Estimators} 
+    \label{tab:runtime_comparison_rotestim} 
+    \begin{tabular}{|c|c|c|c|c|c|} 
+        \hline 
+        \textbf{Method} & \textbf{CITY1} & \textbf{CITY2} & \textbf{ROCKY} & \textbf{DESERT} & \textbf{AMAZON} \\ \hline
+        Partial Affine 2D & 56.76 & 52.20 & 69.44 & 56.40 & 50.34 \\ \hline 
+        Affine 2D & 65.27 & 54.55 & 76.16 & 71.52 & 58.16 \\ \hline 
+        Homography & 68.79 & 65.11 & 78.92 & 69.97 & 58.27 \\ \hline 
+        Rigid Affine + SVD & 90.74 & 77.45 & 81.19 & 90.74 & 94.25 \\ \hline 
+        \makecell{Rigid SVD} & 83.33 & 61.47 & 77.94 & 71.27 & 74.77 \\ \hline 
+    \end{tabular} 
 \end{table}
-
-\textbf{Observations:}  
-\begin{itemize}
-    \item \textbf{Runtime Efficiency:} Partial Affine 2D consistently demonstrated the fastest runtimes across all datasets, followed by Affine 2D and Homography.
-    \item \textbf{Complexity Correlation:} The runtime generally correlated with the transformation model's complexity, with more complex models requiring longer computation times.
-    \item \textbf{Dataset-Specific Efficiency:} Partial Affine 2D maintained superior efficiency even in more demanding datasets such as ROCKY and DESERT.
-\end{itemize}
+    
+    
 
 \subsection{Robustness Testing}
 
-Robustness testing assessed each method's sensitivity to parameter variations, including Lowe’s ratio, RANSAC thresholds, and keypoint quantity. This evaluation was essential to determine the performance consistency of each method under different conditions. For the sake of brevity, the results are omitted; The observations are summarized below.
-
+Robustness testing assessed each method's sensitivity to parameter variations, including Lowe’s ratio, RANSAC thresholds, and keypoint quantity. The generalization to datasets was spoken to in accuracy testing. This evaluation was essential to determine the performance consistency of each method under different challenging conditions. For the sake of brevity, the results are omitted; The recorded observations are summarized below.
 
 
 \textbf{Observations:}  
 \begin{itemize}
-    \item \textbf{Parameter Sensitivity:} All methods exhibited high robustness against parameter variations, maintaining consistent performance across different settings.
-    \item \textbf{Homography Variability:} Homography showed greater variability in accuracy when fewer matches were available, attributable to the complexity of its transformation model.
-    \item \textbf{Consistent Performance:} Partial Affine 2D maintained stable performance across all datasets, reinforcing its suitability for diverse environmental conditions given its simplified transformation model.
+    \item \textbf{Parameter Sensitivity:} All methods were excellent at being robust against parameter variations, maintaining consistent performance across different settings.
+    \item \textbf{Best Robustness:} The Rigid via SVD only transform exhibited the highest robustness across all parameters, especially at low keypoint counts, maintaining consistent performance under varying conditions.
+
 \end{itemize}
-
-\subsection{Improvement Technique}
-
-An additional method, the rigid transform using Singular Value Decomposition (SVD), was initially evaluated as a primary rotational estimator. However, it performed significantly worse than the other methods and was subsequently excluded from standalone consideration. Notably, when the rigid transform was applied after other estimation methods, it consistently enhanced overall accuracy. This improvement is likely due to the rigid transform's ability to make minor, precise corrections once the point cloud is largely aligned by other methods, despite its initial inefficiency in handling outliers in the case of large misalignments.
 
 \subsection{Final Selection of Rotational Estimator}
 
-Based on the comprehensive evaluation of accuracy, runtime, and robustness, Partial Affine 2D emerged as the most suitable primary rotational estimator for the UAV navigation system. It demonstrated the lowest combined normalized RMSE across all datasets, the fastest runtime, and high robustness. Additionally, the application of the rigid transform using SVD after Partial Affine 2D further enhanced overall accuracy, ensuring precise rotational alignment.
+Based on the comprehensive evaluation of accuracy, runtime, and robustness, the rigid transform by SVD only emerged as the most suitable rotational estimator for the UAV navigation system. It demonstrated the lowest combined normalized RMSE across all datasets, the fastest runtime, and high robustness. 
 
 \section{Image Similarity Estimators}
 
@@ -501,6 +469,86 @@ Based on the evaluation of accuracy, runtime, and robustness, \textbf{Partial Af
 
 
 
-\section*{Optimization Techniques}
 
-compare RANSAC vs other outlier rejection methods
+\section{Optimization Techniques}
+
+This section outlines the selected optimization methods and their corresponding parameter choices for each stage of the UAV navigation system. The focus is on the robustness of each technique and the comparative performance of different methods, rather than on identifying the absolute optimal parameters for each dataset.
+
+\subsection{Planar Transform Outlier Rejection Method}
+
+Two outlier rejection methods, LMEDS (Least Median of Squares) and RANSAC (Random Sample Consensus), were evaluated for planar transform estimation. The performance comparison is summarized in Tables \ref{tab:rmse_comparison_opt} and \ref{tab:runtime_comparison_opt}.
+
+\begin{table}[H]
+    \centering
+    \caption{RMSE Comparison Across Datasets for LMEDS and RANSAC}
+    \label{tab:rmse_comparison_opt}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Dataset} & \textbf{RMSE GPS Error (LMEDS)} & \textbf{RMSE GPS Error (RANSAC)} \\ \hline
+    CITY1   & 51.78 & 59.57 \\ \hline
+    CITY2   & 6.16  & 5.84  \\ \hline
+    ROCKY   & 19.04 & 18.59 \\ \hline
+    DESERT  & 36.48 & 35.90 \\ \hline
+    AMAZON  & 31.57 & 34.48 \\ \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Runtime Comparison Across Datasets for LMEDS and RANSAC}
+    \label{tab:runtime_comparison_opt}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Dataset} & \textbf{Runtime (LMEDS)} & \textbf{Runtime (RANSAC)} \\ \hline
+    CITY1   & 68.72 & 126.14 \\ \hline
+    CITY2   & 52.20 & 64.65  \\ \hline
+    ROCKY   & 69.44 & 126.97 \\ \hline
+    DESERT  & 56.40 & 126.97 \\ \hline
+    AMAZON  & 50.34 & 64.65  \\ \hline
+    \end{tabular}
+\end{table}
+
+\textbf{LMEDS} significantly outperforms \textbf{RANSAC} in terms of mean accuracy across datasets, achieving a higher mean accuracy despite RANSAC performing better in a couple of instances. Additionally, LMEDS demonstrates significantly faster runtimes across all datasets, as depicted in Table \ref{tab:runtime_comparison_opt}. This superior balance of accuracy and efficiency makes LMEDS the preferred method for planar transform outlier rejection. The default parameters for LMEDS were utilized, as they provided sufficiently optimal performance across the tested datasets.
+
+\subsection{Lowe's Ratio Test}
+
+Lowe's ratio test was employed to filter keypoint matches by comparing the distance of the best match to the second-best match. A static threshold proved inadequate for generalizing across diverse datasets, leading to inconsistent accuracy. To enhance robustness, a dynamic thresholding approach was implemented. The initial Lowe's ratio was set low and incrementally increased until a predetermined number of matches was achieved. This method required careful tuning of several parameters to balance match quality and quantity:
+
+\begin{itemize}
+    \item \textbf{Initial Lowe's Ratio:} Configured between 0.5 and 0.7 to strike a balance between generalization (ensuring a sufficient number of matches under various conditions) and match quality (preventing an overload of poor matches).
+    \item \textbf{Step Size:} Ranged from 0.025 to 0.1 to balance the number of iterations and the quality of matches.
+    \item \textbf{Maximum Iterations:} Limited to 10-30 iterations to prevent excessive inclusion of poor matches, especially in sparse datasets.
+    \item \textbf{Minimum Matches:} Set between 2000 and 3000 to ensure a sufficient number of reliable matches without compromising match quality.
+\end{itemize}
+
+This dynamic thresholding strategy minimizes the impact of Lowe's ratio by adjusting the threshold only when necessary, thereby maintaining stability and ensuring a robust number of matches across varying datasets.
+
+\subsection{Parallel Flow Filtering}
+
+Parallel Flow Filtering enhances the consistency of feature matches by aligning them with the average motion flow resulting from the UAV's rotation and translation. The following parameters were optimized based on empirical testing:
+
+\begin{itemize}
+    \item \textbf{Average Flow Measurement:} Utilized the median exclusively, leveraging its robustness against outliers.
+    \item \textbf{Tolerance:} Set between 1.5 and 4 degrees to balance noise stability and the exclusion of false positives.
+    \item \textbf{Internal Angle Tolerance Scaling:} Applied an exponential scaling based on the internal angle between image pairs using the equation:
+    \begin{equation*}
+        T_s = T_i \cdot \left(1 - \left(\frac{\alpha}{\alpha_m}\right)\right)^2
+    \end{equation*}
+    where:
+    \begin{itemize}
+        \item $T_s$ is the scaled tolerance.
+        \item $T_i$ is the initial tolerance.
+        \item $\alpha$ is the internal angle.
+        \item $\alpha_m$ is the maximum possible internal angle.
+    \end{itemize}
+    This scaling ensures that the tolerance adapts appropriately to the degree of image rotation, effectively modelling the exponentially increasing likelihood of outliers in image pairs as their internal angles increase.
+\end{itemize}
+
+\subsection*{\textbf{Empirical Testing Only}}
+
+\textbf{n-Match Thresholding} \\
+Empirical tests revealed that the optimal number of matches varies significantly across datasets and to other parameters, making it unreliable. This approach risks either retaining too many false matches or discarding too many good matches, depending on the dataset characteristics. This method was not pursued due to its high sensitivity to the number and quality of keypoints. 
+
+\textbf{Absolute Thresholding of Matches} \\
+ Empirical tests revealed that this method was largely redundant, as Lowe's ratio test inherently accounts for descriptor distances. Additionally, absolute thresholding led to large performance variability, either having no meaningful effect or removing too many matches. Given these limitations, absolute thresholding was deemed ineffective and was consequently excluded from the optimization techniques.
+

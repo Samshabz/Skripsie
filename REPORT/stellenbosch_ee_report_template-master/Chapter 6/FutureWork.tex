@@ -6,3 +6,18 @@ Since the camera parameters remained constant, the ground was planar at the alti
 In future one can infer the other. In other words, if one knows the camera parameters, and they have a datapoint from a previous flight, they can infer the altitude by simply scaling the altitude by the change in the pixel to metre conversion factor given the error-telemetry conversion factor estimate.
 Conversely, if one has the altitude they can infer this factor in real-time without the need for error-telemetry conversion factor inference. Specifically, if the height of the UAV changes on the reverse flight, they can with certainty correct the factor, and ensure continued and correct GPS estimation. 
 
+
+
+
+\subsection*{}
+
+\subsubsection*{Future Work}
+In future, using a single image to infer location will be replaced by a more complex system that weights the estimate given by multiple images to infer location. Further, this will not increase runtime significantly. This method is not tested in this study, due to time constraints and the fact it is likely to make the solution too easy, without having to put much effort into the accuracy of the pipeline. xxx maybe ill test this out later. 
+
+non-planar stereo 
+
+
+smarter search space reducer, dont choose too many images with similar proximity, 
+
+
+parallel?

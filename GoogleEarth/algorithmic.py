@@ -198,13 +198,13 @@ class UAVNavigator:
         mask = None
         if method_to_use == 0:
             # This needs to actually be tuned. 
-            M, mask = cv2.estimateAffine2D(src_pts, dst_pts, method=cv2.RANSAC)
+            M, mask = cv2.estimateAffine2D(src_pts, dst_pts, method=cv2.LMEDS)
 
 
 
             
         elif method_to_use == 1:
-            M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, homography_threshold)
+            M, mask = cv2.findHomography(src_pts, dst_pts, cv2.LMEDS)
             M = M / M[2, 2]
         
             # The top-left 2x2 submatrix contains the rotational and scaling info
@@ -213,7 +213,7 @@ class UAVNavigator:
             scale_y = np.sqrt(M[0, 1]**2 + M[1, 1]**2)
 
         elif method_to_use == 2:
-            M, mask = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.RANSAC)
+            M, mask = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.LMEDS)
 
         if M is None:
             raise ValueError("Transformation matrix estimation failed.")
@@ -995,7 +995,45 @@ class UAVNavigator:
             
                 return translation_x, translation_y
 
-    
+    def ensure_parallel_lines(self, src_pts, dst_pts, int_angle, tolerance=1.8, max_rotation=180):
+        tolerance_adder = -0.5 + 0.5 * len(src_pts)/1000 
+        #1.8 works well for 1000 or so. lets expand for larger. 
+        # clip to -1, 1
+        tolerance_adder = np.clip(tolerance_adder, -1, 1)
+        tolerance += tolerance_adder
+        
+        def normalize(v):
+            norm = np.linalg.norm(v)
+            return v / norm if norm != 0 else v
+        scaled_tolerance = 2*tolerance * ((1 - 1*(int_angle / max_rotation)) ** 2)
+        tolerance = scaled_tolerance
+        # Calculate displacement vectors
+        displacement_vectors = dst_pts - src_pts
+
+        # Normalize displacement vectors
+        normalized_vectors = np.array([normalize(v) for v in displacement_vectors])
+        normalized_vectors = np.squeeze(normalized_vectors)  # Ensure shape is (N, 2)
+
+        # Compute the median and mean directions
+        median_direction = np.median(normalized_vectors, axis=0)
+        combined_direction = normalize(median_direction )
+
+        # print(f"Median direction: {median_direction}")
+        # print(f"Mean direction: {mean_direction}")
+        print(f"meajn direction angle: {np.degrees(np.arctan2(combined_direction[1], combined_direction[0]))}")
+        # print(f"Weighted Average Direction (3*median + 1*mean): {combined_direction}")
+        # print(f"Weighted Average Angle: {np.degrees(np.arctan2(combined_direction[1], combined_direction[0]))}")
+
+        # Calculate angles between each vector and the combined direction
+        dot_products = np.dot(normalized_vectors, combined_direction)
+        angles = np.degrees(np.arccos(np.clip(dot_products, -1.0, 1.0)))  # Get the angle in degrees
+
+        # print(f"Angles above npabs 0, 1, 2, 5, 10, 15: {len(np.where(angles > 0)[0])}, {len(np.where(angles > 1)[0])}, {len(np.where(angles > 2)[0])}, {len(np.where(angles > 5)[0])}, {len(np.where(angles > 10)[0])}, {len(np.where(angles > 15)[0])}")
+
+        # Filter points that deviate by more than the allowed angular tolerance
+        filtered_indices = np.where(angles <= tolerance)[0]
+
+        return src_pts[filtered_indices], dst_pts[filtered_indices]
 
     def analyze_matches(self, bool_infer_factor, num_images_analyze):
         deviation_norms_x = []
@@ -1018,6 +1056,7 @@ class UAVNavigator:
             match_time_2 = time.time() - match_time_1
             
             if best_index != -1 and internal_angle is not None:
+
                 time_rand = time.time()
                 if not bool_infer_factor:
                     self.add_no_GPS_image(i, self.directory)
@@ -1033,20 +1072,23 @@ class UAVNavigator:
 
                 actual_pixel_change_x_m, actual_pixel_change_y_m = actual_gps_diff_meters[0], actual_gps_diff_meters[1]
 
-
+                # 0
 
                 self.actual_GPS_deviation.append((np.abs(actual_pixel_change_x_m), np.abs(actual_pixel_change_y_m)))
 
-                # reestimate the angle based on the best match
-                internal_angle, _ = self.reestimate_rotation(i, best_index)
+                # # reestimate the angle based on the best match
+                # internal_angle, _ = 0, 0 #self.reestimate_rotation(i, best_index)
 
 
                 inference_image_rotated = rotate_image(self.pull_image(i, self.directory, bool_rotate=False), -internal_angle)
                 # replace with internal angle this is right. 
                 
                 rotated_inf_kp, rotated_inf_des = self.local_detector.get_keydes(inference_image_rotated) if self.local_detector_name != "SuperPoint" else (self.local_detector.get_features(inference_image_rotated), None)
-                
 
+                
+                rand_time_2 = time.time() - time_rand
+
+                print(f"internal angle: {internal_angle:.4f} deg")
                 if bool_infer_factor:
                     # print(f"len feats: {len(self.stored_feats[i]['keypoints'])}") if self.neural_net_on == True 
                     src_pts, dst_pts = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
@@ -1072,12 +1114,14 @@ class UAVNavigator:
                 elif not bool_infer_factor:
                     src_pts, dst_pts = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
 
+                src_pts, dst_pts = self.ensure_parallel_lines(src_pts, dst_pts, np.abs(internal_angle))
 
-
-
+                rand_time_3 = time.time() - time_rand
                 # debug (end of analyze)
                 len_matches = len(src_pts)
                 self.len_matches_arr.append(len_matches)
+
+                        
 
                 shift_time_1 = time.time()
                 translation_x, translation_y = self.get_translations(bool_infer_factor, i, best_index, src_pts, dst_pts)
@@ -1085,7 +1129,7 @@ class UAVNavigator:
 
                 # DEBUG
                 # Unnorm_x, Unnorm_y = translation_x, translation_y
- 
+                rand_new = time.time()
                 # Global Normalization
                 translation_x, translation_y = normalize_translation_to_global_coord_system(translation_x, translation_y, -self.stored_headings[best_index])
 
@@ -1140,9 +1184,9 @@ class UAVNavigator:
                     
 
 
-                time_BB = time.time() - timeAS
+                rand_new_2 = rand_new - time.time()
                 
-                # print("Match time: ", match_time_2, "Shift time: ", shift_time_2, "Total time: ", time_BB)
+                # print("Match time: ", match_time_2, "Shift time: ", shift_time_2, "Total time: ", time_BB, "Rand time: ", rand_time_2, "Rand time 2: ", rand_time_3, "Rand new 2: ", rand_new_2)
 
        
         mean_x_dev, mean_y_dev = np.mean(deviation_norms_x), np.mean(deviation_norms_y)

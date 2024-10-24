@@ -10,13 +10,12 @@
 \contentsline {chapter}{\numberline {2}Comparison of Methods}{6}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Testing Setup}{6}{section.2.1}%
 \contentsline {subsection}{\numberline {2.1.1}Datasets}{6}{subsection.2.1.1}%
-\contentsline {subsection}{\numberline {2.1.2}Testing Structure}{6}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.2}Testing Structure}{7}{subsection.2.1.2}%
 \contentsline {subsection}{\numberline {2.1.3}Parameters}{7}{subsection.2.1.3}%
-\contentsline {section}{\numberline {2.2}Feature Detectors}{7}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Testing Overview}{8}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Translation Estimation Performance}{8}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Rotation Estimation Performance}{9}{subsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.2.4}Final Selection of Feature Detectors}{10}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.2}Feature Detectors}{8}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Translation Estimation Performance}{8}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Rotation Estimation Performance}{9}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Final Selection of Feature Detectors}{10}{subsection.2.2.3}%
 \contentsline {section}{\numberline {2.3}Local Feature Matchers}{11}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Testing Overview}{11}{subsection.2.3.1}%
 \contentsline {subsection}{\numberline {2.3.2}Accuracy Evaluation}{11}{subsection.2.3.2}%
@@ -24,33 +23,35 @@
 \contentsline {subsection}{\numberline {2.3.4}Robustness Under Varying Detector Thresholds}{12}{subsection.2.3.4}%
 \contentsline {subsection}{\numberline {2.3.5}Final Selection of Local Feature Matcher}{13}{subsection.2.3.5}%
 \contentsline {section}{\numberline {2.4}Rotational Estimators}{14}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Testing Overview}{14}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Accuracy Evaluation}{14}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Runtime Evaluation}{15}{subsection.2.4.3}%
-\contentsline {subsection}{\numberline {2.4.4}Robustness Testing}{16}{subsection.2.4.4}%
-\contentsline {subsection}{\numberline {2.4.5}Improvement Technique}{16}{subsection.2.4.5}%
-\contentsline {subsection}{\numberline {2.4.6}Final Selection of Rotational Estimator}{16}{subsection.2.4.6}%
-\contentsline {section}{\numberline {2.5}Image Similarity Estimators}{17}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Accuracy Evaluation}{17}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}Runtime Evaluation}{18}{subsection.2.5.2}%
-\contentsline {subsection}{\numberline {2.5.3}Robustness to Rotational Offsets}{18}{subsection.2.5.3}%
-\contentsline {subsection}{\numberline {2.5.4}Improvement Technique}{19}{subsection.2.5.4}%
-\contentsline {subsection}{\numberline {2.5.5}Final Selection of Global Matching Technique}{19}{subsection.2.5.5}%
-\contentsline {section}{\numberline {2.6}Translational Estimators}{20}{section.2.6}%
-\contentsline {subsection}{\numberline {2.6.1}Accuracy Evaluation}{20}{subsection.2.6.1}%
-\contentsline {subsection}{\numberline {2.6.2}Runtime Evaluation}{20}{subsection.2.6.2}%
-\contentsline {subsection}{\numberline {2.6.3}Robustness Testing}{21}{subsection.2.6.3}%
-\contentsline {subsection}{\numberline {2.6.4}Final Choice of Translational Estimator}{22}{subsection.2.6.4}%
-\contentsline {chapter}{\numberline {3}Local Feature Matchers}{23}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Experimental Setup and Results}{23}{section.3.1}%
-\contentsline {subsubsection}{Testing Conclusion}{24}{subsubsection*.30}%
-\contentsline {subsubsection}{Test 2: Lowe’s Ratio Test}{25}{subsubsection*.31}%
-\contentsline {subsection}{\numberline {3.1.1}Robustness Evaluation}{25}{subsection.3.1.1}%
-\contentsline {section}{\numberline {3.2}Rotational Estimators}{30}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Initial Accuracy-Runtime Testing}{30}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Detailed Time, Robustness \& Accuracy Testing}{31}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Method Sensitivity}{31}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}Conclusion}{31}{subsection.3.2.4}%
-\contentsline {chapter}{\numberline {4}Summary and Conclusion}{33}{chapter.4}%
-\contentsline {chapter}{\numberline {A}Project Planning Schedule}{34}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Outcomes Compliance}{35}{appendix.B}%
+\contentsline {subsection}{\numberline {2.4.1}Accuracy Evaluation}{14}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Runtime Evaluation}{15}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Robustness Testing}{15}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Final Selection of Rotational Estimator}{15}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}Image Similarity Estimators}{16}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Accuracy Evaluation}{16}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Runtime Evaluation}{17}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}Robustness to Rotational Offsets}{17}{subsection.2.5.3}%
+\contentsline {subsection}{\numberline {2.5.4}Improvement Technique}{18}{subsection.2.5.4}%
+\contentsline {subsection}{\numberline {2.5.5}Final Selection of Global Matching Technique}{18}{subsection.2.5.5}%
+\contentsline {section}{\numberline {2.6}Translational Estimators}{18}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Accuracy Evaluation}{19}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Runtime Evaluation}{19}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Robustness Testing}{20}{subsection.2.6.3}%
+\contentsline {subsection}{\numberline {2.6.4}Final Choice of Translational Estimator}{21}{subsection.2.6.4}%
+\contentsline {section}{\numberline {2.7}Optimization Techniques}{21}{section.2.7}%
+\contentsline {subsection}{\numberline {2.7.1}Planar Transform Outlier Rejection Method}{21}{subsection.2.7.1}%
+\contentsline {subsection}{\numberline {2.7.2}Lowe's Ratio Test}{22}{subsection.2.7.2}%
+\contentsline {subsection}{\numberline {2.7.3}Parallel Flow Filtering}{22}{subsection.2.7.3}%
+\contentsline {chapter}{\numberline {3}Local Feature Matchers}{24}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Experimental Setup and Results}{24}{section.3.1}%
+\contentsline {subsubsection}{Testing Conclusion}{25}{subsubsection*.32}%
+\contentsline {subsubsection}{Test 2: Lowe’s Ratio Test}{26}{subsubsection*.33}%
+\contentsline {subsection}{\numberline {3.1.1}Robustness Evaluation}{26}{subsection.3.1.1}%
+\contentsline {section}{\numberline {3.2}Rotational Estimators}{31}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Initial Accuracy-Runtime Testing}{31}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Detailed Time, Robustness \& Accuracy Testing}{32}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Method Sensitivity}{32}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Conclusion}{32}{subsection.3.2.4}%
+\contentsline {chapter}{\numberline {4}Summary and Conclusion}{34}{chapter.4}%
+\contentsline {chapter}{\numberline {A}Project Planning Schedule}{35}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Outcomes Compliance}{36}{appendix.B}%
