@@ -1,19 +1,37 @@
 \chapter{Comparison of Methods}
 
+This chapter compares the performance of various methods used in the UAV navigation system, focusing on accuracy, runtime, and robustness. The evaluation includes feature detectors, local feature matchers, rotational and translational estimators, and optimization techniques. Each method is tested across multiple datasets to assess generalization and suitability for real-world UAV applications.
 
-
+xxx - SIFT could not generalize 
 \section{Testing Setup}
 
 This section outlines the framework used to evaluate the performance of the proposed UAV navigation methods. The evaluation focuses on three primary metrics: accuracy, runtime, and robustness. These metrics are critical to ensure that the navigation system can reliably operate under diverse and challenging conditions, reflecting real-world scenarios where the UAV may encounter varying environmental factors.
 
 \subsection{Datasets}
-Five distinct datasets were selected to rigorously test the methods' generalization and performance across different environments. These datasets were captured using Google Earth at constant altitudes within each dataset, ranging from 5.5 to 6.5 km across datasets. The frames had an average radial movement of approximately 600 pixels between them, with a fixed resolution of 1920x972. This setup ensured that the inference task remained challenging but within practical limitations. In real-world scenarios, the higher frame rate and altitude would result in a greater number of images, which would increase overlap and improve inference accuracy. The datasets used for testing are as follows:
+
+Five distinct datasets were selected to rigorously evaluate the methods' generalization and performance across diverse environments. These datasets were captured using Google Earth and involved both translational and rotational movements, simulating typical UAV navigation tasks. Although the primary transformations were translation and rotation, perspective distortions and other subtle deformations were present due to the uneven terrain. Multiple methods with varying degrees of freedom were tested to implicitly estimate which of these transforms were significantly present. Each of the properties and choices were done to ensure the task was challenging but not impossible.
+
+\textbf{General Properties of the Datasets:}
+\begin{itemize}
+    \item \textbf{Altitude:} Ranging from 5.5 to 6.5 km, constant within each dataset. This is standard for UAV navigation applications and ensures the ground is sufficiently planar.
+    \item \textbf{Resolution:} 1920x972 pixels per image. This is the standard resolution in most applications. Stress tests were performed at lower resolutions.
+    \item \textbf{Radial Movement Between Frames:} Approximately 600 pixels. This ensured sufficient overlap for a challenging but feasible task.
+    \item \textbf{Number of Images per Dataset:} 15 images per dataset. This balances testing time and is sufficient to evaluate the methods' performance. 
+\end{itemize}
+
+The datasets used for testing were as follows:
 
 \begin{itemize}
-    \item \textbf{CITY1 and CITY2} (Cape Town): Both datasets originate from Cape Town. CITY1 incorporates both rotational and translational changes between frames, while CITY2 includes only translational changes. This distinction allows for the isolation of performance under rotational loads.
-    \item \textbf{ROCKY}: Represents rugged terrain with varied features, testing the methods' ability to handle complex topographies.
-    \item \textbf{DESERT and AMAZON}: Characterized by extreme sparsity and repetitive patterns, these datasets present significant challenges even for human observers to distinguish differences.
+    \item \textbf{CITY1 and CITY2 (Cape Town):}  
+    Both datasets were captured in Cape Town. \textbf{CITY1} includes both rotational and translational changes between frames, while \textbf{CITY2} focuses solely on translational movements. This distinction allows for isolated testing of performance under rotational stress.
+    
+    \item \textbf{ROCKY:}  
+    This dataset covers rugged terrain with varying features, testing the methods' robustness in handling complex, uneven topographies.
+    
+    \item \textbf{DESERT and AMAZON:}  
+    These datasets are characterized by sparse, repetitive patterns, making it challenging even for human observers to distinguish differences between frames. They present significant difficulty for feature extraction and matching.
 \end{itemize}
+
 
 
 \subsection{Testing Structure}
@@ -232,6 +250,8 @@ This section evaluates the performance of four rotational estimation methods: Pa
 \subsection{Accuracy Evaluation}
 
 The Rigid transforms, SVD and Partial Affine 2D provided the most accurate and consistent results across datasets. They were subsequently tested in conjunction to see if their benefits could be added. However, the SVD only rigid transform performed marginally better across the datasets. Ultimately, the OpenCV methods using outlier rejection sometimes helped improve the estimate, but their use of static thresholds and increased degrees of freedom rendered them less able to maintain this accuracy across datasets. Table \ref{tab:rmse_comparison_rotestim} summarizes the RMSE values (in meters) for the given methods.
+
+xxx - just use rigid its too slow otherwise 
 
 \begin{table}[H] 
     \centering 
@@ -508,7 +528,7 @@ Two outlier rejection methods, LMEDS (Least Median of Squares) and RANSAC (Rando
     \end{tabular}
 \end{table}
 
-\textbf{LMEDS} significantly outperforms \textbf{RANSAC} in terms of mean accuracy across datasets, achieving a higher mean accuracy despite RANSAC performing better in a couple of instances. Additionally, LMEDS demonstrates significantly faster runtimes across all datasets, as depicted in Table \ref{tab:runtime_comparison_opt}. This superior balance of accuracy and efficiency makes LMEDS the preferred method for planar transform outlier rejection. The default parameters for LMEDS were utilized, as they provided sufficiently optimal performance across the tested datasets.
+\textbf{LMEDS} marginally outperforms \textbf{RANSAC} in terms of mean accuracy across datasets, achieving a higher mean accuracy despite RANSAC performing better in three out of five instances. Additionally, LMEDS demonstrates significantly faster runtimes across all datasets, as depicted in Table \ref{tab:runtime_comparison_opt}. This superior balance of accuracy and efficiency makes LMEDS the preferred method for planar transform outlier rejection. The default parameters for LMEDS were utilized, as they provided sufficiently optimal performance across the tested datasets.
 
 \subsection{Lowe's Ratio Test}
 

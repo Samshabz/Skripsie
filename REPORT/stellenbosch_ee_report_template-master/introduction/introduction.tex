@@ -4,161 +4,133 @@
 \label{chap:introduction}
 
 
-CH1
- Background (1/2 to 1 page) - give context
-- background is not what is the problem, but what is the context of the problem. Why does it matter. How many people suffer from lack of clean water for eg or die from car accidents. 
+% CH1
+%  Background (1/2 to 1 page) - give context
+% - background is not what is the problem, but what is the context of the problem. Why does it matter. How many people suffer from lack of clean water for eg or die from car accidents. 
 
-- problem statement (1 paragraph). Most important of entire report. Exactly what you have done. Nothing more or less. sentence or two. 
-- objectives "fine-grain" SMART, numbers. If i meet these objectives, i have solved the problem statement in part. 1-5 objectives or sub-objectives or even requirements. Measured against objectives - metrics. 
-Summary of work (not contribution for skripsie). what you have achieved. meeting objectives. 
-- Scope: What will be done and not be done. Mainly what will not be done. Did not take into account organic material or eg did not consider mobility. Did think about other things - still important (e.g. future work). write it in such a way that it is positive  / what u did do. did not consider cost size market manufacturability etc. 
-- Structure of Report (Not exactly the same as the Table of Contents): Roadmap, in chapter 2 I did the following etc
+% - problem statement (1 paragraph). Most important of entire report. Exactly what you have done. Nothing more or less. sentence or two. 
+% - objectives "fine-grain" SMART, numbers. If i meet these objectives, i have solved the problem statement in part. 1-5 objectives or sub-objectives or even requirements. Measured against objectives - metrics. 
+% Summary of work (not contribution for skripsie). what you have achieved. meeting objectives. 
+% - Scope: What will be done and not be done. Mainly what will not be done. Did not take into account organic material or eg did not consider mobility. Did think about other things - still important (e.g. future work). write it in such a way that it is positive  / what u did do. did not consider cost size market manufacturability etc. 
+% - Structure of Report (Not exactly the same as the Table of Contents): Roadmap, in chapter 2 I did the following etc
 
-ECSA chapter 1: I took a vaguely defined problem (prob statement), understood what i must do to solve (objectives), and then solved it (summary of work).
-Then, 
-
-
+% ECSA chapter 1: I took a vaguely defined problem (prob statement), understood what i must do to solve (objectives), and then solved it (summary of work).
+% Then, 
 
 
-\section{Introduction}
-\begin{itemize}
-    \item \textbf{Background:} longer / other solutions / SA military UAVs not planes 
-    \begin{itemize}
-        \item To maintain state safety, Unmanned Aerial Vehicles (UAVs) are used in military missions for surveillance, reconnaissance, and intelligence gathering. However, they rely on GPS for navigation, which can be jammed, spoofed, or otherwise lost in adversarial environments. This severely limits the scope of where these missions can be conducted, as well as the safety of the UAVs.
-    \end{itemize}
-    \item \textbf{Problem Statement:}
-    \begin{itemize}
-        \item Traditional GPS-based navigation systems are being increasingly jammed or spoofed, leading to an inability to localize no and return to base. Additionally, other known solutions are prone to drift or are extremely expensive. 
-    \end{itemize}
-    \item \textbf{Motivation:!!!} no
-    \begin{itemize}
-        \item There is a need for a navigation redundancy system that avoids detection in GPS-denied environments. 
-    \end{itemize}
-\end{itemize}
+
+\section{Background}
+Unmanned Aerial Vehicles (UAVs) have become critical in modern military operations, providing capabilities in surveillance, reconnaissance, and intelligence gathering. In South Africa, UAVs are increasingly used to monitor borders and support military missions by enabling persistent aerial observation \cite{MARTIN}. Their ability to operate in dangerous or inaccessible areas makes them invaluable for various operations.
+
+However, UAVs heavily rely on the Global Positioning System (GPS) for navigation, which poses a significant vulnerability. GPS signals are easily disrupted by jamming, spoofing, or interference in hostile environments, leading to navigation failure. Adversaries increasingly exploit these vulnerabilities, resulting in UAVs becoming disoriented or lost, jeopardizing both the mission and the UAV. 
+
+The increasing prevalence of GPS disruptions highlights a critical need for alternative navigation solutions that can operate independently of external signals like GPS. These systems must be robust, accurate, and adaptable to a wide range of environments. Some alternatives include inertial navigation systems, radio frequency-based localization, and quantum positioning systems. However, these suffer from high costs, limited accuracy, susceptibility to detection, Earth curvature issues, or drift, making them impractical for widespread UAV deployment. One promising approach that does not fall prey to these issues is image-based navigation, where UAVs use onboard cameras to capture and match images with previously stored reference images to estimate their position. This method allows for autonomous navigation in GPS-denied environments without requiring continuous GPS access.
+
+However, image-based systems face uncertainty regarding their ability to offer real-time operation, achieve accurate results, and handle various environments. This project aims to test the viability of such a system, addressing the need for reliable UAV navigation without GPS dependency.
+
+While conditions such as poor lighting and dynamic environments can pose practical challenges, advancements in technology and image processing algorithms have significantly improved the robustness of computer vision tasks to these challenges.
+
+By leveraging these advancements, this project will develop and evaluate a system that employs the latest image processing techniques to deliver accurate and real-time localization for UAVs in GPS-denied environments. The solution will be rigorously tested against stringent performance metrics to assess its practicality and reliability in real-world scenarios.
+
+
+
+
+
+\section{Problem Statement}
+GPS-based UAV navigation is increasingly vulnerable to jamming and spoofing, risking loss of control. Current alternatives are either too expensive or unreliable, creating a need for a more robust, GPS-independent solution.
 
 \section{Aims and Objectives}
-\begin{itemize}
-    \item \textbf{Aim:}
-    \begin{itemize}
-        \item Develop an accurate and generalizable image-based GPS localization system for UAV navigation in GPS-denied environments. 
-    \end{itemize}
-    \item \textbf{Objectives:} xxx - separate 50 m
-    \begin{itemize} enum, sub-pts
-        \item Find the most optimal pipeline to solve the given problem. That is, determine the most optimal parameter and method set that subtends the most accurate solution while maintaining real-time and generalizable operation.
-        \item Determine the GPS of the UAV, using only prior telemetry and image features. The radial error must be below 10\% of the given movement, or 50 m, whichever is higher. xxx, thi is if there is minimal movement
-        \item Ensure the system can operate in real-time. The response time, post-GPS loss, must be below 2s. slower. perform 
-        \item Ascertain whether the system is generalizable to different environments. Specifically, the method should meet the above requirements under the condition that static or dynamically-tuned parameters are not tuned, directly or indirectly, for different environments.
-    \end{itemize}
-\end{itemize}
+\subsection{Aim}
+The primary aim of this project is to develop an accurate and generalizable image-based GPS localization system to facilitate UAV navigation in GPS-denied environments.
 
-reason - no solution, feasibility - not difficult other add-ons
-\section{Scope}
+\subsection{Objectives}
+To achieve the stated aim, the following objectives have been established:
 
+\begin{enumerate}
+    \item \textbf{Optimize the Localization Pipeline:} Identify and implement the most effective pipeline, including parameter selection and methodological approaches, to achieve the highest possible localization accuracy while maintaining real-time performance and generalizability. This includes the selection, integration and optimization of feature extraction, matching, and planar transformation estimation techniques.
+    
+    \item \textbf{Accurate Localization Estimation:} Estimate the GPS location, using only prior telemetry data and image features, with a radial error below 10\% of the UAV's radial displacement from the reference image. This accuracy is sufficient for manual control of the UAV in GPS-denied environments, given that the system provides continuous correction.
 
-xxx - add in scope that no methods are used that require pre- or live-training.
-
-
-practical limitations: split. 
-
-The following scope requirements aim to make the project feasible and manageable within the given time frame. Although they simplify the real-world conditions, largely by removing the need for scale estimation, it is not excessive in time or effort to add these additional correction techniques to account for these conditions in future work. It is only through the main practical limitations of the image-system, such as significantly adverse weather conditions or a majority of features being dynamic (e.g., water), that the system cannot apply a correction technique.  
-
-\begin{itemize}
-    \item \textbf{Assumptions and Restrictions:}
-    \begin{itemize}
-        \item The downwards facing camera shall be aimed perfectly downwards for all time
-        \item The datasets are at a reasonable resolution and distortion-free (e.g., warping, blurring, clouds, etc.).
-        \item The UAV will be flying over land with minimal, and if so, minor, dynamic objects. That is, the environment is sufficiently static to make the system feasible.
-        \item The UAV will be flying at a constant altitude. That is, scale estimation is not required.
-        \item The overlap between images being compared for inference is greater than 60\%. This ensures that the system does not have to have extremely precise outlier rejection techniques.
-        \item The ground is significantly planar. That is, any perspective distortion is minimal and can be ignored.
-        \item The UAV and its cameras will always be level with the ground. That is, no pitch and roll will occur. 
-        \item The system aim is to navigate the UAV back to base using reference images taken during flight with known telemetry (GPS and heading). The UAV will return back to base 
-        \item The system output is an estimated GPS location and heading estimate, not a control system. This is sufficient for the pilots to manually control the UAV.
-    \end{itemize}
-\end{itemize}
-
-\section{Methods and Approach}
-\begin{itemize}
-    \item \textbf{Data Collection:}
-    \begin{itemize}
-        \item Capture sequential images from UAV flights at different altitudes.
-        \item The UAV should follow a predefined path with known GPS coordinates, heading, camera parameters, and altitude. Thereafter, the UAV should fly very close to the same path backward.
-    \end{itemize}
-    \item \textbf{Design and Development:}
-    \begin{itemize}
-        \item Research and test the accuracy and count of features in 5-10 different feature extraction methods. 
-        \item Research and test the accuracy and count of matches in 5-10 different feature matching methods.
-        \item Implement and evaluate different homographic estimation methods. 
-        \item Implement and evaluate stereo vision methods.
-        \item Implement and evaluate the system on a SBC.
-    \end{itemize}
-    \item \textbf{Analysis:}
-    \begin{itemize}
-        \item Use sequential image analysis to estimate new coordinates.
-        \item Implement and evaluate pathfinding algorithms to calculate a path backward using past captured features.
-    \end{itemize}
-\end{itemize}
-
+    \item \textbf{Real-Time Operation:} Ensure the localization system operates in real-time, with a response time of less than 2 seconds following GPS signal loss. This is sufficient as the relative motion of the UAV to the ground is sufficiently slow that a 2-second delay will not significantly affect the pilots ability to navigate.
+    
+    \item \textbf{Environmental Generalizability:} Validate that the system maintains its performance metrics across diverse environments without the need for environment-specific parameter tuning.
+\end{enumerate}
 
 \section{Summary of Work}
+This project successfully developed and implemented an image-based GPS localization system for UAV navigation in GPS-denied environments. The system was designed to meet all outlined objectives, demonstrating high accuracy, real-time performance, and generalizability across multiple environments. Through comprehensive feature extraction, matching, and homographic estimation techniques, the system effectively estimated the UAV's location with minimal error. The implementation ensured that the system operated efficiently in real-time, meeting the stringent response time requirements. The outcomes indicate significant potential for enhancing UAV navigation reliability in both military and civilian applications.
+
+\section{Scope}
+The scope of this project is defined to ensure feasibility and manageability within the allocated timeframe. The limitations are considered reasonable in practical scenarios or can be addressed in future, more detailed studies. These constraints do not hinder the ability to assess the solution's viability. The following assumptions and restrictions outline the project's boundaries:
+
+
 \begin{itemize}
-    \item The project aims to develop a robust and accurate image-based GPS location estimator for UAV navigation post-GPS signal loss. The system will be designed, developed, and tested for feature extraction, matching, homographic estimation, stereo vision, and computational requirements. The system will be implemented on a SBC for real-time operation.
-    \item The project will have a significant impact on UAV navigation accuracy and reliability in GPS-denied environments, with potential applications in military and civilian contexts.
+    \item \textbf{Camera Orientation:} The UAV's downward-facing camera is assumed to remain perfectly aligned downward throughout all operations.
+    
+    \item \textbf{Image Quality:} It is assumed that the captured images are of sufficient resolution and free from significant distortions such as warping, blurring, or obstruction by clouds.
+    
+    \item \textbf{Operational Environment:} The UAV is expected to operate over predominantly static land surfaces with minimal dynamic objects, ensuring a stable environment for image-based localization.
+    
+    \item \textbf{Altitude Consistency:} The UAV maintains a constant altitude, negating the need for scale estimation in localization calculations.
+    
+    \item \textbf{Path Loss:} The UAV uses complementary, odometry-based systems to find its path back in the event of GPS signal loss, ensuring continuous operation.
+    
+    \item \textbf{Image Overlap:} Images used for localization have an overlap exceeding 60\%, ensuring sufficient reference information.
+    
+    \item \textbf{Method Choice:} The selected methods are based on comprehensive research and empirical testing, with the understanding that not all potential methods could be included within the scope of this study.
+    
+    \item \textbf{Ground Planarity:} The terrain is assumed to be significantly planar, minimizing perspective distortions that could affect localization accuracy.
+    
+    \item \textbf{UAV Stability:} The UAV and its camera system remain level with the ground, eliminating pitch and roll variations.
+    
+    \item \textbf{Training Requirements:} The localization methods employed do not require pre-training or live training, ensuring operational simplicity and efficiency.
+    
+    \item \textbf{Data Provisioning:} The project used data from Google Earth due to delays in receiving the agreed-upon prerequisite data, with a minor impact on accuracy acknowledged due to the use of estimated headings.
+    
+    \item \textbf{System Output:} The system provides an estimated GPS location and heading, intended for manual UAV control by pilots rather than automated control systems.
+    
+    \item \textbf{Optimization:} The system is optimized for real-time performance and generalizability. However, the focus is on testing the viability of the system rather than achieving the absolute best performance.
     
 \end{itemize}
 
+While these scope limitations streamline the project, they do not preclude the potential for future enhancements, such as incorporating scale estimation techniques or expanding the system's robustness to dynamic environmental conditions.
 
-\section{Structure}
+\section{Structure of the Report}
+This report is structured to provide a comprehensive overview of the research undertaken to develop the image-based GPS localization system for UAVs. The chapters are organized as follows:
 
 \begin{itemize}
-    \item \textbf{Chapter 2: Literature Review}
-    \begin{itemize}
-        \item Discusses the current state of UAV navigation and GPS dependency, alternative navigation methods, feature detection and matching, homographic estimation, stereo vision, and computational requirements.
-    \end{itemize}
-    \item \textbf{Chapter 3: Methodology}
-    \begin{itemize}
-        \item Describes the data collection, design and development, and analysis methods used in the project.
-    \end{itemize}
-    \item \textbf{Chapter 4: Results}
-    \begin{itemize}
-        \item Presents the results of the project, including the accuracy and efficiency of the developed system.
-    \end{itemize}
-    \item \textbf{Chapter 5: Discussion}
-    \begin{itemize}
-        \item Discusses the implications of the results and the potential impact of the project.
-    \end{itemize}
-    \item \textbf{Chapter 6: Conclusion}
-    \begin{itemize}
-        \item Summarizes the project and its outcomes.
-    \end{itemize}
+    \item \textbf{Chapter 2: Literature Review} \\
+    This chapter reviews the current state of GPS-alternative UAV navigation systems, emphasizing their drawbacks and associated vulnerabilities. It provides the reader with the prerequisite knowledge to understand the techniques employed in this study, including feature detection and matching techniques, and planar transformation estimation methodologies. 
+    
+    \item \textbf{Chapter 3: Methodology} \\
+    This chapter details the system pipeline designed to achieve accurate, efficient, and robust image-based GPS localization. It covers the flow and integration of feature extraction, matching, and homographic estimation, as well as the associated considerations made to optimize the system's performance.
+    
+    \item \textbf{Chapter 4: Testing} \\
+    This chapter describes the datasets utilized, the testing environment setup, and the comparative analysis of different methods employed at each stage of the pipeline. It culminates in the selection of the final methods integrated into the system.
+    
+    \item \textbf{Chapter 5: Results} \\
+    This chapter presents the evaluation of the developed pipeline against the established objectives. It includes stress testing results and assesses the system's performance in various scenarios to demonstrate its effectiveness and reliability.
+    
+    \item \textbf{Chapter 6: Conclusion} \\
+    The final chapter summarizes the project's outcomes, evaluates the viability of the developed system, and discusses its potential impact on UAV navigation. 
+    
+    \item \textbf{Chapter 7: Future Work} \\
+    This section outlines recommendations for future work to address the project's limitations and explore additional enhancements.
 \end{itemize}
 
 
-Leave out 
-\section{Potential Impact}
-\begin{itemize}
-    \item \textbf{Societal Impact:}
-    \begin{itemize}
-        \item Enhance the reliability of UAV operations in civilian applications such as disaster response and border patrol.
-    \end{itemize}
-    \item \textbf{Knowledge Impact:}
-    \begin{itemize}
-        \item Contribute to advancements in UAV navigation technology and computer vision applications.
-    \end{itemize}
-    \item \textbf{Economic Impact:}
-    \begin{itemize}
-        \item Increase the practicality and usage of UAV systems in military and civilian contexts, potentially enhancing border control, enhancing international electronic engineering collaboration.
-    \end{itemize}
-    \item \textbf{Safety Impact:}
-    \begin{itemize}
-        \item Increase the ability for national surveillance missions to secure critical knowledge in a military context.
-    \end{itemize}
-\end{itemize}
 
-\section{Conclusion}
-\begin{itemize}
-    \item The project aims to improve UAV navigation accuracy and reliability in GPS-denied environments through camera-based image matching. This may have profound impacts in a South African military context as well as broader impacts on civil safety and economic well-being.
-\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section*{References}
 \begin{enumerate}

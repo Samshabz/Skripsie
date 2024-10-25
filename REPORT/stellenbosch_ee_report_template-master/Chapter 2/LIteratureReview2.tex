@@ -32,6 +32,8 @@ The methods for each of these are chosen based on the following criteria: accura
 
 Feature extraction is pivotal in image-based UAV navigation, enabling the estimation of transformations such as rotation and translation between consecutive images. Feature extractors identify \textbf{keypoints}—distinct, repeatable points within an image—and generate \textbf{descriptors} that encode information about the local image region surrounding each keypoint. These keypoints and descriptors facilitate accurate matching across multiple frames, allowing the system to track movement while maintaining invariance to changes in scale, rotation, and illumination. This precision is essential for accurately inferring both rotational and translational shifts between images.
 
+kps and descriptors.
+
 The selected feature extractors—\textbf{ORB}, \textbf{AKAZE}, and \textbf{SuperPoint with LightGlue}—represent a diverse spectrum of approaches, offering different levels of accuracy, computational efficiency, and machine learning integration. Alternative methods were excluded to maintain scope or due to licensing fees. 
 
 \subsection{Types of Feature Extractors}

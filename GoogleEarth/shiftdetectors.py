@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from sklearn.linear_model import RANSACRegressor, LinearRegression
 import time
 
 import torch
@@ -53,10 +54,10 @@ def get_neural_src_pts(featsA=None, featsB=None, kp1=None, kp2=None, des1=None, 
     src_pts = keypoints1[matches[:, 0]]
     dst_pts = keypoints2[matches[:, 1]]
     # shifts = dst_pts - src_pts
-    return src_pts, dst_pts
+    return src_pts, dst_pts, good_matches
 
 
-def get_src_shifts(src_pts, dst_pts):
+def get_src_shifts(src_pts, dst_pts, ret_angle=False):
         # this code improves response by applying a secondary rotational normalization step, in theory it should have minimal impact. 
 
         center_src = np.mean(src_pts, axis=0)
@@ -75,6 +76,8 @@ def get_src_shifts(src_pts, dst_pts):
 
         theta = np.arctan2(R[1, 0], R[0, 0])
         theta_deg = np.degrees(theta)
+        if ret_angle:
+            return theta_deg
         # print(f"Rotation angle (degrees): {theta_deg}")
 
         # Apply the inverse rotation matrix to remove rotation from dst_pts
@@ -84,5 +87,4 @@ def get_src_shifts(src_pts, dst_pts):
         translation = np.mean(dst_pts_rot_corrected - src_pts, axis=0) 
         shift_x = translation[0]
         shift_y = translation[1]
-        return shift_x, shift_y, theta_deg
-
+        return shift_x, shift_y

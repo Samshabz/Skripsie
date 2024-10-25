@@ -19,7 +19,7 @@ class UAVRotationAnalyzer:
         return cropped_image
 
     def calculate_rotation_change(self, image1, image2, severity):
-        """Calculate rotation change between two images using keypoints' angles."""
+        """Calculate rotation change between two images using SVD."""
         # Crop and convert images to grayscale
         gray1 = cv2.cvtColor(self.crop_image(image1), cv2.COLOR_BGR2GRAY)
         gray2 = cv2.cvtColor(self.crop_image(image2), cv2.COLOR_BGR2GRAY)
@@ -48,42 +48,32 @@ class UAVRotationAnalyzer:
             return None
 
         # Extract matched keypoints
-        src_pts = np.float32([keypoints1[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
-        dst_pts = np.float32([keypoints2[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
-        
-        # Estimate the homography matrix using RANSAC
-        M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
+        src_pts = np.float32([keypoints1[m.queryIdx].pt for m in good_matches]).reshape(-1, 2)
+        dst_pts = np.float32([keypoints2[m.trainIdx].pt for m in good_matches]).reshape(-1, 2)
 
-        if M is not None:
-            # Extract the rotation angle from the homography matrix
-            angle = np.arctan2(M[1, 0], M[0, 0]) * (180 / np.pi)
+        # Use SVD to estimate the rotation angle between src_pts and dst_pts
+        center_src = np.mean(src_pts, axis=0)
+        center_dst = np.mean(dst_pts, axis=0)
 
-            # Calculate confidence for each match based on distance
-            distances = np.array([m.distance for m in good_matches])
-            max_distance = np.max(distances)
-            confidences = 1 - (distances / max_distance)  # Higher scores for better matches
+        src_pts_centered = src_pts - center_src
+        dst_pts_centered = dst_pts - center_dst
 
-            # Calculate weighted rotation change
-            if severity != 0:
-                weighted_angles = angle * (confidences ** severity )
-                weighted_rotation_change = np.sum(weighted_angles) / np.sum(confidences ** severity)
-            else: 
-                weighted_rotation_change = angle
-            
+        H = np.dot(src_pts_centered.T, dst_pts_centered)
+        U, S, Vt = np.linalg.svd(H)
+        R = np.dot(U, Vt)
 
-            return weighted_rotation_change
-        else:
-            print("Warning: Homography could not be estimated. Skipping.")
-            return None
+        # Extract the rotation angle from the rotation matrix
+        theta = np.arctan2(R[1, 0], R[0, 0])
+        rotation_angle = np.degrees(theta)
+
+        return rotation_angle
 
 def main():
-    directory = './GoogleEarth/SET1'
-    image_range = range(1, 14)  # Define the range of images to process
+    directory = './GoogleEarth/DATASETS/DATSETAMAZ'  # Directory containing images
+    image_range = range(1, 15)  # Define the range of images to process
     rotation_analyzer = UAVRotationAnalyzer()
-    mean_rotations = []
-    severity = 5
     angles = []
-    
+
     for i in range(min(image_range), max(image_range)):
         image1_path = os.path.join(directory, f'{i}.jpg')
         image2_path = os.path.join(directory, f'{i+1}.jpg')
@@ -94,15 +84,25 @@ def main():
         if image1 is None or image2 is None:
             print(f"Error: Could not load images {i} or {i+1}. Skipping.")
             continue
-    
-        rotation_change = rotation_analyzer.calculate_rotation_change(image1, image2, severity)
-        
+
+        rotation_change = rotation_analyzer.calculate_rotation_change(image1, image2, severity=5)
 
         if rotation_change is not None:
-            #print(f"Rotation change between image {i} and image {i+1}: {rotation_change:.4f} degrees for severity {severity}")
-            angles.append(rotation_change) 
+            angles.append(rotation_change)
+
     print("angles", angles)
     print("max is ", np.max(angles))
     print("mean is ", np.mean(angles))
+
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+

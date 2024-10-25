@@ -60,7 +60,7 @@ def homography_transformation(src_pts, dst_pts):
     
 # RANSAC for Affine Transformation (Using OpenCV)
 def ransac_affine_transformation(src_pts, dst_pts):
-    matrix, inliers = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.RANSAC, ransacReprojThreshold=25)
+    matrix, inliers = cv2.estimateAffinePartial2D(src_pts, dst_pts, method=cv2.RANSAC)
     
     # Translation components
     tx = matrix[0, 2]

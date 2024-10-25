@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  24 OCT 2024 04:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  24 OCT 2024 18:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -563,14 +563,7 @@ File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count340
 \l__pdf_internal_box=\box70
-) (stellenbosch_ee_report.aux
-
-LaTeX Warning: Label `fig:divergence_plot' multiply defined.
-
-
-LaTeX Warning: Label `appen:derivations_bigramseg' multiply defined.
-
-)
+) (stellenbosch_ee_report.aux)
 \openout1 = `stellenbosch_ee_report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 110.
@@ -686,7 +679,7 @@ Package hyperref Info: Link coloring ON on input line 110.
 \openout3 = `stellenbosch_ee_report.out'.
 
  (frontmatter/skripsie_title_page.tex
-<USlogo-top.pdf, id=211, 560.0925pt x 183.68625pt>
+<USlogo-top.pdf, id=23, 560.0925pt x 183.68625pt>
 File: USlogo-top.pdf Graphic file (type pdf)
 <use USlogo-top.pdf>
 Package pdftex.def Info: USlogo-top.pdf  used on input line 7.
@@ -720,201 +713,58 @@ LaTeX Font Info:    Font shape `OT1/lmss/bx/it' in size <17.28> not available
 
 [3
 
-] (stellenbosch_ee_report.toc
-
-[4
-
-])
+] (stellenbosch_ee_report.toc)
 \tf@toc=\write4
 \openout4 = `stellenbosch_ee_report.toc'.
 
 
 
-[5] (stellenbosch_ee_report.lof)
+[4
+
+] (stellenbosch_ee_report.lof)
 \tf@lof=\write5
 \openout5 = `stellenbosch_ee_report.lof'.
 
 
 
-[6
+[5
 
-] (stellenbosch_ee_report.lot
-
-[7
-
-])
+] (stellenbosch_ee_report.lot)
 \tf@lot=\write6
 \openout6 = `stellenbosch_ee_report.lot'.
 
  (frontmatter/nomenclature.tex
 
-[8]
+[6
 
-[9
+]
+
+[7
 
 {C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}])
 
-[10] (Chapter 3/FeatureExtractors.tex
-Chapter 1.
-
-Overfull \hbox (39.69777pt too wide) in paragraph at lines 48--63
- [][] 
- []
-
-
-
-[1
-
-]
-
-[2]
-
-[3]
-
-[4]) (Chapter 4/testing.tex
-
-[5]
-Chapter 2.
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 13.
-(C:\Users\Sameer Shaboodien\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
-File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-
-[6
-
-{C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
-
-[7]
-
 [8]
 
-[9]
+! LaTeX Error: File `Chapter 3/FeatureExtractors.tex' not found.
 
-[10]
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: tex)
 
-[11]
-<./Graphs/Divergence_BF_FLANN_KPS.png, id=553, 901.11656pt x 598.48593pt>
-File: ./Graphs/Divergence_BF_FLANN_KPS.png Graphic file (type png)
-<use ./Graphs/Divergence_BF_FLANN_KPS.png>
-Package pdftex.def Info: ./Graphs/Divergence_BF_FLANN_KPS.png  used on input line 205.
-(pdftex.def)             Requested size: 455.24411pt x 302.3563pt.
+Enter file name: 
+c:/Users/Sameer Shaboodien/OneDrive/CHUCK/Work/Skripsie/REPORT/stellenbosch_ee_report_template-master/stellenbosch_ee_report.tex:131: Emergency stop.
+<read *> 
+         
+l.131 \input{Chapter 3/FeatureExtractors.tex}
+                                             ^^M
+*** (cannot \read from terminal in nonstop modes)
 
-
-[12]
-
-[13 <./Graphs/Divergence_BF_FLANN_KPS.png>]
-
-[14]
-
-[15]
-
-[16]
-Overfull \hbox (23.13634pt too wide) in paragraph at lines 353--363
- [][] 
- []
-
-
-
-[17]
-
-[18]
-
-[19]
-
-[20]
-
-[21]
-
-[22]) (Chapter 3/LocalMatchers.tex
-
-[23{C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathex.enc}]
-Chapter 3.
-
-
-[24
-
-]
-Overfull \hbox (38.86632pt too wide) in paragraph at lines 35--56
- [][] 
- []
-
-
-
-[25]
-
-[26]
-
-[27]
-File: ./Graphs/Divergence_BF_FLANN_KPS.png Graphic file (type png)
-<use ./Graphs/Divergence_BF_FLANN_KPS.png>
-Package pdftex.def Info: ./Graphs/Divergence_BF_FLANN_KPS.png  used on input line 159.
-(pdftex.def)             Requested size: 455.24411pt x 302.3563pt.
-
-
-[28]
-Overfull \hbox (4.27219pt too wide) in paragraph at lines 196--220
- [][] 
- []
-
-
-
-[29]
-
-[30]) (Chapter 3/RotationalEstimators.tex
-
-[31]
-
-[32]) (conclusion/conclusion.tex
-
-[33]
-Chapter 4.
-)
-No file stellenbosch_ee_report.bbl.
-(appendices/appendices.tex
-
-[34
-
-]
-Appendix A.
-
-
-[35
-
-]
-Appendix B.
-)
-
-Package caption Warning: Unused \captionsetup[algorithm] on input line 96.
-See the caption package documentation for explanation.
-
-
-
-[36
-
-] (stellenbosch_ee_report.aux)
- ***********
-LaTeX2e <2024-06-01> patch level 2
-L3 programming layer <2024-05-27>
- ***********
-
-
-LaTeX Warning: There were multiply-defined labels.
-
-Package rerunfilecheck Info: File `stellenbosch_ee_report.out' has not changed.
-(rerunfilecheck)             Checksum: E541F4E1A13C4CF1B44EFCB7A48BE657;9106.
- ) 
+ 
 Here is how much of TeX's memory you used:
- 22200 strings out of 473904
- 424866 string characters out of 5720901
- 1949908 words of memory out of 5000000
- 44333 multiletter control sequences out of 15000+600000
- 631669 words of font info for 190 fonts, out of 8000000 for 9000
+ 21721 strings out of 473904
+ 415720 string characters out of 5720901
+ 1937908 words of memory out of 5000000
+ 44165 multiletter control sequences out of 15000+600000
+ 613066 words of font info for 107 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,17n,80p,1123b,1094s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbo10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbx10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb>
-Output written on stellenbosch_ee_report.pdf (47 pages, 542189 bytes).
-PDF statistics:
- 769 PDF objects out of 1000 (max. 8388607)
- 140 named destinations out of 1000 (max. 500000)
- 43435 words of extra memory for PDF output out of 51595 (max. 10000000)
-
+ 75i,13n,80p,1123b,942s stack positions out of 10000i,1000n,20000p,200000b,200000s
+c:/Users/Sameer Shaboodien/OneDrive/CHUCK/Work/Skripsie/REPORT/stellenbosch_ee_report_template-master/stellenbosch_ee_report.tex:131:  ==> Fatal error occurred, no output PDF file produced!

@@ -267,18 +267,33 @@ stats_summary = {
 print(stats_summary)
 
 
+dataset_names = ['DATSETROT', 'DATSETCPT', 'DATSETROCK', 'DATSETSAND', 'DATSETAMAZ']
+colors = ['blue', 'green', 'red', 'purple', 'orange']  # Different colors for each dataset
+
+
 # Step 6: Plot the distribution of radial normalized deviations with frequency and normal curve
 plt.figure(figsize=(10, 6))
-sns.histplot(data_radial_signed['radial'], bins=50, color='blue', stat='count', label='Frequency', alpha=0.6)
-plt.plot(x_values_signed, normal_curve_signed * max(np.histogram(data_radial_signed['radial'], bins=50)[0]) / max(normal_curve_signed), color='orange', label='Normal Curve')
+
+# Create histograms for each dataset
+for i, (estim, actual) in enumerate(datasets):
+    x_changes, y_changes = calculate_pixel_changes(estim, actual)
+    radial_deviations_signed = [np.sqrt(x**2 + y**2) * np.sign(x) for x, y in zip(x_changes, y_changes)]
+    radial_bins_signed = np.round(radial_deviations_signed).astype(int)
+
+    # Create a histogram for the current dataset
+    sns.histplot(radial_bins_signed, bins=50, color=colors[i], stat='count', label=dataset_names[i], alpha=0.6)
+
+# Calculate the normal curve for the entire distribution
+normal_curve_signed = (1/(std_dev_signed * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x_values_signed - mean_signed) / std_dev_signed) ** 2)
+
+# Plot the normal curve on the histogram
+plt.plot(x_values_signed, normal_curve_signed * max(np.histogram(radial_bins_signed, bins=50)[0]) / max(normal_curve_signed), color='black', label='Normal Curve')
+
+# Add a vertical line at zero
 plt.axvline(0, color='red', linestyle='--', label='Zero Center')
 plt.title('Distribution of Radial Normalized Deviations (Centered Around Zero)')
 plt.xlabel('Radial Deviations')
 plt.ylabel('Frequency')
-plt.legend()
+plt.legend(title='Datasets')
 plt.grid()
 plt.show()
-
-
-
-
