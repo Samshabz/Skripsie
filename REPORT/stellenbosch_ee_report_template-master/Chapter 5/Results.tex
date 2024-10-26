@@ -174,6 +174,66 @@ Now lets add errors:
 2. violin plot per dataset pixels - done (percent?) - see error. Some datasets have large errors, up to 30 pixels off radial.
 
 
+
+
+\section{Mutual Information Testing}
+Mutual information is defined in this context as the amount of information that is present in both images. Specifically, it is the number of equivalent pixels in both images, assuming no distortion or rotation, only translation. It is found by simply subtracting the translation vector from the size of the two images. The percentage radial deviation from the ground truth is then tested for these various mutual information values. This also assumes a non-mutual information rate equivalent to the translation vector. In general this was around 500-700 radial pixels. 
+
+\begin{table}[H]
+    \centering
+    \caption{Percentage Errors at Various Mutual Information Values. The size of the two images is given, minus the translation vector between them, assuming no distortion or rotation.}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Image Size (X, Y)} & \textbf{Mutual Information Value} & \textbf{Percentage Deviation (\%)} \\ \hline
+    920, 672 & 1.71877749 &  \\ \hline
+    870, 632 & 0.65419671 &  \\ \hline
+    820, 592 & 0.7264212 &  \\ \hline
+    770, 552 & 2.99518014 &  \\ \hline
+    720, 512 & 5.18202806 &  \\ \hline
+    670, 472 & 77.16738327 &  \\ \hline
+    620, 432 & - & 94.27958763 \\ \hline
+    \end{tabular}
+    \end{table}
+    
+
+The results here show that the method is relatively robust to low amount of mutual information. The main reason for this large error at lower mutual values is a very low number of keypoints, leading to a poor rotational estimation. 
+
+NIGHT Performance
+
+\begin{table}[H]
+    \centering
+    \caption{Night Performance RMSE GPS for Various Datasets}
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Dataset} & \textbf{RMSE GPS (m)} \\ \hline
+    CITY1 & 68.6461 \\ \hline
+    CITY2 & 57.7729 \\ \hline
+    ROCKY & 91.4186 \\ \hline
+    DESERT & 1588.1492 \\ \hline
+    AMAZON & 1271.6807 \\ \hline
+    \end{tabular}
+    \end{table}
+    
+
+
+EVENING
+\begin{table}[H]
+    \centering
+    \caption{Evening Performance RMSE GPS for Various Datasets}
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Dataset} & \textbf{RMSE GPS (m)} \\ \hline
+    CITY1 & 59.4092 \\ \hline
+    CITY2 & 6.4374 \\ \hline
+    ROCKY & 32.1422 \\ \hline
+    DESERT & 156.3437 \\ \hline
+    AMAZON & 32.8955 \\ \hline
+    \end{tabular}
+    \end{table}
+
+
+
+
 \section{Maximum Error Analysis and Correlation Testing}
 
 

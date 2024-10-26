@@ -3013,3 +3013,579 @@ DATSETROT
 
 
 
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [17.02555394]
+Percentage GPS Deviation: [1.61998688] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.8864419301350911, Mean_Parameter_Inference_Time: 3.660959768295288, Mean_Location_Inference_Time: 4.497776911808894
+Var_Add_Time: 0.005056176983759744, Var_Parameter_Inference_Time: 0.03147382054358786, Var_Location_Inference_Time: 0.7167574688792088
+Total Time: 90.07252764701843
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [22.8765672]
+Percentage GPS Deviation: [2.37839473] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 1.1917640368143718, Mean_Parameter_Inference_Time: 3.8964934825897215, Mean_Location_Inference_Time: 4.71123638519874
+Var_Add_Time: 0.07272880468903825, Var_Parameter_Inference_Time: 0.044326639691380475, Var_Location_Inference_Time: 0.5130147433834906
+Total Time: 98.6050009727478
+DATSETROCK
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [4252.40221234]
+Percentage GPS Deviation: [252.092604] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.767462952931722, Mean_Parameter_Inference_Time: 2.372333526611328, Mean_Location_Inference_Time: 2.4364686012268066
+Var_Add_Time: 0.02334285656766395, Var_Parameter_Inference_Time: 0.055067694516151275, Var_Location_Inference_Time: 0.008450099811555516
+Total Time: 55.04770374298096
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [1307.0180439]
+Percentage GPS Deviation: [113.76123555] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5995376745859782, Mean_Parameter_Inference_Time: 2.008431911468506, Mean_Location_Inference_Time: 2.259250420790452
+Var_Add_Time: 0.0009454638942502749, Var_Parameter_Inference_Time: 0.0044386464271156, Var_Location_Inference_Time: 0.004379424836197197
+Total Time: 48.40548014640808
+DATSETAMAZ
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [nan]
+Percentage GPS Deviation: [nan] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.7946715672810872, Mean_Parameter_Inference_Time: 3.9692419528961183, Mean_Location_Inference_Time: 2.856677843974187
+Var_Add_Time: 0.02257645486248799, Var_Parameter_Inference_Time: 1.1091025957411056, Var_Location_Inference_Time: 0.09263558703933072
+Total Time: 68.90309524536133
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [1421.65000506]
+Percentage GPS Deviation: [105.46942246] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5779101530710856, Mean_Parameter_Inference_Time: 2.0729317665100098, Mean_Location_Inference_Time: 2.9197282057542067
+Var_Add_Time: 0.0037731642649749928, Var_Parameter_Inference_Time: 0.0031078675994422158, Var_Location_Inference_Time: 0.32047153982425863
+Total Time: 56.98977780342102
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [1661.85829988]
+Percentage GPS Deviation: [97.63652759] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.7221540768941244, Mean_Parameter_Inference_Time: 2.4195709228515625, Mean_Location_Inference_Time: 3.443357852789072
+Var_Add_Time: 0.00424038774067766, Var_Parameter_Inference_Time: 0.014556761904873382, Var_Location_Inference_Time: 0.4552147270060454
+Total Time: 67.69381785392761
+DATSETAMAZ
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [7.43406817]
+Percentage GPS Deviation: [0.70735395] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.2865079085032145, Mean_Parameter_Inference_Time: 0.890201997756958, Mean_Location_Inference_Time: 1.025725034567026
+Var_Add_Time: 0.002407927787532774, Var_Parameter_Inference_Time: 0.002880094817542158, Var_Location_Inference_Time: 0.001534855548143053
+Total Time: 22.083054065704346
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [39.67678059]
+Percentage GPS Deviation: [3.77525831] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6630894184112549, Mean_Parameter_Inference_Time: 1.237751293182373, Mean_Location_Inference_Time: 1.878776953770564
+Var_Add_Time: 0.01110118491960596, Var_Parameter_Inference_Time: 0.001077224704963555, Var_Location_Inference_Time: 0.04765950542367892
+Total Time: 40.55919814109802
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [39.67678059]
+Percentage GPS Deviation: [3.77525831] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5847660223642985, Mean_Parameter_Inference_Time: 1.2080331802368165, Mean_Location_Inference_Time: 1.6780969913189228
+Var_Add_Time: 0.0026692067557319704, Var_Parameter_Inference_Time: 0.0018597720932712037, Var_Location_Inference_Time: 0.007018922807267256
+Total Time: 36.626917123794556
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [9.68383017]
+Percentage GPS Deviation: [0.92141953] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.75117982228597, Mean_Parameter_Inference_Time: 1.5111271858215332, Mean_Location_Inference_Time: 1.731145510306725
+Var_Add_Time: 0.020651834992629323, Var_Parameter_Inference_Time: 0.01704010476320036, Var_Location_Inference_Time: 0.012644117249365565
+Total Time: 41.328224897384644
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [38.33425177]
+Percentage GPS Deviation: [3.64751627] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6087548096974691, Mean_Parameter_Inference_Time: 1.199549150466919, Mean_Location_Inference_Time: 1.576103375508235
+Var_Add_Time: 0.015342751916284415, Var_Parameter_Inference_Time: 0.0010486579948155849, Var_Location_Inference_Time: 0.0016358123501590553
+Total Time: 35.61841177940369
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [9.68383017]
+Percentage GPS Deviation: [0.92141953] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5894828955332438, Mean_Parameter_Inference_Time: 1.195963191986084, Mean_Location_Inference_Time: 1.5476087423471303
+Var_Add_Time: 0.007408981450497677, Var_Parameter_Inference_Time: 0.0004518502208475184, Var_Location_Inference_Time: 0.0020779208383480056
+Total Time: 34.94097304344177
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [61.94735757]
+Percentage GPS Deviation: [5.72157965] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5941564083099365, Mean_Parameter_Inference_Time: 2.2928865432739256, Mean_Location_Inference_Time: 2.6336132012880764
+Var_Add_Time: 0.002594863329377404, Var_Parameter_Inference_Time: 0.005246255374877365, Var_Location_Inference_Time: 0.007107737316490807
+Total Time: 54.61375045776367
+DATSETROT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [14.56428017]
+Percentage GPS Deviation: [1.3857959] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5854365984598796, Mean_Parameter_Inference_Time: 2.3595969676971436, Mean_Location_Inference_Time: 2.6429388523101807
+Var_Add_Time: 0.000674548877209923, Var_Parameter_Inference_Time: 0.024020108141485252, Var_Location_Inference_Time: 0.012338755929302071
+Total Time: 54.93773889541626
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [83.83509462]
+Percentage GPS Deviation: [8.71603443] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5709094365437826, Mean_Parameter_Inference_Time: 2.4367411613464354, Mean_Location_Inference_Time: 2.7929976903475247
+Var_Add_Time: 0.0009665873960441081, Var_Parameter_Inference_Time: 0.00791834007551188, Var_Location_Inference_Time: 0.021977819223108527
+Total Time: 57.05631732940674
+DATSETROCK
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [1308.1043301]
+Percentage GPS Deviation: [88.69510176] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5253279685974122, Mean_Parameter_Inference_Time: 1.8392799854278565, Mean_Location_Inference_Time: 2.1463506405170145
+Var_Add_Time: 0.00047071729442753465, Var_Parameter_Inference_Time: 0.0018243670420952187, Var_Location_Inference_Time: 0.00025376781208165383
+Total Time: 44.978877782821655
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [1151.25164169]
+Percentage GPS Deviation: [104.94410927] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5821017742156982, Mean_Parameter_Inference_Time: 2.00563588142395, Mean_Location_Inference_Time: 2.259499879983755
+Var_Add_Time: 0.003482469674844045, Var_Parameter_Inference_Time: 0.027198386129466602, Var_Location_Inference_Time: 0.0038004083352456367
+Total Time: 48.13320446014404
+DATSETAMAZ
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [8.18774708]
+Percentage GPS Deviation: [0.77906674] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6404985268910726, Mean_Parameter_Inference_Time: 2.187788963317871, Mean_Location_Inference_Time: 2.6530818205613356
+Var_Add_Time: 0.003562864252769234, Var_Parameter_Inference_Time: 0.001112245315493965, Var_Location_Inference_Time: 0.010470089739655549
+Total Time: 55.03648638725281
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [59.52156272]
+Percentage GPS Deviation: [5.49752847] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6680232842763265, Mean_Parameter_Inference_Time: 2.2776039600372315, Mean_Location_Inference_Time: 2.6538118765904355
+Var_Add_Time: 0.004884710720727728, Var_Parameter_Inference_Time: 0.003361511512903235, Var_Location_Inference_Time: 0.018326639896190097
+Total Time: 55.907923460006714
+DATSETROT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [8.6677165]
+Percentage GPS Deviation: [0.82473599] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6564859867095947, Mean_Parameter_Inference_Time: 2.2138360023498533, Mean_Location_Inference_Time: 2.604063419195322
+Var_Add_Time: 0.0012893574175465497, Var_Parameter_Inference_Time: 0.0005303056034426845, Var_Location_Inference_Time: 0.013384989603804244
+Total Time: 54.76929426193237
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [22.1775478]
+Percentage GPS Deviation: [2.30572019] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5763266404469808, Mean_Parameter_Inference_Time: 2.4516134738922117, Mean_Location_Inference_Time: 2.770666709313026
+Var_Add_Time: 0.001372848466969319, Var_Parameter_Inference_Time: 0.006182243585121797, Var_Location_Inference_Time: 0.014340518613114762
+Total Time: 56.92163419723511
+DATSETROCK
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [590.46723345]
+Percentage GPS Deviation: [51.16317659] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5126894315083822, Mean_Parameter_Inference_Time: 1.7684555530548096, Mean_Location_Inference_Time: 2.1195126680227427
+Var_Add_Time: 0.00043761480268484667, Var_Parameter_Inference_Time: 0.0032169233303511653, Var_Location_Inference_Time: 0.001039577221557215
+Total Time: 44.086283922195435
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [23.8100546]
+Percentage GPS Deviation: [3.6748436] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5567923704783122, Mean_Parameter_Inference_Time: 1.8940476417541503, Mean_Location_Inference_Time: 2.2516110310187707
+Var_Add_Time: 0.0006001778583206235, Var_Parameter_Inference_Time: 0.000810755826764762, Var_Location_Inference_Time: 0.0031398233494589946
+Total Time: 47.09306716918945
+DATSETAMAZ
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [537.48965014]
+Percentage GPS Deviation: [55.49695241] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5099002520243326, Mean_Parameter_Inference_Time: 1.8217406749725342, Mean_Location_Inference_Time: 2.1581688477442813
+Var_Add_Time: 0.00047557570158510826, Var_Parameter_Inference_Time: 0.001406878616976428, Var_Location_Inference_Time: 0.002018440755750413
+Total Time: 44.81340217590332
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [733.42797488]
+Percentage GPS Deviation: [62.19154871] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5270551045735677, Mean_Parameter_Inference_Time: 1.867708969116211, Mean_Location_Inference_Time: 2.2019547132345347
+Var_Add_Time: 0.000510326832406665, Var_Parameter_Inference_Time: 0.0014747959866190285, Var_Location_Inference_Time: 0.0018764584391123714
+Total Time: 45.86978268623352
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [258.9351861]
+Percentage GPS Deviation: [25.72413243] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5469307422637939, Mean_Parameter_Inference_Time: 1.8612557411193849, Mean_Location_Inference_Time: 2.2196563757382908
+Var_Add_Time: 0.002364465596998949, Var_Parameter_Inference_Time: 0.0004525225722454707, Var_Location_Inference_Time: 0.002252291221256222
+Total Time: 46.36577272415161
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [669.89269987]
+Percentage GPS Deviation: [62.09746687] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5214129288991293, Mean_Parameter_Inference_Time: 1.8102153301239015, Mean_Location_Inference_Time: 2.7828205732198863
+Var_Add_Time: 0.000825993635246252, Var_Parameter_Inference_Time: 0.002927001977755026, Var_Location_Inference_Time: 0.1934673665366746
+Total Time: 53.048938035964966
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [849.69108725]
+Percentage GPS Deviation: [75.9586492] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.587890895207723, Mean_Parameter_Inference_Time: 2.048227834701538, Mean_Location_Inference_Time: 2.639159551033607
+Var_Add_Time: 0.000517364018536581, Var_Parameter_Inference_Time: 0.03723666673812204, Var_Location_Inference_Time: 0.1271522513262007
+Total Time: 53.368576765060425
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [319.10197342]
+Percentage GPS Deviation: [30.35534702] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5771602789560953, Mean_Parameter_Inference_Time: 2.0224985122680663, Mean_Location_Inference_Time: 2.359121249272273
+Var_Add_Time: 0.0015094276843885584, Var_Parameter_Inference_Time: 0.0017744200732431638, Var_Location_Inference_Time: 0.003852688001122056
+Total Time: 49.43847298622131
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [912.05342706]
+Percentage GPS Deviation: [82.63461853] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5247240384419759, Mean_Parameter_Inference_Time: 1.8138998985290526, Mean_Location_Inference_Time: 2.2016738011286807
+Var_Add_Time: 0.0005443900370048343, Var_Parameter_Inference_Time: 0.00033391576195299425, Var_Location_Inference_Time: 0.0026706574069884853
+Total Time: 45.562119483947754
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [158.86974337]
+Percentage GPS Deviation: [16.38387132] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5807039737701416, Mean_Parameter_Inference_Time: 1.828092384338379, Mean_Location_Inference_Time: 2.2413541353665867
+Var_Add_Time: 0.0030753173335142494, Var_Parameter_Inference_Time: 0.0011436056577031196, Var_Location_Inference_Time: 0.007374482015170705
+Total Time: 46.988625288009644
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [1029.4477637]
+Percentage GPS Deviation: [96.20499293] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.553145170211792, Mean_Parameter_Inference_Time: 1.8575356006622314, Mean_Location_Inference_Time: 2.2608410945305457
+Var_Add_Time: 0.0013948514150342816, Var_Parameter_Inference_Time: 0.0006239047496819694, Var_Location_Inference_Time: 0.01529724377609355
+Total Time: 46.97578978538513
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [244.81204658]
+Percentage GPS Deviation: [25.75715094] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6157852172851562, Mean_Parameter_Inference_Time: 2.24906210899353, Mean_Location_Inference_Time: 2.8056837228628306
+Var_Add_Time: 0.002895568072091616, Var_Parameter_Inference_Time: 0.009663110122401123, Var_Location_Inference_Time: 0.012515465131458412
+Total Time: 56.95597720146179
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [1032.73923574]
+Percentage GPS Deviation: [97.67101861] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6544994513193766, Mean_Parameter_Inference_Time: 2.293026399612427, Mean_Location_Inference_Time: 2.4787832773648777
+Var_Add_Time: 0.001495026816297064, Var_Parameter_Inference_Time: 0.0011380672961740855, Var_Location_Inference_Time: 0.09109305716028705
+Total Time: 53.50680637359619
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [162.41189989]
+Percentage GPS Deviation: [16.91572198] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5377522468566894, Mean_Parameter_Inference_Time: 1.7912725448608398, Mean_Location_Inference_Time: 2.481297786419208
+Var_Add_Time: 0.0007186898259669761, Var_Parameter_Inference_Time: 0.007018245919234686, Var_Location_Inference_Time: 0.18923373595694581
+Total Time: 49.27951765060425
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [34.6490744]
+Percentage GPS Deviation: [3.95063584] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5433494567871093, Mean_Parameter_Inference_Time: 1.8276257514953613, Mean_Location_Inference_Time: 2.3774210673112135
+Var_Add_Time: 0.0015876642031131876, Var_Parameter_Inference_Time: 0.000549259818126302, Var_Location_Inference_Time: 0.007244504134478687
+Total Time: 48.194844484329224
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [181.02809587]
+Percentage GPS Deviation: [18.1240683] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5558955192565918, Mean_Parameter_Inference_Time: 1.9741104125976563, Mean_Location_Inference_Time: 2.4769853261800914
+Var_Add_Time: 0.0011855787600491868, Var_Parameter_Inference_Time: 0.0030315786950586695, Var_Location_Inference_Time: 0.027176866166328664
+Total Time: 50.409794092178345
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [59.40918435]
+Percentage GPS Deviation: [5.48714898] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6436057090759277, Mean_Parameter_Inference_Time: 2.2455461502075194, Mean_Location_Inference_Time: 2.6239446309896617
+Var_Add_Time: 0.0036734619928968943, Var_Parameter_Inference_Time: 0.0011810515274055433, Var_Location_Inference_Time: 0.009821619464163277
+Total Time: 54.993096590042114
+DATSETROT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [6.43735103]
+Percentage GPS Deviation: [0.612516] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6578954855600992, Mean_Parameter_Inference_Time: 2.2032992839813232, Mean_Location_Inference_Time: 2.5712023148169885
+Var_Add_Time: 0.002848135326755457, Var_Parameter_Inference_Time: 0.0014992816274343567, Var_Location_Inference_Time: 0.007270153317456913
+Total Time: 54.310558795928955
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [32.14219777]
+Percentage GPS Deviation: [3.34170915] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6261225382486979, Mean_Parameter_Inference_Time: 2.6025704860687258, Mean_Location_Inference_Time: 2.7440294119027944
+Var_Add_Time: 0.0019653759938551554, Var_Parameter_Inference_Time: 0.0792399818423155, Var_Location_Inference_Time: 0.008047497033103838
+Total Time: 58.077072858810425
+DATSETROCK
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [156.34372595]
+Percentage GPS Deviation: [15.22315297] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5445726394653321, Mean_Parameter_Inference_Time: 1.7648815631866455, Mean_Location_Inference_Time: 2.1348689886239858
+Var_Add_Time: 0.001134905766875818, Var_Parameter_Inference_Time: 0.001682694450037161, Var_Location_Inference_Time: 0.0033579448682077313
+Total Time: 44.746294260025024
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Histogram, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [32.89546528]
+Percentage GPS Deviation: [5.1018429] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6277944882710774, Mean_Parameter_Inference_Time: 2.068178653717041, Mean_Location_Inference_Time: 2.393616346212534
+Var_Add_Time: 0.0008649116077054309, Var_Parameter_Inference_Time: 0.009523734679873996, Var_Location_Inference_Time: 0.008719620367117268
+Total Time: 50.87482309341431
+DATSETAMAZ
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Cross Correlation, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [68.64607204]
+Percentage GPS Deviation: [6.00922778] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5772078037261963, Mean_Parameter_Inference_Time: 2.2835140228271484, Mean_Location_Inference_Time: 2.706010029866145
+Var_Add_Time: 0.002452406288701544, Var_Parameter_Inference_Time: 0.002734173908379489, Var_Location_Inference_Time: 0.014151633204491617
+Total Time: 55.253817558288574
+DATSETROT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Cross Correlation, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [57.7729495]
+Percentage GPS Deviation: [5.49711455] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5783464749654134, Mean_Parameter_Inference_Time: 2.3127862930297853, Mean_Location_Inference_Time: 2.635724746263944
+Var_Add_Time: 0.0008098990224688248, Var_Parameter_Inference_Time: 0.0028832078968980563, Var_Location_Inference_Time: 0.004764949405851913
+Total Time: 54.5035502910614
+DATSETCPT
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Cross Correlation, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [91.41860809]
+Percentage GPS Deviation: [9.50446516] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5967423915863037, Mean_Parameter_Inference_Time: 2.5183748245239257, Mean_Location_Inference_Time: 2.800900752727802
+Var_Add_Time: 0.005868991796091905, Var_Parameter_Inference_Time: 0.005992870924014824, Var_Location_Inference_Time: 0.01088727397536221
+Total Time: 57.95471978187561
+DATSETROCK
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Cross Correlation, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [1588.14923142]
+Percentage GPS Deviation: [94.20246215] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.5407718499501546, Mean_Parameter_Inference_Time: 1.9249167919158936, Mean_Location_Inference_Time: 2.41668517772968
+Var_Add_Time: 0.0008097400149750279, Var_Parameter_Inference_Time: 0.0023082964820423514, Var_Location_Inference_Time: 0.05910815918162252
+Total Time: 49.15306901931763
+DATSETSAND
+
+
+
+Preprocessing Global Detector: ORB, Preprocessing Global Matcher: FLANN, Global Matching Technique: Cross Correlation, Local Detector: AKAZE, Local Matcher: FLANN
+RMSE GPS error: [1271.68066901]
+Percentage GPS Deviation: [106.82940333] %
+EFFICIENCYMODE
+
+Mean_Add_Time: 0.6969730059305826, Mean_Parameter_Inference_Time: 2.9705700874328613, Mean_Location_Inference_Time: 2.3390985085414004
+Var_Add_Time: 0.015511651585133122, Var_Parameter_Inference_Time: 0.39995822526843766, Var_Location_Inference_Time: 0.006241757026330928
+Total Time: 55.715726137161255
+DATSETAMAZ
+
+
+

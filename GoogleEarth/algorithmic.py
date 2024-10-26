@@ -400,6 +400,7 @@ class UAVNavigator:
         noise = np.random.normal(0, noise_sigma, cropped_image.shape).astype(np.uint8)
         low_light_noisy_image = cv2.addWeighted(low_light_image, 0.9, noise, 0.1, 0)
         tinted_image = cv2.addWeighted(low_light_noisy_image, 0.7, np.zeros_like(cropped_image), 0.3, 0)
+        
         # cv2.imshow("Tinted Low Light Image", tinted_image)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
@@ -796,9 +797,9 @@ class UAVNavigator:
         
         x_actual = np.array(self.actuals_x)
         y_actual = np.array(self.actuals_y)
-        
         if len(x_estimates) > 0 and len(y_estimates) > 0:
             # Perform linear regression for x
+            
             reg_x = LinearRegression().fit(x_estimates, x_actual)
             inferred_factor_x = reg_x.coef_[0]
             print(f"Linear regression inferred factor x: {inferred_factor_x}")
@@ -1333,11 +1334,13 @@ class UAVNavigator:
                 # if not bool_infer_factor:
                 #     visual_shifts = dst_pts - src_pts
                 #     self.visualize_pts_and_actual(visual_shifts, actual_pixel_change_x_m, actual_pixel_change_y_m)
-
+                prior_src, prior_dst = src_pts, dst_pts
                 src_pts, dst_pts = self.remove_out_of_stdev(src_pts, dst_pts, 2)
-                src_pts, dst_pts = self.filter_by_gradient(src_pts, dst_pts, 0.5, use_median=True)
-                src_pts, dst_pts = self.ensure_parallel_lines(src_pts, dst_pts, np.abs(internal_angle))
-                
+                src_pts, dst_pts = self.filter_by_gradient(src_pts, dst_pts, 0.5, use_median=True) 
+                # src_pts, dst_pts = self.ensure_parallel_lines(src_pts, dst_pts, np.abs(internal_angle)) # INSTABILITY 
+                if (len(src_pts) < 200):
+                    src_pts, dst_pts = prior_src, prior_dst
+                # print(f"len src pts: {len(src_pts)}")
 
 
 
@@ -1693,7 +1696,7 @@ def main():
     # Settings (curr_best: akaze,bf, affine, histo, akaze,flann)
     global_detector_choice = 1  # # Set 1 for ORB, 2 for AKAZE
     global_matcher_choice = 1  # Set 0 for BFMatcher, 1 for FlannMatcher, 2 for GraphMatcher
-    global_matcher_technique = 4  # Set 0 for Pass Through grid counter, 3 for correlation, 4 for histogram, 5 for SSIM, 6 for Hash (DONT USE HASHING). 
+    global_matcher_technique = 3  # Set 0 for Pass Through grid counter, 3 for correlation, 4 for histogram, 5 for SSIM, 6 for Hash (DONT USE HASHING). 
     local_detector_choice = 2  # Set 1 for ORB, 2 for AKAZE 3 for NEURAL (lightglue matcher)
     local_matcher_choice = 1  # Set 0 for BFMatcher, 1 for FlannMatcher, 2 for GraphMatcher
     
@@ -1704,7 +1707,7 @@ def main():
     rotation_method_to_use = 2 # 0 for affine, 1 for homography, 2 for partial affine
 
     # translation
-    translation_method_to_use = 1 # 0 for phase correlation, 1 for direct src (fix rot), 2 for affine, 3 for rigid (no rot fix), 4 for homography
+    translation_method_to_use = 1 # 0 for phase correlation, 1 for SVD rigid (fix rot), 2 for affine, 3 for partial 2D, 4 for homography
    
 
 
