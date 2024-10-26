@@ -38,7 +38,7 @@ class UAVNavigator:
 
         
 
-        self.scale_factor_dual = scale_factor
+        self.scale_factor_dual = 0
         # angles 
         self.stored_headings = []
         self.estimated_headings = []
@@ -186,9 +186,10 @@ class UAVNavigator:
 
     def test_and_reinitialize(self, detector, num_kps=1000):
         # find kps, if not enough, reinitialize
-        image_path = os.path.join(self.directory, f'{1}.jpg')
-        image = cv2.imread(image_path)  # Read the image in color
-        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if len(image.shape) == 3 else image
+        # image_path = os.path.join(self.directory, f'{1}.jpg')
+        # image = cv2.imread(image_path)  # Read the image in color
+        # gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if len(image.shape) == 3 else image
+        gray_image = self.pull_image(1, self.directory)
         kps, _ = detector.get_keydes(gray_image)
         redo_true = True if len(kps) < num_kps else False
         return redo_true
@@ -387,18 +388,26 @@ class UAVNavigator:
     def pull_image(self, index, directory, bool_rotate=False, use_estimate=False):
         """Pull an image from from the directory with name index.jpg"""
         image_path = os.path.join(directory, f'{index+1}.jpg')
-        
-        # read in grey 
-        #image = cv2.imread(image_path, cv2.IMREAD_COLOR)  # Read the image in color
-        # read in grey
+
         image = cv2.imread(image_path)  # Read the image in
         cropped_image = self.crop_image(image)
-            
+
+#         # # filter
+        alpha = 0.5  # Contrast control (0.0-1.0, where <1 reduces contrast)
+        beta = -50   # Brightness control (negative for darkening)
+        low_light_image = cv2.convertScaleAbs(cropped_image, alpha=alpha, beta=beta)
+        noise_sigma = 25
+        noise = np.random.normal(0, noise_sigma, cropped_image.shape).astype(np.uint8)
+        low_light_noisy_image = cv2.addWeighted(low_light_image, 0.9, noise, 0.1, 0)
+        tinted_image = cv2.addWeighted(low_light_noisy_image, 0.7, np.zeros_like(cropped_image), 0.3, 0)
+        # cv2.imshow("Tinted Low Light Image", tinted_image)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+        cropped_image = tinted_image
+        
             # Convert to grayscale for detectors if not already
         gray_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY) if len(cropped_image.shape) == 3 else cropped_image
-        if bool_rotate:
-            pass # no longer used 
-            # gray_image = rotate_image(gray_image, self.stored_headings[index]) if not use_estimate else rotate_image(gray_image, self.estimated_headings[index])
+
         return gray_image
 
     # Additional comparison methods needed for the function
@@ -720,19 +729,22 @@ class UAVNavigator:
 
     def add_image(self, index, directory):
         start_time_add = time.time()
-        image_path = os.path.join(directory, f'{index}.jpg')
+        # image_path = os.path.join(directory, f'{index}.jpg')
         gps_path = os.path.join(directory, f'{index}.txt')
-        image = cv2.imread(image_path)  # Read the image in color
+
+        
+        # image = cv2.imread(image_path)  # Read the image in color
         gps_coordinates, heading = parse_gps(gps_path)
         """Add an image and its GPS coordinates to the stored list."""
-        cropped_image = self.crop_image(image)
+        # cropped_image = self.crop_image(image)
         self.stored_gps.append(gps_coordinates)
         self.stored_headings.append(heading)
         self.stored_image_count += 1
         
-        # Convert to grayscale for detectors if not already
-        gray_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY) if len(cropped_image.shape) == 3 else cropped_image
-
+        # # Convert to grayscale for detectors if not already
+        # gray_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY) if len(cropped_image.shape) == 3 else cropped_image
+        # # add im function is indexed with + 1
+        gray_image = self.pull_image(index-1, directory)
         # gray_image = rotate_image(gray_image, heading)
         #1920 x 972 = 1080 * 0.9 = 972
         # lets normalize first based on stored headings 
@@ -1039,9 +1051,12 @@ class UAVNavigator:
         # return img[crop_size:height-crop_size, :]  # Crop top and bottom
 
         height, width = img.shape[:2]
-        scaling_factor = 100*self.scale_factor_dual
-        target_height = (int)(972 - scaling_factor)
-        target_width = (int)(1920 - scaling_factor)
+        
+        # failed after iteration 3
+
+        target_height = (int)(972)
+        target_width = (int)(1920)
+        # print(f"Target height: {target_height}, target width: {target_width}")
         
         # Default to cropping 5% from top/bottom and 2% from left/right
         if target_height is None:
@@ -1300,7 +1315,7 @@ class UAVNavigator:
 
 
                 extra_internal_angle = get_src_shifts(src_pts, dst_pts, ret_angle=True) 
-
+                # extra_internal_angle = 0
                 inference_image_rotated = rotate_image(inference_image, extra_internal_angle)
                 
                 
@@ -1387,12 +1402,17 @@ class UAVNavigator:
                 image_size = self.pull_image(i, self.directory, bool_rotate=False).shape
                 act_tx_ratio = 1 - np.abs(Unnorm_x) / image_size[1]
                 act_ty_ratio = 1 - np.abs(Unnorm_y) / image_size[0]
+                act_tx_pixels = act_tx_ratio*image_size[1]
+                act_ty_pixels = act_ty_ratio*image_size[0]
+                # print(f"unnorm xy: {Unnorm_x}, {Unnorm_y}")
+                act_tx_pixels = image_size[1] - np.abs(Unnorm_x)
+                act_ty_pixels = image_size[0] - np.abs(Unnorm_y)
                 act_tx_percent = act_tx_ratio * 100
                 act_ty_percent = act_ty_ratio * 100
                 # print(f"X-overlap: {act_tx_percent:.2f}%, X-dev: {deviation_x_meters:.2f}m, Y-overlap: {act_ty_percent:.2f}%, Y-dev: {deviation_y_meters:.2f}m ")
                 if not bool_infer_factor:
-                    self.x_overlap.append(act_tx_percent)
-                    self.y_overlap.append(act_ty_percent)
+                    self.x_overlap.append(act_tx_pixels)
+                    self.y_overlap.append(act_ty_pixels)
                 x_disp_ratio = np.abs(Unnorm_x) / image_size[1]
                 y_disp_ratio = np.abs(Unnorm_y) / image_size[0]
                 total_overlap_ratio = x_disp_ratio * y_disp_ratio # not right - diff dims 
@@ -1700,7 +1720,8 @@ def main():
 
     global_detector_arr = [1,2]
     global_matcher_arr = [0,1,2]
-    dat_set_arr = ["DATSETCPT"]
+    #ROT, CPT, ROCK, SAND, AMAZ - ALL: DATSETXXXX
+    dat_set_arr = ["DATSETROT", "DATSETCPT", "DATSETROCK", "DATSETSAND", "DATSETAMAZ"]
     # dat_set_arr = ["DATSETROCK"]
    
    
@@ -1720,7 +1741,7 @@ def main():
                 # for local_detector_choice in local_detector_arr:
             # for rotation_method_to_use in rotation_method_to_use_arr:
                 #     for global_detector_choice in global_detector_arr:
-                for scale_factor in [1,0.95,0.9,0.85,0.8,0.75,0.7,0.65,0.6,0.55,0.5]:
+                # for scale_factor in [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]:
                 # for local_matcher_choice in local_matcher_arr:
                     for main_dataset_name in dat_set_arr:
                         
@@ -1750,7 +1771,7 @@ def main():
 
                         main_start_time = time.time()
                         
-                        navigator = UAVNavigator(global_detector_choice, local_detector_choice , rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, rotation_method_to_use, glob_thresh, loc_det_thresh, rot_det_thresh, translation_method_to_use, scale_factor) # INITIALIZATION
+                        navigator = UAVNavigator(global_detector_choice, local_detector_choice , rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, rotation_method_to_use, glob_thresh, loc_det_thresh, rot_det_thresh, translation_method_to_use) # INITIALIZATION
                         
                         
 
@@ -1781,7 +1802,16 @@ def main():
 
 
                         #DEBUG ONLY
-                        print(f"x, y-overlap-mean: {np.mean(navigator.x_overlap):.2f}, {np.mean(navigator.y_overlap):.2f}")
+                        # mean_mut_info_x = np.mean(navigator.x_overlap)
+                        # mean_retained_info_x = (1920 - 100*scale_factor)/1920
+                        # net_information_mutual_x = mean_mut_info_x * mean_retained_info_x
+                        # mean_mut_info_y = np.mean(navigator.y_overlap)
+                        # mean_retained_info_y = (972 - 100*scale_factor)/972
+                        # net_information_mutual_y = mean_mut_info_y * mean_retained_info_y
+                        # net_information_mutual_x= 1920 - 1000 - 100*scale_factor
+                        # net_information_mutual_y = 972 - 300 - 80*scale_factor
+
+                        # print(f"x, y-overlap-mean: {int(net_information_mutual_x)}, {int(net_information_mutual_y)}")
                         # seperate add_time_arr, parameter_inference_time_arr, and location_inference_time_arr. Get the mean and variance of each
                         string_time_analysis_mean = f"Mean_Add_Time: {np.mean(navigator.add_time_arr)}, Mean_Parameter_Inference_Time: {np.mean(navigator.parameter_inference_time_arr)}, Mean_Location_Inference_Time: {np.mean(navigator.location_inference_time_arr)}"
                         string_time_analysis_var = f"Var_Add_Time: {np.var(navigator.add_time_arr)}, Var_Parameter_Inference_Time: {np.var(navigator.parameter_inference_time_arr)}, Var_Location_Inference_Time: {np.var(navigator.location_inference_time_arr)}"

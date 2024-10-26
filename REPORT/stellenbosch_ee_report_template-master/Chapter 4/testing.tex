@@ -64,9 +64,9 @@ The evaluation focused on three main criteria:
     \item \textbf{Robustness}: Evaluates consistency and reliability across different datasets.
 \end{itemize}
 
-The results from these tests informed the selection of the most appropriate detector and threshold parameters for the four defined stages utilizing the detected keypoints: rotational alignment for global matching, global similarity computation, precise translation estimation, and precise rotational estimation.
+The results from these tests informed the selection of the most appropriate detector and threshold parameters for the crude and dense layer of keypoints, as well as whether the optimal detector for rotational estimation is the same as for translational estimation. 
 
-\subsection{Translation Estimation Performance}
+\subsection{Accuracy}
 
 Table \ref{tab:rmse_detectors} presents the RMSE values in meters for each feature detector applied to the precise translation estimation stage. AKAZE, utilizing dynamic keypoint targeting, demonstrated the highest accuracy across all datasets while maintaining reasonable runtime. ORB exhibited respectable accuracy but was consistently outperformed by AKAZE. SuperPoint recorded the highest RMSE values, particularly in challenging datasets such as ROCKY and AMAZON, indicating its limited generalizability across diverse environments.
 
@@ -104,59 +104,14 @@ Table \ref{tab:runtime_detectors} illustrates the runtime (in seconds) for each 
 
 In terms of robustness, AKAZE exhibited the highest consistency in accuracy across different datasets. ORB also performed well but showed greater variability in accuracy across datasets compared to AKAZE. SuperPoint, however, demonstrated significant performance variability, indicating lower robustness across diverse environments.
 
-\subsection{Rotation Estimation Performance}
-
-Table \ref{tab:rmse_rot_comparison} presents the RMSE values in meters for ORB and AKAZE applied to the precise rotational estimation stage. Both detectors were optimized for this stage to ensure high accuracy while maintaining reasonable runtime.
-
-\begin{table}[H]
-    \centering
-    \caption{RMSE for ORB (8000 keypoints) and AKAZE (6000 keypoints) (in meters)}
-    \label{tab:rmse_rot_comparison}
-    \begin{tabular}{|c|c|c|c|c|c|}
-    \hline
-    \textbf{Method} & \textbf{CITY1} & \textbf{CITY2} & \textbf{ROCKY} & \textbf{DESERT} & \textbf{AMAZON} \\ \hline
-    ORB (8000 keypoints) & 69.42 & 8.17 & 22.38 & 32.55 & 37.93 \\ \hline
-    \makecell{\textbf{Dynamic AKAZE} \\ \textbf{(6000 keypoints)}} & 68.14 & 8.34 & 21.72 & 35.17 & 39.25 \\ \hline
-    \end{tabular}
-\end{table}
-
-\subsubsection*{Runtime and Efficiency}
-
-Table \ref{tab:runtime_comparison_rot} presents the runtime comparisons for ORB and AKAZE in the rotational estimation stage. ORB outperformed AKAZE in terms of speed, especially in denser datasets, while maintaining similar levels of accuracy. This suggests that ORB is better suited for time-sensitive applications within this stage.
-
-\begin{table}[H]
-    \centering
-    \caption{Runtime for ORB (8000 keypoints) and AKAZE (6000 keypoints) (in seconds)}
-    \label{tab:runtime_comparison_rot}
-    \begin{tabular}{|c|c|c|c|c|c|}
-    \hline
-    \textbf{Method} & \textbf{CITY1} & \textbf{CITY2} & \textbf{ROCKY} & \textbf{DESERT} & \textbf{AMAZON} \\ \hline
-    ORB (8000 keypoints) & 95.80 & 106.63 & 104.79 & 99.56 & 84.70 \\ \hline
-    \makecell{\textbf{Dynamic AKAZE} \\ \textbf{(6000 keypoints)}} & 108.44 & 131.10 & 120.77 & 111.25 & 98.70 \\ \hline
-    \end{tabular}
-\end{table}
-
-\subsubsection*{Robustness}
-
-Regarding robustness, AKAZE demonstrated more consistent accuracy across various datasets compared to ORB, which exhibited greater variability in performance. Despite this, ORB's consistently lower runtimes make it a favorable option for applications where speed is critical.
-
 \subsection{Final Selection of Feature Detectors}
 
 Based on the comprehensive evaluation, the following detectors were selected for the respective stages of the UAV navigation system:
 
 \begin{itemize}
-    \item \textbf{Translation Estimation Stage:} 
-    AKAZE, with dynamic keypoint targeting (3000 keypoints), exhibited the highest accuracy and robustness in translation estimation while maintaining reasonable runtime. This balance makes Dynamic AKAZE the optimal choice for precise translation inference.
+    \item \textbf{Crude Layer (Initial Detection)}: \textbf{ORB} was chosen for the crude layer due to its balance of accuracy and efficiency. ORB's robustness and consistent runtime performance across datasets make it an ideal choice for processing multiple images.
     
-    \item \textbf{Rotational Alignment for Translation Estimation Stage:} 
-    ORB, utilizing 8000 keypoints, offers an excellent balance between accuracy and efficiency. Although AKAZE demonstrated slightly better performance in rotational estimation, ORB's significantly lower runtime makes it the preferred option for this stage.
-    
-    \item \textbf{Rotational Alignment for Global Matching Stage:} 
-    ORB, with 6000 keypoints, is the optimal choice due to its superior runtime efficiency. This stage can accommodate relatively larger rotational estimation errors, making ORB ideal for global matching tasks.
-    
-    \item \textbf{Global Similarity Refinement:} 
-    ORB, employing 1500 keypoints, is selected for global image similarity comparison using local matching. The lower accuracy requirement and the necessity for high runtime efficiency make ORB the best fit for grid matching.
-\end{itemize}
+    \item \textbf{Dense Layer (Refined Detection)}: \textbf{Dynamic AKAZE} with 3000 keypoints was selected for the dense layer due to its consistent performance and robustness. This detector complements the crude layer by refining feature extraction and enhancing the system's accuracy.
 
 These selections ensure that each stage of the UAV navigation system leverages the most appropriate feature detector, optimizing both accuracy and computational performance.
 
@@ -492,11 +447,13 @@ Based on the evaluation of accuracy, runtime, and robustness, \textbf{Partial Af
 
 \section{Optimization Techniques}
 
-This section outlines the selected optimization methods and their corresponding parameter choices for each stage of the UAV navigation system. The focus is on the robustness of each technique and the comparative performance of different methods, rather than on identifying the absolute optimal parameters for each dataset.
+This section outlines the selected optimization methods employed to improve the performance of the UAV navigation system. The optimization techniques focus primarily on filtering matches between images. Since the accuracy of transformation techniques is largely governed by the quantity of matches that adhere to the correct model, optimizing these matches is essential to the overall performance of the system.
+
 
 \subsection{Planar Transform Outlier Rejection Method}
 
-Two outlier rejection methods, LMEDS (Least Median of Squares) and RANSAC (Random Sample Consensus), were evaluated for planar transform estimation. The performance comparison is summarized in Tables \ref{tab:rmse_comparison_opt} and \ref{tab:runtime_comparison_opt}.
+Two outlier rejection methods, LMEDS (Least Median of Squares) and RANSAC (Random Sample Consensus), were evaluated for planar transform estimation. These techniques are applied during transformation estimation when inferring rotation or translation using an OpenCV method. Although applied during the transformation phase, they still function to filter matches, fitting an iteratively adjusted model. The performance comparison is summarized in Tables \ref{tab:rmse_comparison_opt} and \ref{tab:runtime_comparison_opt}.
+
 
 \begin{table}[H]
     \centering

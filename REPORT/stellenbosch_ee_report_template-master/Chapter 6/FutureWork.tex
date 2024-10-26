@@ -1,32 +1,34 @@
-Z-estimate
-
-On the google earth fly overs the pixel to metre conversion factor varied. 
-Since the camera parameters remained constant, the ground was planar at the altitude, and this estimate is highly accurate, this change is primarily due to the change in altitude relative to the ground. 
-
-In future one can infer the other. In other words, if one knows the camera parameters, and they have a datapoint from a previous flight, they can infer the altitude by simply scaling the altitude by the change in the pixel to metre conversion factor given the error-telemetry conversion factor estimate.
-Conversely, if one has the altitude they can infer this factor in real-time without the need for error-telemetry conversion factor inference. Specifically, if the height of the UAV changes on the reverse flight, they can with certainty correct the factor, and ensure continued and correct GPS estimation. 
 
 
+\section{Future Work}
+
+This study establishes a foundational framework for image-based UAV navigation. While effective, several advancements could enhance the accuracy, practicality, and efficiency of the system in future implementations.
+
+\subsection{Multi-Image Weighted Inference System}
+
+Future implementations could improve location accuracy by using a weighted estimation approach based on multiple reference images, rather than relying on a single image. Aggregating data from multiple images would provide a more reliable position estimate, mitigating the effects of individual image distortions or outliers. Although this method was not tested in this study due to time constraints, it has the potential to enhance the robustness of location estimation with minimal increase in computational load.
+
+\subsection{Non-Planar Stereo Matching}
+
+For navigating complex terrains with non-planar ground surfaces, incorporating a non-planar stereo matching approach could improve depth perception and accuracy. By accounting for variations in surface elevation, the UAV could more accurately approximate altitude, enhancing its location estimates over diverse landscapes.
+
+\subsection{Integration with Mapping and Reference Images}
+
+Integrating reference images with up-to-date mapping data could eliminate the need for prior image capture and a fixed return path to base. This approach would enable the UAV to navigate freely within a mapped region without accumulating positional drift. Using prior flight data or collaboratively obtained maps would allow the system to maintain accuracy over a larger operational area, providing extreme reliability in the event of GPS signal loss.
+
+\subsection{Distortion Corrections}
+
+Although this system did not account for the effects of roll and pitch changes or altitude variations, these distortions are common in real-world applications. Future implementations could integrate correction mechanisms for these factors to enhance accuracy. Solutions such as OpenCV’s homography estimators, offer built-in methods for compensating for such distortions, allowing easy to implement, efficient real-time correction on compatible devices.
 
 
-\subsection*{}
+\subsection{Implementation on a Single Board Computer (SBC)}
 
-\subsubsection*{Future Work}
-In future, using a single image to infer location will be replaced by a more complex system that weights the estimate given by multiple images to infer location. Further, this will not increase runtime significantly. This method is not tested in this study, due to time constraints and the fact it is likely to make the solution too easy, without having to put much effort into the accuracy of the pipeline. xxx maybe ill test this out later. 
+To improve system performance and enable more complex computations, future work could explore implementing the system on a higher-performance Single Board Computer (SBC) with enhanced processing power. A more capable SBC would support the integration of multiple estimation techniques, facilitating more sophisticated data fusion to enhance overall accuracy. 
 
-non-planar stereo 
+\subsection{Higher Resolution Imaging}
 
-
-smarter search space reducer, dont choose too many images with similar proximity, 
+Incorporating higher-resolution imaging in future systems could significantly improve feature extraction and matching accuracy by capturing more detailed visual information. However, as resolution increases, so do the processing and memory demands. To maintain real-time performance, careful management of computational load and memory usage will be essential. 
 
 
-parallel?
+In summary, the proposed future work addresses a range of enhancements, from improving altitude and position inference to optimizing system performance and accuracy through advanced image processing and storage management techniques. These improvements would ensure a more robust, adaptable, and scalable navigation system suitable for various UAV applications.
 
-
-
-\subsection*{Future Work}
-- In future, higher frame rates and resolutions may be employed to improve accuracy. However, a more dynamic discarding method, or a larger storage space should be utilized to ensure no storage overload. - just monitor storage
-
-
-
-requires many images
