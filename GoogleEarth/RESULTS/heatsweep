@@ -1,0 +1,93 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Grid Parameters
+canvas_width = 1900
+canvas_height = 900
+
+# Target number of points
+target_points = 64  # 8x8 grid
+
+# Calculate the number of points along each axis
+grid_size = int(np.sqrt(target_points))
+if grid_size ** 2 != target_points:
+    grid_size += 1  # Adjust if target_points is not a perfect square
+
+num_cols = grid_size  # Number of points along X-axis
+num_rows = grid_size  # Number of points along Y-axis
+
+# Calculate spacing between points
+x_spacing = canvas_width / (num_cols + 1)
+y_spacing = canvas_height / (num_rows + 1)
+
+print(f"Grid Size: {num_cols} columns x {num_rows} rows")
+print(f"Spacing: {x_spacing:.2f} pixels (X-axis), {y_spacing:.2f} pixels (Y-axis)\n")
+
+# Generate equally spaced points along X and Y axes
+x_coords = np.linspace(x_spacing, canvas_width - x_spacing, num_cols)
+y_coords = np.linspace(y_spacing, canvas_height - y_spacing, num_rows)
+
+# Create a meshgrid of points
+X, Y = np.meshgrid(x_coords, y_coords)
+
+# Flatten the grid to obtain a list of (x, y) points
+points = np.vstack([X.ravel(), Y.ravel()]).T
+
+# Check the number of generated points
+print(f"Total Generated Points: {points.shape[0]}\n")
+
+# Calculate the center of the canvas
+center_x = canvas_width / 2
+center_y = canvas_height / 2
+
+# Calculate distances from the center
+distances = np.sqrt((points[:, 0] - 0) ** 2 + (points[:, 1] - 0) ** 2)
+
+# Sort points by distance (closest first)
+sorted_indices = np.argsort(distances)
+sorted_points = points[sorted_indices]
+
+# Convert to a list of tuples for easier readability
+points_array = sorted_points.tolist()
+
+# Print the sorted points
+print("2D Array of Points (X, Y) Sorted by Radial Distance:")
+for idx, point in enumerate(points_array, start=1):
+    print(f"{idx}: ({point[0]:.2f}, {point[1]:.2f})")
+
+# Manually add extra points near the lower end (higher radial distances)
+# extra_points = [
+#     (1900.00, 900.00),  # Bottom-right corner
+#     (0.00, 900.00)       # Bottom-left corner
+# ]
+
+# Append extra points to the sorted_points array
+final_points = np.vstack([sorted_points])
+
+# Convert to a list of tuples
+final_points_array = final_points.tolist()
+
+# Print the updated array with extra points
+print("\nFinal 2D Array of Points (X, Y) with Extra Points:")
+for idx, point in enumerate(final_points_array, start=1):
+    print(f"{idx}: ({point[0]:.2f}, {point[1]:.2f})")
+
+# Visualization
+plt.figure(figsize=(19, 9))  # Adjust figure size to match canvas aspect ratio
+plt.scatter(final_points[:, 0], final_points[:, 1], c='blue', marker='o', label='Grid Points')
+
+# Highlight the manually added points
+# plt.scatter([1900.00, 0.00], [900.00, 900.00], c='red', marker='x', label='Extra Points')
+
+# Highlight the center
+# plt.scatter(center_x, center_y, c='green', marker='*', s=200, label='Center')
+
+plt.title('Equally Spaced Grid of Points with Extra Points')
+plt.xlabel('X-axis (0 to 1900)')
+plt.ylabel('Y-axis (0 to 900)')
+plt.xlim(-100, 2000)  # Slightly extended limits for visibility
+plt.ylim(0, 1000)
+plt.gca().set_aspect('equal', adjustable='box')
+plt.legend()
+plt.grid(True)
+plt.show()

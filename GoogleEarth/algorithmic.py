@@ -16,7 +16,7 @@ import gc
 
 
 class UAVNavigator:
-    def __init__(self, global_detector_choice, local_detector_choice, rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matching_technique, dataset_name, rotation_method, global_detector_threshold=0.001, local_detector_threshold=0.001, rotational_detector_threshold=0.001, translation_method=0, scale_factor=1):
+    def __init__(self, global_detector_choice, local_detector_choice, rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matching_technique, dataset_name, rotation_method, global_detector_threshold=0.001, local_detector_threshold=0.001, rotational_detector_threshold=0.001, translation_method=0, width_reduction=0, height_reduction=0):
         self.stored_image_count = 0
         self.stored_global_keypoints = []
         self.stored_global_descriptors = []
@@ -62,6 +62,9 @@ class UAVNavigator:
         # coverage
         self.x_overlap = []
         self.y_overlap = []
+        self.width_reduction = width_reduction
+        self.height_reduction = height_reduction
+        
     
         # Translation
         self.translation_method = translation_method
@@ -189,7 +192,8 @@ class UAVNavigator:
         # image_path = os.path.join(self.directory, f'{1}.jpg')
         # image = cv2.imread(image_path)  # Read the image in color
         # gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if len(image.shape) == 3 else image
-        gray_image = self.pull_image(1, self.directory)
+        # print(f" directory is {self.directory}")
+        gray_image = self.pull_image(1-1, self.directory)
         kps, _ = detector.get_keydes(gray_image)
         redo_true = True if len(kps) < num_kps else False
         return redo_true
@@ -387,24 +391,25 @@ class UAVNavigator:
 
     def pull_image(self, index, directory, bool_rotate=False, use_estimate=False):
         """Pull an image from from the directory with name index.jpg"""
+        # print(f"Pulling image {index} from {directory}")
         image_path = os.path.join(directory, f'{index+1}.jpg')
 
         image = cv2.imread(image_path)  # Read the image in
         cropped_image = self.crop_image(image)
 
 #         # # filter
-        alpha = 0.5  # Contrast control (0.0-1.0, where <1 reduces contrast)
-        beta = -50   # Brightness control (negative for darkening)
-        low_light_image = cv2.convertScaleAbs(cropped_image, alpha=alpha, beta=beta)
-        noise_sigma = 25
-        noise = np.random.normal(0, noise_sigma, cropped_image.shape).astype(np.uint8)
-        low_light_noisy_image = cv2.addWeighted(low_light_image, 0.9, noise, 0.1, 0)
-        tinted_image = cv2.addWeighted(low_light_noisy_image, 0.7, np.zeros_like(cropped_image), 0.3, 0)
-        
+        # alpha = 0.5  # Contrast control (0.0-1.0, where <1 reduces contrast)
+        # beta = -50   # Brightness control (negative for darkening)
+        # low_light_image = cv2.convertScaleAbs(cropped_image, alpha=alpha, beta=beta)
+        # noise_sigma = 25
+        # noise = np.random.normal(0, noise_sigma, cropped_image.shape).astype(np.uint8)
+        # low_light_noisy_image = cv2.addWeighted(low_light_image, 0.9, noise, 0.1, 0)
+        # tinted_image = cv2.addWeighted(low_light_noisy_image, 0.7, np.zeros_like(cropped_image), 0.3, 0)
+        # cropped_image = tinted_image
         # cv2.imshow("Tinted Low Light Image", tinted_image)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
-        cropped_image = tinted_image
+        
         
             # Convert to grayscale for detectors if not already
         gray_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY) if len(cropped_image.shape) == 3 else cropped_image
@@ -745,6 +750,7 @@ class UAVNavigator:
         # # Convert to grayscale for detectors if not already
         # gray_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY) if len(cropped_image.shape) == 3 else cropped_image
         # # add im function is indexed with + 1
+        
         gray_image = self.pull_image(index-1, directory)
         # gray_image = rotate_image(gray_image, heading)
         #1920 x 972 = 1080 * 0.9 = 972
@@ -1054,9 +1060,9 @@ class UAVNavigator:
         height, width = img.shape[:2]
         
         # failed after iteration 3
-
-        target_height = (int)(972)
-        target_width = (int)(1920)
+        # print(f"height reduction: {self.height_reduction}, width reduction: {self.width_reduction}")
+        target_height = (int)(972 - self.height_reduction)
+        target_width = (int)(1920 - self.width_reduction)
         # print(f"Target height: {target_height}, target width: {target_width}")
         
         # Default to cropping 5% from top/bottom and 2% from left/right
@@ -1276,7 +1282,9 @@ class UAVNavigator:
             else: 
                 best_index, internal_angle = self.find_best_match_multimethod(i, image_space)
             match_time_2 = time.time() - match_time_1
-            
+            if best_index == -1:
+                print(f"No suitable match found for image {i}. Skipping.")
+                continue
             if best_index != -1 and internal_angle is not None:
 
                 time_rand = time.time()
@@ -1337,8 +1345,8 @@ class UAVNavigator:
                 prior_src, prior_dst = src_pts, dst_pts
                 src_pts, dst_pts = self.remove_out_of_stdev(src_pts, dst_pts, 2)
                 src_pts, dst_pts = self.filter_by_gradient(src_pts, dst_pts, 0.5, use_median=True) 
-                # src_pts, dst_pts = self.ensure_parallel_lines(src_pts, dst_pts, np.abs(internal_angle)) # INSTABILITY 
-                if (len(src_pts) < 200):
+                src_pts, dst_pts = self.ensure_parallel_lines(src_pts, dst_pts, np.abs(internal_angle)) # INSTABILITY 
+                if (len(src_pts) < 4): # THIS VALUE IS VERY IMPORTANT
                     src_pts, dst_pts = prior_src, prior_dst
                 # print(f"len src pts: {len(src_pts)}")
 
@@ -1367,6 +1375,7 @@ class UAVNavigator:
 
                 # DEBUG
                 Unnorm_x, Unnorm_y = translation_x, translation_y
+                
                 rand_new = time.time() # NOTHING 1
                 # Global Normalization
                 translation_x, translation_y = normalize_translation_to_global_coord_system(translation_x, translation_y, -self.stored_headings[best_index])
@@ -1410,8 +1419,7 @@ class UAVNavigator:
                 # print(f"unnorm xy: {Unnorm_x}, {Unnorm_y}")
                 act_tx_pixels = image_size[1] - np.abs(Unnorm_x)
                 act_ty_pixels = image_size[0] - np.abs(Unnorm_y)
-                act_tx_percent = act_tx_ratio * 100
-                act_ty_percent = act_ty_ratio * 100
+
                 # print(f"X-overlap: {act_tx_percent:.2f}%, X-dev: {deviation_x_meters:.2f}m, Y-overlap: {act_ty_percent:.2f}%, Y-dev: {deviation_y_meters:.2f}m ")
                 if not bool_infer_factor:
                     self.x_overlap.append(act_tx_pixels)
@@ -1713,8 +1721,8 @@ def main():
 
 
     # DATASET optimization
-    main_dataset_name = "DATSETROCK" 
-    message = "EFFICIENCYMODE\n"
+    main_dataset_name = "DATSETROT" 
+    message = "N/A\n"
 
     # AKAZE thresh, ORB kp. 
 
@@ -1724,7 +1732,7 @@ def main():
     global_detector_arr = [1,2]
     global_matcher_arr = [0,1,2]
     #ROT, CPT, ROCK, SAND, AMAZ - ALL: DATSETXXXX
-    dat_set_arr = ["DATSETROT", "DATSETCPT", "DATSETROCK", "DATSETSAND", "DATSETAMAZ"]
+    dat_set_arr = ["DATSETROT, DATSETCPT, DATSETROCK, DATSETSAND, DATSETAMAZ"]
     # dat_set_arr = ["DATSETROCK"]
    
    
@@ -1733,7 +1741,19 @@ def main():
     local_detector_arr = [3]
     local_matcher_arr = [0,1,2]
     iteration_count = 0
+
+    x_offset = 62
+
+
+    reduction_2D_array = [  (1920-730 - (730-323) , 972-410 - (410-273)-(410-322))]
+    reduction_2D_array = [(0,0)]
+
     
+    # [(0,0), (1010, 0), (1060, 50), (1110, 100), (1160, 150), (1210, 200), (1260, 250), (1310, 300), (1360, 350), (1410, 400), (1460, 450), (1510, 500), (1560, 550), (1610, 600), (1660, 650), (1710, 700), (1760, 750)]
+    # Convert to a 2D NumPy array
+    # reduction_arr_2D_pixels = np.array(coordinates)
+    
+    # reduction_arr_2D_pixels = [(920,0), (0,0), (0,0), (0,0), (400,400), (500,500), (600,600), (700,700), (800,800), (900,900), (1000,1000)]
 
     rotation_method_to_use_arr = [0,1,2]
     
@@ -1743,6 +1763,7 @@ def main():
             # for translation_method_to_use in [2]:
                 # for local_detector_choice in local_detector_arr:
             # for rotation_method_to_use in rotation_method_to_use_arr:
+            for widthreduction, heightreduction in reduction_2D_array:
                 #     for global_detector_choice in global_detector_arr:
                 # for scale_factor in [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]:
                 # for local_matcher_choice in local_matcher_arr:
@@ -1774,7 +1795,7 @@ def main():
 
                         main_start_time = time.time()
                         
-                        navigator = UAVNavigator(global_detector_choice, local_detector_choice , rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, rotation_method_to_use, glob_thresh, loc_det_thresh, rot_det_thresh, translation_method_to_use) # INITIALIZATION
+                        navigator = UAVNavigator(global_detector_choice, local_detector_choice , rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, rotation_method_to_use, glob_thresh, loc_det_thresh, rot_det_thresh, translation_method_to_use, widthreduction, heightreduction) # INITIALIZATION
                         
                         
 
@@ -1805,23 +1826,33 @@ def main():
 
 
                         #DEBUG ONLY
-                        # mean_mut_info_x = np.mean(navigator.x_overlap)
+                        navigator.x_overlap = np.abs(navigator.x_overlap)
+                        navigator.y_overlap = np.abs(navigator.y_overlap)
+                        mean_mut_info_x = np.mean(navigator.x_overlap)
                         # mean_retained_info_x = (1920 - 100*scale_factor)/1920
                         # net_information_mutual_x = mean_mut_info_x * mean_retained_info_x
-                        # mean_mut_info_y = np.mean(navigator.y_overlap)
+                        mean_mut_info_y = np.mean(navigator.y_overlap)
                         # mean_retained_info_y = (972 - 100*scale_factor)/972
                         # net_information_mutual_y = mean_mut_info_y * mean_retained_info_y
-                        # net_information_mutual_x= 1920 - 1000 - 100*scale_factor
-                        # net_information_mutual_y = 972 - 300 - 80*scale_factor
+                        net_information_mutual_x= mean_mut_info_x
+                        net_information_mutual_y = mean_mut_info_y
+                        # Minimum INFO
+                        min_mut_info_x = np.min(navigator.x_overlap)
+                        min_mut_info_y = np.min(navigator.y_overlap)
+                        max_mut_info_x = np.max(navigator.x_overlap)
+                        max_mut_info_y = np.max(navigator.y_overlap)
+
+                        # print(f"x, y-overlap-max: {int(max_mut_info_x)}, {int(max_mut_info_y)}")
 
                         # print(f"x, y-overlap-mean: {int(net_information_mutual_x)}, {int(net_information_mutual_y)}")
+                        print(f"x, y-overlap-min: {int(min_mut_info_x)}, {int(min_mut_info_y)}")
                         # seperate add_time_arr, parameter_inference_time_arr, and location_inference_time_arr. Get the mean and variance of each
-                        string_time_analysis_mean = f"Mean_Add_Time: {np.mean(navigator.add_time_arr)}, Mean_Parameter_Inference_Time: {np.mean(navigator.parameter_inference_time_arr)}, Mean_Location_Inference_Time: {np.mean(navigator.location_inference_time_arr)}"
+                        string_time_analysis_mean = f"Mean_Add_Time: {np.mean(navigator.add_time_arr)}, Mean_Parameter_Inference_Time: {np.mean(navigator.parameter_inference_time_arr)}, Mean_Location_Inference_Time: {np.mean(navigator.location_inference_time_arr)}, Mean_Total_Time: {np.sum(navigator.add_time_arr) + np.sum(navigator.parameter_inference_time_arr) + np.sum(navigator.location_inference_time_arr)}"
                         string_time_analysis_var = f"Var_Add_Time: {np.var(navigator.add_time_arr)}, Var_Parameter_Inference_Time: {np.var(navigator.parameter_inference_time_arr)}, Var_Location_Inference_Time: {np.var(navigator.location_inference_time_arr)}"
                         string_total_time = f"Total Time: {np.sum(navigator.add_time_arr) + np.sum(navigator.parameter_inference_time_arr) + np.sum(navigator.location_inference_time_arr)}"
                         print(string_time_analysis_mean)
-                        print(string_time_analysis_var)
-                        print(string_total_time)
+                        # print(string_time_analysis_var)
+                        # print(string_total_time)
 
 
                         #conv np arr
@@ -1839,9 +1870,9 @@ def main():
                         string_percent_GPS_dev = f"Percentage GPS Deviation: {swing_percent} %"
                         string_params = print_choices(global_detector_choice,global_matcher_choice, global_matcher_technique, local_detector_choice, local_matcher_choice)
                         string_GPS_error = f"RMSE GPS error: {np_est_dev}" 
-                        print(f"Mean Absolute Error GPS: {np_MAE_GPS}")
+                        # print(f"Mean Absolute Error GPS: {np_MAE_GPS}")
                         String_RMSE = f"MAE GPS error: {np_est_dev}"
-                        print(np_est_dev)
+                        # print(np_est_dev)
                         # string_heading_error = f"Mean Heading Error: {np.mean(navigator.estimated_heading_deviations)}"
                         # print(string_GPS_error, '\n', string_heading_error)
                         
@@ -1852,7 +1883,7 @@ def main():
                         num_global_keypoints_per_image = [len(kps) for kps in navigator.stored_global_keypoints] # XXX sort out
                                               
                         string_mean_glob_len_kp = f"Mean Length of Global Keypoints: {np.mean(num_global_keypoints_per_image)}"
-                        print(string_mean_glob_len_kp) # XXX append this later to file
+                        # print(string_mean_glob_len_kp) # XXX append this later to file
                         
                         # num_local_keypoints_per_image = [len(kps) for kps in navigator.stored_local_keypoints] if local_detector_choice != 3 else [len(kps) for kps in navigator.stored_feats[0]['keypoints']]
                         # string_mean_len_local_kp = f"Mean Length of Local Keypoints: {np.mean(num_local_keypoints_per_image)}"
@@ -1868,16 +1899,16 @@ def main():
                         string_mean_good_matches = f"Mean Number of Global good Matches: {mean_good_matches}"
                         mean_loc_good_matches = np.mean(navigator.loc_mat_len_arr)
                         string_mean_loc_good_matches = f"Mean Number of Loc good Matches: {mean_loc_good_matches}"
-                        print(string_mean_loc_good_matches) # XXX append this later to file
+                        # print(string_mean_loc_good_matches) # XXX append this later to file
 
-                        print(string_mean_good_matches) # XXX append this later to file
+                        # print(string_mean_good_matches) # XXX append this later to file
 
                         
                         append_to_file("results.txt", string_params, string_GPS_error, string_percent_GPS_dev, message, string_time_analysis_mean, string_time_analysis_var, string_total_time, main_dataset_name, "\n\n")
 
 
                         elapsed_time = time.time() - main_start_time 
-                        print(f"Time taken to execute The Method: {elapsed_time:.4f} seconds")
+                        # print(f"Time taken to execute The Method: {elapsed_time:.4f} seconds")
                         
 
                     

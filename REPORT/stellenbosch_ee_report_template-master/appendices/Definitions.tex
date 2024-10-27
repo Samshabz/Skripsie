@@ -1,22 +1,53 @@
+\section{Definitions}
 
+\begin{description}[leftmargin=!, labelwidth=\widthof{\bfseries Mutual Information}]
 
-Homography: THIS IS a form of planar transformations. This is often used in this paper to generally describe planar transformations in the context of image processing such as affine etc.
+    \item[\textbf{Affine Transformation}] 
+    A type of planar transformation that preserves points, straight lines, and planes. Affine transformations include operations such as translation, scaling, rotation, and shearing.
 
-planar transforms: Describes the general transformation of a plane in a 2D space. This is used in this paper to describe the transformation of a plane in the context of image processing.
+    \item[\textbf{Descriptors}] 
+    Numerical values that describe the characteristics of keypoints in an image. Descriptors contain compact information about the areas surrounding the keypoints, enabling effective matching between different images.
 
-feature detectors (or extractors): Refer to the extraction process involves in identifying features in an image. 
+    \item[\textbf{Feature Detectors (or Extractors)}] 
+    Processes involved in identifying distinct features within an image. Feature detectors locate keypoints that are invariant to changes in scale, rotation, and illumination, facilitating reliable feature matching.
 
-Features: These refer to the unique keypoints in an image and their associated descriptors
+    \item[\textbf{Features}] 
+    Unique keypoints in an image along with their associated descriptors. Features are used to identify and match corresponding points across different images for localization and navigation purposes.
 
-keypoints: These are the points in an image that are used to identify features in an image. They are areas of strong contrast in an image.
+    \item[\textbf{Global Matching}] 
+    The process of finding similarities and potentially determining the pose between entire images by considering the overall context. Unlike local matching, which focuses on individual keypoints, global matching evaluates the entire image to establish correspondences.
 
-Descriptors: These are the numerical values that are used to describe the keypoints in an image. They contain compact information about the areas around the keypoints.
+    \item[\textbf{Homography}] 
+    A specific form of planar transformation that maps points from one plane to another in a two-dimensional space. Homography is often used in image processing to describe transformations such as rotation, translation, scaling, and shearing.
 
-Local Matching: This is the process of matching keypoints in two images. This is done by comparing the descriptors of the keypoints in the two images.
+    \item[\textbf{Homography Estimation}] 
+    The process of calculating the homography matrix that defines the transformation between two images. Accurate homography estimation is crucial for aligning images and facilitating reliable localization.
 
-Homography Estimation: This is the process of estimating the homography matrix that describes the transformation between two images.
+    \item[\textbf{Keypoints}] 
+    Specific points in an image that are used to identify and describe features. Keypoints are typically areas of strong contrast or distinctive patterns that can be reliably detected and matched across different images.
 
-Global Matching: This is the process of finding the similarity, and potentially the pose between images, using the entire image as context. 
+    \item[\textbf{Local Matching}] 
+    The process of matching keypoints between two images by comparing their descriptors. Local matching focuses on identifying correspondences based on the similarity of individual feature descriptors, enabling precise localization.
 
+    \item[\textbf{MAE (Mean Absolute Error)}] 
+    A metric used to measure the average magnitude of errors in localization estimates, without considering their direction. MAE provides an indication of the accuracy of the localization system by averaging the absolute differences between estimated and true positions.
 
-shearing etc scaling 
+    \item[\textbf{Mutual Information}] 
+    A measure of the amount of information shared between two images. In the context of image overlap, mutual information quantifies the similarity and redundancy between overlapping regions, aiding in the assessment of feature matching quality.
+
+    \item[\textbf{Planar Transforms}] 
+    General transformations applied to a plane in a two-dimensional space. Planar transforms include operations such as affine transformations, homography, scaling, and shearing, which are essential for aligning and matching images in localization systems.
+
+    \item[\textbf{RMSE (Root Mean Square Error)}] 
+    A widely used metric for measuring the differences between estimated values and actual values. RMSE provides a quadratic mean of the errors, giving higher weight to larger deviations and offering a comprehensive measure of localization accuracy.
+
+    \item[\textbf{Scaling}] 
+    A transformation that changes the size of an image or its features without altering its shape. Scaling is an essential operation in image processing, allowing for the normalization of feature sizes across different images.
+
+    \item[\textbf{Shearing}] 
+    A type of affine transformation that slants the shape of an object in an image. Shearing alters the angles between lines while keeping parallel lines parallel, contributing to the overall planar transformation process.
+
+    \item[\textbf{GPS (Global Positioning System)}] 
+    A satellite-based navigation system that provides geolocation and time information to a GPS receiver anywhere on or near the Earth. GPS is commonly used for UAV navigation but is vulnerable to jamming and spoofing attacks.
+
+\end{description}

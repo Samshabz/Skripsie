@@ -226,25 +226,17 @@ Although not inherently a global matching technique, local feature matching can 
 % -----------------------------------------------------------------------------------------------------------------------------------
 
 
-\subsection*{Planar Transformation Estimators}
+\subsection{Planar Transformation Estimators}
 
 Planar transformation estimators are pivotal for calculating the UAV's changes in position and orientation between consecutive images. These feature-based transformations enable precise updates to the UAV's pose and location, facilitating accurate navigation and control. The following subsections outline the primary planar transformations employed in this system.
 
 \subsubsection{Affine Transformation}
 
-Affine transformation captures translation, rotation, scaling, and shear, providing six degrees of freedom. It is represented by a (\ 2 x 3 \)
-2
-×
-3
-2×3 matrix that maps points from one plane to another while preserving lines and parallelism. Affine transformations are computed by estimating the affine transformation matrix between two sets of corresponding points using OpenCV's \texttt{estimateAffine2D} function \cite{opencv_warp_affine}. While versatile, the inclusion of scaling and shear can introduce unnecessary complexity for scenarios where only rotation and translation are relevant, potentially impacting the accuracy of transformation estimations.
+Affine transformation captures translation, rotation, scaling, and shear, providing six degrees of freedom. It is represented by a  \(2 \times 3\) matrix that maps points from one plane to another while preserving lines and parallelism. Affine transformations are computed by estimating the affine transformation matrix between two sets of corresponding points using OpenCV's \texttt{estimateAffine2D} function \cite{opencv_warp_affine}. While versatile, the inclusion of scaling and shear can introduce unnecessary complexity for scenarios where only rotation and translation are relevant, potentially impacting the accuracy of transformation estimations.
 
 \subsubsection{Rigid Transformation Estimation (SVD)}
 
-Rigid transformation preserves the shape and size of objects by estimating only rotation and translation, excluding scaling and shear. Represented by a 
-2
-×
-3
-2×3 matrix, rigid transformation ensures orthogonality in the rotation component. Utilizing Singular Value Decomposition (SVD), this method minimizes the least-squares error between two point sets. The process involves:
+Rigid transformation preserves the shape and size of objects by estimating only rotation and translation, excluding scaling and shear. Represented by a  \(2 \times 3\) matrix, rigid transformation ensures orthogonality in the rotation component. Utilizing Singular Value Decomposition (SVD), this method minimizes the least-squares error between two point sets. The process involves:
 
 \begin{enumerate} 
     \item Computing the weighted centroids of both point sets. 
@@ -267,11 +259,11 @@ Homography transformation accounts for translation, rotation, scaling, shear, an
 
 % -----------------------------------------------------------------------------------------------------------------------------------
 
-\subsection*{Optimization Techniques}
+\subsection{Optimization Techniques}
 
 Optimizing parameter sets is crucial for enhancing the performance and robustness of the UAV navigation system. These optimization techniques aim to refine the accuracy and reliability of the point cloud used for transformation estimation by effectively filtering out erroneous matches and improving transformation accuracy. The following subsections detail the primary optimization methods employed in this system.
 
-\subsubsection*{Random Sample Consensus (RANSAC) for Planar Transformation}
+\subsubsection{Random Sample Consensus (RANSAC) for Planar Transformation}
 
 RANSAC is a robust estimation technique used to estimate planar transformations by iteratively selecting random subsets of point correspondences to fit a model and identify inliers \cite{ransac1981random}. The process involves:
 
@@ -284,7 +276,7 @@ RANSAC is a robust estimation technique used to estimate planar transformations 
 
 This approach is highly effective in datasets with significant outliers, as it focuses on finding a model that best fits the largest subset of inliers. However, due to its iterative nature and the need to sample repeatedly, RANSAC can result in increased runtime, particularly in larger datasets or when dealing with numerous outliers \cite{ransac1981random}.
 
-\subsubsection*{Local Maxima Extrema Density Selection (LMEDS) for Planar Transformation}
+\subsubsection{Local Maxima Extrema Density Selection (LMEDS) for Planar Transformation}
 
 LMEDS is a keypoint selection method designed to prioritize areas of high feature density by identifying local maxima as keypoints for matching \cite{lmeds2002local}. This technique involves:
 
@@ -296,7 +288,7 @@ LMEDS is a keypoint selection method designed to prioritize areas of high featur
 
 By concentrating on areas with high feature concentration, LMEDS ensures that keypoints represent the most distinctive and informative regions of the image, enhancing both accuracy and performance by reducing redundant keypoints and improving match quality, particularly in areas with high feature variability. This method is effective in outlier rejection, leading to more reliable transformation estimations.
 
-\subsubsection*{Lowe's Ratio Test}
+\subsubsection{Lowe's Ratio Test}
 
 Lowe's ratio test is a filtering technique used to eliminate ambiguous or false keypoint matches by comparing the distance of the best match to the second-best match \cite{lowe2004}. The procedure involves:
 
@@ -307,7 +299,7 @@ Lowe's ratio test is a filtering technique used to eliminate ambiguous or false 
 
 A lower ratio indicates that the best match is significantly better than the alternatives, thereby increasing the likelihood of the match being correct. This test is essential for ensuring that only the most reliable correspondences are used in subsequent processing stages, thereby enhancing the overall accuracy of the transformation estimation.
 
-\subsubsection*{Parallel Flow Filtering}
+\subsubsection{Parallel Flow Filtering}
 
 Parallel Flow Filtering ensures consistency in feature matches by aligning them with the average motion flow resulting from the UAV's rotation and translation. In typical UAV movements, feature flow is linear and parallel to the direction of motion, assuming no scaling as per the system's scope. This technique involves:
 
@@ -318,10 +310,10 @@ Parallel Flow Filtering ensures consistency in feature matches by aligning them 
 
 By removing matches that do not conform to the expected motion pattern, Parallel Flow Filtering ensures that only consistent and reliable matches contribute to the transformation estimation. This significantly improves the overall accuracy and reliability of the navigation system by maintaining alignment with the UAV's actual motion dynamics.
 
-\subsubsection*{n-Match Thresholding}
+\subsubsection{n-Match Thresholding}
 This method involves setting a threshold that allows only a specific number of matches with the smallest descriptor distances to be retained. This approach ensures that only the most confident matches are considered, reducing the impact of weaker or less reliable matches.
 
-\subsubsection*{Absolute Thresholding of Matches}
+\subsubsection{Absolute Thresholding of Matches}
 
 Absolute thresholding filters matches based on a fixed distance in descriptor space. Only matches that meet or fall below this predefined distance threshold are retained, ensuring that only sufficiently similar matches are used in the transformation estimation process.
 

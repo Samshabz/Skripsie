@@ -48,7 +48,7 @@ The UAV image-processing pipeline comprises several stages, each addressing spec
         
         \item \textbf{Optimization:}  
         Refines the matches using techniques such as Lowe's ratio test, n-Match thresholding, and absolute thresholding to ensure that only high-quality matches are considered for further processing. This refinement step is crucial for accurate transformation estimation. 
-
+    \end{enumerate}
     \item \textbf{Similarity Comparison:}  
     The system compares the input image with reference images to identify the most similar one. This comparison is conducted using global matching techniques on aligned images to ensure efficiency and accuracy.
     \begin{enumerate}
@@ -113,7 +113,7 @@ The UAV image-processing pipeline comprises several stages, each addressing spec
 \end{enumerate}
 
 
-\section*{Dynamic Methods and Techniques}
+\section{Dynamic Methods and Techniques}
 Upon rigorous testing, it was seen that many parameters in the pipeline simply cannot generalize without tuning. This included the parameters of some feature detectors, optimization techniques, and search space reduction methods. To address this, dynamic methods were implemented to adjust these parameters based on the current scenario. The following dynamic methods were implemented:
 
 % begin itemize
@@ -125,7 +125,7 @@ Upon rigorous testing, it was seen that many parameters in the pipeline simply c
 The above dynamic methods ensure that the system remains stable in different scenarios, adapting to varying conditions to provide accurate and efficient performance. However, these methods still, in part, fail to understand the nuances of the dataset perfectly. In the future, in flight error to ground truth estimates can be used to iteratively solve for the most optimal static parameters for the given environment, assuming it does not significantly change during flight. Alternatively, a dedicated machine learning model can be trained to predict and constantly adjust the optimal parameters based on the dataset's characteristics in-flight, providing a more robust and efficient solution.
 
 
-\section*{Rotational Normalization Strategies}
+\section{Rotational Normalization Strategies}
 
 Rotational normalization is essential for aligning images and translating estimations accurately in image-based UAV navigation systems. Two primary strategies were considered for normalizing rotations during the flight back to the base. The first involves applying rotational normalization during image capture, which aligns both images to a global North-East (NE) reference space before keypoint detection. The second method avoids normalization at the point of capture, aligning the images relative to one another and applying normalization only after translation estimation.
 
@@ -156,11 +156,11 @@ Here, the loss depends on the relative difference in rotation between the two im
 As seen in Figure~\ref{fig:lossprevpost}, the pre-normalization method results in losses exceeding 2.0 due to the compounding effect of treating both images independently. In contrast, the post-normalization method, which works with relative rotation, consistently yields lower losses, with a maximum loss of approximately 0.35 under these typical UAV conditions. Further, the losses in the post-normalization method consists of almost all non-mutual information. Therefore, post-normalization is expected to provide more accurate translation estimations due to better retention of keypoint information.
 
 
-\subsection*{Empirical Validation}
+\subsection{Empirical Validation}
 
 In empirical tests, these results were confirmed, with post-normalization consistently providing higher accuracy due to better retention of keypoint information. The effects were most significant in the DESERT dataset, where the sparsity of keypoints made the dataset particularly sensitive to information loss during rotation. 
 
-\subsection*{Method Conclusion}
+\subsection{Method Conclusion}
 
 Given the UAV's typical flight pattern and the need to minimize information loss, post-normalization is applied. In this approach, images are first aligned, followed by translation estimation. Finally, the translation vector is normalized to the global NE coordinate space for consistent navigation.
 

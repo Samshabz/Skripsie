@@ -195,11 +195,11 @@ changes_all = []
 dataset_labels = []
 
 datasets = [
-    (estim_pixels_DATSETROT, actual_pixels_DATSETROT, "DATSETROT"),
-    (estim_pixels_DATSETCPT, actual_pixels_DATSETCPT, "DATSETCPT"),
-    (estim_pixels_DATSETROCK, actual_pixels_DATSETROCK, "DATSETROCK"),
-    (estim_pixels_DATSETSAND, actual_pixels_DATSETSAND, "DATSETSAND"),
-    (estim_pixels_DATSETAMAZ, actual_pixels_DATSETAMAZ, "DATSETAMAZ"),
+    (estim_pixels_DATSETROT, actual_pixels_DATSETROT, "CITY1"),
+    (estim_pixels_DATSETCPT, actual_pixels_DATSETCPT, "CITY2"),
+    (estim_pixels_DATSETROCK, actual_pixels_DATSETROCK, "ROCKY"),
+    (estim_pixels_DATSETSAND, actual_pixels_DATSETSAND, "DESERT"),
+    (estim_pixels_DATSETAMAZ, actual_pixels_DATSETAMAZ, "AMAZON"),
 ]
 
 # Choice of mode: "pixel" or "percent"
@@ -220,9 +220,9 @@ data = pd.DataFrame({
 # Generate violin plot for radial changes
 plt.figure(figsize=(10, 6))
 sns.violinplot(x='Dataset', y='Changes', data=data)
-plt.title(f'Violin Plot of Radial {mode.capitalize()} Changes by Dataset')
+plt.title(f'Violin Plot of Radial {mode.capitalize()} Error by Dataset')
 plt.xlabel('Dataset')
-plt.ylabel(f'Radial {mode.capitalize()} Changes')
+plt.ylabel(f'Radial {mode.capitalize()} Error')
 
 plt.tight_layout()
 plt.show()

@@ -32,6 +32,42 @@ The datasets used for testing were as follows:
     These datasets are characterized by sparse, repetitive patterns, making it challenging even for human observers to distinguish differences between frames. They present significant difficulty for feature extraction and matching.
 \end{itemize}
 
+Examples of the datasets are shown below:
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./Chapter 4/DEMODATASETS/CITY1.jpg}
+        \caption{Examples of the CITY1 and CITY2 Datasets}
+        \label{fig:CITY12}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./Chapter 4/DEMODATASETS/ROCKY.jpg}
+        \caption{Example of the ROCKY Dataset}
+        \label{fig:ROCKY}
+    \end{minipage}
+    
+    \vspace{0.5cm} % Add some vertical space between rows
+    
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./Chapter 4/DEMODATASETS/DESERT1.jpg}
+        \caption{Example of the DESERT Dataset}
+        \label{fig:DESERT}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./Chapter 4/DEMODATASETS/AMAZON.jpg}
+        \caption{Example of the AMAZON Dataset}
+        \label{fig:AMAZON}
+    \end{minipage}
+    
+    \caption{Overview of Datasets}
+    \label{fig:Datasets}
+\end{figure}
+
 
 
 \subsection{Testing Structure}
@@ -83,7 +119,7 @@ Table \ref{tab:rmse_detectors} presents the RMSE values in meters for each featu
     \end{tabular}
 \end{table}
 
-\subsubsection*{Runtime and Efficiency}
+\subsubsection{Runtime and Efficiency}
 
 Table \ref{tab:runtime_detectors} illustrates the runtime (in seconds) for each feature detector across different datasets. ORB proved to be the most efficient detector, making it suitable for applications requiring fast processing. Dynamic AKAZE, while exhibiting longer runtimes, achieved a balance between efficiency and accuracy. SuperPoint demonstrated the longest runtimes across all datasets, highlighting its limited applicability for time-sensitive applications unless optimized with GPU acceleration.
 
@@ -100,7 +136,7 @@ Table \ref{tab:runtime_detectors} illustrates the runtime (in seconds) for each 
     \end{tabular}
 \end{table}
 
-\subsubsection*{Robustness}
+\subsubsection{Robustness}
 
 In terms of robustness, AKAZE exhibited the highest consistency in accuracy across different datasets. ORB also performed well but showed greater variability in accuracy across datasets compared to AKAZE. SuperPoint, however, demonstrated significant performance variability, indicating lower robustness across diverse environments.
 
@@ -112,7 +148,7 @@ Based on the comprehensive evaluation, the following detectors were selected for
     \item \textbf{Crude Layer (Initial Detection)}: \textbf{ORB} was chosen for the crude layer due to its balance of accuracy and efficiency. ORB's robustness and consistent runtime performance across datasets make it an ideal choice for processing multiple images.
     
     \item \textbf{Dense Layer (Refined Detection)}: \textbf{Dynamic AKAZE} with 3000 keypoints was selected for the dense layer due to its consistent performance and robustness. This detector complements the crude layer by refining feature extraction and enhancing the system's accuracy.
-
+\end{itemize}
 These selections ensure that each stage of the UAV navigation system leverages the most appropriate feature detector, optimizing both accuracy and computational performance.
 
 
@@ -508,9 +544,9 @@ Parallel Flow Filtering enhances the consistency of feature matches by aligning 
     \item \textbf{Average Flow Measurement:} Utilized the median exclusively, leveraging its robustness against outliers.
     \item \textbf{Tolerance:} Set between 1.5 and 4 degrees to balance noise stability and the exclusion of false positives.
     \item \textbf{Internal Angle Tolerance Scaling:} Applied an exponential scaling based on the internal angle between image pairs using the equation:
-    \begin{equation*}
+    \begin{equation}
         T_s = T_i \cdot \left(1 - \left(\frac{\alpha}{\alpha_m}\right)\right)^2
-    \end{equation*}
+    \end{equation}
     where:
     \begin{itemize}
         \item $T_s$ is the scaled tolerance.
@@ -518,10 +554,10 @@ Parallel Flow Filtering enhances the consistency of feature matches by aligning 
         \item $\alpha$ is the internal angle.
         \item $\alpha_m$ is the maximum possible internal angle.
     \end{itemize}
-    This scaling ensures that the tolerance adapts appropriately to the degree of image rotation, effectively modelling the exponentially increasing likelihood of outliers in image pairs as their internal angles increase.
+    This scaling ensures that the tolerance adapts appropriately to the degree of image rotation, effectively modelling the exponentially increasing likelihood of outliers in image pairs as their internal angles increase. This model works on the basis of being stricter when the likelihood of outliers is higher. This was empirically found to occur when the internal angle between images is higher. 
 \end{itemize}
 
-\subsection*{\textbf{Empirical Testing Only}}
+\subsection{\textbf{Empirical Testing Only}}
 
 \textbf{n-Match Thresholding} \\
 Empirical tests revealed that the optimal number of matches varies significantly across datasets and to other parameters, making it unreliable. This approach risks either retaining too many false matches or discarding too many good matches, depending on the dataset characteristics. This method was not pursued due to its high sensitivity to the number and quality of keypoints. 
