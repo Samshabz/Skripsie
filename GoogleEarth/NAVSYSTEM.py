@@ -1335,7 +1335,7 @@ class UAVNavigator:
                     src_pts, dst_pts, _ = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
                 elif not bool_infer_factor:
                     src_pts, dst_pts, gd_matches = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
-                    self.plot_matches(inference_image_rotated, self.pull_image(best_index, self.directory, bool_rotate=False), rotated_inf_kp, self.stored_local_keypoints[best_index], gd_matches)
+                    # self.plot_matches(inference_image_rotated, self.pull_image(best_index, self.directory, bool_rotate=False), rotated_inf_kp, self.stored_local_keypoints[best_index], gd_matches)
                 
 
                 # if not bool_infer_factor:
@@ -1343,7 +1343,11 @@ class UAVNavigator:
                 #     self.visualize_pts_and_actual(visual_shifts, actual_pixel_change_x_m, actual_pixel_change_y_m)
                 prior_src, prior_dst = src_pts, dst_pts
                 src_pts, dst_pts = self.remove_out_of_stdev(src_pts, dst_pts, 2)
-                src_pts, dst_pts = self.filter_by_gradient(src_pts, dst_pts, 0.5, use_median=True) 
+                ratio_strictness = len(src_pts)/len(prior_src)  # lower implies worse match quality
+                # we want lowe worse match quality to be more lenient -> lower ratio must be higher tolerance
+                tolerance = 1 - ratio_strictness
+                print(f"Tolerance: {tolerance}")
+                src_pts, dst_pts = self.filter_by_gradient(src_pts, dst_pts, tolerance, use_median=True) 
                 # src_pts, dst_pts = self.ensure_parallel_lines(src_pts, dst_pts, np.abs(internal_angle)) # INSTABILITY 
                 if (len(src_pts) < 20): # THIS VALUE IS VERY IMPORTANT
                     src_pts, dst_pts = prior_src, prior_dst
@@ -1871,7 +1875,7 @@ def main():
                         string_GPS_error = f"RMSE GPS error: {np_est_dev}" 
                         # print(f"Mean Absolute Error GPS: {np_MAE_GPS}")
                         String_RMSE = f"MAE GPS error: {np_est_dev}"
-                        # print(np_est_dev)
+                        print(np_est_dev)
                         # string_heading_error = f"Mean Heading Error: {np.mean(navigator.estimated_heading_deviations)}"
                         # print(string_GPS_error, '\n', string_heading_error)
                         

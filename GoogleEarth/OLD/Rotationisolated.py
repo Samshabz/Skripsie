@@ -69,7 +69,7 @@ class UAVRotationAnalyzer:
         return rotation_angle
 
 def main():
-    directory = './GoogleEarth/DATASETS/DATSETAMAZ'  # Directory containing images
+    directory = './GoogleEarth/DATASETS/DATSETROT'  # Directory containing images
     image_range = range(1, 15)  # Define the range of images to process
     rotation_analyzer = UAVRotationAnalyzer()
     angles = []
