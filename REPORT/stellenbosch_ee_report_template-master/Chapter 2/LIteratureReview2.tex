@@ -12,10 +12,9 @@ This chapter provides a comprehensive review of the existing literature on UAV n
 
 Global Navigation Satellite Systems (GNSS), including the U.S. Global Positioning System (GPS), Russia's GLONASS, the European Union's Galileo, and China’s BeiDou, provide essential positioning, navigation, and timing (PNT) information globally. GNSS operates by deploying a constellation of satellites that transmit precise time-stamped signals to Earth-based receivers. Each receiver calculates its position by measuring the time delay of signals from multiple satellites, triangulating data from at least four satellites to determine its three-dimensional location. While GNSS is critical across sectors such as aviation, maritime, and land navigation, its reliance on weak, line-of-sight satellite signals introduces significant vulnerabilities \cite{geotab2024gps}.
 
-The reliance on GPS for UAV navigation has grown extensively, yet vulnerabilities to jamming and spoofing have become increasingly pronounced. With the advent of more accessible jamming and spoofing technology, intentional GPS interference is no longer a complex undertaking, raising serious concerns for security-sensitive applications. Instances of GPS jamming and spoofing are particularly prevalent in conflict zones, where adversaries exploit GPS weaknesses to disrupt or mislead UAV operations. The issue is far from hypothetical; In fact, more than 1,100 incidents of GPS spoofing alone were reported worldwide in August 2024, underscoring the urgency of addressing these vulnerabilities \cite{khalil2024gnss}.
+The reliance on GPS for UAV navigation has grown extensively, yet vulnerabilities to jamming and spoofing have become increasingly pronounced. With the advent of more accessible jamming and spoofing technology, intentional GPS interference is no longer a complex undertaking, raising serious concerns for security-sensitive applications. Instances of GPS jamming and spoofing are particularly prevalent in conflict zones, where adversaries exploit GPS weaknesses to disrupt or mislead UAV operations. The issue is far from hypothetical; in fact, more than 1,100 incidents of GPS spoofing alone were reported worldwide in August 2024, underscoring the urgency of addressing these vulnerabilities \cite{khalil2024gnss}.
 
 Such interference has direct implications for national security, as border surveillance and reconnaissance missions are heavily dependent on accurate GPS data \cite{Weiss2024}. Consequently, alternative redundancy navigation methods that are not susceptible to such interference are critical in ensuring operational continuity and resilience in high-stakes scenarios.
-
 
 \section{Alternative Navigation Approaches}
 
@@ -23,64 +22,32 @@ In the realm of UAV navigation, various redundancy measures have been considered
 
 \subsection{Quantum Sensing Navigation}
 
-Quantum sensing navigation employs cold atom inertial sensors to achieve superior precision compared to traditional inertial measurement units (IMUs). In this approach, cold atoms are trapped in a vacuum and manipulated using lasers to measure motion through interference patterns. This method offers exceptionally accurate acceleration and rotation data, theoretically minimizing navigation drift \cite{wright2022cold}.
-
-Despite its high precision, quantum sensing navigation presents significant challenges. The primary drawbacks include:
-
-\begin{itemize}
-    \item \textbf{Cost and Size}: Cold atom sensors are expensive and bulky, making them impractical for most UAV applications where cost-efficiency and compactness are crucial.
-    \item \textbf{Power Consumption}: These sensors require substantial power, limiting their feasibility for battery-operated UAVs.
-    \item \textbf{Operational Limitations}: Although aviation-grade systems incorporating cold atom sensors can reduce drift by approximately half, they still suffer from significant drift over extended periods. Additionally, sensor misalignment and noise, especially when gyroscope noise surpasses thresholds like 0.05, 0.10, or 0.20 rad/s at higher frequencies, can exacerbate errors \cite{wright2022cold}.
-\end{itemize}
-
-These factors collectively restrict the adoption of quantum sensors in UAV navigation systems, particularly those that are cost-sensitive and size-constrained.
+Quantum sensing navigation employs cold atom inertial sensors to achieve superior precision compared to traditional inertial measurement units (IMUs). In this approach, cold atoms are trapped in a vacuum and manipulated using lasers to measure motion through interference patterns, offering exceptionally accurate acceleration and rotation data that theoretically minimize navigation drift \cite{wright2022cold}. However, the \textbf{high cost and bulky nature} of cold atom sensors make them impractical for many UAV applications. Operational limitations also persist, as aviation-grade systems incorporating cold atom sensors can reduce drift by approximately half but still suffer from significant drift over extended periods \cite{wright2022cold}. 
 
 \subsection{Odometry-Based Solutions}
 
-Odometry-based navigation estimates UAV displacement by tracking wheel rotation or utilizing accelerometer readings. This method provides a direct measurement of movement, allowing for real-time tracking of the UAV's position.
-
-However, odometry systems are inherently susceptible to cumulative drift, where minor errors accumulate over time and distance, leading to significant inaccuracies in long-range navigation \cite{Zhuang2023}. Specifically:
-
-\begin{itemize}
-    \item \textbf{Error Accumulation}: Small discrepancies in sensor measurements can accumulate, resulting in substantial positional errors over extended flights.
-    \item \textbf{Environmental Factors}: Variations in terrain, wheel slippage, or unexpected accelerations can further degrade odometry accuracy.
-\end{itemize}
-
-For UAVs, these limitations render odometry-based methods unsuitable as a primary navigation solution for long-distance missions. Nevertheless, odometry can be effectively utilized for short-range navigation tasks, such as pathfinding and supplementary guidance in conjunction with more reliable systems like image-based navigation.
+Odometry-based navigation estimates UAV displacement by tracking wheel rotation or utilizing accelerometer readings, providing a direct measurement of movement for real-time position tracking. However, odometry systems are inherently susceptible to cumulative \textbf{drift}, where minor errors accumulate over time and distance, leading to significant inaccuracies in long-range navigation \cite{Zhuang2023}. Small discrepancies in sensor measurements can result in substantial positional errors over extended flights, and environmental factors such as variations in terrain, wheel slippage, or unexpected accelerations can further degrade odometry accuracy. These limitations render odometry-based methods unsuitable as a primary navigation solution for long-distance missions. Nevertheless, odometry can be effectively utilized for short-range navigation tasks, such as pathfinding and supplementary guidance in conjunction with more reliable systems like image-based navigation.
 
 
 \subsection{RF Communication and Signals-Based Navigation}
 
-RF communication systems enable navigation by triangulating the UAV’s position using signal sources like ground beacons, cellular towers, or Wi-Fi networks. By analyzing signal strength, frequency, and timing, RF-based navigation offers an independent alternative to GPS, particularly viable in urban areas with abundant signals and enhanced security through encryption. However, reliance on infrastructure limits its use in remote areas, and the Earth's curvature further restricts line-of-sight over long distances or at lower altitudes, reducing signal strength and accuracy \cite{brewer_line_2024}.
-
+RF communication systems enable navigation by triangulating the UAV’s position using signal sources like ground beacons, cellular towers, or Wi-Fi networks. By analyzing signal strength, frequency, and timing, RF-based navigation offers an independent alternative to GPS, particularly viable in urban areas with abundant signals and enhanced security through encryption. However, reliance on existing infrastructure limits its use in remote areas, and the Earth's curvature further restricts line-of-sight, limiting applications to \text{short distances}, around 300km, reducing signal strength and accuracy \cite{brewer_line_2024}.
 
 \subsection{LIDAR and Radar for Ground Mapping}
 
-LIDAR and radar are effective for UAV ground mapping through active wave emission, measuring distances to surfaces and generating detailed 3D environmental maps. These sensors are advantageous for precise altitude measurements and mapping, allowing for accurate location inference. However, LIDAR and radar systems emit detectable signals, which may be undesirable for applications requiring minimal detectability. Additionally, these systems can be resource-intensive and exhibit limitations in dense environments, where interference and signal scattering may impair accuracy and operational range \cite{scoutaerial2024lidar}.
+LIDAR and radar are effective for UAV ground mapping through active wave emission, measuring distances to surfaces and generating detailed 3D environmental maps. These sensors provide precise altitude measurements and mapping capabilities, allowing for accurate location inference. However, they emit \textbf{detectable signals}, which may be undesirable for applications requiring minimal detectability. Additionally, LIDAR and radar systems can be resource-intensive and face challenges in dense environments where interference and signal scattering may impair accuracy and operational range \cite{scoutaerial2024lidar}.
+
 
 \subsection{Image-Based Homography Navigation}
 
-Image-based homography navigation leverages homography estimation techniques to enhance UAV navigation by aligning images and inferring planar transformations. This approach uses feature extraction and matching from reference images to determine the UAV’s orientation and position relative to its environment. By creating a reliable alignment between the UAV’s current view and previously captured data, the system can accurately infer location and heading, enabling effective navigation back to base, particularly in GPS-denied or GPS-compromised scenarios. In this application, reference images are captured during flight before any GPS loss and are later used to guide the UAV’s return to base. Future applications could extend this method by utilizing a database of recent reference images, allowing broader deployment across various terrains and operational contexts.
 
+Image-based homography navigation leverages homography estimation techniques to enhance UAV navigation by aligning images and inferring planar transformations. This approach uses feature extraction and matching from reference images to determine the UAV’s orientation and position relative to its environment. By creating a reliable alignment between the UAV’s current view and previously captured data, the system can accurately infer location and heading, enabling effective navigation back to base, particularly in GPS-denied or GPS-compromised scenarios. Reference images are captured during flight before any GPS loss and are later used to guide the UAV’s return to base. Future applications could extend this method by utilizing a database of recent reference images, allowing broader deployment across various terrains and operational contexts.
 
-This method addresses several limitations associated with alternative navigation solutions:
-
-\begin{itemize}
-    \item \textbf{Cost and Size}: Unlike quantum sensing systems, image-based navigation relies on standard imaging hardware, which is typically more cost-effective and compact, making it suitable for UAV applications where size and budget constraints are critical.
-    \item \textbf{Stealth}: Unlike LIDAR and radar, which emit detectable signals, image-based navigation does not "announce" the UAV's presence, allowing for lower detectability in sensitive or security-focused applications.
-    \item \textbf{Power Consumption}: Image processing can be optimized for low power consumption compared to the high energy demands of cold atom sensors, thereby enhancing the feasibility for battery-operated UAVs.
-    \item \textbf{Cumulative Drift and Error Accumulation}: While odometry-based systems suffer from cumulative drift over time, the usage of this device specifically to navigate back to base ensures constant correction and is thereby not affected by drift. 
-    \item \textbf{Environmental Adaptability}: The proposed system is designed to handle environmental variability by incorporating robust feature detection and noise filtering, ensuring reliable performance across diverse operational contexts.
-    \item \textbf{Real-Time Processing}: The implementation focuses on real-time image processing and transformation estimation, enabling immediate adjustments to the UAV’s navigation path and enhancing overall responsiveness.
-\end{itemize}
-
+This method addresses several limitations associated with alternative navigation solutions. Specifically, it is cost-effective, space-efficient, does not emit detectable signals, and does not drift. 
 
 Much research exists in the field of homography, including its application to aerial imagery, as demonstrated in \cite{Zhang2024}, where its effectiveness across various applications is well established. However, existing studies primarily focus on high-level overviews or isolated improvements within the homography algorithm. This study distinguishes itself by not only evaluating the effectiveness of homography estimation for UAV navigation but also by providing a comprehensive implementation pipeline, encompassing feature detection through to transformation estimation, offering a practical framework that can be readily adapted for diverse applications.
 
-Image-based navigation systems are often overlooked due to perceived limitations in achieving real-time performance, being robust to distortions, generalizing across various environments, and attaining high accuracy. However, as computer vision, machine learning techniques, and camera technology continue to advance, these challenges are becoming increasingly surmountable. Their main practical limitation is related to extreme visibility issues, which are relatively infrequent. This study aims to develop an optimized model pipeline and evaluate the viability of the image-based solution in real-world scenarios, determining its potential to be accurate, efficient, and adaptable across diverse environments.
-
-
-
+Image-based navigation systems are often overlooked due to perceived limitations in achieving real-time performance, robustness to distortions, generalization across various environments, and high accuracy. However, as computer vision, machine learning techniques, and camera technology continue to advance, these challenges are becoming increasingly surmountable. Their main practical limitation is related to extreme visibility issues, which are relatively infrequent. This study aims to develop an optimized model pipeline and evaluate the viability of the image-based solution in real-world scenarios, determining its potential to be accurate, efficient, and adaptable across diverse environments.
 
 % -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -92,44 +59,21 @@ This section provides a comprehensive overview of the fundamental concepts and t
 % -----------------------------------------------------------------------------------------------------------------------------------
 
 
-\subsection{Planar Transforms}
-
-Planar transformations are mathematical operations that map points from one plane to another, accounting for changes in position, orientation, and perspective. In the context of UAV navigation, the output of these transformations are directly used to infer the UAV's location and heading based on prior reference images and telemetry data.
-
-Two primary approaches exist for estimating planar transforms: direct methods and feature-based methods, each with distinct strengths and limitations \cite{nguyen2018}. 
-\subsubsection{Direct Methods}
-
-Direct, or global, methods utilize the entire image to estimate planar transforms by comparing pixel intensities and minimizing the differences through optimization techniques such as gradient descent \cite{nguyen2018}. Key characteristics include:
-
-\subsubsection{Direct Methods}
-
-Direct methods, also known as global methods, utilize the entire image to estimate planar transformations by comparing pixel intensities and minimizing differences through optimization techniques such as gradient descent \cite{nguyen2018}. Key characteristics of direct methods include:
-
-\begin{itemize}
-    \item \textbf{Robustness for Small Viewpoint Changes}: These methods perform well when dealing with minor adjustments in viewpoint, maintaining accuracy during incremental movements.
-    \item \textbf{Sensitivity to Noise}: Direct methods are highly susceptible to noise from defective pixels or environmental factors, which can degrade transformation accuracy.
-    \item \textbf{Assumption of Smooth Movements}: They rely on the premise of smooth, incremental UAV movements. Large changes in rotation, perspective, or translation, such as those encountered when a UAV turns back to base, render direct methods unreliable \cite{nguyen2018}.
-    \item \textbf{Similarity Comparison}: Direct methods evaluate image similarity based on the global context, which is beneficial for understanding overall similarity between images.
-    \item \textbf{Computational Stability}: Although direct methods involve pixel-wise comparisons that may be seem computationally expensive, the relatively simple and single layer computations allow for efficient and stable computations across different operational conditions \cite{nguyen2018}. In contrast, local methods require multiple stages of processing and become significantly slower if the number of features becomes too large.
-\end{itemize}
-
-\subsubsection{Feature-Based Methods}
-
-In contrast, feature-based methods extract and match keypoints from both reference and real-time images, often employing multiple stages of outlier removal \cite{GlobalLocal2023}. Key advantages of feature-based methods include:
-
-\begin{itemize}
-    \item \textbf{Suitability for Large Transformations}: Feature-based methods excel in scenarios involving significant viewpoint changes and rotations, as they focus on distinctive features rather than pixel-wise comparisons.
-    \item \textbf{Computational Efficiency}: By targeting salient features, these methods can perform multiple stages of processing without having to analyze every pixel, thereby enhancing computational efficiency. However, care must be taken to ensure that the number of features does not become excessive, as this can lead to performance degradation.
-    \item \textbf{Robustness to Distortions}: Feature-based methods are resilient to various forms of distortion and environmental variability, ensuring reliable performance across different operational conditions.
-\end{itemize}
-
-
-% -----------------------------------------------------------------------------------------------------------------------------------
-
 
 \subsection{Feature Detectors}
 
-Feature extraction is a cornerstone of image-based UAV navigation, enabling the estimation of transformations such as rotation and translation between consecutive images. Feature detectors identify \textbf{keypoints}—distinct, repeatable points within an image—and generate \textbf{descriptors} that encapsulate information about the local image region surrounding each keypoint. These keypoints and descriptors are essential for accurate matching across multiple frames, allowing the system to track movement while maintaining invariance to changes in scale, rotation, and illumination. This precision is critical for accurately inferring both rotational and translational shifts between images.
+Feature extraction is a cornerstone of image-based UAV navigation, enabling the estimation of transformations such as rotation and translation between consecutive images. Feature detectors identify \textbf{keypoints}—distinct, repeatable points within an image—and generate \textbf{descriptors} that encapsulate information about the local image region surrounding each keypoint. These keypoints and descriptors are essential for accurate matching across multiple frames, allowing the system to track movement while maintaining invariance to changes in scale, rotation, and illumination. This precision is critical for accurately inferring both rotational and translational shifts between images. An example of feature detection and matching, to be explained in the subsequent section, is illustrated in Figure \ref{fig:feature_detection} as outputted by the navigation system. This image shows the top 50 matches between two images after rotational alignment. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{./Chapter 2/litfigs/matche.png}
+    \caption{Feature Detection and Matching}
+    \label{fig:feature_detection}
+\end{figure}
+
+
+
+
 
 In this context, \textit{features} refer to both keypoints and descriptors, as each feature extraction method provides both components to facilitate effective image matching. The selection of feature extractors is guided by criteria such as accuracy, computational efficiency, robustness to diverse datasets, and the necessity for freely available tools, thereby excluding proprietary methods like SURF due to licensing fees. Additionally, chosen methods must hold credibility within the field, given their application in safety-critical UAV navigation systems.
 
@@ -158,37 +102,33 @@ Feature matching establishes correspondences between keypoints in different imag
 
 Each matcher generates a list of potential matches along with their similarity scores, quantified using a descriptor-space distance metric. These scores are instrumental in determining the quality of the matches and play a crucial role in the subsequent filtering and transformation estimation processes.
 
-\subsubsection{Types of Feature Matchers}
+Feature matching involves two primary components: the choice of matching technique to acquire potential matches and the search technique that determines which of these matches to retain. 
 
-Two primary feature matchers are employed in this system: the \textbf{Brute-Force Matcher (BFMatcher)} and the \textbf{Fast Library for Approximate Nearest Neighbours (FLANN)}. Additionally, \textbf{LightGlue}, a machine-learning-based matcher, is utilized for its enhanced accuracy despite its higher computational demands.
+\subsubsection{Types of Feature Matching Techniques}
 
-\begin{itemize}
-    \item \textbf{Brute-Force Matcher (BFMatcher)}: The Brute-Force Matcher compares each feature in one image with every feature in the second image, ensuring the best possible match based on descriptor similarity. While this guarantees high accuracy, it is computationally expensive, especially with large numbers of keypoints, making it less suitable for real-time applications without optimization \cite{opencv_bfmatcher}.
-    
-    \item \textbf{Fast Library for Approximate Nearest Neighbours (FLANN)}: FLANN accelerates the nearest neighbour search in high-dimensional descriptor spaces using algorithms such as KD-trees or hierarchical clustering. This approximate matching approach offers significant speed improvements with minimal loss in accuracy, making it ideal for real-time applications with extensive datasets \cite{opencv_flann_tutorial}
-    
-    \item \textbf{LightGlue}: Leveraging deep learning, LightGlue improves matching accuracy by employing advanced graph-based techniques to establish more reliable correspondences. Although highly effective, its structure necessitates the use of other neural network-based feature extractors like SuperPoint to realize its full potential \cite{cvg2023lightglue}. The enhanced accuracy comes at the cost of increased computational demands, requiring GPU acceleration for optimal performance.
-\end{itemize}
+The following match acquisition techniques are commonly employed in feature-based navigation systems:
 
-\subsubsection{Search Techniques}
+\textbf{Brute-Force Matcher (BFMatcher)}: The Brute-Force Matcher compares each feature in one image with every feature in the second image, ensuring the best possible match based on descriptor similarity. While this guarantees high accuracy, it is computationally expensive, especially with large numbers of keypoints, making it less suitable for real-time applications without optimization \cite{opencv_bfmatcher}.
 
-The search technique determines which potential matches are retained for further processing. Various methods, including \textbf{Radius Search}, \textbf{Vanilla Matching}, and \textbf{K-Nearest Neighbours (KNN) Matching}, are explored to control the number and quality of matches.
+\textbf{Fast Library for Approximate Nearest Neighbours (FLANN)}: FLANN accelerates the nearest neighbour search in high-dimensional descriptor spaces using algorithms such as KD-trees or hierarchical clustering. This approximate matching approach offers significant speed improvements with minimal loss in accuracy, making it ideal for real-time applications with extensive datasets \cite{opencv_flann_tutorial}.
 
-\begin{itemize}
-    \item \textbf{Radius Search}: This method retains matches within a specified distance in descriptor space, effectively filtering out weaker matches. However, it does not guarantee a fixed number of matches per keypoint, leading to inconsistent results \cite{opencv_matcher_tutorial}. 
-    
-    \item \textbf{K-Nearest Neighbours (KNN) Matching}: KNN matching retains the top \( K \) matches for each keypoint, allowing the application of post-filtering techniques such as Lowe’s ratio test to eliminate ambiguous matches \cite{opencv_matcher_tutorial}.
-    
-    \item \textbf{Vanilla Matching}: Vanilla matching returns the single best match for each keypoint based on the closest descriptor distance. It is a subset of KNN matching with \( K=1 \), offering simplicity and ease of implementation \cite{opencv_matcher_tutorial}. 
-    
+\textbf{LightGlue}: Leveraging deep learning, LightGlue improves matching accuracy by employing advanced graph-based techniques to establish more reliable correspondences. Although highly effective, its structure necessitates the use of other neural network-based feature extractors like SuperPoint to realize its full potential \cite{cvg2023lightglue}. The enhanced accuracy comes at the cost of increased computational demands, requiring GPU acceleration for optimal performance.
 
-\end{itemize}
+The following search techniques are commonly used to filter matches and retain only the most reliable correspondences:
+
+\textbf{Radius Search}: This method retains matches within a specified distance in descriptor space, effectively filtering out weaker matches. However, it does not guarantee a fixed number of matches per keypoint, leading to inconsistent results \cite{opencv_matcher_tutorial}.
+
+\textbf{K-Nearest Neighbours (KNN) Matching}: KNN matching retains the top K matches for each keypoint, allowing the application of post-filtering techniques such as Lowe’s ratio test to eliminate ambiguous matches \cite{opencv_matcher_tutorial}.
+
+\textbf{Vanilla Matching}: Vanilla matching returns the single best match for each keypoint based on the closest descriptor distance. It is a subset of KNN matching with K=1, offering simplicity and ease of implementation \cite{opencv_matcher_tutorial}.
+
+
+Further, these matches are filtered using multiple techniques to ensure accuracy; this is discussed in the optimization techniques section.
+
 
 
 
 % -----------------------------------------------------------------------------------------------------------------------------------
-
-
 
 
 \subsection{Image Similarity Computation}
@@ -201,9 +141,8 @@ To achieve real-time performance, the search space is reduced to images within t
 
 \subsubsection{Global Matching Techniques}
 
-Global matching techniques evaluate image similarity based on the overall context of the images. Although these methods are less precise for pose inference compared to local feature matchers, their ability to capture the holistic visual information makes them effective for similarity comparisons. Additionally, their computational efficiency is advantageous for processing large image datasets. These methods necessitate rotational alignment of images to eliminate bias introduced by orientation discrepancies \cite{GlobalLocal2023}.
+Direct methods estimate planar transformations by comparing entire image pixel intensities and minimizing differences through optimization techniques like gradient descent. This single-layer processing allows for efficient analysis of multiple images and a comprehensive understanding of image similarity within the global context, making direct methods suitable for scenarios with minor viewpoint changes. However, relying on full pixel usage reduces accuracy in cases of significant transformations due to increased sensitivity to noise and the assumption of smooth, incremental UAV movements. Direct methods are best suited for applications that aim to estimate similarity across large image sets. These methods necessitate rotational alignment of images to eliminate bias introduced by orientation discrepancies \cite{GlobalLocal2023}. The following subsections detail the primary global matching techniques employed in this system to compute similarity scores.
 
-Several global matching techniques are employed to score image similarity:
 
 \textbf{Cross-Correlation}
 
@@ -215,7 +154,14 @@ Histogram comparison assesses similarity by analyzing the distribution of pixel 
 
 \textbf{Structural Similarity Index (SSIM)}
 
-SSIM evaluates similarity by decomposing images into luminance, contrast, and structure components. It computes local statistics within small windows and integrates them into a single similarity score that mirrors perceived image quality. SSIM effectively captures structural information like edges and textures, aligning closely with human visual perception. Although slightly more computationally expensive than the former methods, it is robust to varied conditions \cite{rosebrock2017imagedifference}.
+SSIM evaluates similarity by decomposing images into luminance, contrast, and structure components. It computes local statistics within small windows and integrates them into a single similarity score that mirrors perceived image quality. SSIM effectively captures structural information like edges and textures, aligning closely with human visual perception. Although slightly more computationally expensive than the former methods, it is robust to varied conditions \cite{rosebrock2017imagedifference}. An illustration of SSIM is shown in Figure \ref{fig:ssim} from \cite{rosebrock2017imagedifference}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./Chapter 2/litfigs/SSIMeg.png}
+    \caption{Structural Similarity Index (SSIM)}
+    \label{fig:ssim}
+\end{figure}
 
 \textbf{Local Detectors Conversion}
 
@@ -228,7 +174,8 @@ Although not inherently a global matching technique, local feature matching can 
 
 \subsection{Planar Transformation Estimators}
 
-Planar transformation estimators are pivotal for calculating the UAV's changes in position and orientation between consecutive images. These feature-based transformations enable precise updates to the UAV's pose and location, facilitating accurate navigation and control. The following subsections outline the primary planar transformations employed in this system.
+Feature-based methods extract and match keypoints from both reference and real-time images, often incorporating outlier removal stages \cite{GlobalLocal2023}. By focusing on distinctive features rather than every pixel, these methods excel in handling large viewpoint changes and rotations, enabling more precise transformation inference. This targeted approach enhances computational efficiency and robustness to environmental distortions, though it requires careful management to avoid performance degradation from variation in the number of extracted feature points. Feature-based methods are preferable for applications demanding high accuracy and adaptability in complex environments \cite{nguyen2018}. These feature-based transformations enable precise updates to the UAV's pose and location, facilitating accurate navigation and control. The following subsections outline the primary planar transformations employed in this system.
+
 
 \subsubsection{Affine Transformation}
 
@@ -236,17 +183,8 @@ Affine transformation captures translation, rotation, scaling, and shear, provid
 
 \subsubsection{Rigid Transformation Estimation (SVD)}
 
-Rigid transformation preserves the shape and size of objects by estimating only rotation and translation, excluding scaling and shear. Represented by a  \(2 \times 3\) matrix, rigid transformation ensures orthogonality in the rotation component. Utilizing Singular Value Decomposition (SVD), this method minimizes the least-squares error between two point sets. The process involves:
+Rigid transformation preserves the shape and size of objects by estimating only rotation and translation, excluding scaling and shear. Represented by a  \(2 \times 3\) matrix, rigid transformation ensures orthogonality in the rotation component. Utilizing Singular Value Decomposition (SVD), this method minimizes the least-squares error between two point sets. The process involves: computing the weighted centroids of both point sets, centering the points by subtracting their respective centroids, calculating the covariance matrix of the centered points, performing SVD on the covariance matrix to derive the rotation matrix, and determining the translation vector based on the centroids. The resulting \(2 \times 2\) rotation matrix and \(2 \times 1\) translation vector are combined to form the rigid transformation matrix. Rigid transformation is computationally efficient and well-suited for applications requiring only rotation and translation \cite{sorkine2017least_squares}.
 
-\begin{enumerate} 
-    \item Computing the weighted centroids of both point sets. 
-    \item Centering the points by subtracting their respective centroids. 
-    \item Calculating the covariance matrix of the centered points. 
-    \item Performing SVD on the covariance matrix to derive the rotation matrix. 
-    \item Determining the translation vector based on the centroids. 
-\end{enumerate}
-
-The resulting \(2 \times 2\) rotation matrix and \(2 \times 1\) translation vector are combined to form the rigid transformation matrix. Rigid transformation is computationally efficient and well-suited for applications requiring only rotation and translation \cite{sorkine2017least_squares}.
 
 \subsubsection{Partial Affine Transformation}
 
@@ -258,62 +196,44 @@ Homography transformation accounts for translation, rotation, scaling, shear, an
 
 
 % -----------------------------------------------------------------------------------------------------------------------------------
-
 \subsection{Optimization Techniques}
 
-Optimizing parameter sets is crucial for enhancing the performance and robustness of the UAV navigation system. These optimization techniques aim to refine the accuracy and reliability of the point cloud used for transformation estimation by effectively filtering out erroneous matches and improving transformation accuracy. The following subsections detail the primary optimization methods employed in this system.
+Optimizing parameter sets is essential for enhancing the performance and robustness of the UAV navigation system. These optimization techniques aim to refine the accuracy and reliability of the point cloud used for transformation estimation by effectively filtering out erroneous matches and improving transformation accuracy. The following subsections detail the primary optimization methods employed in this system.
 
 \subsubsection{Random Sample Consensus (RANSAC) for Planar Transformation}
 
-RANSAC is a robust estimation technique used to estimate planar transformations by iteratively selecting random subsets of point correspondences to fit a model and identify inliers \cite{ransac1981random}. The process involves:
-
-\begin{enumerate} 
-    \item Randomly selecting a minimal subset of point pairs. 
-    \item Estimating the transformation model (e.g., affine or homography) based on the selected subset. 
-    \item Determining the number of inliers that fit the estimated model within a predefined threshold. 
-    \item Repeating the process for a set number of iterations or until a sufficient inlier ratio is achieved. 
-\end{enumerate}
-
-This approach is highly effective in datasets with significant outliers, as it focuses on finding a model that best fits the largest subset of inliers. However, due to its iterative nature and the need to sample repeatedly, RANSAC can result in increased runtime, particularly in larger datasets or when dealing with numerous outliers \cite{ransac1981random}.
+RANSAC is a robust estimation technique used to estimate planar transformations by iteratively selecting random subsets of point correspondences to fit a model and identify inliers \cite{fisher2002ransac}. The process involves randomly selecting a minimal subset of point pairs, estimating the transformation model (e.g., affine or homography) based on the selected subset, determining the number of inliers that fit the estimated model within a predefined threshold, and repeating the process for a set number of iterations or until a sufficient inlier ratio is achieved. This approach is highly effective in datasets with significant outliers, focusing on finding a model that best fits the largest subset of inliers. However, due to its iterative nature and the need to sample repeatedly, RANSAC can result in increased runtime, particularly in larger datasets or when dealing with numerous outliers \cite{fisher2002ransac}.
 
 \subsubsection{Local Maxima Extrema Density Selection (LMEDS) for Planar Transformation}
 
-LMEDS is a keypoint selection method designed to prioritize areas of high feature density by identifying local maxima as keypoints for matching \cite{lmeds2002local}. This technique involves:
-
-\begin{enumerate} 
-    \item Analyzing the image to identify regions with high feature density. 
-    \item Selecting keypoints located at local maxima within these dense regions. 
-    \item Filtering out less significant keypoints to reduce redundancy and improve match quality.
-\end{enumerate}
-
-By concentrating on areas with high feature concentration, LMEDS ensures that keypoints represent the most distinctive and informative regions of the image, enhancing both accuracy and performance by reducing redundant keypoints and improving match quality, particularly in areas with high feature variability. This method is effective in outlier rejection, leading to more reliable transformation estimations.
+LMEDS is a keypoint selection method designed to prioritize areas of high feature density by identifying local maxima as keypoints for matching \cite{farin2005video}. This technique involves analyzing the image to identify regions with high feature density, selecting keypoints located at local maxima within these dense regions, and filtering out less significant keypoints to reduce redundancy and improve match quality. By concentrating on areas with high feature concentration, LMEDS ensures that keypoints represent the most distinctive and informative regions of the image, enhancing both accuracy and performance by reducing redundant keypoints and improving match quality, particularly in areas with high feature variability.
 
 \subsubsection{Lowe's Ratio Test}
 
-Lowe's ratio test is a filtering technique used to eliminate ambiguous or false keypoint matches by comparing the distance of the best match to the second-best match \cite{lowe2004}. The procedure involves:
+Lowe's ratio test is a filtering technique used to eliminate ambiguous or false keypoint matches by comparing the distance of the best match to the second-best match \cite{bian2020gms}. For each keypoint match, the ratio of the distance of the best match to that of the second-best match is calculated, and the match is retained if this ratio is below a predefined threshold. A lower ratio indicates that the best match is significantly better than the alternatives, thereby increasing the likelihood of the match being correct. An example of Lowe's ratio test filtration are showed in figure \ref{fig:lowes1} and \ref {fig:lowes2} from \cite{bian2020gms}. 
 
-\begin{enumerate} 
-    \item For each keypoint match, calculating the ratio of the distance of the best match to that of the second-best match. 
-    \item Retaining the match if this ratio is below a predefined threshold (commonly 0.75). 
-\end{enumerate}
 
-A lower ratio indicates that the best match is significantly better than the alternatives, thereby increasing the likelihood of the match being correct. This test is essential for ensuring that only the most reliable correspondences are used in subsequent processing stages, thereby enhancing the overall accuracy of the transformation estimation.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.36\textwidth}
+        \includegraphics[width=\textwidth]{./Chapter 2/litfigs/lowes1.png}
+        \caption{Without Lowe's Ratio Test}
+        \label{fig:lowes1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.364\textwidth}
+        \includegraphics[width=\textwidth]{./Chapter 2/litfigs/lowes2.png}
+        \caption{High Ratio Test}
+        \label{fig:lowes2}
+    \end{subfigure}
+    \caption{With Lowe's Ratio Test}
+    \label{fig:lowes}
+\end{figure}
 
-\subsubsection{Parallel Flow Filtering}
 
-Parallel Flow Filtering ensures consistency in feature matches by aligning them with the average motion flow resulting from the UAV's rotation and translation. In typical UAV movements, feature flow is linear and parallel to the direction of motion, assuming no scaling as per the system's scope. This technique involves:
+\subsubsection{Standard Deviation Filtering}
 
-\begin{enumerate}
-    \item Calculating an average motion vector by combining mean and median motion vectors derived from the keypoint matches. 
-    \item Filtering out matches that deviate beyond a specified angular threshold from the average motion vector.
-\end{enumerate}
+Standard deviation filtering involves computing an average for the dataset, typically the mean or median, and removing matches that deviate significantly from this average. This technique is simple to implement but has the ability to generalize well across datasets due to its relative nature. 
 
-By removing matches that do not conform to the expected motion pattern, Parallel Flow Filtering ensures that only consistent and reliable matches contribute to the transformation estimation. This significantly improves the overall accuracy and reliability of the navigation system by maintaining alignment with the UAV's actual motion dynamics.
-
-\subsubsection{n-Match Thresholding}
-This method involves setting a threshold that allows only a specific number of matches with the smallest descriptor distances to be retained. This approach ensures that only the most confident matches are considered, reducing the impact of weaker or less reliable matches.
-
-\subsubsection{Absolute Thresholding of Matches}
-
-Absolute thresholding filters matches based on a fixed distance in descriptor space. Only matches that meet or fall below this predefined distance threshold are retained, ensuring that only sufficiently similar matches are used in the transformation estimation process.
-
+\subsubsection{N-Match or Absolute Thresholding}
+N-match thresholding involves setting a threshold that allows only a specific number of matches with the smallest descriptor distances to be retained. Absolute thresholding filters matches based on a fixed distance in descriptor space. Only matches that meet or fall below this predefined distance threshold are retained, ensuring that only sufficiently similar matches are used in the transformation estimation process. These methods primarily suffer from difficulty in setting the threshold, which is often extremely sensitive to dataset variations and method parameters.

@@ -8,6 +8,7 @@
 \renewcommand{\arraystretch}{1.2}
 \renewcommand{\tabularxcolumn}[1]{p{#1}}
 \begin{tabularx}{\textwidth}{@{}p{2.5cm}L}
+    $RMSE$ & Root Mean Square Error, representing the average magnitude of errors. In this study, the usage of this metric specifically, and frequently, uses this term to refer to the radial error in GPS estimate, in metres, averaged across the dataset. \\
     $d_{\text{radial}}$ & Radial error distance, measuring the distance between estimated and true positions in meters.\\
     $x$, $y$ & Coordinates of a point in an image or on the ground plane.\\
     $\theta$ & Rotation angle between consecutive images in degrees or radians, used for orientation alignment.\\
@@ -15,7 +16,7 @@
     $H$ & Homography matrix, specifically mapping points from one image plane to another.\\
     $GPS$ & Global Positioning System, providing geolocation and time information for navigation.\\
     $GNSS$ & Global Navigation Satellite System, a generic term for satellite-based navigation systems.\\
-    $RMSE$ & Root Mean Square Error, representing the average magnitude of localization (GPS) errors.\\
+
     $MAE$ & Mean Absolute Error, measuring the average localization error without directionality.\\
     $MI$ & Mutual Information, measuring the similarity or overlap between images, often used in image matching.\\
 \end{tabularx}
@@ -28,8 +29,12 @@
 \renewcommand{\arraystretch}{1.2}
 \begin{tabularx}{\textwidth}{@{}p{2.5cm}L}
 
+    \textbf{Features} & 
+    Unique keypoints in an image along with their descriptors, used for identifying and uniquely matching points across different images for localization. \\
+    
     \textbf{Affine Transformation} & 
     A planar transformation that preserves points, straight lines, and planes, including translation, scaling, rotation, and shearing. \\
+
 
     \textbf{Descriptors} & 
     Numerical values describing the characteristics of keypoints in an image, allowing for effective matching between different images. \\
@@ -37,8 +42,7 @@
     \textbf{Feature Detectors (or Extractors)} & 
     Processes for identifying distinct features in an image, which are invariant to changes in scale, rotation, and illumination. \\
 
-    \textbf{Features} & 
-    Unique keypoints in an image along with their descriptors, used for identifying and matching points across different images for localization. \\
+
 
     \textbf{Global Matching} & 
     Process of finding similarities and determining pose between entire images, considering full-image context rather than isolated keypoints. \\

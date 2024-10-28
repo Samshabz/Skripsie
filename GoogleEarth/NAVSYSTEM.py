@@ -4,7 +4,6 @@ import os  # For file operations
 import matplotlib.pyplot as plt  # For plotting
 from sklearn.linear_model import LinearRegression
 from skimage.metrics import structural_similarity as ssim
-import imagehash
 from PIL import Image
 import time
 from Local_Matchers import set_matcher
@@ -1336,7 +1335,7 @@ class UAVNavigator:
                     src_pts, dst_pts, _ = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
                 elif not bool_infer_factor:
                     src_pts, dst_pts, gd_matches = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
-                    # self.plot_matches(inference_image_rotated, self.pull_image(best_index, self.directory, bool_rotate=False), rotated_inf_kp, self.stored_local_keypoints[best_index], gd_matches)
+                    self.plot_matches(inference_image_rotated, self.pull_image(best_index, self.directory, bool_rotate=False), rotated_inf_kp, self.stored_local_keypoints[best_index], gd_matches)
                 
 
                 # if not bool_infer_factor:
@@ -1345,8 +1344,8 @@ class UAVNavigator:
                 prior_src, prior_dst = src_pts, dst_pts
                 src_pts, dst_pts = self.remove_out_of_stdev(src_pts, dst_pts, 2)
                 src_pts, dst_pts = self.filter_by_gradient(src_pts, dst_pts, 0.5, use_median=True) 
-                src_pts, dst_pts = self.ensure_parallel_lines(src_pts, dst_pts, np.abs(internal_angle)) # INSTABILITY 
-                if (len(src_pts) < 4): # THIS VALUE IS VERY IMPORTANT
+                # src_pts, dst_pts = self.ensure_parallel_lines(src_pts, dst_pts, np.abs(internal_angle)) # INSTABILITY 
+                if (len(src_pts) < 20): # THIS VALUE IS VERY IMPORTANT
                     src_pts, dst_pts = prior_src, prior_dst
                 # print(f"len src pts: {len(src_pts)}")
 
@@ -1732,7 +1731,7 @@ def main():
     global_detector_arr = [1,2]
     global_matcher_arr = [0,1,2]
     #ROT, CPT, ROCK, SAND, AMAZ - ALL: DATSETXXXX
-    dat_set_arr = ["DATSETROT, DATSETCPT, DATSETROCK, DATSETSAND, DATSETAMAZ"]
+    dat_set_arr = ["DATSETROT", "DATSETCPT", "DATSETROCK", "DATSETSAND", "DATSETAMAZ"]
     # dat_set_arr = ["DATSETROCK"]
    
    

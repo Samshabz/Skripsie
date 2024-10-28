@@ -47,7 +47,7 @@ The UAV image-processing pipeline comprises several stages, each addressing spec
         Utilizes FLANN and BruteForce matchers to identify potential matches between the current and reference images. The matchers are optimized to ensure robustness against noise and outliers, with a focus on computational efficiency.
         
         \item \textbf{Optimization:}  
-        Refines the matches using techniques such as Lowe's ratio test, n-Match thresholding, and absolute thresholding to ensure that only high-quality matches are considered for further processing. This refinement step is crucial for accurate transformation estimation. 
+        Refines the matches using techniques such as Lowe's ratio test to ensure that only high-quality matches are considered for further processing. This refinement step is crucial for accurate transformation estimation. 
     \end{enumerate}
     \item \textbf{Similarity Comparison:}  
     The system compares the input image with reference images to identify the most similar one. This comparison is conducted using global matching techniques on aligned images to ensure efficiency and accuracy.
@@ -89,14 +89,10 @@ The UAV image-processing pipeline comprises several stages, each addressing spec
         \item \textbf{Pixel to Metres (Relative):}  
         Converts the estimated change in pixels to metres using the dynamically inferred conversion factor. 
         
-        \item \textbf{Metres to Global Coordinate System (Relative):}  
-        Translates the metre-based changes to relative changes in longitude and latitude using the following equations:
-        \begin{equation}
-            \Delta \text{Longitude} = \frac{\Delta \text{Metres}}{111320 \times \cos(\text{Latitude})}
-        \end{equation}
-        \begin{equation}
-            \Delta \text{Latitude} = \frac{\Delta \text{Metres}}{111320}
-        \end{equation}
+        Translates the metre-based changes to relative changes in longitude and latitude using the following equations: 
+
+        \(\Delta \text{Longitude} = \frac{\Delta \text{Metres}}{111320 \times \cos(\text{Latitude})}\), \(\Delta \text{Latitude} = \frac{\Delta \text{Metres}}{111320}\)
+
         These calculations account for the Earth's oblate spheroid shape, ensuring accurate positional data by adjusting for the decreasing distance between longitudes as one moves towards the poles.
         
         \item \textbf{Conversion to Absolute GPS:}  
@@ -127,23 +123,13 @@ The above dynamic methods ensure that the system remains stable in different sce
 
 \section{Rotational Normalization Strategies}
 
-Rotational normalization is essential for aligning images and translating estimations accurately in image-based UAV navigation systems. Two primary strategies were considered for normalizing rotations during the flight back to the base. The first involves applying rotational normalization during image capture, which aligns both images to a global North-East (NE) reference space before keypoint detection. The second method avoids normalization at the point of capture, aligning the images relative to one another and applying normalization only after translation estimation.
 
-The key difference between these two methods lies in their respective losses caused by image rotation, due to the fixed canvas size during normalization. When an image is rotated, parts of the image are lost or moved off-canvas. 
-The loss function for the first approach, where images are normalized independently, is proportional to:
+Rotational normalization is crucial for accurately aligning images internally and to the global heading space to estimate the UAVs relative and absolute positions. However, this inherently discards information that is rotated off of the canvas. Two primary strategies were evaluated: pre-normalization, which aligns images to a global North-East (NE) reference before keypoint detection, and post-normalization, which aligns images relative to each other before applying normalization after translation estimation. 
 
-\begin{equation}
-\text{Loss}_{\text{pre}} \propto |\sin(|\Delta_1|) + \sin(|\Delta_2|)|
-\end{equation}
+In the pre-normalization approach, information loss scales sinusoidally with the absolute values of the difference in rotations between images. Further, this loss contains predominantly losses in non-mutual pixels due to its internal alignment. Conversely, post-normalization scales with both angle losses independently, increasing the likelihood of compounded loss. 
 
-In the second approach, where images are aligned relative to each other before normalization is applied, the loss function is:
-
-\begin{equation}
-\text{Loss}_{\text{post}} \propto |\sin(|\Delta_2 - \Delta_1|)|
-\end{equation}
-
-
-Here, the loss depends on the relative difference in rotation between the two images, reducing the potential for compounded information loss. In the given application, during the return flight to base, the UAV will undergo an initial 180-degree rotation relative to the outbound path with an expected maximum tolerance of ±20 degrees as the UAV attempts to as accurately as possible follow the path back to base. Given this constraint, the loss functions of both approaches are proportional to the following diagram:
+Given that the UAV's typical return flight will be 180 degrees to the outbound path, with a maximum path deviation of ±20 degrees, the loss functions for the two methods are illustrated in Figure~\ref{fig:lossprevpost}. This function shows losses exceeding 2.0 due to the compounded effect of independent image normalization, whereas the post-normalization method maintains losses around 0.35 by preserving keypoint information more effectively. 
+Therefore, and in accordance with empirical testing results, post-normalization was adopted for its increased mutual information retention rates.
 
 \begin{figure}[H]
     \centering
@@ -153,21 +139,12 @@ Here, the loss depends on the relative difference in rotation between the two im
 \end{figure}
 
 
-As seen in Figure~\ref{fig:lossprevpost}, the pre-normalization method results in losses exceeding 2.0 due to the compounding effect of treating both images independently. In contrast, the post-normalization method, which works with relative rotation, consistently yields lower losses, with a maximum loss of approximately 0.35 under these typical UAV conditions. Further, the losses in the post-normalization method consists of almost all non-mutual information. Therefore, post-normalization is expected to provide more accurate translation estimations due to better retention of keypoint information.
-
-
-\subsection{Empirical Validation}
-
-In empirical tests, these results were confirmed, with post-normalization consistently providing higher accuracy due to better retention of keypoint information. The effects were most significant in the DESERT dataset, where the sparsity of keypoints made the dataset particularly sensitive to information loss during rotation. 
-
-\subsection{Method Conclusion}
-
-Given the UAV's typical flight pattern and the need to minimize information loss, post-normalization is applied. In this approach, images are first aligned, followed by translation estimation. Finally, the translation vector is normalized to the global NE coordinate space for consistent navigation.
 
 
 
 
 \section{Testing Shortlist}
+\label{sec:testing_shortlist}
 
 The system design integrates multiple features to ensure robustness, accuracy, and efficiency in UAV navigation tasks. The following components have been selected and tested across various scenarios:
 
@@ -175,9 +152,9 @@ The system design integrates multiple features to ensure robustness, accuracy, a
     \item \textbf{Feature Detectors:} AKAZE, SuperPoint (with LightGlue matcher), and ORB. Note, the SuperPoint detector is used in conjunction with the LightGlue matcher to enhance performance.
     \item \textbf{Feature Matchers:} FLANN and BruteForce. KNN 
     \item \textbf{Search Techniques:} KNN with \( K=2 \). Empirical tests showed a value of 1 to be ineffective without Lowe's ratio test, while values above 2 introduced excessive computational overheads. Further, radius search was seen to be unreliable due to the varying density of keypoints across datasets.
-    \item \textbf{Transformation Estimation:} Homography, Affine, Partial Affine (Rigid) transformations using OpenCV, and SVD-based rigid transformations for rotation and translation estimations. Rotational and Translational Estimators are tested separately as optimal detectors and parameters may vary for each.
+    \item \textbf{Planar Transformation Estimation:} Homography, Affine, Partial Affine (Rigid) transformations using OpenCV, and SVD-based rigid transformations for rotation and translation estimations. Rotational and Translational estimates were initially tested separately, due to the possibility of different responses to different prior stages and methods. However, it was seen that responses were comparatively equivalent; the methods were tested using a combined transform.
     \item \textbf{Global Image Similarity Measures:} SSIM, histogram matching, local retrofit, and cross-correlation.
-    \item \textbf{Optimization Techniques:} Parallel Flow Filtering, LMEDS, RANSAC, Lowe's ratio test, n-Match thresholding, and absolute thresholding for match refinement. Empirical tests indicated that cross-checking was not applicable due to the excessive computational costs involved. KNN
+    \item \textbf{Optimization Techniques:} Standard Deviation Filtering, LMEDS, RANSAC, Lowe's ratio test, n-Match thresholding, and absolute thresholding for match refinement. Empirical tests indicated that cross-checking was not applicable due to the excessive computational costs involved. KNN
 \end{itemize}
 
 
