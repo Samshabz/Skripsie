@@ -119,11 +119,11 @@ class UAVNavigator:
             
             self.global_detector_name = "AKAZE"
             self.global_detector = set_feature_extractor(global_detector_choice, global_detector_threshold)
-            redo = self.test_and_reinitialize(self.global_detector, 2000*efficiency_factor)
+            redo = self.test_and_reinitialize(self.global_detector, 0.5*2000*efficiency_factor)
             while redo:
                 global_detector_threshold *= 0.75
                 self.global_detector = set_feature_extractor(global_detector_choice, global_detector_threshold)
-                redo = self.test_and_reinitialize(self.global_detector, 2000*efficiency_factor)
+                redo = self.test_and_reinitialize(self.global_detector, 0.5*2000*efficiency_factor)
             
         if rotational_detector_choice == 1:                
             self.rotational_detector_name = "ORB"
@@ -322,6 +322,7 @@ class UAVNavigator:
         linked_angles = []
 
         inference_img = self.pull_image(image_index, self.directory, bool_rotate=False)  # Load the current image
+        inference_img = cv2.resize(inference_img, None, fx=0.9, fy=0.9)
         kp_inf, des_inf = self.global_detector.get_keydes(inference_img)
         
 
@@ -331,6 +332,7 @@ class UAVNavigator:
             if ref == image_index:  # Can change this to if i >= image_index to only infer from lower indices
                 continue  
             ref_img = self.pull_image(ref, self.directory, bool_rotate=False)
+            ref_img = cv2.resize(ref_img, None, fx=0.9, fy=0.9)
             kp_stored = self.stored_global_keypoints[ref]
             descriptors_stored = self.stored_global_descriptors[ref]
             Lowes_ratio = 0.8 if self.global_detector_name == "AKAZE" else 0.7
@@ -809,16 +811,17 @@ class UAVNavigator:
             
             reg_x = LinearRegression().fit(x_estimates, x_actual)
             inferred_factor_x = reg_x.coef_[0]
-            print(f"Linear regression inferred factor x: {inferred_factor_x}")
+            # print(f"Linear regression inferred factor x: {inferred_factor_x}")
 
             # Perform linear regression for y
             reg_y = LinearRegression().fit(y_estimates, y_actual)
             inferred_factor_y = reg_y.coef_[0]
-            print(f"Linear regression inferred factor y: {inferred_factor_y} \n")
+            # print(f"Linear regression inferred factor y: {inferred_factor_y} \n")
 
             # Update the inferred factors
             self.inferred_factor_x = inferred_factor_x/2 + inferred_factor_y/2
             self.inferred_factor_y = inferred_factor_y/2 + inferred_factor_x/2
+            print(f"End Of Inference")
         else:
             print("Not enough data points to perform linear regression.")
     
@@ -1292,6 +1295,7 @@ class UAVNavigator:
             best_index = -1   
             internal_angle = None
             # image_space = self.find_image_space(i)
+            
             image_space = self.find_closest_images(self.stored_gps[i], i)
             
             if len(image_space) == 0:
@@ -1308,7 +1312,7 @@ class UAVNavigator:
                 print(f"No suitable match found for image {i}. Skipping.")
                 continue
             if best_index != -1 and internal_angle is not None:
-
+                print(f"match time {time.time() - timeAS}")
 
                 # actual GPS data to compare against
                 actual_gps_diff_meters = (np.array(self.stored_gps[i]) - np.array(self.stored_gps[best_index])) #* 111139
@@ -1321,8 +1325,8 @@ class UAVNavigator:
                 
 
 
-
-
+                time_first  = time.time()
+                # GET KPS CURRENT
                 if bool_infer_factor:
                     inference_image = self.pull_image(i, self.directory, bool_rotate=False)
                     if self.local_detector_name != "SuperPoint":
@@ -1333,7 +1337,7 @@ class UAVNavigator:
                     inference_image = self.pull_image(i, self.directory, bool_rotate=False)
                     inf_kp, inf_des = self.local_detector.get_keydes(inference_image) if self.local_detector_name != "SuperPoint" else (self.local_detector.get_features(inference_image), None)
                 
-
+                # GET MATCHES CURRENT 
                 if bool_infer_factor:
                     # print(f"len feats: {len(self.stored_feats[i]['keypoints'])}") if self.neural_net_on == True 
                     src_pts, dst_pts, _ = self.get_src_dst_pts(inf_kp, self.stored_local_keypoints[best_index], inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(inf_kp, self.stored_feats[best_index])
@@ -1344,14 +1348,12 @@ class UAVNavigator:
 
 
 
-
+                # FIND ROTATIONS AND ALIGN
                 extra_internal_angle = get_src_shifts(src_pts, dst_pts, ret_angle=True) 
                 inference_image_rotated = rotate_image(inference_image, extra_internal_angle)
                 
-                
+                # NEW DENSE LAYER ON ALIGNED 
                 rotated_inf_kp, rotated_inf_des = self.local_detector.get_keydes(inference_image_rotated) if self.local_detector_name != "SuperPoint" else (self.local_detector.get_features(inference_image_rotated), None)
-                
-
                 if bool_infer_factor:
                     src_pts, dst_pts, _ = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
                 elif not bool_infer_factor:
@@ -1371,40 +1373,12 @@ class UAVNavigator:
 
 
 
-
-
                 # TRANSLATIONS
                 translation_x, translation_y = self.get_translations(bool_infer_factor, i, best_index, src_pts, dst_pts)
 
 
 
-
-
-
-
-
-
-
-                # # reestimate translation
-                # # rtrt_image = self.translate_image(rot_trans_rot_image, -translation_x, -translation_y)              
-                # rotated_inf_kp, rotated_inf_des = self.local_detector.get_keydes(rot_trans_rot_image) if self.local_detector_name != "SuperPoint" else (self.local_detector.get_features(rot_trans_rot_image), None)
-                # if bool_infer_factor:
-                #     src_pts, dst_pts, _ = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
-                # elif not bool_infer_factor:
-                #     src_pts, dst_pts, gd_matches = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])                
-                # new_tx, new_ty = get_src_shifts(src_pts, dst_pts, ret_angle=False)
-                # translation_x, translation_y = translation_x + new_tx/2, translation_y + new_ty/2
-                
-
-                
-
-
-
-
-
-
-
-
+                print(f"second time {time.time() - time_first}")    
 
                 Unnorm_x, Unnorm_y = translation_x, translation_y
                 
@@ -1444,7 +1418,7 @@ class UAVNavigator:
                                 # debug (end of analyze)
                 len_matches = len(src_pts)
                 self.len_matches_arr.append(len_matches)
-
+                
                 deviation_x_meters = translation_x_m - actual_pixel_change_x_m
                 deviation_y_meters = translation_y_m - actual_pixel_change_y_m
 
@@ -1456,7 +1430,7 @@ class UAVNavigator:
                 # print(f"DEV-X,Y (m): {deviation_x_meters}, {deviation_y_meters}  for im {i+1} wrt {best_index+1}, angle: {internal_angle} deg, actual deviation (m): {actual_pixel_change_x_m/self.inferred_factor_x}, {actual_pixel_change_y_m/self.inferred_factor_y}")
                 # print(f"PIXEL_ESTIMATE: ({translation_x:.2f}, {translation_y:.2f}), PIXEL_ACTUAL: ({actual_pixel_change_x_m/self.inferred_factor_x:.2f}, {actual_pixel_change_y_m/self.inferred_factor_y:.2f})")
                 PIX_DIFF = np.abs(translation_x - actual_pixel_change_x_m/self.inferred_factor_x), np.abs(translation_y - actual_pixel_change_y_m/self.inferred_factor_y)
-                print(f"PIX_DIFF: {PIX_DIFF} image {i+1} wrt {best_index+1}, angle: {internal_angle} deg, actual deviation (m): {actual_pixel_change_x_m/self.inferred_factor_x}, {actual_pixel_change_y_m/self.inferred_factor_y}")
+                # print(f"PIX_DIFF: {PIX_DIFF} image {i+1} wrt {best_index+1}, angle: {internal_angle} deg, actual deviation (m): {actual_pixel_change_x_m/self.inferred_factor_x}, {actual_pixel_change_y_m/self.inferred_factor_y}")
                 if not bool_infer_factor:
                     self.pixel_diffs.append((PIX_DIFF[0], PIX_DIFF[1]))   
 
@@ -1470,7 +1444,7 @@ class UAVNavigator:
                 # print(f"unnorm xy: {Unnorm_x}, {Unnorm_y}")
                 act_tx_pixels = image_size[1] - np.abs(Unnorm_x)
                 act_ty_pixels = image_size[0] - np.abs(Unnorm_y)
-
+                
                 # print(f"X-overlap: {act_tx_percent:.2f}%, X-dev: {deviation_x_meters:.2f}m, Y-overlap: {act_ty_percent:.2f}%, Y-dev: {deviation_y_meters:.2f}m ")
                 if not bool_infer_factor:
                     self.x_overlap.append(act_tx_pixels)
@@ -1537,17 +1511,21 @@ class UAVNavigator:
 
             else:
                 print(f"Could not find a match for image {i}. Skipping...")
-        mean_x_dev, mean_y_dev = np.mean(deviation_norms_x), np.mean(deviation_norms_y)
+        
+        if not bool_infer_factor:
+            mean_x_dev, mean_y_dev = np.mean(deviation_norms_x), np.mean(deviation_norms_y)
+            total_normalized_gps_error = np.linalg.norm([mean_x_dev, mean_y_dev])
+            MAE_GPS = mean_x_dev/2 + mean_y_dev/2
+            self.MAE_GPS.append(MAE_GPS)
+            self.norm_GPS_error.append(total_normalized_gps_error)
         # if not bool_infer_factor:
         #     self.print_stability_analysis()
         
 
 
-        total_normalized_gps_error = np.linalg.norm([mean_x_dev, mean_y_dev])
-        MAE_GPS = mean_x_dev/2 + mean_y_dev/2
-        if not bool_infer_factor:
-            self.MAE_GPS.append(MAE_GPS)
-            self.norm_GPS_error.append(total_normalized_gps_error)
+        
+        
+
 
 
 
@@ -1782,9 +1760,9 @@ def main():
     dat_set_arr = [
         "DATSETROT2",
         "DATSETCPT2",
-        "DATSETROCK",
+        "DATSETROCK2",
         "DATSETSAND2", 
-        "DATSETAMAZ"
+        "DATSETAMAZ2"
         
         ]
     # dat_set_arr = ["DATSETROCK"]
@@ -1862,6 +1840,7 @@ def main():
                         navigator.analyze_matches(True, inference_images)
                         navigator.compute_linear_regression_factors()
                         
+                        
                         # step 2: Add rest of images when GPS available
                         for i in range(inference_images+1, num_images + 1):
                             navigator.add_image(i, directory)
@@ -1902,11 +1881,8 @@ def main():
                         min_mut_info_y = np.min(navigator.y_overlap)
                         max_mut_info_x = np.max(navigator.x_overlap)
                         max_mut_info_y = np.max(navigator.y_overlap)
-
-                        # print(f"x, y-overlap-max: {int(max_mut_info_x)}, {int(max_mut_info_y)}")
-
-                        # print(f"x, y-overlap-mean: {int(net_information_mutual_x)}, {int(net_information_mutual_y)}")
-                        print(f"x, y-overlap-min: {int(min_mut_info_x)}, {int(min_mut_info_y)}")
+                        
+                        # print(f"x, y-overlap-min: {int(min_mut_info_x)}, {int(min_mut_info_y)}")
                         # seperate add_time_arr, parameter_inference_time_arr, and location_inference_time_arr. Get the mean and variance of each
                         string_time_analysis_mean = f"Mean_Add_Time: {np.mean(navigator.add_time_arr)}, Mean_Parameter_Inference_Time: {np.mean(navigator.parameter_inference_time_arr)}, Mean_Location_Inference_Time: {np.mean(navigator.location_inference_time_arr)}, Mean_Total_Time: {np.sum(navigator.add_time_arr) + np.sum(navigator.parameter_inference_time_arr) + np.sum(navigator.location_inference_time_arr)}"
                         string_time_analysis_var = f"Var_Add_Time: {np.var(navigator.add_time_arr)}, Var_Parameter_Inference_Time: {np.var(navigator.parameter_inference_time_arr)}, Var_Location_Inference_Time: {np.var(navigator.location_inference_time_arr)}"
