@@ -16,131 +16,91 @@ This chapter outlines the chosen methodology for the UAV navigation system, deta
 
 \section{System Pipeline}
 
-The UAV image-processing pipeline comprises several stages, each addressing specific goals in the larger aim to estimate the new GPS and heading of the UAV. These stages require varying levels of precision and efficiency to ensure robust performance.
+The UAV image-processing pipeline comprises several stages, each addressing specific goals in the larger aim to estimate the current GPS and heading of the UAV. These stages require varying levels of precision and efficiency to ensure robust performance.
 
 \subsection{Pipeline Stages}
 
 \begin{enumerate}
-    \item \textbf{Image Input:}  
+    \item \textbf{Image (Input):}  
     The process begins with capturing a live image from the UAV’s downward-facing camera. This real-time visual input provides essential information about the UAV’s environment, forming the basis for position estimation.
 
-    \item \textbf{Feature Extraction:}  
-    Keypoints and descriptors are extracted from the current image to aid in the matching process. This extraction occurs in two layers:
-    \begin{enumerate}
-        \item \textbf{Coarse Layer:} Used for proximity search space reduction.
-        \item \textbf{Dense Layer:} Used for precise matching and transformation estimation. 
-    \end{enumerate}
-    By also performing feature extraction when GPS is available, the system reduces computational load during the critical phase when GPS is lost. 
+    \item \textbf{Extract and Store Features:}  
+    Keypoints and descriptors are extracted from the current image to aid in the matching process. This extraction occurs in two layers: the coarse layer, used in the second stage of search space reduction, and the dense layer, used during the precise transformation stage. The system also extracts features when GPS is available to reduce computational load during critical phases when GNSS is lost.
+    
 
-    \item \textbf{Storage (Telemetry and Features):}  
-    Extracted features (keypoints and descriptors) along with telemetry data (GPS position and heading) are stored for future reference. Stored features facilitate relative transformation inference when GPS is unavailable, while telemetry data assists in converting relative transformations to real-world coordinates and headings.
+    \item \textbf{Store Corresponding Features and Telemetry:}  
+    Extracted features (keypoints and descriptors) along with their corresponding telemetry data (GNSS position and heading) are stored for future reference. Stored features facilitate relative transformation inference when GNSS is unavailable, while telemetry data assists in converting relative transformations to real-world coordinates and headings.
+
+    \item \textbf{Infer Parameters (Altitude and Camera):}  
+    To be able to convert from a pixel translation to a metre value, a conversion factor is required. This conversion factor is dependent on the altitude of the UAV and the camera's focal length. When GNSS signal is available, this stage uses the complete pipeline to estimate the UAV's Lat-Lon coordinates using a placeholder factor value. These estimates are accumulated and compared, using only the first 5 images to balance overall efficiency and parameter accuracy, with the ground truth Lat-Lon coordinates via linear regression to infer the conversion factor. This is necessary in the scope of this study, which assumes constant and unknown altitude and camera parameters. These parameters are both represented within a single factor, the pixel to metre ratio. 
 
     \item \textbf{Match Features:}  
-    Features between the current image and reference images are matched to ensure that comparisons are based on mutual features. This involves two matching stages:
-    \begin{enumerate}
-        \item \textbf{Coarse Matching:} Matches the coarse layer of features to reduce the search space.
-        \item \textbf{Dense Matching:} Matches the dense layer for precise position estimation.
-    \end{enumerate}
-    The matching process is optimized to ensure robustness against noise and outliers, with a focus on computational efficiency. The techniques are as follows:
-    \begin{enumerate}
-        \item \textbf{Feature Matching:}  
-        Utilizes FLANN and BruteForce matchers to identify potential matches between the current and reference images. The matchers are optimized to ensure robustness against noise and outliers, with a focus on computational efficiency.
-        
-        \item \textbf{Optimization:}  
-        Refines the matches using techniques such as Lowe's ratio test to ensure that only high-quality matches are considered for further processing. This refinement step is crucial for accurate transformation estimation. 
-    \end{enumerate}
-    \item \textbf{Similarity Comparison:}  
-    The system compares the input image with reference images to identify the most similar one. This comparison is conducted using global matching techniques on aligned images to ensure efficiency and accuracy.
-    \begin{enumerate}
-        \item \textbf{Proximity Search Space Reduction:}  
-        Reduces the search space based on proximity from the last known or estimated GPS location. A fixed radius was initially used, but later updated to return a specific number of the closest matches. 
-        
-        \item \textbf{Rotational Alignment:}  
-        Estimates the rotation between the input and reference images using the coarse layer of features. The images are aligned using the course estimate as global matchers tolerate minor rotational inaccuracies well.
-        
-        \item \textbf{Best Match Identification:}  
-        Computes similarity scores between the input image and each candidate image using global matching techniques. The image with the highest similarity score is selected as the best match, serving as the reference for position estimation.
-    \end{enumerate}
+    Features between the current image and reference images are matched to ensure that comparisons are based on mutual features. This involves matching of both the coarse and dense layers of features.
+
+    The matching process is optimized to ensure robustness against noise and outliers, with a focus on computational efficiency. The techniques include usage of match acquisition techniques, search techniques, as well as subsequent optimization techniques to refine the matches.
+    
+    \item \textbf{Find Most Similar Image:}  
+    The stage involves two layers of search space reduction until a single image is chosen for the current image to accurately infer its relative transformation against. 
+    
+    The first is reduction based on proximity to the last known Lat-lon Coordinates. This stage outputs 5 matches. 
+    
+    Thereafter, a more precise global matching technique is applied to identify the most similar match from the reduced search space. This requires initial rotational alignment using the coarse layer of matched features and subsequent global matching techniques to identify the best match based on similarity scores. The crude layer is chosen as global matching techniques were proven in the testing phase to be robust against minor rotational inaccuracies, allowing for efficiency prioritization. 
 
 
+    \item \textbf{Estimate Planar Transformation:}  
+    After identifying the best match, the system performs a precise estimation of both rotation and translation between the input and reference images using the dense match layer. 
+    
+    The first step involves estimating the rotation between the images, followed by aligning the images based on this rotation. 
+    
+    Thereafter, the system recomputes the dense layer of features and matches on the aligned images. The reason for the recomputation prior to translation estimation is due to improved accuracy; aligned point clouds allow for improved translation estimation by way of less parameters to estimate. The amount of mutual information also remains constant when applying alignment to an image. 
 
-    \item \textbf{Planar Transformation Estimation:}  
-    After identifying the best match, the system performs a precise estimation of both rotation and translation between the input and reference images using the dense match layer. This involves several sub-steps to enhance accuracy:
-    \begin{enumerate}
-        \item \textbf{Angle Estimation:}  
-        Utilizes the chosen transformation method to obtain a precise estimate of the rotation between the input and reference images, forming the basis for heading estimation.
-        
-        \item \textbf{Image Alignment \& Recomputation of Dense Layer:}  
-        Aligns the input image with the reference image based on the estimated rotation, thereby implicitly removing non-mutual information by rotating it off the canvas. The dense layer of features is recomputed on the aligned images to ensure accurate translation estimates.
-        
-        \item \textbf{Translation Estimate:}  
-        Performs a precise estimation of translation between the two images using the refined dense layer, providing the basis for GPS inference.
-    \end{enumerate}
+    Finally, the system estimates the translation between the images using the refined dense layer. 
 
-    \item \textbf{Update to Global Coordinate System:}  
-    The estimated translation, initially in the internal image coordinate system (pixels), must be converted to real-world coordinates (metres) and then to the global coordinate system (longitude and latitude). This conversion involves several stages:
-    \begin{enumerate}
-        \item \textbf{Heading Update:}  
-        Adds the estimated rotation to the reference image's heading to determine the UAV's new heading.
-        
-        \item \textbf{Translation Rotation from Internal to Global Coordinate System:}  
-        Rotates the translation vector by the UAV's estimated global heading to align it with the global coordinate system without altering its magnitude.
-        
-        \item \textbf{Pixel to Metres (Relative):}  
-        Converts the estimated change in pixels to metres using the dynamically inferred conversion factor. 
-        
-        Translates the metre-based changes to relative changes in longitude and latitude using the following equations: 
+    This rotation and translation estimation are outputted to the next stages for conversion from relative to absolute conversion of the UAV's heading and position. 
 
-        \(\Delta \text{Longitude} = \frac{\Delta \text{Metres}}{111320 \times \cos(\text{Latitude})}\), \(\Delta \text{Latitude} = \frac{\Delta \text{Metres}}{111320}\)
+    \item \textbf{Estimate Heading:}
+    The internal angle between the current and reference images is added to the reference image's heading to determine the UAV's current heading. 
+    \item \textbf{Estimate Lat-Lon:}  
 
-        These calculations account for the Earth's oblate spheroid shape, ensuring accurate positional data by adjusting for the decreasing distance between longitudes as one moves towards the poles.
-        
-        \item \textbf{Conversion to Absolute GPS:}  
-        Adds the relative changes in longitude and latitude to the GPS coordinates of the reference image, resulting in the UAV's new GPS position.
-    \end{enumerate}
+    The estimated translation at this stage is a pixel value representing the displacement between aligned images. To convert this to real-world latitude and longitude coordinates, the vector must be scaled in magnitude and rotated to align with the global coordinate system. This process consists of the following steps:
 
-    \item \textbf{Output New GPS and Heading:}  
-    The calculated translation and rotation values are used to estimate the UAV's new GPS coordinates and heading. This enables pilots to navigate the UAV back to its base along the original path, even in the absence of GPS.
+    First, the translation vector components, representing displacement between the current and reference images, are initially relative to the internal coordinate system. This vector is rotated by the heading of the reference image, aligning it with the global latitude-longitude system without altering its magnitude.  
+    \emph{At this stage, the translation vector is aligned with the global coordinate system but remains in pixel units.}
 
-    \item \textbf{Dynamic Parameter Inference:}  
-    This stage is performed while GPS is available. It estimates the GPS position using a temporary pixel-to-metre conversion factor of 1, utilizing the pipeline's stages to compute this estimate. The estimated GPS is compared to the ground truth GPS, and the difference is used to adjust the pixel-to-metre conversion factor. This ensures accurate conversion across datasets with varying altitudes. The first five images are used to infer this scaling factor.
+    Next, the estimated pixel displacement is multiplied by the inferred pixel-to-metre conversion factor, resulting in a translation vector scaled to represent real-world distances in metres.  
+    \emph{At this stage, the translation vector represents real-world distances in metres and is aligned with the global coordinate system.}
+
+    Then, the metre-based displacement components, now aligned with the global coordinate system, are converted to relative latitude and longitude changes. To account for the Earth's oblate spheroid shape, the equations below are used, which consider the latitude-dependent distance per degree of longitude:
+
+    \[
+    \Delta \text{Longitude} = \frac{\Delta \text{East}_{\text{metres}}}{111320 \cdot \cos(\text{Latitude}_{\text{reference}})}, \quad \Delta \text{Latitude} = \frac{\Delta \text{North}_{\text{metres}}}{111320}
+    \]
+
+    where:
+    \begin{itemize}
+        \item \(\Delta \text{East}_{\text{metres}}\) and \(\Delta \text{North}_{\text{metres}}\) represent the eastward and northward displacement vector components in metres, aligned to the global coordinate system.
+        \item The constant \(111320\) converts degrees of latitude to metres, with longitude scaled by \(\cos(\text{Latitude}_{\text{reference}})\) to reflect latitude-dependent longitudinal distance.
+    \end{itemize}
+
+    \emph{At this stage, the translation vector represents relative changes in latitude and longitude, aligned with the global coordinate system.}
+
+    Finally, the calculated changes in latitude and longitude are added to the reference image’s known coordinates, yielding the UAV’s estimated absolute position.  
+
+    \item \textbf{Heading and Lat-Lon Estimate:}
+    The systems heading and Lat-Lon estimates are outputted to the user interface for real-time monitoring and in practice, navigation.
 
 
 \end{enumerate}
 
 
 \section{Dynamic Methods and Techniques}
-Upon rigorous testing, it was seen that many parameters in the pipeline simply cannot generalize without tuning. This included the parameters of some feature detectors, optimization techniques, and search space reduction methods. To address this, dynamic methods were implemented to adjust these parameters based on the current scenario. The following dynamic methods were implemented:
+Upon rigorous testing, it was seen that not all parameters in the pipeline can generalize without tuning. However, static environmental tuning is not always possible or practical. To get around this, two dynamic methods were implemented to adjust these parameters to better account for varying densities of quality and quantities of keypoints across datasets. 
 
-% begin itemize
-\begin{itemize}
-    \item \textbf{Dynamic Feature Detector Selection:} AKAZE, the only detector without a dedicated keypoint target parameter (such as ORB's nFeatures), was highly accurate when tuned. However, the leniency threshold of AKAZE was found to be inconsistent across datasets. To address this, a dynamic method was implemented to adjust the leniency threshold based on the number of keypoints detected. This ensures that the detector is neither too lenient nor too strict, providing a balance between accuracy and efficiency.
-    \item \textbf{Lowe's Ratio:} Lowe's ratio test is a critical step in the matching process, ensuring that only high-quality matches are considered for further processing. However, the optimal threshold for this test varies highly across datasets and scenarios. To address this, a dynamic method was implemented to adjust the Lowe's ratio threshold, starting at a strict threshold, and gradually relaxing it until a sufficient number of matches are found. This ensures that the system remains robust against noise and outliers while maintaining computational efficiency.
-\end{itemize}
+Firstly, the keypoint filtering threshold of AKAZE was inconsistent across datasets, with static thresholds subtending unreasonably low or high numbers keypoints in different datasets. To address this, a dynamic method was implemented to adjust the leniency threshold based on the number of keypoints detected. This is done for the first image in the dataset, since changing terrains were not considered in this study. This ensures a stable number of keypoints were found. Specifically, enough to ensure a stable estimate but not too many to cause excessive computational overheads and noise.
 
-The above dynamic methods ensure that the system remains stable in different scenarios, adapting to varying conditions to provide accurate and efficient performance. However, these methods still, in part, fail to understand the nuances of the dataset perfectly. In the future, in flight error to ground truth estimates can be used to iteratively solve for the most optimal static parameters for the given environment, assuming it does not significantly change during flight. Alternatively, a dedicated machine learning model can be trained to predict and constantly adjust the optimal parameters based on the dataset's characteristics in-flight, providing a more robust and efficient solution.
+Secondly, Lowe's ratio, an extremely powerful filtering technique in the matching process, was found to be highly sensitive to the dataset. This was caused by varying keypoint qualities for the same number of keypoints across datasets. To address this, a dynamically adjusting threshold was applied. This threshold increases in leniency until a sufficient number of matches are found or a certain percentage of the total number of keypoints are matched. 
 
-
-\section{Rotational Normalization Strategies}
-
-
-Rotational normalization is crucial for accurately aligning images internally and to the global heading space to estimate the UAVs relative and absolute positions. However, this inherently discards information that is rotated off of the canvas. Two primary strategies were evaluated: pre-normalization, which aligns images to a global North-East (NE) reference before keypoint detection, and post-normalization, which aligns images relative to each other before applying normalization after translation estimation. 
-
-In the pre-normalization approach, information loss scales sinusoidally with the absolute values of the difference in rotations between images. Further, this loss contains predominantly losses in non-mutual pixels due to its internal alignment. Conversely, post-normalization scales with both angle losses independently, increasing the likelihood of compounded loss. 
-
-Given that the UAV's typical return flight will be 180 degrees to the outbound path, with a maximum path deviation of ±20 degrees, the loss functions for the two methods are illustrated in Figure~\ref{fig:lossprevpost}. This function shows losses exceeding 2.0 due to the compounded effect of independent image normalization, whereas the post-normalization method maintains losses around 0.35 by preserving keypoint information more effectively. 
-Therefore, and in accordance with empirical testing results, post-normalization was adopted for its increased mutual information retention rates.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Chapter 4/Figs4/lossprevspost.png}
-    \caption{Loss comparison between pre-normalization and post-normalization methods.}
-    \label{fig:lossprevpost}
-\end{figure}
-
-
-
-
+The above dynamic methods ensure that the system remains stable in different scenarios, where prior knowledge of the environment is not available. Naturally, this may be adapted to re-estimate these parameters, based on a time constraint, in varying environment missions. 
 
 
 \section{Testing Shortlist}
@@ -152,7 +112,7 @@ The system design integrates multiple features to ensure robustness, accuracy, a
     \item \textbf{Feature Detectors:} AKAZE, SuperPoint (with LightGlue matcher), and ORB. Note, the SuperPoint detector is used in conjunction with the LightGlue matcher to enhance performance.
     \item \textbf{Feature Matchers:} FLANN and BruteForce. KNN 
     \item \textbf{Search Techniques:} KNN with \( K=2 \). Empirical tests showed a value of 1 to be ineffective without Lowe's ratio test, while values above 2 introduced excessive computational overheads. Further, radius search was seen to be unreliable due to the varying density of keypoints across datasets.
-    \item \textbf{Planar Transformation Estimation:} Homography, Affine, Partial Affine (Rigid) transformations using OpenCV, and SVD-based rigid transformations for rotation and translation estimations. Rotational and Translational estimates were initially tested separately, due to the possibility of different responses to different prior stages and methods. However, it was seen that responses were comparatively equivalent; the methods were tested using a combined transform.
+    \item \textbf{Planar Transformation Estimation:} Homography, Affine, Partial Affine (Rigid) transformations using OpenCV, and SVD-based rigid transformations for rotation and translation estimations. Rotational and Translational estimates were initially tested separately, due to the possibility of different responses to different prior stages and methods. However, it was seen that inter-method comparisons subtended equivalent conclusions; the methods were tested for brevity using a combined transform.
     \item \textbf{Global Image Similarity Measures:} SSIM, histogram matching, local retrofit, and cross-correlation.
     \item \textbf{Optimization Techniques:} Standard Deviation Filtering, LMEDS, RANSAC, Lowe's ratio test, n-Match thresholding, and absolute thresholding for match refinement. Empirical tests indicated that cross-checking was not applicable due to the excessive computational costs involved. KNN
 \end{itemize}

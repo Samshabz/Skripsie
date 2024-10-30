@@ -1,4 +1,3 @@
-\graphicspath{{introduction/fig/}}
 
 \chapter{Introduction}
 \label{chap:introduction}
@@ -7,17 +6,28 @@
 
 
 \section{Background}
-Unmanned Aerial Vehicles (UAVs) have become critical in modern military operations, providing capabilities in surveillance, reconnaissance, and intelligence gathering. In South Africa, UAVs are increasingly used to monitor borders and support military missions by enabling persistent aerial observation \cite{Weiss2024}. Their ability to operate in dangerous or inaccessible areas makes them invaluable for various operations.
 
-However, UAVs heavily rely on the Global Positioning System (GPS) for navigation, which poses a significant vulnerability. GPS signals are easily disrupted by jamming, spoofing, or interference in hostile environments, leading to navigation failure. Adversaries increasingly exploit these vulnerabilities, resulting in UAVs becoming disoriented or lost, jeopardizing both the mission and the UAV. 
+Unmanned Aerial Vehicles (UAVs) have become indispensable tools in various sectors, including military operations, surveillance, reconnaissance, and intelligence gathering. In South Africa, UAVs play a crucial role in border monitoring and supporting military missions by providing persistent aerial observation \cite{Weiss2024}. Their capability to operate in hazardous or inaccessible areas enhances operational effectiveness and safety.
 
-The increasing prevalence of GPS disruptions highlights a critical need for alternative navigation solutions that can operate independently of external signals like GPS. These systems must be robust, accurate, and adaptable to a wide range of environments. Some alternatives include inertial navigation systems, radio frequency-based localization, and quantum positioning systems. However, these suffer from high costs, limited accuracy, susceptibility to detection, Earth curvature issues, or drift, making them impractical for widespread UAV deployment. One promising approach that does not fall prey to these issues is image-based navigation, where UAVs use onboard cameras to capture and match images with previously stored reference images to estimate their position. This method allows for autonomous navigation in GPS-denied environments without requiring continuous GPS access.
+Despite their widespread use, UAVs predominantly rely on Global Navigation Satellite Systems (GNSS) such as the Global Positioning System (GPS) for navigation and positioning. GNSS operates by utilizing a constellation of satellites that transmit precise time-stamped signals to Earth-based receivers. Each receiver calculates its position by measuring the time delay of signals from multiple satellites, requiring data from at least four satellites to determine its three-dimensional location. While GNSS provides essential Positioning, Navigation, and Timing (PNT) information globally, its reliance on weak, line-of-sight satellite signals introduces significant vulnerabilities \cite{geotab2024gps}.
 
-However, image-based systems face uncertainty regarding their ability to offer real-time operation, achieve accurate results, and handle various environments. This project aims to test the viability of such a system, addressing the need for reliable UAV navigation without GPS dependency.
+In recent years, the vulnerabilities of GNSS to jamming and spoofing have become increasingly pronounced. With the advent of more accessible jamming and spoofing technology, intentional GNSS interference is no longer a complex undertaking {CITE XXX}. Instances of GNSS jamming and spoofing are particularly prevalent in conflict zones, where adversaries exploit GNSS weaknesses to disrupt or mislead UAV operations. The issue is far from hypothetical; over 1100 daily incidents of aircraft GNSS spoofing alone have been reported worldwide, underscoring the urgency of addressing these vulnerabilities {CITE XXX}.
 
-While conditions such as poor lighting and dynamic environments can pose practical challenges, advancements in technology and image processing algorithms have significantly improved the robustness of computer vision tasks to these challenges.
+The increasing prevalence of GNSS disruptions has direct implications for national security, as UAVs may become disoriented or lost, jeopardizing missions and assets. Loss of GNSS signals can lead to an inability to locate the UAV, compromising control and potentially resulting in the UAV crashing or being captured. This situation emphasizes the critical need for alternative navigation solutions that can operate independently of external signals like GNSS. These systems must be robust, accurate, and adaptable to a wide range of environments, while also being cost-effective and minimizing detectability.
 
-By leveraging these advancements, this project will develop and evaluate a system that employs the latest image processing techniques to deliver accurate and real-time localization for UAVs in GPS-denied environments. The solution will be rigorously tested against stringent performance metrics to assess its practicality and reliability in real-world scenarios.
+Various alternative navigation methods have been explored to mitigate reliance on Global Navigation Satellite Systems (GNSS). Quantum sensing navigation employs cold atom inertial sensors to achieve superior precision compared to traditional inertial measurement units (IMUs), but it is often prohibitively expensive and bulky {CITE XXX}. Odometry-based solutions estimate UAV displacement through wheel rotation or accelerometer readings; however, they suffer from significant drift over extended distances, rendering their location estimations unusable for missions exceeding roughly 200 km, depending on their level of precision \cite{Zhuang2023}. Radio Frequency (RF) communication systems can triangulate UAV positions using ground beacons or cellular towers, yet their effectiveness is limited in remote areas and by the Earth's curvature, restricting their operational range to approximately 300 km {CITE XXX}. Light Detection and Ranging (LIDAR) systems map the ground by emitting laser pulses and measuring their return times to create detailed 3D environmental maps, but they are resource-intensive and emit detectable signals, which are undesirable for stealth operations prevalent in military contexts \cite{scoutaerial2024lidar}.
+
+Image-based navigation emerges as a promising approach that does not succumb to the aforementioned issues. By leveraging onboard cameras, UAVs can reference images with known telemetry data, either through an acquired database or by capturing images during flight prior to GNSS signal loss, to estimate their position and heading. Image-based navigation relies on planar transformations, which relate two images of the same planar surface taken from different perspectives. These transformations enable the alignment of images from different viewpoints, facilitating the estimation of the UAV's orientation and position relative to reference telemetry data {CITE XXX}.
+
+This method provides a financially accessible way to navigate in GNSS-denied environments without emitting detectable signals or suffering from drift. It benefits from advancements in computer vision and image processing techniques, which have significantly improved the robustness and accuracy of image processing tasks {CITE XXX}. SUMMARY OF LIT STUDIES - NOT ENOUGH SOLUTIONS. 
+However, it remains unclear whether image-based systems can effectively operate in the context of UAV navigation. Specifically, it is uncertain if they can generalize to various terrains and operational conditions, such as varying light levels, while also achieving real-time operation and high accuracy. This study aims to create a working pipeline for this context and test it on real-world data, thereby addressing these uncertainties and evaluating the viability of image-based navigation as a redundancy measure to GNSS.
+XXX - waiting for lit
+
+sources:
+\cite{scoutaerial2024lidar}. LIDAR
+\cite{brewer_line_2024}. RF
+\cite{Zhuang2023} Odometry
+\cite{wright2022cold}.  Quantum sensing
 
 
  xxx
@@ -26,15 +36,36 @@ scope should include the IMUs for path finding
 
 
 \section{Problem Statement}
-GPS-based UAV navigation is increasingly vulnerable to jamming and spoofing, risking loss of control. Current alternatives are either too expensive or unreliable, creating a need for a more robust, GPS-independent solution.
+The increasing frequency of GNSS disruptions due to jamming and spoofing poses a significant threat to UAV operations {CITE XXX}. Current alternatives to GNSS are either too expensive, bulky, decrease stealth capabilities, or suffer from significant drift over extended periods \cite{wright2022cold} {REFERENCE THE REST}. Other solutions in the field of image-based navigation do not XYZ {LIT REVIEW}. Developing such a solution is essential for enhancing UAV operational resilience in contested or denied environments. 
+XXX - waiting for lit
 
 \section{Aims and Objectives}
 \subsection{Aim}
-The primary aim of this project is to develop an accurate and generalizable image-based GPS localization system to facilitate UAV navigation in GPS-denied environments.
+
+The primary aim of this project is to develop and evaluate an image-based navigation system for UAVs that can accurately estimate position and heading in GNSS-denied environments by leveraging images and telemetry data captured prior to GNSS-denial. This approach enables the UAV to navigate back to base post-GNSS denial by following its outbound path.
 
 \subsection{Objectives}
+
 To achieve the stated aim, the following objectives have been established:
 
+\begin{enumerate}
+    \item \textbf{Optimize the Localization Pipeline:} Identify and implement the most effective pipeline, including parameter selection and methodological approaches, to achieve the highest possible localization accuracy while maintaining real-time performance and generalizability. This includes the selection, integration and optimization of feature extraction, matching, and planar transformation estimation techniques.
+    \item \textbf{Accurate Localization Estimation:} Estimate the latitude and longitude, using only prior telemetry data and image features, with a radial error below 10\% of the UAV's radial displacement from the reference image. This accuracy is sufficient for manual control of the UAV in GPS-denied environments, given that the system provides continuous correction.
+    \item \textbf{Real-Time Operation:} Ensure the localization system operates in real-time, with a response time of less than 2 seconds following GNSS signal loss. This is sufficient as the relative motion of the UAV to the ground is sufficiently slow that a 2-second delay will not significantly affect the pilots ability to navigate.
+    \item \textbf{Environmental Generalizability:} Validate that the system maintains its performance metrics across diverse environments without the need for environment-specific parameter tuning.
+\end{enumerate}
+OLD
+OLD
+
+REQUIREMENTS
+\begin{itemize} 
+\item \textbf{Accuracy:} Provide precise localization with a radial error below 10\% of the UAV's radial displacement or movement from the centre of the reference image. This ensures sufficient accuracy for manual control to navigate the UAV along the outbound path.
+\item \textbf{Real-Time Operation:} Operate in real-time to support immediate navigation needs upon GNSS signal loss. This is defined as a response time of less than 2 seconds for position and heading estimation following GNSS signal loss. This ensures the navigator can make corrections prior to large changes in UAV position, given the landscape does not change significantly within 2 seconds.
+\item \textbf{Adaptability:} Maintain the Accuracy and Time constraints across diverse environments without requiring manually changing parameters per environment. This ensures the system's generalizability and applicability to various operational contexts. 
+\end{itemize}
+
+
+OBJECTIVES
 \begin{enumerate}
     \item \textbf{Optimize the Localization Pipeline:} Identify and implement the most effective pipeline, including parameter selection and methodological approaches, to achieve the highest possible localization accuracy while maintaining real-time performance and generalizability. This includes the selection, integration and optimization of feature extraction, matching, and planar transformation estimation techniques.
     \item \textbf{Accurate Localization Estimation:} Estimate the GPS location, using only prior telemetry data and image features, with a radial error below 10\% of the UAV's radial displacement from the reference image. This accuracy is sufficient for manual control of the UAV in GPS-denied environments, given that the system provides continuous correction.
@@ -43,71 +74,54 @@ To achieve the stated aim, the following objectives have been established:
 \end{enumerate}
 
 
+\begin{enumerate} 
+\item \textbf{Develop the Image-Based Navigation Pipeline:} Design and implement the components of the navigation system, including feature extraction, feature matching, and homography estimation techniques. 
+\item \textbf{Evaluate System Performance:} Test the system using real-world data to assess its accuracy, robustness, and real-time operation capabilities 
+item \textbf{}
+
+
+\item \textbf{Optimize for Real-Time Operation:} Enhance the efficiency of the system to ensure it meets real-time operational requirements, with response times suitable for UAV navigation. 
+\item \textbf{Validate Generalizability:} \item \textbf{Validate Generalizability:} Test the system's performance under various environments to assess whether it challenging condtions, such as varying light levels and overlap conditions, to validate its robustness.
+\item \textbf{Assess Practical Limitations:} Identify and address practical challenges such as environmental changes, dynamic objects, and visibility issues that may impact system performance. 
+\end{enumerate}
+
+
+-- END OBJECTIVES --
+
 \section{Scope}
 \label{sec:scope}
-The scope of this project is defined to ensure feasibility and manageability within the allocated timeframe. The limitations are considered reasonable in practical scenarios or can be addressed in future, more detailed studies. These constraints do not hinder the ability to assess the solution's viability. The following assumptions and restrictions outline the project's boundaries:
+The scope of this project is defined to ensure feasibility within the allocated timeframe and resources. The following assumptions and limitations outline the project's boundaries:
 
 \begin{itemize}
-    \item \textbf{No Perspective Distortion:} The UAV's downward-facing camera is assumed to remain perfectly aligned downward throughout all operations, so no pitch or roll occurs. Additionally, the ground is assumed to be predominantly planar (2-dimensional), simplifying the model by removing the need for perspective distortion correction.
-    
-    \item \textbf{No Scale Distortion:} The UAV maintains a constant altitude, negating the requirement for scale estimation in localization calculations.
-    
-    \item \textbf{Sufficient Image Quality:} It is assumed that the captured images have adequate resolution and full visibility without significant distortion.
-    
-    \item \textbf{No Dynamic Movements:} The UAV is expected to operate over primarily static land surfaces with minimal dynamic objects, ensuring a stable environment for image-based localization.
-    
-    \item \textbf{Path Overlap:} The UAV leverages complementary odometry-based systems to determine its path. This system assumes that the UAV has located the path, and the overlap of reference image information is greater than 60\%.
-    
-    \item \textbf{Method and Parameter Set Testing:} The study aims to assess the system's viability given sufficiently accurate methods and parameter sets, focusing on the overall performance of the system rather than on exhaustive testing of optimal methods or fine-tuning of parameters.
-    
-    \item \textbf{Training Requirements:} Machine-learning-based methods are excluded due to the extensive training data required, which is outside the project's scope.
-    
-    \item \textbf{Data Provisioning:} The project used data from Google Earth due to not receiving the prerequisite data, acknowledging a minor accuracy impact due to the use of estimated ground truth heading data.
-    
-    \item \textbf{System Output:} The system provides an estimated GPS location and heading, intended for manual UAV control by pilots rather than for automated control systems.
+    \item \textbf{Camera Alignment and Environment:} The UAV's downward-facing camera is assumed to remain perfectly aligned downward throughout all operations, with no pitch or roll. The ground is assumed to be predominantly planar at the altitude of image capture, simplifying the model by reducing the complexity of perspective distortion correction.
+    \item \textbf{Constant Altitude:} The UAV maintains a constant altitude during operations, negating the requirement for scale estimation in localization calculations.
+    \item \textbf{Image Quality and Visibility:} Captured images are assumed to have adequate resolution and visibility, without significant distortion or occlusion.
+    \item \textbf{Static Environment:} The UAV operates over primarily static land surfaces with minimal dynamic objects, ensuring a stable environment for image-based localization.
+    \item \textbf{Path Found:} The system assumed that complementary odometry-based systems have located the UAV's path when GNSS signals are lost, and the overlap of reference image information is greater than 60\%.
+    \item \textbf{Methodology Focus:} The study aims to assess the system's viability using established methods and parameter sets, focusing on overall performance rather than exhaustive optimization of methods or parameters.
+    \item \textbf{Machine Learning Constraints:} Machine learning methods requiring pre-training are excluded due to time and data constraints. 
+    \item \textbf{No Integration:} The system uses image-based data to output estimated position and heading information for the UAV's, intended for navigation assistance; it does not integrate practically with navigation systems or control mechanisms.
     
 \end{itemize}
 
-These scope limitations streamline the project while allowing for future enhancements, such as incorporating scale and perspective correction or improving robustness to dynamic environmental conditions.
+
+\section{Data Provisioning}
+
+An agreement was established with an external party to provide real-world flight data from their UAV operations for use in this study. However, the data was not provided within the project's timeframe. To proceed, Google Earth data was utilized as it offers free access to high-resolution aerial imagery with 3D terrain features and perspective changes, along with GPS coordinates, closely approximating real-world data. The use of estimated heading data, which is required to convert translation changes to latitude and longitude, is acknowledged to have an impact on accuracy, but no other solutions were available that would more closely meet the project goals within the available resources.
 
 
 
-
-\section{Summary of Work}
+\section{Summary of Work} - MAY REMOVE
 This project successfully developed and implemented an image-based GPS localization system for UAV navigation in GPS-denied environments. The system met the outlined objectives, demonstrating high accuracy, real-time performance, and generalizability across multiple environments. Through comprehensive research and implementation of feature extraction, matching, and homographic techniques, the system effectively estimated the UAV's location with minimal error. The system was tested and deemed to be practically robust under low-light and limited overlap conditions, with the ability to handle various environments. The outcomes indicate significant potential for enhancing UAV navigation reliability in both military and civilian applications.
 
 
 \section{Structure of the Report}
-This report is structured to provide a comprehensive overview of the research undertaken to develop the image-based GPS localization system for UAVs. The chapters are organized as follows:
-
-\begin{itemize}
-    \item \textbf{Chapter 2: Literature Review} \\
-    This chapter reviews the current state of GPS-alternative UAV navigation systems, emphasizing their drawbacks and associated vulnerabilities. It provides the reader with the prerequisite knowledge to understand the techniques employed in this study, including feature detection and matching techniques, and planar transformation estimation methodologies. 
-    
-    \item \textbf{Chapter 3: Methodology} \\
-    This chapter details the system pipeline designed to achieve accurate, efficient, and robust image-based GPS localization. It covers the flow and integration of feature extraction, matching, and homographic estimation, as well as the associated considerations made to optimize the system's performance.
-    
-    \item \textbf{Chapter 4: Testing} \\
-    This chapter describes the datasets utilized, the testing environment setup, and the comparative analysis of different methods employed at each stage of the pipeline. It culminates in the selection of the final methods integrated into the system.
-    
-    \item \textbf{Chapter 5: Results} \\
-    This chapter presents the evaluation of the developed pipeline against the established objectives. It includes stress testing results and assesses the system's performance in various scenarios to demonstrate its effectiveness and reliability.
-    
-    \item \textbf{Chapter 6: Conclusion} \\
-    The final chapter summarizes the project's outcomes, and evaluates the viability of the developed system.
-    
-    \item \textbf{Chapter 7: Future Work} \\
-    This section outlines recommendations for future work to address the project's limitations and explore additional enhancements.
-\end{itemize}
+This report is structured to provide a comprehensive overview of the research undertaken to develop the image-based GPS localization system for UAVs. Chapter 2 reviews the current state of GPS-alternative UAV navigation systems and their vulnerabilities. Chapter 3 details the methodology, including feature extraction, matching, and homographic estimation. Chapter 4 describes the testing environment and datasets used, along with the comparative analysis of different methods. Chapter 5 presents the evaluation of the developed pipeline against the objectives. Chapter 6 summarizes the project's outcomes, evaluates the system's viability, and outlines recommendations for future work.
 
 
 
 
-
-
-
-
-
+By addressing the critical need for a drift-free, cost-effective, and emission-free navigation solution, this project aims to enhance UAV operational resilience in environments likely to expereince GNSS-denial. The image-based navigation system developed will contribute to advancing UAV capabilities, ensuring mission success, and safeguarding assets and personnel.
 
 
 

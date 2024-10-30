@@ -5,13 +5,12 @@ import os  # For file operations
 class UAVRotationAnalyzer:
     def __init__(self):
         # Initialize the SIFT detector
-        self.sift = cv2.SIFT_create()
+        self.sift = cv2.ORB_create(nfeatures=20000 )
 
         # Set up FLANN-based matcher parameters for SIFT (floating-point features)
-        index_params = dict(algorithm=1, trees=5)  # FLANN_INDEX_KDTREE
+        index_params = dict(algorithm=6, trees=5)  # FLANN_INDEX_KDTREE
         search_params = dict(checks=50)  # Increase the number of checks
-        self.matcher = cv2.FlannBasedMatcher(index_params, search_params)
-
+        self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
     def crop_image(self, image):
         """Crop the top and bottom 10% of the image."""
         height = image.shape[0]
@@ -40,7 +39,7 @@ class UAVRotationAnalyzer:
         for match_pair in matches:
             if len(match_pair) == 2:
                 m, n = match_pair
-                if m.distance < 0.75 * n.distance:
+                if m.distance < 0.85 * n.distance:
                     good_matches.append(m)
 
         if len(good_matches) < 4:
@@ -74,7 +73,7 @@ def main():
     rotation_analyzer = UAVRotationAnalyzer()
     angles = []
 
-    for i in range(min(image_range), max(image_range)):
+    for i in range(min(0,1), max(17, 16)):
         image1_path = os.path.join(directory, f'{i}.jpg')
         image2_path = os.path.join(directory, f'{i+1}.jpg')
 
@@ -93,6 +92,10 @@ def main():
     print("angles", angles)
     print("max is ", np.max(angles))
     print("mean is ", np.mean(angles))
+    print(f"negative cumsum is {(np.cumsum(-1*angles))}")
+    cumsum = np.cumsum(angles)
+    cumsum = -1*cumsum
+    print("cumsum", cumsum)
 
 if __name__ == "__main__":
     main()

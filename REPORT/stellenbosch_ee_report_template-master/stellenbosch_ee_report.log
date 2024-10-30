@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  29 OCT 2024 00:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.5)  30 OCT 2024 03:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -683,7 +683,7 @@ Package hyperref Info: Link coloring ON on input line 110.
 \openout3 = `stellenbosch_ee_report.out'.
 
  (frontmatter/skripsie_title_page.tex
-<USlogo-top.pdf, id=343, 560.0925pt x 183.68625pt>
+<USlogo-top.pdf, id=315, 560.0925pt x 183.68625pt>
 File: USlogo-top.pdf Graphic file (type pdf)
 <use USlogo-top.pdf>
 Package pdftex.def Info: USlogo-top.pdf  used on input line 7.
@@ -823,49 +823,43 @@ Chapter 1.
 ]
 
 [2]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 51.
+
+[3]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 62.
  (C:\Users\Sameer Shaboodien\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
-[3{C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
-
-[4]) (Chapter 2/LiteratureReview2.tex
+[4{C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
 
 [5]
+
+[6]) (Chapter 2/LiteratureReview2.tex
+
+[7]
 Chapter 2.
 
 
-[6
+[8
 
 ]
-
-[7]
-
-[8]
-<./Chapter 2/litfigs/matche.png, id=743, 1211.27531pt x 366.61969pt>
+<./Chapter 2/litfigs/matche.png, id=714, 1211.27531pt x 366.61969pt>
 File: ./Chapter 2/litfigs/matche.png Graphic file (type png)
 <use ./Chapter 2/litfigs/matche.png>
-Package pdftex.def Info: ./Chapter 2/litfigs/matche.png  used on input line 69.
+Package pdftex.def Info: ./Chapter 2/litfigs/matche.png  used on input line 41.
 (pdftex.def)             Requested size: 427.93057pt x 129.52155pt.
 
 
-[9 <./Chapter 2/litfigs/matche.png>]
+[9]
 
-[10]
+[10 <./Chapter 2/litfigs/matche.png>]
 
 [11]
 
 [12]
-<./Chapter 2/litfigs/SSIMeg.png, id=792, 437.38406pt x 208.52907pt>
-File: ./Chapter 2/litfigs/SSIMeg.png Graphic file (type png)
-<use ./Chapter 2/litfigs/SSIMeg.png>
-Package pdftex.def Info: ./Chapter 2/litfigs/SSIMeg.png  used on input line 161.
-(pdftex.def)             Requested size: 295.90588pt x 141.07877pt.
 
-
-[13 <./Chapter 2/litfigs/SSIMeg.png>]
-LaTeX Font Info:    Trying to load font information for OT1+lmtt on input line 182.
+[13]
+LaTeX Font Info:    Trying to load font information for OT1+lmtt on input line 139.
  (C:\Users\Sameer Shaboodien\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmtt.fd
 File: ot1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -878,272 +872,264 @@ Package microtype Info: Loading generic protrusion settings for font family
 [14{C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rmtt.enc}]
 
 [15]
-<./Chapter 2/litfigs/lowes1.png, id=836, 313.17pt x 223.58531pt>
+<./Chapter 2/litfigs/lowes1.png, id=814, 313.17pt x 223.58531pt>
 File: ./Chapter 2/litfigs/lowes1.png Graphic file (type png)
 <use ./Chapter 2/litfigs/lowes1.png>
-Package pdftex.def Info: ./Chapter 2/litfigs/lowes1.png  used on input line 219.
-(pdftex.def)             Requested size: 163.88815pt x 117.00876pt.
-<./Chapter 2/litfigs/lowes2.png, id=837, 315.42844pt x 213.79875pt>
+Package pdftex.def Info: ./Chapter 2/litfigs/lowes1.png  used on input line 177.
+(pdftex.def)             Requested size: 168.4381pt x 120.26004pt.
+<./Chapter 2/litfigs/lowes2.png, id=815, 315.42844pt x 213.79875pt>
 File: ./Chapter 2/litfigs/lowes2.png Graphic file (type png)
 <use ./Chapter 2/litfigs/lowes2.png>
-Package pdftex.def Info: ./Chapter 2/litfigs/lowes2.png  used on input line 225.
-(pdftex.def)             Requested size: 165.70813pt x 112.31778pt.
+Package pdftex.def Info: ./Chapter 2/litfigs/lowes2.png  used on input line 183.
+(pdftex.def)             Requested size: 168.4381pt x 114.16751pt.
 ) (Chapter 3/SystemDesign.tex
 
 [16 <./Chapter 2/litfigs/lowes1.png> <./Chapter 2/litfigs/lowes2.png>]
-
-[17]
 Chapter 3.
-<Chapter 3/Chap3Figs/HighLevelFlow.png, id=855, 763.85374pt x 473.77pt>
+<Chapter 3/Chap3Figs/HighLevelFlow.png, id=826, 954.56625pt x 405.515pt>
 File: Chapter 3/Chap3Figs/HighLevelFlow.png Graphic file (type png)
 <use Chapter 3/Chap3Figs/HighLevelFlow.png>
 Package pdftex.def Info: Chapter 3/Chap3Figs/HighLevelFlow.png  used on input line 9.
-(pdftex.def)             Requested size: 364.19667pt x 225.8889pt.
+(pdftex.def)             Requested size: 364.19667pt x 154.71605pt.
 
 
-[18
+[17
 
  <./Chapter 3/Chap3Figs/HighLevelFlow.png>]
 
+[18]
+
 [19]
 
-[20]
+[20]) (Chapter 4/testing.tex
 
 [21]
-<Chapter 4/Figs4/lossprevspost.png, id=901, 1050.92625pt x 446.41782pt>
-File: Chapter 4/Figs4/lossprevspost.png Graphic file (type png)
-<use Chapter 4/Figs4/lossprevspost.png>
-Package pdftex.def Info: Chapter 4/Figs4/lossprevspost.png  used on input line 136.
-(pdftex.def)             Requested size: 455.24411pt x 193.37958pt.
-
-
-[22]
-
-[23 <./Chapter 4/Figs4/lossprevspost.png>]) (Chapter 4/testing.tex
-
-[24]
 Chapter 4.
 
 
-[25
+[22
 
 ]
-<./Chapter 4/DEMODATASETS/CITY1.jpg, id=920, 1445.4pt x 813.0375pt>
+
+[23]
+<./Chapter 4/DEMODATASETS/CITY1.jpg, id=867, 1445.4pt x 813.0375pt>
 File: ./Chapter 4/DEMODATASETS/CITY1.jpg Graphic file (type jpg)
 <use ./Chapter 4/DEMODATASETS/CITY1.jpg>
-Package pdftex.def Info: ./Chapter 4/DEMODATASETS/CITY1.jpg  used on input line 40.
+Package pdftex.def Info: ./Chapter 4/DEMODATASETS/CITY1.jpg  used on input line 48.
 (pdftex.def)             Requested size: 204.85846pt x 115.22633pt.
-<./Chapter 4/DEMODATASETS/ROCKY.jpg, id=921, 1445.4pt x 813.0375pt>
+<./Chapter 4/DEMODATASETS/ROCKY.jpg, id=868, 1445.4pt x 813.0375pt>
 File: ./Chapter 4/DEMODATASETS/ROCKY.jpg Graphic file (type jpg)
 <use ./Chapter 4/DEMODATASETS/ROCKY.jpg>
-Package pdftex.def Info: ./Chapter 4/DEMODATASETS/ROCKY.jpg  used on input line 46.
+Package pdftex.def Info: ./Chapter 4/DEMODATASETS/ROCKY.jpg  used on input line 54.
 (pdftex.def)             Requested size: 204.85846pt x 115.22633pt.
-<./Chapter 4/DEMODATASETS/DESERT1.jpg, id=922, 1445.4pt x 813.0375pt>
+<./Chapter 4/DEMODATASETS/DESERT1.jpg, id=869, 1445.4pt x 813.0375pt>
 File: ./Chapter 4/DEMODATASETS/DESERT1.jpg Graphic file (type jpg)
 <use ./Chapter 4/DEMODATASETS/DESERT1.jpg>
-Package pdftex.def Info: ./Chapter 4/DEMODATASETS/DESERT1.jpg  used on input line 55.
+Package pdftex.def Info: ./Chapter 4/DEMODATASETS/DESERT1.jpg  used on input line 63.
 (pdftex.def)             Requested size: 204.85846pt x 115.22633pt.
 
-Underfull \hbox (badness 4608) in paragraph at lines 56--56
+Underfull \hbox (badness 4608) in paragraph at lines 64--64
 []\OT1/lmss/bx/n/10.95 (+20) Figure 4.3: |\OT1/lmr/m/n/10.95 (+20) Ex-am-ple of the
  []
 
-<./Chapter 4/DEMODATASETS/AMAZON.jpg, id=923, 1445.4pt x 813.0375pt>
+<./Chapter 4/DEMODATASETS/AMAZON.jpg, id=870, 1445.4pt x 813.0375pt>
 File: ./Chapter 4/DEMODATASETS/AMAZON.jpg Graphic file (type jpg)
 <use ./Chapter 4/DEMODATASETS/AMAZON.jpg>
-Package pdftex.def Info: ./Chapter 4/DEMODATASETS/AMAZON.jpg  used on input line 61.
+Package pdftex.def Info: ./Chapter 4/DEMODATASETS/AMAZON.jpg  used on input line 69.
 (pdftex.def)             Requested size: 204.85846pt x 115.22633pt.
 
 
-[26 <./Chapter 4/DEMODATASETS/CITY1.jpg> <./Chapter 4/DEMODATASETS/ROCKY.jpg> <./Chapter 4/DEMODATASETS/DESERT1.jpg> <./Chapter 4/DEMODATASETS/AMAZON.jpg>]
+[24 <./Chapter 4/DEMODATASETS/CITY1.jpg> <./Chapter 4/DEMODATASETS/ROCKY.jpg> <./Chapter 4/DEMODATASETS/DESERT1.jpg> <./Chapter 4/DEMODATASETS/AMAZON.jpg>]
 
-[27]
-<./Chapter 4/testresults/rmse_detectors.png, id=934, 722.7pt x 433.62pt>
+[25]
+<./Chapter 4/testresults/rmse_detectors.png, id=882, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/rmse_detectors.png Graphic file (type png)
 <use ./Chapter 4/testresults/rmse_detectors.png>
-Package pdftex.def Info: ./Chapter 4/testresults/rmse_detectors.png  used on input line 101.
+Package pdftex.def Info: ./Chapter 4/testresults/rmse_detectors.png  used on input line 120.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
-<./Chapter 4/testresults/runtime_detectors.png, id=935, 722.7pt x 433.62pt>
+<./Chapter 4/testresults/runtime_detectors.png, id=883, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/runtime_detectors.png Graphic file (type png)
 <use ./Chapter 4/testresults/runtime_detectors.png>
-Package pdftex.def Info: ./Chapter 4/testresults/runtime_detectors.png  used on input line 107.
+Package pdftex.def Info: ./Chapter 4/testresults/runtime_detectors.png  used on input line 126.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
 
 
-[28 <./Chapter 4/testresults/rmse_detectors.png> <./Chapter 4/testresults/runtime_detectors.png>]
-<./Chapter 4/testresults/rmse_flann_bf.png, id=945, 722.7pt x 433.62pt>
+[26 <./Chapter 4/testresults/rmse_detectors.png> <./Chapter 4/testresults/runtime_detectors.png>]
+<./Chapter 4/testresults/rmse_flann_bf.png, id=895, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/rmse_flann_bf.png Graphic file (type png)
 <use ./Chapter 4/testresults/rmse_flann_bf.png>
-Package pdftex.def Info: ./Chapter 4/testresults/rmse_flann_bf.png  used on input line 145.
+Package pdftex.def Info: ./Chapter 4/testresults/rmse_flann_bf.png  used on input line 164.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
-<./Chapter 4/testresults/runtime_flann_bf.png, id=946, 722.7pt x 433.62pt>
+<./Chapter 4/testresults/runtime_flann_bf.png, id=896, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/runtime_flann_bf.png Graphic file (type png)
 <use ./Chapter 4/testresults/runtime_flann_bf.png>
-Package pdftex.def Info: ./Chapter 4/testresults/runtime_flann_bf.png  used on input line 151.
+Package pdftex.def Info: ./Chapter 4/testresults/runtime_flann_bf.png  used on input line 170.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
-<./Graphs/Divergence_BF_FLANN_KPS.png, id=948, 901.11656pt x 598.48593pt>
+
+
+[27 <./Chapter 4/testresults/rmse_flann_bf.png> <./Chapter 4/testresults/runtime_flann_bf.png>]
+<./Graphs/Divergence_BF_FLANN_KPS.png, id=904, 901.11656pt x 598.48593pt>
 File: ./Graphs/Divergence_BF_FLANN_KPS.png Graphic file (type png)
 <use ./Graphs/Divergence_BF_FLANN_KPS.png>
-Package pdftex.def Info: ./Graphs/Divergence_BF_FLANN_KPS.png  used on input line 165.
+Package pdftex.def Info: ./Graphs/Divergence_BF_FLANN_KPS.png  used on input line 187.
 (pdftex.def)             Requested size: 364.19667pt x 241.88321pt.
 
 
-[29 <./Chapter 4/testresults/rmse_flann_bf.png> <./Chapter 4/testresults/runtime_flann_bf.png>]
-
-[30 <./Graphs/Divergence_BF_FLANN_KPS.png>]
-<./Chapter 4/testresults/rmse_planar_estimators.png, id=963, 722.7pt x 433.62pt>
+[28 <./Graphs/Divergence_BF_FLANN_KPS.png>]
+<./Chapter 4/testresults/rmse_planar_estimators.png, id=913, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/rmse_planar_estimators.png Graphic file (type png)
 <use ./Chapter 4/testresults/rmse_planar_estimators.png>
-Package pdftex.def Info: ./Chapter 4/testresults/rmse_planar_estimators.png  used on input line 190.
+Package pdftex.def Info: ./Chapter 4/testresults/rmse_planar_estimators.png  used on input line 213.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
-<./Chapter 4/testresults/runtime_planar_estimators.png, id=964, 722.7pt x 433.62pt>
+<./Chapter 4/testresults/runtime_planar_estimators.png, id=914, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/runtime_planar_estimators.png Graphic file (type png)
 <use ./Chapter 4/testresults/runtime_planar_estimators.png>
-Package pdftex.def Info: ./Chapter 4/testresults/runtime_planar_estimators.png  used on input line 195.
+Package pdftex.def Info: ./Chapter 4/testresults/runtime_planar_estimators.png  used on input line 218.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
 
 
-[31 <./Chapter 4/testresults/rmse_planar_estimators.png> <./Chapter 4/testresults/runtime_planar_estimators.png>]
-<./Chapter 4/testresults/rmse_global_matching.png, id=974, 722.7pt x 433.62pt>
+[29]
+
+[30 <./Chapter 4/testresults/rmse_planar_estimators.png> <./Chapter 4/testresults/runtime_planar_estimators.png>]
+<./Chapter 4/testresults/rmse_global_matching.png, id=927, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/rmse_global_matching.png Graphic file (type png)
 <use ./Chapter 4/testresults/rmse_global_matching.png>
-Package pdftex.def Info: ./Chapter 4/testresults/rmse_global_matching.png  used on input line 241.
+Package pdftex.def Info: ./Chapter 4/testresults/rmse_global_matching.png  used on input line 255.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
-<./Chapter 4/testresults/runtime_global_matching.png, id=975, 722.7pt x 433.62pt>
+<./Chapter 4/testresults/runtime_global_matching.png, id=928, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/runtime_global_matching.png Graphic file (type png)
 <use ./Chapter 4/testresults/runtime_global_matching.png>
-Package pdftex.def Info: ./Chapter 4/testresults/runtime_global_matching.png  used on input line 247.
+Package pdftex.def Info: ./Chapter 4/testresults/runtime_global_matching.png  used on input line 261.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
 
 
-[32 <./Chapter 4/testresults/rmse_global_matching.png> <./Chapter 4/testresults/runtime_global_matching.png>]
-<./Chapter 4/testresults/rmse_comparison_methods.png, id=983, 722.7pt x 433.62pt>
+[31 <./Chapter 4/testresults/rmse_global_matching.png> <./Chapter 4/testresults/runtime_global_matching.png>]
+<./Chapter 4/testresults/rmse_comparison_methods.png, id=938, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/rmse_comparison_methods.png Graphic file (type png)
 <use ./Chapter 4/testresults/rmse_comparison_methods.png>
-Package pdftex.def Info: ./Chapter 4/testresults/rmse_comparison_methods.png  used on input line 262.
+Package pdftex.def Info: ./Chapter 4/testresults/rmse_comparison_methods.png  used on input line 277.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
-<./Chapter 4/testresults/percentage_change_comparison_methods.png, id=984, 722.7pt x 433.62pt>
+<./Chapter 4/testresults/percentage_change_comparison_methods.png, id=939, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/percentage_change_comparison_methods.png Graphic file (type png)
 <use ./Chapter 4/testresults/percentage_change_comparison_methods.png>
-Package pdftex.def Info: ./Chapter 4/testresults/percentage_change_comparison_methods.png  used on input line 268.
+Package pdftex.def Info: ./Chapter 4/testresults/percentage_change_comparison_methods.png  used on input line 283.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
-
-
-[33 <./Chapter 4/testresults/rmse_comparison_methods.png> <./Chapter 4/testresults/percentage_change_comparison_methods.png>]
-<./Chapter 4/testresults/ransaclmedsrmse.png, id=993, 722.7pt x 433.62pt>
+<./Chapter 4/testresults/ransaclmedsrmse.png, id=942, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/ransaclmedsrmse.png Graphic file (type png)
 <use ./Chapter 4/testresults/ransaclmedsrmse.png>
-Package pdftex.def Info: ./Chapter 4/testresults/ransaclmedsrmse.png  used on input line 296.
+Package pdftex.def Info: ./Chapter 4/testresults/ransaclmedsrmse.png  used on input line 311.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
 
-Underfull \hbox (badness 1371) in paragraph at lines 297--297
+Underfull \hbox (badness 1371) in paragraph at lines 312--312
 \OT1/lmr/m/n/10.95 (+20) Com-par-i-son Across Datasets for
  []
 
-<./Chapter 4/testresults/ransaclmedsruntime.png, id=994, 722.7pt x 433.62pt>
+<./Chapter 4/testresults/ransaclmedsruntime.png, id=943, 722.7pt x 433.62pt>
 File: ./Chapter 4/testresults/ransaclmedsruntime.png Graphic file (type png)
 <use ./Chapter 4/testresults/ransaclmedsruntime.png>
-Package pdftex.def Info: ./Chapter 4/testresults/ransaclmedsruntime.png  used on input line 302.
+Package pdftex.def Info: ./Chapter 4/testresults/ransaclmedsruntime.png  used on input line 317.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
 
 
-[34 <./Chapter 4/testresults/ransaclmedsrmse.png> <./Chapter 4/testresults/ransaclmedsruntime.png>]) (Chapter 5/Results.tex
+[32 <./Chapter 4/testresults/rmse_comparison_methods.png> <./Chapter 4/testresults/percentage_change_comparison_methods.png>]
 
-[35]
+[33 <./Chapter 4/testresults/ransaclmedsrmse.png> <./Chapter 4/testresults/ransaclmedsruntime.png>]) (Chapter 5/Results.tex
+
+[34]
 Chapter 5.
-<./Chapter 5/RESULTPLOTS/Metrics_Raw.png, id=1006, 722.7pt x 406.51875pt>
+<./Chapter 5/RESULTPLOTS/Metrics_Raw.png, id=961, 722.7pt x 406.51875pt>
 File: ./Chapter 5/RESULTPLOTS/Metrics_Raw.png Graphic file (type png)
 <use ./Chapter 5/RESULTPLOTS/Metrics_Raw.png>
 Package pdftex.def Info: ./Chapter 5/RESULTPLOTS/Metrics_Raw.png  used on input line 17.
 (pdftex.def)             Requested size: 364.19667pt x 204.85924pt.
 
 
-[36
+[35
 
  <./Chapter 5/RESULTPLOTS/Metrics_Raw.png (PNG copy)>]
-<./Chapter 5/GPSpaths/PathCity1.png, id=1013, 867.24pt x 578.16pt>
+<./Chapter 5/GPSpaths/PathCity1.png, id=968, 867.24pt x 578.16pt>
 File: ./Chapter 5/GPSpaths/PathCity1.png Graphic file (type png)
 <use ./Chapter 5/GPSpaths/PathCity1.png>
 Package pdftex.def Info: ./Chapter 5/GPSpaths/PathCity1.png  used on input line 34.
 (pdftex.def)             Requested size: 143.40028pt x 95.59518pt.
-<./Chapter 5/GPSpaths/PathCity2.png, id=1014, 867.24pt x 578.16pt>
+<./Chapter 5/GPSpaths/PathCity2.png, id=969, 867.24pt x 578.16pt>
 File: ./Chapter 5/GPSpaths/PathCity2.png Graphic file (type png)
 <use ./Chapter 5/GPSpaths/PathCity2.png>
 Package pdftex.def Info: ./Chapter 5/GPSpaths/PathCity2.png  used on input line 40.
 (pdftex.def)             Requested size: 143.40028pt x 95.59518pt.
-<Chapter 5/RESULTPLOTS/key metrics/Accuracy Datasets.png, id=1017, 722.7pt x 433.62pt>
+<Chapter 5/RESULTPLOTS/key metrics/Accuracy Datasets.png, id=972, 722.7pt x 433.62pt>
 File: Chapter 5/RESULTPLOTS/key metrics/Accuracy Datasets.png Graphic file (type png)
 <use Chapter 5/RESULTPLOTS/key metrics/Accuracy Datasets.png>
 Package pdftex.def Info: Chapter 5/RESULTPLOTS/key metrics/Accuracy Datasets.png  used on input line 57.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
-<Chapter 5/RESULTPLOTS/key metrics/Runtime Datasets.png, id=1018, 722.7pt x 433.62pt>
+<Chapter 5/RESULTPLOTS/key metrics/Runtime Datasets.png, id=973, 722.7pt x 433.62pt>
 File: Chapter 5/RESULTPLOTS/key metrics/Runtime Datasets.png Graphic file (type png)
 <use Chapter 5/RESULTPLOTS/key metrics/Runtime Datasets.png>
 Package pdftex.def Info: Chapter 5/RESULTPLOTS/key metrics/Runtime Datasets.png  used on input line 63.
 (pdftex.def)             Requested size: 204.85846pt x 122.91472pt.
 
 
-[37 <./Chapter 5/GPSpaths/PathCity1.png> <./Chapter 5/GPSpaths/PathCity2.png> <./Chapter 5/RESULTPLOTS/key metrics/Accuracy Datasets.png> <./Chapter 5/RESULTPLOTS/key metrics/Runtime Datasets.png>]
-<Chapter 5/RESULTPLOTS/violindatasets.png, id=1029, 722.7pt x 433.62pt>
+[36 <./Chapter 5/GPSpaths/PathCity1.png> <./Chapter 5/GPSpaths/PathCity2.png> <./Chapter 5/RESULTPLOTS/key metrics/Accuracy Datasets.png> <./Chapter 5/RESULTPLOTS/key metrics/Runtime Datasets.png>]
+<Chapter 5/RESULTPLOTS/violindatasets.png, id=983, 722.7pt x 433.62pt>
 File: Chapter 5/RESULTPLOTS/violindatasets.png Graphic file (type png)
 <use Chapter 5/RESULTPLOTS/violindatasets.png>
 Package pdftex.def Info: Chapter 5/RESULTPLOTS/violindatasets.png  used on input line 79.
 (pdftex.def)             Requested size: 318.66948pt x 191.20361pt.
-<Chapter 5/RESULTPLOTS/BIASPLOT_XY_HEAT.png, id=1031, 690.32906pt x 569.87906pt>
+<Chapter 5/RESULTPLOTS/BIASPLOT_XY_HEAT.png, id=985, 690.32906pt x 569.87906pt>
 File: Chapter 5/RESULTPLOTS/BIASPLOT_XY_HEAT.png Graphic file (type png)
 <use Chapter 5/RESULTPLOTS/BIASPLOT_XY_HEAT.png>
 Package pdftex.def Info: Chapter 5/RESULTPLOTS/BIASPLOT_XY_HEAT.png  used on input line 92.
 (pdftex.def)             Requested size: 250.38564pt x 206.69542pt.
 
 
-[38 <./Chapter 5/RESULTPLOTS/violindatasets.png>]
+[37 <./Chapter 5/RESULTPLOTS/violindatasets.png>]
 
-[39 <./Chapter 5/RESULTPLOTS/BIASPLOT_XY_HEAT.png>]
+[38 <./Chapter 5/RESULTPLOTS/BIASPLOT_XY_HEAT.png>]
+
+[39]
 
 [40]
-
-[41]
-<Chapter 5/RESULTPLOTS/mutual/accmutual.png, id=1060, 1336.24219pt x 721.19438pt>
+<Chapter 5/RESULTPLOTS/mutual/accmutual.png, id=1015, 1336.24219pt x 721.19438pt>
 File: Chapter 5/RESULTPLOTS/mutual/accmutual.png Graphic file (type png)
 <use Chapter 5/RESULTPLOTS/mutual/accmutual.png>
 Package pdftex.def Info: Chapter 5/RESULTPLOTS/mutual/accmutual.png  used on input line 146.
 (pdftex.def)             Requested size: 318.66948pt x 171.98973pt.
 
 
-[42 <./Chapter 5/RESULTPLOTS/mutual/accmutual.png>]
-<Chapter 5/RESULTPLOTS/lighting/dayCPT.png, id=1067, 1443.89438pt x 752.8125pt>
+[41 <./Chapter 5/RESULTPLOTS/mutual/accmutual.png>]
+<Chapter 5/RESULTPLOTS/lighting/dayCPT.png, id=1022, 1443.89438pt x 752.8125pt>
 File: Chapter 5/RESULTPLOTS/lighting/dayCPT.png Graphic file (type png)
 <use Chapter 5/RESULTPLOTS/lighting/dayCPT.png>
 Package pdftex.def Info: Chapter 5/RESULTPLOTS/lighting/dayCPT.png  used on input line 172.
 (pdftex.def)             Requested size: 145.68144pt x 75.9519pt.
-<Chapter 5/RESULTPLOTS/lighting/eveningCPT.png, id=1068, 1438.6247pt x 721.94719pt>
+<Chapter 5/RESULTPLOTS/lighting/eveningCPT.png, id=1023, 1438.6247pt x 721.94719pt>
 File: Chapter 5/RESULTPLOTS/lighting/eveningCPT.png Graphic file (type png)
 <use Chapter 5/RESULTPLOTS/lighting/eveningCPT.png>
 Package pdftex.def Info: Chapter 5/RESULTPLOTS/lighting/eveningCPT.png  used on input line 178.
 (pdftex.def)             Requested size: 145.68144pt x 73.10225pt.
-<Chapter 5/RESULTPLOTS/lighting/nightCPT.png, id=1069, 1443.14156pt x 727.96968pt>
+<Chapter 5/RESULTPLOTS/lighting/nightCPT.png, id=1024, 1443.14156pt x 727.96968pt>
 File: Chapter 5/RESULTPLOTS/lighting/nightCPT.png Graphic file (type png)
 <use Chapter 5/RESULTPLOTS/lighting/nightCPT.png>
 Package pdftex.def Info: Chapter 5/RESULTPLOTS/lighting/nightCPT.png  used on input line 184.
 (pdftex.def)             Requested size: 145.68144pt x 73.4788pt.
-<./Chapter 5/RESULTPLOTS/night_evening_rmse.png, id=1071, 722.7pt x 433.62pt>
+<./Chapter 5/RESULTPLOTS/night_evening_rmse.png, id=1026, 722.7pt x 433.62pt>
 File: ./Chapter 5/RESULTPLOTS/night_evening_rmse.png Graphic file (type png)
 <use ./Chapter 5/RESULTPLOTS/night_evening_rmse.png>
 Package pdftex.def Info: ./Chapter 5/RESULTPLOTS/night_evening_rmse.png  used on input line 207.
 (pdftex.def)             Requested size: 318.66948pt x 191.20361pt.
 
 
-[43 <./Chapter 5/RESULTPLOTS/lighting/dayCPT.png> <./Chapter 5/RESULTPLOTS/lighting/eveningCPT.png> <./Chapter 5/RESULTPLOTS/lighting/nightCPT.png>]) (conclusion/conclusion.tex
+[42 <./Chapter 5/RESULTPLOTS/lighting/dayCPT.png> <./Chapter 5/RESULTPLOTS/lighting/eveningCPT.png> <./Chapter 5/RESULTPLOTS/lighting/nightCPT.png>]) (conclusion/conclusion.tex
 
-[44 <./Chapter 5/RESULTPLOTS/night_evening_rmse.png>]
+[43 <./Chapter 5/RESULTPLOTS/night_evening_rmse.png>]
 Chapter 6.
 
 
-[45
+[44
 
 ]) (Chapter 6/FutureWork.tex
 
-[46]
+[45]
 Chapter 7.
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
@@ -1151,40 +1137,50 @@ Package hyperref Warning: Difference (2) between bookmark levels is greater
 
 
 
-[47
+[46
 
 ]) (stellenbosch_ee_report.bbl
 
-[48]
+[47]
 
-[49
+[48
 
 ]
+Underfull \hbox (badness 10000) in paragraph at lines 122--128
+[][]$\OT1/lmr/m/n/12 (+20) https : / / www . researchgate . net / publication / 349871153[]Implementation[]of[]MLDB[]
+ []
 
-[50]) (appendices/appendices.tex
 
-[51]
+Underfull \hbox (badness 10000) in paragraph at lines 122--128
+\OT1/lmr/m/n/12 (+8) as[]high[]performance[]machine[]learning[]database[]for[]high[]performance[]applications /
+ []
+
+
+
+[49]) (appendices/appendices.tex
+
+[50]
 Appendix A.
 
 
-[52
+[51
 
 ]
 Appendix B.
 
 
-[53
+[52
 
 ]
 
-[54])
+[53])
 
 Package caption Warning: Unused \captionsetup[algorithm] on input line 96.
 See the caption package documentation for explanation.
 
 
 
-[55] (stellenbosch_ee_report.aux)
+[54] (stellenbosch_ee_report.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-05-27>
@@ -1194,20 +1190,20 @@ L3 programming layer <2024-05-27>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `stellenbosch_ee_report.out' has not changed.
-(rerunfilecheck)             Checksum: 5D27F3E0F3F461CB861A399DFC1FD864;15259.
+(rerunfilecheck)             Checksum: ADF80DCE7DA118E4B07A1B95A7F33332;13347.
  ) 
 Here is how much of TeX's memory you used:
- 22722 strings out of 473904
- 441610 string characters out of 5720901
+ 22704 strings out of 473904
+ 441181 string characters out of 5720901
  1944908 words of memory out of 5000000
- 44714 multiletter control sequences out of 15000+600000
- 635019 words of font info for 194 fonts, out of 8000000 for 9000
+ 44699 multiletter control sequences out of 15000+600000
+ 635485 words of font info for 198 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,13n,80p,1583b,1170s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,13n,80p,1583b,1099s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbo10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmssbx10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy8.pfb><C:/Users/Sameer Shaboodien/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on stellenbosch_ee_report.pdf (67 pages, 19631694 bytes).
+Output written on stellenbosch_ee_report.pdf (66 pages, 19422436 bytes).
 PDF statistics:
- 1274 PDF objects out of 1440 (max. 8388607)
- 258 named destinations out of 1000 (max. 500000)
- 46429 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 1238 PDF objects out of 1440 (max. 8388607)
+ 247 named destinations out of 1000 (max. 500000)
+ 46363 words of extra memory for PDF output out of 51595 (max. 10000000)
 

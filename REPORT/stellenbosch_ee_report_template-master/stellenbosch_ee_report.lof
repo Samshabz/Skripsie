@@ -3,47 +3,45 @@
 \babel@toc {english}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Feature Detection and Matching}}{9}{figure.caption.6}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Structural Similarity Index (SSIM)}}{13}{figure.caption.13}%
-\contentsline {figure}{\numberline {2.3}{\ignorespaces With Lowe's Ratio Test}}{16}{figure.caption.21}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Feature Detection and Matching; adapted from \cite {GoogleEarth}.}}{10}{figure.caption.6}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Reproduced from \cite {bian2020gms}.}}{16}{figure.caption.20}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces High-Level Flow of the System}}{18}{figure.caption.24}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Loss comparison between pre-normalization and post-normalization methods.}}{23}{figure.caption.25}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces High-Level Flow of the System}}{17}{figure.caption.22}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Examples of the CITY1 and CITY2 Datasets}}{26}{figure.caption.26}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Example of the ROCKY Dataset}}{26}{figure.caption.26}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Example of the DESERT Dataset}}{26}{figure.caption.26}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Example of the AMAZON Dataset}}{26}{figure.caption.26}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Overview of Datasets}}{26}{figure.caption.26}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces RMSE for Various Local Detectors}}{28}{figure.caption.27}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Runtime for Various Local Detectors}}{28}{figure.caption.27}%
-\contentsline {figure}{\numberline {4.8}{\ignorespaces RMSE and Runtime Comparison for ORB, AKAZE, and SuperPoint Across Datasets}}{28}{figure.caption.27}%
-\contentsline {figure}{\numberline {4.9}{\ignorespaces RMSE GPS Accuracy for BFMatcher and FLANN}}{29}{figure.caption.29}%
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Runtime Comparison for BFMatcher and FLANN}}{29}{figure.caption.29}%
-\contentsline {figure}{\numberline {4.11}{\ignorespaces Divergence in RMSE GPS Error Between FLANN and BFMatcher Across Keypoint Targets}}{30}{figure.caption.30}%
-\contentsline {figure}{\numberline {4.12}{\ignorespaces RMSE Comparison Across Datasets for Planar Transform Estimators}}{31}{figure.caption.31}%
-\contentsline {figure}{\numberline {4.13}{\ignorespaces Runtime Comparison Across Datasets for Planar Transform Estimators}}{31}{figure.caption.31}%
-\contentsline {figure}{\numberline {4.14}{\ignorespaces RMSE and Runtime Comparison Across Datasets for Planar Transform Estimators}}{31}{figure.caption.31}%
-\contentsline {figure}{\numberline {4.15}{\ignorespaces RMSE Comparison Across Datasets for Global Matching Techniques}}{32}{figure.caption.32}%
-\contentsline {figure}{\numberline {4.16}{\ignorespaces Runtime Comparison Across Datasets for Global Matching Techniques}}{32}{figure.caption.32}%
-\contentsline {figure}{\numberline {4.17}{\ignorespaces RMSE GPS Error Comparison Across Datasets for Various Methods}}{33}{figure.caption.33}%
-\contentsline {figure}{\numberline {4.18}{\ignorespaces Percentage Change in GPS Error with 10-degree Rotational Offset}}{33}{figure.caption.33}%
-\contentsline {figure}{\numberline {4.19}{\ignorespaces Radial GPS RMSE Comparison Across Datasets for LMEDS and RANSAC}}{34}{figure.caption.34}%
-\contentsline {figure}{\numberline {4.20}{\ignorespaces Runtime Comparison Across Datasets for LMEDS and RANSAC}}{34}{figure.caption.34}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Examples of the CITY1 and CITY2 Datasets.}}{24}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Example of the ROCKY Dataset.}}{24}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Example of the DESERT Dataset.}}{24}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Example of the AMAZON Dataset.}}{24}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Overview of Datasets}}{24}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Radial Error for Various Local Detectors.}}{26}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Runtime for Various Local Detectors.}}{26}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces RMSE and Runtime Comparison for ORB, AKAZE, and SuperPoint Across Datasets.}}{26}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Radial Error for BFMatcher and FLANN.}}{27}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Runtime Comparison for BFMatcher and FLANN.}}{27}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Convergence in RMSE GPS Error Between FLANN and BFMatcher Across Keypoint Targets.}}{28}{figure.caption.27}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces RMSE Comparison Across Datasets for Planar Transform Estimators.}}{30}{figure.caption.28}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Runtime Comparison Across Datasets for Planar Transform Estimators.}}{30}{figure.caption.28}%
+\contentsline {figure}{\numberline {4.14}{\ignorespaces RMSE and Runtime Comparison Across Datasets for Planar Transform Estimators.}}{30}{figure.caption.28}%
+\contentsline {figure}{\numberline {4.15}{\ignorespaces RMSE Comparison Across Datasets for Global Matching Techniques.}}{31}{figure.caption.29}%
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Runtime Comparison Across Datasets for Global Matching Techniques.}}{31}{figure.caption.29}%
+\contentsline {figure}{\numberline {4.17}{\ignorespaces RMSE GPS Error Comparison Across Datasets for Various Methods}}{32}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.18}{\ignorespaces Percentage Change in GPS Error with 10-degree Rotational Offset}}{32}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.19}{\ignorespaces Radial GPS RMSE Comparison Across Datasets for LMEDS and RANSAC}}{33}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.20}{\ignorespaces Runtime Comparison Across Datasets for LMEDS and RANSAC}}{33}{figure.caption.31}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Key Accuracy And Runtime Performance Metrics}}{36}{figure.caption.35}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Flight Path of UAV in poorest performing Dataset}}{37}{figure.caption.36}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Flight Path of UAV in best performing Dataset}}{37}{figure.caption.36}%
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Accuracy Metrics for Each Dataset}}{37}{figure.caption.37}%
-\contentsline {figure}{\numberline {5.5}{\ignorespaces Runtime Metrics for Each Stage of the Pipeline}}{37}{figure.caption.37}%
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Plot of distribution of radial errors in each dataset}}{38}{figure.caption.38}%
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Heatmap of Pixel Deviations in X and Y Directions}}{39}{figure.caption.39}%
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Accuracy vs Mutual Information}}{42}{figure.caption.46}%
-\contentsline {figure}{\numberline {5.9}{\ignorespaces Daytime Image of Cape Town}}{43}{figure.caption.48}%
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Evening Image of Cape Town}}{43}{figure.caption.48}%
-\contentsline {figure}{\numberline {5.11}{\ignorespaces Night Image of Cape Town}}{43}{figure.caption.48}%
-\contentsline {figure}{\numberline {5.12}{\ignorespaces Lighting Conditions in Cape Town}}{43}{figure.caption.48}%
-\contentsline {figure}{\numberline {5.13}{\ignorespaces Night and Evening RMSE GPS for Various Datasets}}{44}{figure.caption.50}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Key Accuracy And Runtime Performance Metrics}}{35}{figure.caption.32}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Flight Path of UAV in poorest performing Dataset}}{36}{figure.caption.33}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Flight Path of UAV in best performing Dataset}}{36}{figure.caption.33}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Accuracy Metrics for Each Dataset}}{36}{figure.caption.34}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Runtime Metrics for Each Stage of the Pipeline}}{36}{figure.caption.34}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Plot of distribution of radial errors in each dataset}}{37}{figure.caption.35}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Heatmap of Pixel Deviations in X and Y Directions}}{38}{figure.caption.36}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Accuracy vs Mutual Information}}{41}{figure.caption.43}%
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Daytime Image of Cape Town}}{42}{figure.caption.45}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Evening Image of Cape Town}}{42}{figure.caption.45}%
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Night Image of Cape Town}}{42}{figure.caption.45}%
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Lighting Conditions in Cape Town}}{42}{figure.caption.45}%
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Night and Evening RMSE GPS for Various Datasets}}{43}{figure.caption.47}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
