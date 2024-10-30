@@ -24,10 +24,9 @@
 \contentsline {figure}{\numberline {4.14}{\ignorespaces RMSE and Runtime Comparison Across Datasets for Planar Transform Estimators.}}{30}{figure.caption.28}%
 \contentsline {figure}{\numberline {4.15}{\ignorespaces RMSE Comparison Across Datasets for Global Matching Techniques.}}{31}{figure.caption.29}%
 \contentsline {figure}{\numberline {4.16}{\ignorespaces Runtime Comparison Across Datasets for Global Matching Techniques.}}{31}{figure.caption.29}%
-\contentsline {figure}{\numberline {4.17}{\ignorespaces RMSE GPS Error Comparison Across Datasets for Various Methods}}{32}{figure.caption.30}%
-\contentsline {figure}{\numberline {4.18}{\ignorespaces Percentage Change in GPS Error with 10-degree Rotational Offset}}{32}{figure.caption.30}%
-\contentsline {figure}{\numberline {4.19}{\ignorespaces Radial GPS RMSE Comparison Across Datasets for LMEDS and RANSAC}}{33}{figure.caption.31}%
-\contentsline {figure}{\numberline {4.20}{\ignorespaces Runtime Comparison Across Datasets for LMEDS and RANSAC}}{33}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Percentage Change in GPS Error with 10-degree Rotational Offset}}{32}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.18}{\ignorespaces Radial GPS RMSE Comparison Across Datasets for LMEDS and RANSAC}}{33}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.19}{\ignorespaces Runtime Comparison Across Datasets for LMEDS and RANSAC}}{33}{figure.caption.31}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Key Accuracy And Runtime Performance Metrics}}{35}{figure.caption.32}%
 \contentsline {figure}{\numberline {5.2}{\ignorespaces Flight Path of UAV in poorest performing Dataset}}{36}{figure.caption.33}%

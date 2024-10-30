@@ -58,6 +58,7 @@ class UAVNavigator:
         self.stored_feats = []
 
 
+
         # coverage
         self.x_overlap = []
         self.y_overlap = []
@@ -90,6 +91,7 @@ class UAVNavigator:
         self.location_inference_time_arr = []
         self.parameter_inference_time_arr = []
         self.add_time_arr = []
+        self.pixel_diffs = []
 
 
 
@@ -274,7 +276,7 @@ class UAVNavigator:
 
             good_matches = []
             count = 0
-            while len(good_matches) < 500:
+            while len(good_matches) < 500 and len(good_matches)<0.75*len(matches):
                 count += 1
                 good_matches = []
                 for match_pair in matches:
@@ -904,7 +906,29 @@ class UAVNavigator:
 
 
         return int_angle, inliers
-    
+        
+
+    def overlay_matches(self, good_matches, kp1, overlay=False, image=0):
+        # Extract the coordinates of the good matches
+        points1 = [kp1[m.queryIdx].pt for m in good_matches]
+        
+        # Create a blank canvas for plotting
+        fig, ax = plt.subplots(figsize=(10, 10))
+        
+        # Optionally overlay the first image
+        if overlay:
+            img1 = self.pull_image(image, self.directory, bool_rotate=False)  # Assuming index '0' for the first image
+            img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)  # Convert to RGB for plotting
+            ax.imshow(cv2.addWeighted(img1, 0.4, img1, 0, 128))  # Add a semi-transparent filter
+        
+        # Plot matched points with smaller dots
+        ax.scatter(*zip(*points1), marker='o', color='red', s=5, label='Points in Image 1')  # 's=10' for smaller dots
+        
+        # Styling the plot
+        ax.axis('off')  # Hide axes for a clearer display
+        ax.legend(loc="upper right")
+        plt.show()
+        
     def print_stability_analysis(self):
         
         print("Stability analysis mean (relative to src - best result) and var*10e6")
@@ -1135,11 +1159,11 @@ class UAVNavigator:
         combined_image[:h2, w1:w1+w2] = img2
         # sort matches only top 50
         good_matches = sorted(good_matches, key=lambda x: x.distance)
-        good_matches = good_matches[:50]
+        good_matches = good_matches[:20]
         bad_matches = sorted(good_matches, key=lambda x: x.distance, reverse=True)
-        bad_matches = bad_matches[:50]
+        bad_matches = bad_matches[:20]
         # Loop through the good matches to draw lines
-        for match in good_matches:
+        for match in bad_matches:
             # Get the keypoint coordinates from both images
             pt1 = kp1[match.queryIdx].pt
             pt2 = kp2[match.trainIdx].pt
@@ -1314,7 +1338,9 @@ class UAVNavigator:
                     # print(f"len feats: {len(self.stored_feats[i]['keypoints'])}") if self.neural_net_on == True 
                     src_pts, dst_pts, _ = self.get_src_dst_pts(inf_kp, self.stored_local_keypoints[best_index], inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(inf_kp, self.stored_feats[best_index])
                 elif not bool_infer_factor:
-                    src_pts, dst_pts, _ = self.get_src_dst_pts(inf_kp, self.stored_local_keypoints[best_index], inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(inf_kp, self.stored_feats[best_index])
+                    src_pts, dst_pts, gd_matches = self.get_src_dst_pts(inf_kp, self.stored_local_keypoints[best_index], inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(inf_kp, self.stored_feats[best_index])
+                    # self.overlay_matches(gd_matches, inf_kp, overlay=True, image=i)
+                    
 
 
 
@@ -1330,6 +1356,7 @@ class UAVNavigator:
                     src_pts, dst_pts, _ = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
                 elif not bool_infer_factor:
                     src_pts, dst_pts, gd_matches = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
+                    
                     # self.plot_matches(inference_image_rotated, self.pull_image(best_index, self.directory, bool_rotate=False), rotated_inf_kp, self.stored_local_keypoints[best_index], gd_matches)
                 
 
@@ -1421,12 +1448,17 @@ class UAVNavigator:
                 deviation_x_meters = translation_x_m - actual_pixel_change_x_m
                 deviation_y_meters = translation_y_m - actual_pixel_change_y_m
 
-                print(f"EST_VECT_MAG: {np.linalg.norm([translation_x_m, translation_y_m]):.2f}m, ACT_VECT_MAG: {np.linalg.norm([actual_pixel_change_x_m, actual_pixel_change_y_m]):.2f}m")
+                # print(f"EST_VECT_MAG: {np.linalg.norm([translation_x_m, translation_y_m]):.2f}m, ACT_VECT_MAG: {np.linalg.norm([actual_pixel_change_x_m, actual_pixel_change_y_m]):.2f}m")
                 if not bool_infer_factor:
                     deviation_norms_x.append(np.abs(deviation_x_meters))
                     deviation_norms_y.append(np.abs(deviation_y_meters))
                 rand_new_2 =  time.time() - rand_time_half 
-                print(f"DEV-X,Y (m): {deviation_x_meters}, {deviation_y_meters}  for im {i+1} wrt {best_index+1}, angle: {internal_angle} deg, actual deviation (m): {actual_pixel_change_x_m/self.inferred_factor_x}, {actual_pixel_change_y_m/self.inferred_factor_y}")
+                # print(f"DEV-X,Y (m): {deviation_x_meters}, {deviation_y_meters}  for im {i+1} wrt {best_index+1}, angle: {internal_angle} deg, actual deviation (m): {actual_pixel_change_x_m/self.inferred_factor_x}, {actual_pixel_change_y_m/self.inferred_factor_y}")
+                # print(f"PIXEL_ESTIMATE: ({translation_x:.2f}, {translation_y:.2f}), PIXEL_ACTUAL: ({actual_pixel_change_x_m/self.inferred_factor_x:.2f}, {actual_pixel_change_y_m/self.inferred_factor_y:.2f})")
+                PIX_DIFF = np.abs(translation_x - actual_pixel_change_x_m/self.inferred_factor_x), np.abs(translation_y - actual_pixel_change_y_m/self.inferred_factor_y)
+                print(f"PIX_DIFF: {PIX_DIFF} image {i+1} wrt {best_index+1}, angle: {internal_angle} deg, actual deviation (m): {actual_pixel_change_x_m/self.inferred_factor_x}, {actual_pixel_change_y_m/self.inferred_factor_y}")
+                if not bool_infer_factor:
+                    self.pixel_diffs.append((PIX_DIFF[0], PIX_DIFF[1]))   
 
                 
 
@@ -1481,7 +1513,7 @@ class UAVNavigator:
                     mean_x, mean_y = np.mean(new_diff_x), np.mean(new_diff_y)
                     median_x, median_y = np.median(new_diff_x), np.median(new_diff_y)
 
-                    print(f"Estimated pixels: {estimated_pixels[0]:.9f}, {estimated_pixels[1]:.9f}, Actual pixels: {actual_pixels[0]:.9f}, {actual_pixels[1]:.9f}")
+                    # print(f"Estimated pixels: {estimated_pixels[0]:.9f}, {estimated_pixels[1]:.9f}, Actual pixels: {actual_pixels[0]:.9f}, {actual_pixels[1]:.9f}")
                     # compare internal angle to pixel error:
                     # get difference between estimated internal angle and actual internal angle
                     # diff_angle = np.abs(extra_internal_angle - (self.stored_headings[i] - self.stored_headings[best_index]))
@@ -1746,8 +1778,15 @@ def main():
 
     global_detector_arr = [1,2]
     global_matcher_arr = [0,1,2]
-    #ROT, CPT, ROCK, SAND, AMAZ - ALL: DATSETXXXX
-    dat_set_arr = ["DATSETROT2", "DATSETCPT", "DATSETROCK", "DATSETSAND", "DATSETAMAZ"]
+    #ROT2, CPT2, ROCK, SAND, AMAZ - ALL: DATSETXXXX
+    dat_set_arr = [
+        "DATSETROT2",
+        "DATSETCPT2",
+        "DATSETROCK",
+        "DATSETSAND2", 
+        "DATSETAMAZ"
+        
+        ]
     # dat_set_arr = ["DATSETROCK"]
    
    
@@ -1829,18 +1868,25 @@ def main():
                         
                     
 
-                        # step 3: Infer pose while NO GPS 
+                        # step 3: Infer pos while NO GPS 
                         navigator.analyze_matches(False, num_images) #  BOOL INFER FACTOR = FALSE. 
 
 
 
 
 
-
+                        
 
 
 
                         #DEBUG ONLY
+                        pixel_x_arr = np.array(navigator.pixel_diffs)[:,0]
+                        pixel_y_arr = np.array(navigator.pixel_diffs)[:,1]
+                        # MEAN MAX MIN
+                        print(f"Mean Pixel X: {np.mean(pixel_x_arr)}, Mean Pixel Y: {np.mean(pixel_y_arr)}", f"Max Pixel X: {np.max(pixel_x_arr)}, Max Pixel Y: {np.max(pixel_y_arr)}", f"Min Pixel X: {np.min(pixel_x_arr)}, Min Pixel Y: {np.min(pixel_y_arr)}")
+
+
+
                         navigator.x_overlap = np.abs(navigator.x_overlap)
                         navigator.y_overlap = np.abs(navigator.y_overlap)
                         mean_mut_info_x = np.mean(navigator.x_overlap)

@@ -64,13 +64,14 @@
 \contentsline {subsection}{\numberline {4.4.3}Final Selection of Rotational Estimator}{30}{subsection.4.4.3}%
 \contentsline {section}{\numberline {4.5}Image Similarity Estimators}{30}{section.4.5}%
 \contentsline {subsection}{\numberline {4.5.1}Accuracy and Runtime Evaluation}{31}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}Considerations for GLobal Matching Techniques}{31}{subsection.4.5.2}%
-\contentsline {subsection}{\numberline {4.5.3}Final Selection of Global Matching Technique}{32}{subsection.4.5.3}%
-\contentsline {section}{\numberline {4.6}Optimization Techniques}{32}{section.4.6}%
-\contentsline {subsection}{\numberline {4.6.1}Planar Transform Outlier Rejection Methods}{32}{subsection.4.6.1}%
+\contentsline {subsection}{\numberline {4.5.2}Robustness Testing}{31}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Considerations for Alignment Prior to GLobal Matching}{32}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}Final Selection of Global Matching Technique}{32}{subsection.4.5.4}%
+\contentsline {section}{\numberline {4.6}Optimization Techniques}{33}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Planar Transform Outlier Rejection Methods}{33}{subsection.4.6.1}%
 \contentsline {subsection}{\numberline {4.6.2}Lowe's Ratio Test}{33}{subsection.4.6.2}%
-\contentsline {subsection}{\numberline {4.6.3}{N-Match or Absolute Thresholding}}{33}{subsection.4.6.3}%
-\contentsline {section}{\numberline {4.7}Summary}{33}{section.4.7}%
+\contentsline {subsection}{\numberline {4.6.3}{N-Match or Absolute Thresholding}}{34}{subsection.4.6.3}%
+\contentsline {section}{\numberline {4.7}Summary}{34}{section.4.7}%
 \contentsline {chapter}{\numberline {5}Results}{35}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Detailed Performance Analysis}{35}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Key Performance Metrics}{35}{subsection.5.1.1}%

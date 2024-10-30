@@ -226,7 +226,7 @@ The runtime results, shown in \ref{fig:rmse_runtime_comparison_rotestim}, are in
 
 \subsection{Robustness Testing}
 
-The openCV methods (partial Affine 2D, Affine 2D, homography) utilize RASNAC for robust outlier rejection. However, the RANSAC threshold subtended large differences in accuracy when varied, and required threshold testing from very low to very high thresholds to find the optimal threshold. For more complex, 3-Dimensional, transformations this threshold may be more useful, but it was found to not beat the accuracy of the Rigid SVD method under any threshold in the given application. The OpenCV methods achieve a score of 2 for robustness, while the Rigid SVD method achieves a score of 5 due to its lack of tunable parameters. 
+The openCV methods (partial Affine 2D, Affine 2D, homography) utilize RANSAC, or less often, LMEDS or other outlier rejection methods for robust outlier rejection. These thresholds subtended large differences in accuracy when varied, and required threshold testing from very low to very high thresholds to find the optimal threshold. For more complex, 3-Dimensional, transformations this threshold may be more useful, but it was found to not beat the accuracy of the Rigid SVD method under any threshold in the given application. Thus, OpenCV methods achieve a score of 3 for robustness, while the Rigid SVD method achieves a score of 5 due to its lack of tunable parameters. 
 
 \subsection{Final Selection of Rotational Estimator}
 
@@ -243,9 +243,11 @@ Accurate image similarity estimation, or global matching, is essential for UAV n
 
 \subsection{Accuracy and Runtime Evaluation}
 
-For clarity, the best match found is implicitly realized in the GPS estimation error because more similar matches will have more accurate correspondences and subsequently subtend higher accuracy matches. Figure ~\ref{fig:rmse_global_matching} summarizes the RMSE values (in meters) for the Local Retrofit, Cross Correlation, Histogram, and SSIM methods. The results indicate that the Histogram technique consistently achieved the lowest RMSE across most datasets, followed closely by Cross Correlation and then SSIM. The Local Retrofit method recorded the highest RMSE values, especially in the DESERT dataset, since its requirement for crude detection and matching to maintain runtime meant it could not find enough good matches on the sparsest of datasets; It was excluded from further analysis.
+For clarity, the best match found is implicitly realized in the GPS estimation error because more similar matches will have more accurate correspondences and subsequently subtend higher accuracy matches. 
 
-Figure ~\ref{fig:runtime_global_matching} compares the computational efficiency of each global matching technique across the five datasets. The Histogram technique demonstrated the fastest runtimes, followed closely by Cross Correlation. SSIM exhibited the longest runtimes of the remaining methods due to its more complex structural similarity calculations. 
+Figure ~\ref{fig:rmse_global_matching} summarizes the RMSE values (in meters) for the Local Retrofit, Cross Correlation, Histogram, and SSIM methods. The results indicate that the Histogram and Cross-Correlation technique perform near equivalently, with SSIM marginally behind. The Local Retrofit method recorded the highest RMSE values, especially in the DESERT dataset, since its requirement for crude detection and matching to maintain runtime meant it could not find sufficient good matches on the sparsest of datasets; It was excluded from further analysis.
+
+Figure ~\ref{fig:runtime_global_matching} compares the computational efficiency of each global matching technique across the five datasets. The Histogram technique demonstrated the most consistent runtimes, followed closely by Cross Correlation. SSIM exhibited the longest runtimes of the remaining methods due to its more complex structural similarity calculations. 
 
 
 \begin{figure}[H]
@@ -264,27 +266,23 @@ Figure ~\ref{fig:runtime_global_matching} compares the computational efficiency 
     \end{minipage}
 \end{figure}
 
-\subsection{Considerations for GLobal Matching Techniques}
+\subsection{Robustness Testing}
+The global matching methods did not have any tunable parameters, achieving them a robustness score of 5. However, the local retrofit model had various parameters that could be tuned, including detector type, detector threshold, grid size, match threshold. Further, the runtime and accuracy were extremely difficult to balance, requiring extremely precise tuning to achieve usable performance. As such, the local retrofit model achieved a robustness score of 2. 
 
-This sections details the considerations when choosing the precision of the rotational alignment required for global matching. It subjects the estimated internal alignment to an additional skew. This was first tested under a 5-degree skew, where no changes occur. Figure ~\ref{fig:percentage_change_comparison_methods} shows the percentage change in GPS error with a 10-degree skew. The results indicate that all methods are highly robust to small rotational offsets, with Cross Correlation demonstrating the highest robustness. This suggests that the choice of global matching technique can be prioritized for efficiency in the rotational estimation stage.
-Robustness testing evaluated each global matching technique's sensitivity to a 5- and 10-degree rotational offset. All matchers that made it this far saw no change in choice combination below a 5-degree offset. The resultant percentage deviation under a 10-degree offset is shown in Figure \ref{fig:percentage_change_comparison_methods}. 
-Cross-correlation was the most robust, with the lowest percentage change in GPS error, from its prior estimate, across all datasets. Histogram and SSIM exhibited moderate robustness, while SSIM demonstrated the highest maximum error and variability. However, the ability of all matchers to maintain equivalent performance under offsets of up to 5 degrees suggests that they are all extremely robust to small rotational misalignments; This allows for prioritization of efficiency in the sections outputting the rotational estimate to this stage.
+
+\subsection{Considerations for Alignment Prior to GLobal Matching}
+
+This sections details the considerations when choosing the precision of the rotational alignment techniques employed to align the image pairs for unbiased similarity comparisons  between the images. This test subjects the estimated internal alignment to an additional skew and notes their response in best match choice, realized through radial error. This was first tested under a 5-degree skew, where no changes occur. Figure ~\ref{fig:percentage_change_comparison_methods} shows the percentage change in GPS error from the prior estimate, with no skew, with a 10-degree skew. Cross-correlation maintains the most similar accuracy, closely followed by histogram and then SSIM. All methods are highly robust to rotational misalignments up to 5 degrees, however, should not exceed this. As such, when employing a rotational alignment technique prior to global matching, a 5-degree skew is tolerable and the choice of detector and matcher may be guided by efficiency rather than accuracy.
+
 
 \begin{figure}[H]
     \centering
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./Chapter 4/testresults/rmse_comparison_methods.png}
-        \caption{RMSE GPS Error Comparison Across Datasets for Various Methods}
-        \label{fig:rmse_comparison_methods}
-    \end{minipage}\hfill
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./Chapter 4/testresults/percentage_change_comparison_methods.png}
-        \caption{Percentage Change in GPS Error with 10-degree Rotational Offset}
-        \label{fig:percentage_change_comparison_methods}
-    \end{minipage}
+    \includegraphics[width=\textwidth]{./Chapter 4/testresults/percentage_change_comparison_methods.png}
+    \caption{Percentage Change in GPS Error with 10-degree Rotational Offset}
+    \label{fig:percentage_change_comparison_methods}
 \end{figure}
+
+
 
 
 
@@ -296,13 +294,14 @@ Based on the comprehensive evaluation of accuracy, runtime, and robustness, the 
 
 
 \section{Optimization Techniques}
+Various methods were employed to improve the performance of the UAV navigation system. The optimization techniques focus on filtering matches between images to balance noise and stability in the point sets. 
 
-This section outlines the selected optimization methods employed to improve the performance of the UAV navigation system. The optimization techniques focus on filtering matches between images to balance noise and stability in the point sets. 
 
+This section outlines the selected optimization 
 
 \subsection{Planar Transform Outlier Rejection Methods}
 
-Two outlier rejection methods, LMEDS (Least Median of Squares) and RANSAC (Random Sample Consensus), were evaluated for match filtration. Both methods performed near equivalently, with LMEDS displaying a slightly lower mean deviation. LMEDS was also significantly faster than RANSAC, making it the preferred choice for planar transform outlier rejection. The results are summarized in Figure \ref{fig:rmse_comparisonlmeds} and Figure \ref{fig:runtime_comparisonlmeds}.
+Two outlier rejection methods, LMEDS (Least Median of Squares) and RANSAC (Random Sample Consensus), were evaluated for match filtration. Both methods performed near equivalently, with LMEDS displaying a slightly lower radial error. LMEDS was also significantly faster than RANSAC, making it the preferred choice for planar transform outlier rejection. The results are summarized in Figure \ref{fig:rmse_comparisonlmeds} and Figure \ref{fig:runtime_comparisonlmeds}. Both thresholds require precise tuning, with LMEDS requiring slightly less tuning. Both methods achieved a robustness score of 3, as they required precise tuning to achieve optimal performance across datasets.
 
 \begin{figure}[H]
     \centering
@@ -324,7 +323,11 @@ Two outlier rejection methods, LMEDS (Least Median of Squares) and RANSAC (Rando
 
 \subsection{Lowe's Ratio Test}
 
-Lowe's ratio test was employed to filter keypoint matches by comparing the distance of the best match to the second-best match. A static threshold proved inadequate for generalizing across diverse datasets, leading to inconsistent accuracy. To enhance robustness, a dynamic thresholding approach was implemented. The initial Lowe's ratio was set low and incrementally increased until a predetermined number of matches was achieved. The parameters chosen were 0.5 to 0.7 for the initial Lowe's ratio, 0.025 to 0.1 for the step size, 10 to 30 for the maximum iterations, and 2000 to 3000 for the minimum matches. These parameters were selected to balance generalization and match quality, ensuring a sufficient number of reliable matches without compromising accuracy. The dynamic Lowe's ratio filtering method was found to significantly enhance the quality of matches, improving the overall accuracy of the system.
+Lowe's ratio test was employed to filter keypoint matches by comparing the distance of the best match to the second-best match. A static threshold proved inadequate for generalizing across diverse datasets, leading to inconsistent accuracy. To enhance robustness, a dynamic thresholding approach was implemented. This required setting an initial threshold, and incrementing it, thereby increasing leniency until a certain number of matches, or percentage of the keypoints were found.  
+
+The accuracy significantly changed depending on these parameters, achieving it a robustness score of 3. However, its impact on accuracy is undoubtedly essential, and the dynamic thresholding makes it significantly more applicable. 
+
+The initial threshold was set to 0.7, and the increment was set to 0.05. The threshold was incremented until 75\% of the keypoints were matched, or until the 500 good matches were found. It was tested that setting the initial threshold and increment too far below this, such as 0.5 and 0.025 respectively, led to a increases in runtime. Setting the initial threshold above 0.8, or the increment above 0.1 led to inclusion of too many noisy matches. If the exit conditions were too low or high, the same effect was observed. The chosen thresholds are within an acceptable range without being perfectly optimal.
 
 
 \subsection{{N-Match or Absolute Thresholding}}
@@ -336,7 +339,7 @@ These approaches leveraged fixed number or descriptor distance thresholds to fil
 The following methods were selected based on the comprehensive evaluation of accuracy, runtime, and robustness across diverse datasets:
 
 \begin{itemize}
-    \item \textbf{Feature Detectors:} ORB for the crude layer and Dynamic AKAZE for the dense layer.
+    \item \textbf{Feature Detectors:} ORB for the crude similarity alignment layer and Dynamic AKAZE for the dense transformation estimation layer.
     \item \textbf{Local Feature Matcher:} FLANN for its superior runtime and scalability.
     \item \textbf{Transformational Estimator:} Rigid Transform SVD for its high accuracy, fast runtime, and robustness.
     \item \textbf{Image Similarity Estimator:} Histogram for its superior accuracy and runtime.

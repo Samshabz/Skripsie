@@ -15,11 +15,11 @@
         <mxCell id="vSuzUT9fRqiRy2GzC-CI-4" value="Extract Features" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="270" y="145" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="JWKQ7L9F3JrfH_YJlZHW-15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="vSuzUT9fRqiRy2GzC-CI-7" target="vSuzUT9fRqiRy2GzC-CI-11" edge="1">
+        <mxCell id="C1e_C6Y_GbSs97eejE36-22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="vSuzUT9fRqiRy2GzC-CI-7" target="vSuzUT9fRqiRy2GzC-CI-11">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="vSuzUT9fRqiRy2GzC-CI-7" value="Find Most Similar Image" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="720" y="290" width="120" height="60" as="geometry" />
+          <mxGeometry x="890" y="145" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="JWKQ7L9F3JrfH_YJlZHW-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="vSuzUT9fRqiRy2GzC-CI-10" target="vSuzUT9fRqiRy2GzC-CI-7" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -27,17 +27,17 @@
         <mxCell id="vSuzUT9fRqiRy2GzC-CI-10" value="Match Features" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="720" y="145" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="vSuzUT9fRqiRy2GzC-CI-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="vSuzUT9fRqiRy2GzC-CI-11" target="vSuzUT9fRqiRy2GzC-CI-12" edge="1">
+        <mxCell id="C1e_C6Y_GbSs97eejE36-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="vSuzUT9fRqiRy2GzC-CI-11" target="C1e_C6Y_GbSs97eejE36-24">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="vSuzUT9fRqiRy2GzC-CI-11" value="Estimate Planar Transformation" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="720" y="390" width="120" height="60" as="geometry" />
+          <mxGeometry x="890" y="240" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="JWKQ7L9F3JrfH_YJlZHW-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="vSuzUT9fRqiRy2GzC-CI-12" target="JWKQ7L9F3JrfH_YJlZHW-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="vSuzUT9fRqiRy2GzC-CI-12" value="Transform Internal to Global System" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="710" y="525" width="140" height="60" as="geometry" />
+        <mxCell id="vSuzUT9fRqiRy2GzC-CI-12" value="Estimate Lat-Lon" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="880" y="437.5" width="140" height="60" as="geometry" />
         </mxCell>
         <mxCell id="vSuzUT9fRqiRy2GzC-CI-22" value="Image" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
           <mxGeometry x="90" y="145" width="120" height="60" as="geometry" />
@@ -45,7 +45,7 @@
         <mxCell id="JWKQ7L9F3JrfH_YJlZHW-10" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="vSuzUT9fRqiRy2GzC-CI-31" target="JWKQ7L9F3JrfH_YJlZHW-9" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="JWKQ7L9F3JrfH_YJlZHW-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="vSuzUT9fRqiRy2GzC-CI-31" target="vSuzUT9fRqiRy2GzC-CI-10" edge="1">
+        <mxCell id="C1e_C6Y_GbSs97eejE36-3" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="vSuzUT9fRqiRy2GzC-CI-31" target="vSuzUT9fRqiRy2GzC-CI-10">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="vSuzUT9fRqiRy2GzC-CI-31" value="Is GNSS Available?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -55,19 +55,34 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="vSuzUT9fRqiRy2GzC-CI-40" value="&#xa;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;Telemetry Data&lt;/span&gt;&#xa;&#xa;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
-          <mxGeometry x="60" y="300" width="140" height="60" as="geometry" />
+          <mxGeometry x="70" y="300" width="140" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="JWKQ7L9F3JrfH_YJlZHW-4" value="Heading and Lat-Lon&amp;nbsp;&lt;div&gt;Estimate&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
-          <mxGeometry x="480" y="517.5" width="160" height="75" as="geometry" />
+        <mxCell id="C1e_C6Y_GbSs97eejE36-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JWKQ7L9F3JrfH_YJlZHW-4" target="C1e_C6Y_GbSs97eejE36-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JWKQ7L9F3JrfH_YJlZHW-4" value="Heading and Lat-Lon&amp;nbsp;&lt;div&gt;Estimate&amp;nbsp;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#FFFFFF;" parent="1" vertex="1">
+          <mxGeometry x="690" y="430" width="160" height="75" as="geometry" />
         </mxCell>
         <mxCell id="JWKQ7L9F3JrfH_YJlZHW-8" value="Infer Parameters (Altitude and Camera)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="467.5" y="400" width="185" height="60" as="geometry" />
+          <mxGeometry x="230" y="437.5" width="185" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="JWKQ7L9F3JrfH_YJlZHW-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="JWKQ7L9F3JrfH_YJlZHW-9" target="JWKQ7L9F3JrfH_YJlZHW-8" edge="1">
+        <mxCell id="C1e_C6Y_GbSs97eejE36-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JWKQ7L9F3JrfH_YJlZHW-9" target="C1e_C6Y_GbSs97eejE36-12">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="JWKQ7L9F3JrfH_YJlZHW-9" value="Store Corresponding Features and Telemetry" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="485" y="302.5" width="150" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="C1e_C6Y_GbSs97eejE36-21" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="C1e_C6Y_GbSs97eejE36-12" target="JWKQ7L9F3JrfH_YJlZHW-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="C1e_C6Y_GbSs97eejE36-12" value="Is Inference Mode On?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="412.5" width="180" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="C1e_C6Y_GbSs97eejE36-26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="C1e_C6Y_GbSs97eejE36-24" target="vSuzUT9fRqiRy2GzC-CI-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="C1e_C6Y_GbSs97eejE36-24" value="Estimate Heading" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="890" y="340" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
