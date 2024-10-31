@@ -15,7 +15,7 @@ import gc
 
 
 class UAVNavigator:
-    def __init__(self, global_detector_choice, local_detector_choice, rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matching_technique, dataset_name, rotation_method, global_detector_threshold=0.001, local_detector_threshold=0.001, rotational_detector_threshold=0.001, translation_method=0, width_reduction=0, height_reduction=0):
+    def __init__(self, global_detector_choice, local_detector_choice, rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matching_technique, dataset_name, rotation_method, global_detector_threshold=0.001, local_detector_threshold=0.001, rotational_detector_threshold=0.001, translation_method=0, width_reduction=0, height_reduction=0, downsize_factor=1):
         self.stored_image_count = 0
         self.stored_global_keypoints = []
         self.stored_global_descriptors = []
@@ -38,6 +38,7 @@ class UAVNavigator:
         
 
         self.scale_factor_dual = 0
+        self.downsize_factor = downsize_factor
         # angles 
         self.stored_headings = []
         self.estimated_headings = []
@@ -111,7 +112,7 @@ class UAVNavigator:
         # timing 
         self.time_best_match_function = 0
         self.runtime_rotational_estimator = []
-        efficiency_factor = 2/3
+        efficiency_factor = 1
         if global_detector_choice == 1:
             self.global_detector_name = "ORB"
             self.global_detector = set_feature_extractor(global_detector_choice, global_detector_threshold)
@@ -119,11 +120,11 @@ class UAVNavigator:
             
             self.global_detector_name = "AKAZE"
             self.global_detector = set_feature_extractor(global_detector_choice, global_detector_threshold)
-            redo = self.test_and_reinitialize(self.global_detector, 0.5*2000*efficiency_factor)
+            redo = self.test_and_reinitialize(self.global_detector, 2000*efficiency_factor)
             while redo:
                 global_detector_threshold *= 0.75
                 self.global_detector = set_feature_extractor(global_detector_choice, global_detector_threshold)
-                redo = self.test_and_reinitialize(self.global_detector, 0.5*2000*efficiency_factor)
+                redo = self.test_and_reinitialize(self.global_detector, 2000*efficiency_factor)
             
         if rotational_detector_choice == 1:                
             self.rotational_detector_name = "ORB"
@@ -266,6 +267,16 @@ class UAVNavigator:
             
             matches = self.global_matcher.find_matches(des1, des2) if global_matcher_true else self.local_matcher.find_matches(des1, des2) 
 
+            # remove single matches that cannot be applied with Lowes:
+            matches = [match for match in matches if len(match) == 2]
+
+            matches_sorted = sorted(matches, key=lambda x: x[0].distance)
+
+            # flann doesnt always ret a tuple. 
+
+            matches_1500 = matches_sorted[:1000]
+            matches = matches_1500
+
 
 
             
@@ -276,7 +287,7 @@ class UAVNavigator:
 
             good_matches = []
             count = 0
-            while len(good_matches) < 500 and len(good_matches)<0.75*len(matches):
+            while len(good_matches) < 500 and len(good_matches)<0.5*len(matches):
                 count += 1
                 good_matches = []
                 for match_pair in matches:
@@ -399,6 +410,9 @@ class UAVNavigator:
 
         image = cv2.imread(image_path)  # Read the image in
         cropped_image = self.crop_image(image)
+        # downscale
+        cropped_image = cv2.resize(cropped_image, None, fx=self.downsize_factor, fy=self.downsize_factor)
+        
 
 #         # # filter
         # alpha = 0.5  # Contrast control (0.0-1.0, where <1 reduces contrast)
@@ -546,7 +560,7 @@ class UAVNavigator:
             if self.local_matcher_choice == 0:
                 Lowes_Ratio +=0.1
             
-            src_pts, dst_pts, _ = self.get_src_dst_pts(kp_inf, kp_stored, des_inf, descriptors_stored, Lowes_Ratio)
+            src_pts, dst_pts, _ = self.get_src_dst_pts(kp_inf, kp_stored, des_inf, descriptors_stored, Lowes_Ratio, global_matcher_true=1)
  
             # initial rotating of image. 
             if len(src_pts) > 10:
@@ -821,7 +835,10 @@ class UAVNavigator:
             # Update the inferred factors
             self.inferred_factor_x = inferred_factor_x/2 + inferred_factor_y/2
             self.inferred_factor_y = inferred_factor_y/2 + inferred_factor_x/2
-            print(f"End Of Inference")
+            corr_coeff_x = reg_x.score(x_estimates, x_actual)
+            corr_coeff_y = reg_y.score(y_estimates, y_actual)
+            # print(f"Correlation Coefficients: x: {corr_coeff_x}, y: {corr_coeff_y}")
+            print(f"PixPerMet: {self.inferred_factor_x}")
         else:
             print("Not enough data points to perform linear regression.")
     
@@ -1115,6 +1132,8 @@ class UAVNavigator:
 
         normalized_inferred_factors = np.sqrt(self.inferred_factor_x**2 + self.inferred_factor_y**2)
 
+        
+
         # Check if visual_shifts is 1D and reshape it
         print(f"Visual shifts shape: {visual_shifts.shape}")
         if visual_shifts.ndim != 2:
@@ -1131,6 +1150,8 @@ class UAVNavigator:
         # Calculate the radial distance (norm) for the actual translation
         actual_norm = np.sqrt(tx**2 + ty**2)
         actual_norm = actual_norm 
+
+        print(f"Scale: {actual_norm/np.mean(visual_norms)}")
 
         # Plot histogram for the radial shifts (norms)
         plt.figure(figsize=(8, 6))
@@ -1194,12 +1215,13 @@ class UAVNavigator:
     def filter_by_gradient(self, src_pts, dst_pts, tolerance=3, use_median=False):
         src_pts = src_pts.reshape(-1, 2)
         dst_pts = dst_pts.reshape(-1, 2)
+        eps = 1e-6
         if use_median:
-            expected_gradient = np.median((dst_pts[:, 1] - src_pts[:, 1]) / (dst_pts[:, 0] - src_pts[:, 0]))
+            expected_gradient = np.median((dst_pts[:, 1] - src_pts[:, 1]) / (dst_pts[:, 0] - src_pts[:, 0]+eps))
         else:
-            expected_gradient = np.mean((dst_pts[:, 1] - src_pts[:, 1]) / (dst_pts[:, 0] - src_pts[:, 0]))
+            expected_gradient = np.mean((dst_pts[:, 1] - src_pts[:, 1]) / (dst_pts[:, 0] - src_pts[:, 0]+eps))
         
-        actual_gradients = (dst_pts[:, 1] - src_pts[:, 1]) / (dst_pts[:, 0] - src_pts[:, 0])
+        actual_gradients = (dst_pts[:, 1] - src_pts[:, 1]) / (dst_pts[:, 0] - src_pts[:, 0]+eps)
         angle_differences = np.abs(np.degrees(np.arctan(actual_gradients)) - np.degrees(np.arctan(expected_gradient)))
         angle_differences = np.clip(angle_differences, 0, 180)
         
@@ -1312,7 +1334,7 @@ class UAVNavigator:
                 print(f"No suitable match found for image {i}. Skipping.")
                 continue
             if best_index != -1 and internal_angle is not None:
-                print(f"match time {time.time() - timeAS}")
+                # print(f"match time {time.time() - timeAS}")
 
                 # actual GPS data to compare against
                 actual_gps_diff_meters = (np.array(self.stored_gps[i]) - np.array(self.stored_gps[best_index])) #* 111139
@@ -1348,8 +1370,13 @@ class UAVNavigator:
 
 
 
+
+
                 # FIND ROTATIONS AND ALIGN
                 extra_internal_angle = get_src_shifts(src_pts, dst_pts, ret_angle=True) 
+                # extra_internal_angle - self.get_rotations(src_pts, dst_pts, self.method_to_use) XXX try this. 
+                # extra_internal_angle = self.stored_headings[i] - self.stored_headings[best_index] $ using the Ground truth subtends negligble impact on errror. Like 0,05 less than 2 so thats 2.5% error. On dataset sand 3.5 -> 2.3 or so -> larger difference. 
+
                 inference_image_rotated = rotate_image(inference_image, extra_internal_angle)
                 
                 # NEW DENSE LAYER ON ALIGNED 
@@ -1358,7 +1385,7 @@ class UAVNavigator:
                     src_pts, dst_pts, _ = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
                 elif not bool_infer_factor:
                     src_pts, dst_pts, gd_matches = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
-                    
+                    # self.visualize_pts_and_actual(dst_pts - src_pts, actual_pixel_change_x_m, actual_pixel_change_y_m)
                     # self.plot_matches(inference_image_rotated, self.pull_image(best_index, self.directory, bool_rotate=False), rotated_inf_kp, self.stored_local_keypoints[best_index], gd_matches)
                 
 
@@ -1378,7 +1405,7 @@ class UAVNavigator:
 
 
 
-                print(f"second time {time.time() - time_first}")    
+                # print(f"second time {time.time() - time_first}")    
 
                 Unnorm_x, Unnorm_y = translation_x, translation_y
                 
@@ -1390,8 +1417,8 @@ class UAVNavigator:
                     self.append_answers_estimates(translation_x, translation_y, actual_pixel_change_x_m, actual_pixel_change_y_m)
     
                 # pixel -> meters (estimated)
-                translation_x_m = translation_x * self.inferred_factor_x 
-                translation_y_m = translation_y * self.inferred_factor_y
+                translation_x_m = translation_x * self.inferred_factor_x  
+                translation_y_m = translation_y * self.inferred_factor_y 
 
                 # NEW GPS (estimated). Conversion of metres to GPS and summing to reference GPS. 
                 new_lon = self.stored_gps[best_index][0] + self.meters_to_lon(translation_x_m, self.stored_gps[best_index][1])
@@ -1430,7 +1457,10 @@ class UAVNavigator:
                 # print(f"DEV-X,Y (m): {deviation_x_meters}, {deviation_y_meters}  for im {i+1} wrt {best_index+1}, angle: {internal_angle} deg, actual deviation (m): {actual_pixel_change_x_m/self.inferred_factor_x}, {actual_pixel_change_y_m/self.inferred_factor_y}")
                 # print(f"PIXEL_ESTIMATE: ({translation_x:.2f}, {translation_y:.2f}), PIXEL_ACTUAL: ({actual_pixel_change_x_m/self.inferred_factor_x:.2f}, {actual_pixel_change_y_m/self.inferred_factor_y:.2f})")
                 PIX_DIFF = np.abs(translation_x - actual_pixel_change_x_m/self.inferred_factor_x), np.abs(translation_y - actual_pixel_change_y_m/self.inferred_factor_y)
-                # print(f"PIX_DIFF: {PIX_DIFF} image {i+1} wrt {best_index+1}, angle: {internal_angle} deg, actual deviation (m): {actual_pixel_change_x_m/self.inferred_factor_x}, {actual_pixel_change_y_m/self.inferred_factor_y}")
+                if not bool_infer_factor:
+                    pass
+                    # print(f"PIX_DIFF: {PIX_DIFF}")
+                    # image {i+1} wrt {best_index+1}, angle: {internal_angle} deg, actual deviation (m): {actual_pixel_change_x_m/self.inferred_factor_x}, {actual_pixel_change_y_m/self.inferred_factor_y}")
                 if not bool_infer_factor:
                     self.pixel_diffs.append((PIX_DIFF[0], PIX_DIFF[1]))   
 
@@ -1515,7 +1545,7 @@ class UAVNavigator:
         if not bool_infer_factor:
             mean_x_dev, mean_y_dev = np.mean(deviation_norms_x), np.mean(deviation_norms_y)
             total_normalized_gps_error = np.linalg.norm([mean_x_dev, mean_y_dev])
-            MAE_GPS = mean_x_dev/2 + mean_y_dev/2
+            MAE_GPS = np.abs(mean_x_dev)/2 + np.abs(mean_y_dev)/2
             self.MAE_GPS.append(MAE_GPS)
             self.norm_GPS_error.append(total_normalized_gps_error)
         # if not bool_infer_factor:
@@ -1788,6 +1818,8 @@ def main():
     # reduction_arr_2D_pixels = [(920,0), (0,0), (0,0), (0,0), (400,400), (500,500), (600,600), (700,700), (800,800), (900,900), (1000,1000)]
 
     rotation_method_to_use_arr = [0,1,2]
+    width_reduction, height_reduction = 0, 0
+    scale_arr = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
     
     if 1==1:
     
@@ -1795,7 +1827,8 @@ def main():
             # for translation_method_to_use in [2]:
                 # for local_detector_choice in local_detector_arr:
             # for rotation_method_to_use in rotation_method_to_use_arr:
-            for widthreduction, heightreduction in reduction_2D_array:
+            # for width_reduction, height_reduction in reduction_2D_array:
+            for scale in scale_arr:
                 #     for global_detector_choice in global_detector_arr:
                 # for scale_factor in [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]:
                 # for local_matcher_choice in local_matcher_arr:
@@ -1819,7 +1852,7 @@ def main():
 
 
 
-                        glob_thresh=0.00017 if global_detector_choice == 2 else 6000 if global_detector_choice == 1 else 0
+                        glob_thresh=0.00017 if global_detector_choice == 2 else 2000 if global_detector_choice == 1 else 0
                         loc_det_thresh = 0.005 if local_detector_choice == 2 else 6000 if local_detector_choice == 1 else 0
                         rot_det_thresh = 0.0002 if rotational_detector_choice == 2 else 8000 if rotational_detector_choice == 1 else 0                         
 
@@ -1827,11 +1860,13 @@ def main():
 
                         main_start_time = time.time()
                         
-                        navigator = UAVNavigator(global_detector_choice, local_detector_choice , rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, rotation_method_to_use, glob_thresh, loc_det_thresh, rot_det_thresh, translation_method_to_use, widthreduction, heightreduction) # INITIALIZATION
+                        navigator = UAVNavigator(global_detector_choice, local_detector_choice , rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, rotation_method_to_use, glob_thresh, loc_det_thresh, rot_det_thresh, translation_method_to_use, width_reduction, height_reduction, scale) # INITIALIZATION
+
                         
                         
 
                         iteration_count += 1
+                        print(f"Scale: {scale}")
                         
                         # Step 1: Add images and infer factors
                         

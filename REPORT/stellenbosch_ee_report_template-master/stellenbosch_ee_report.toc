@@ -44,62 +44,58 @@
 \contentsline {section}{\numberline {3.2}Dynamic Methods and Techniques}{20}{section.3.2}%
 \contentsline {section}{\numberline {3.3}Testing Shortlist}{21}{section.3.3}%
 \contentsline {section}{\numberline {3.4}Conclusion}{21}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Comparison of Methods}{22}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Testing Setup}{22}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Critical Testing Pipeline Understanding}{22}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Datasets}{23}{subsection.4.1.2}%
-\contentsline {subsection}{\numberline {4.1.3}Testing Structure}{24}{subsection.4.1.3}%
-\contentsline {section}{\numberline {4.2}Feature Detectors}{25}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Accuracy and Runtime}{26}{subsection.4.2.1}%
-\contentsline {subsubsection}{Robustness}{26}{subsubsection*.25}%
-\contentsline {subsection}{\numberline {4.2.2}Final Selection of Feature Detectors}{26}{subsection.4.2.2}%
-\contentsline {section}{\numberline {4.3}Local Feature Matchers}{27}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Accuracy and Runtime Evaluation}{27}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Robustness Testing}{28}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}Considerations}{28}{subsection.4.3.3}%
-\contentsline {subsection}{\numberline {4.3.4}Final Selection of Local Feature Matcher}{29}{subsection.4.3.4}%
-\contentsline {section}{\numberline {4.4}Planar Transform Estimators}{29}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Accuracy and Runtime Evaluation}{29}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Robustness Testing}{30}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Final Selection of Rotational Estimator}{30}{subsection.4.4.3}%
-\contentsline {section}{\numberline {4.5}Image Similarity Estimators}{30}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}Accuracy and Runtime Evaluation}{31}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}Robustness Testing}{31}{subsection.4.5.2}%
-\contentsline {subsection}{\numberline {4.5.3}Considerations for Alignment Prior to GLobal Matching}{32}{subsection.4.5.3}%
-\contentsline {subsection}{\numberline {4.5.4}Final Selection of Global Matching Technique}{32}{subsection.4.5.4}%
-\contentsline {section}{\numberline {4.6}Optimization Techniques}{33}{section.4.6}%
-\contentsline {subsection}{\numberline {4.6.1}Planar Transform Outlier Rejection Methods}{33}{subsection.4.6.1}%
-\contentsline {subsection}{\numberline {4.6.2}Lowe's Ratio Test}{33}{subsection.4.6.2}%
-\contentsline {subsection}{\numberline {4.6.3}{N-Match or Absolute Thresholding}}{34}{subsection.4.6.3}%
-\contentsline {section}{\numberline {4.7}Summary}{34}{section.4.7}%
-\contentsline {chapter}{\numberline {5}Results}{35}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Detailed Performance Analysis}{35}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Key Performance Metrics}{35}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Flight Path Analysis}{36}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Detailed Performance Metrics}{36}{subsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.1.4}Dataset Performance Analysis}{37}{subsection.5.1.4}%
-\contentsline {subsection}{\numberline {5.1.5}Error Distribution Map}{37}{subsection.5.1.5}%
-\contentsline {subsection}{\numberline {5.1.6}An Account of Variance Between and Error in Datasets}{38}{subsection.5.1.6}%
-\contentsline {subsubsection}{Internal Uncertainty and Variance}{38}{subsubsection*.37}%
-\contentsline {subsubsection}{Ground Truth Heading error and Variance}{38}{subsubsection*.38}%
-\contentsline {subsubsection}{Impact of Heading Error on Accuracy}{39}{subsubsection*.39}%
-\contentsline {subsubsection}{Additional Sources of Error}{39}{subsubsection*.40}%
-\contentsline {section}{\numberline {5.2}Stress Testing}{40}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Mutual Information Results}{40}{subsection.5.2.1}%
-\contentsline {subsubsection}{Methodology}{40}{subsubsection*.41}%
-\contentsline {subsubsection}{Results}{40}{subsubsection*.42}%
-\contentsline {subsubsection}{Conclusions}{41}{subsubsection*.44}%
-\contentsline {subsection}{\numberline {5.2.2}Low-Light Testing}{41}{subsection.5.2.2}%
-\contentsline {subsubsection}{Results}{42}{subsubsection*.46}%
-\contentsline {section}{\numberline {5.3}Results Conclusion}{43}{section.5.3}%
-\contentsline {chapter}{\numberline {6}Summary and Conclusion}{44}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Future Work}{46}{chapter.7}%
-\contentsline {subsection}{\numberline {7.0.1}Multi-Image Weighted Inference System}{46}{subsection.7.0.1}%
-\contentsline {subsection}{\numberline {7.0.2}Non-Planar Stereo Matching}{46}{subsection.7.0.2}%
-\contentsline {subsection}{\numberline {7.0.3}Integration with Mapping and Reference Images}{46}{subsection.7.0.3}%
-\contentsline {subsection}{\numberline {7.0.4}Distortion Corrections}{47}{subsection.7.0.4}%
-\contentsline {subsection}{\numberline {7.0.5}Implementation on a Single Board Computer (SBC)}{47}{subsection.7.0.5}%
-\contentsline {subsection}{\numberline {7.0.6}Higher Resolution Imaging}{47}{subsection.7.0.6}%
-\contentsline {chapter}{Bibliography}{48}{chapter*.48}%
-\contentsline {chapter}{\numberline {A}Project Planning Schedule}{51}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Outcomes Compliance}{52}{appendix.B}%
+\contentsline {chapter}{\numberline {4}Comparison of Methods}{23}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Testing Setup}{23}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Critical Testing Pipeline Understanding}{23}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Datasets}{24}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Testing Structure}{25}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}Feature Detectors}{26}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Accuracy and Runtime}{27}{subsection.4.2.1}%
+\contentsline {subsubsection}{Robustness}{27}{subsubsection*.25}%
+\contentsline {subsection}{\numberline {4.2.2}Final Selection of Feature Detectors}{27}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Local Feature Matchers}{28}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Accuracy and Runtime Evaluation}{28}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Robustness Testing}{29}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Considerations}{29}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Final Selection of Local Feature Matcher}{30}{subsection.4.3.4}%
+\contentsline {section}{\numberline {4.4}Planar Transform Estimators}{30}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Accuracy and Runtime Evaluation}{30}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Robustness Testing}{31}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Final Selection of Rotational Estimator}{31}{subsection.4.4.3}%
+\contentsline {section}{\numberline {4.5}Image Similarity Estimators}{31}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Accuracy and Runtime Evaluation}{32}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Robustness Testing}{32}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Considerations for Alignment Prior to GLobal Matching}{33}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}Final Selection of Global Matching Technique}{33}{subsection.4.5.4}%
+\contentsline {section}{\numberline {4.6}Optimization Techniques}{34}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Planar Transform Outlier Rejection Methods}{34}{subsection.4.6.1}%
+\contentsline {subsection}{\numberline {4.6.2}Lowe's Ratio Test}{34}{subsection.4.6.2}%
+\contentsline {subsection}{\numberline {4.6.3}N-Match or Absolute Thresholding}{35}{subsection.4.6.3}%
+\contentsline {section}{\numberline {4.7}Summary}{36}{section.4.7}%
+\contentsline {chapter}{\numberline {5}Results}{37}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Detailed Performance Analysis}{37}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Key Performance Metrics}{37}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Flight Path Analysis}{39}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Detailed Performance Metrics}{39}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Dataset Performance Analysis}{40}{subsection.5.1.4}%
+\contentsline {subsection}{\numberline {5.1.5}Error Distribution Map}{41}{subsection.5.1.5}%
+\contentsline {subsubsection}{Sources of Error}{41}{subsubsection*.41}%
+\contentsline {section}{\numberline {5.2}Stress Testing}{42}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Mutual Information Results}{42}{subsection.5.2.1}%
+\contentsline {subsubsection}{Methodology}{43}{subsubsection*.42}%
+\contentsline {subsubsection}{Results}{43}{subsubsection*.43}%
+\contentsline {subsubsection}{Conclusions}{44}{subsubsection*.45}%
+\contentsline {subsection}{\numberline {5.2.2}Low-Light Testing}{44}{subsection.5.2.2}%
+\contentsline {subsubsection}{Results}{45}{subsubsection*.47}%
+\contentsline {section}{\numberline {5.3}Results Conclusion}{46}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Summary and Conclusion}{47}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Future Work}{49}{chapter.7}%
+\contentsline {subsection}{\numberline {7.0.1}Multi-Image Weighted Inference System}{49}{subsection.7.0.1}%
+\contentsline {subsection}{\numberline {7.0.2}Non-Planar Stereo Matching}{49}{subsection.7.0.2}%
+\contentsline {subsection}{\numberline {7.0.3}Integration with Mapping and Reference Images}{49}{subsection.7.0.3}%
+\contentsline {subsection}{\numberline {7.0.4}Distortion Corrections}{50}{subsection.7.0.4}%
+\contentsline {subsection}{\numberline {7.0.5}Implementation on a Single Board Computer (SBC)}{50}{subsection.7.0.5}%
+\contentsline {subsection}{\numberline {7.0.6}Higher Resolution Imaging}{50}{subsection.7.0.6}%
+\contentsline {chapter}{Bibliography}{51}{chapter*.49}%
+\contentsline {chapter}{\numberline {A}Project Planning Schedule}{54}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Outcomes Compliance}{55}{appendix.B}%

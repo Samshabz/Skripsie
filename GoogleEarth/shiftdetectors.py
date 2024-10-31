@@ -73,7 +73,7 @@ def get_src_shifts(src_pts, dst_pts, ret_angle=False):
         H = np.dot(src_pts_centered.T, dst_pts_centered)
         U, S, Vt = np.linalg.svd(H)
         R = np.dot(U, Vt)
-
+    
         theta = np.arctan2(R[1, 0], R[0, 0])
         theta_deg = np.degrees(theta)
         if ret_angle:

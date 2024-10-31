@@ -1,6 +1,14 @@
 
 \chapter{Results}
 
+
+XXX - CV needs pictures. 
+look at 5.5.,m visualize maybe
+single image for match not side by side. - not clear what its finding, but it is robust which is nice - try ask what are these dots... what are keypoints 
+- GitHub link for code. Mentionthis is how it was implemented, not flow diagram. So when someone goes on Github they know whats going on.
+Crop Earth 
+overlap relative to my baseline image 972. no 1080.  
+
 \section{Detailed Performance Analysis}
 
 This section presents the results achieved by the navigation system under optimal conditions across various challenging datasets. The analysis focuses on the system's performance in terms of accuracy, efficiency, and generalizability, providing insights into its applicability in real-world UAV navigation scenarios.
@@ -9,7 +17,103 @@ xxx - show matches black and white.
 make a note linking setup for testing phase xxx
 \subsection{Key Performance Metrics}
 
-The system's generalized performance across five diverse datasets—CITY1, CITY2, ROCKY, DESERT, and AMAZON— is summarized with two key metrics: Localization radial error in RMSE m and percentage, and localization inference time in seconds across all datasets. The results are presented in Figure \ref{fig:Key Metrics}. Importantly, the system meets the real-time requirement of 2 seconds and the accuracy requirement of 10\%. 
+
+The system's generalized performance across five diverse datasets—CITY1, CITY2, ROCKY, DESERT, and AMAZON— is summarized by its Accuracy and Runtime. 
+
+Accuracy is measured in two broad potential ways. 
+
+The first is the the absolute radial error, or RMSE, in GPS coordinates, either for the mean of the dataset or per image, in metres. This provides a physical understanding of the error scope and a nuanced understanding of the inelasticity of the system to the movement size. This may also be represented in pixels, or axial components; the former provides an intuition behind the error size given a fixed resolution of 1920x972 pixels
+
+Secondly is the relative radial error which is measured as a percentage of the actual radial distance, in equivalent metrics. Specifically, the radial error is the radial error between the estimated and actual GPS coordinates, in metres, while the radial distance is the magnitude of the translation vector from the centre of the reference image to that of the current image, in metres. This provides a normalized measure of the error relative to the movement size, allowing for a more intuitive understanding of the system's accuracy. This may also be represented axial component.
+
+
+
+say what the times are. say acc and time 
+
+
+
+% Table 2: Absolute Radial Error in Metres
+\begin{table}[H]
+    \centering
+    \caption{\textbf{Percentage Radial Error (Relative Deviation)}}
+    \label{tab:percentage_radial_error}
+    \begin{tabular}{|l|c|c|c|c|c|}
+    \hline
+    & \textbf{CITY1} & \textbf{CITY2} & \textbf{ROCKY} & \textbf{DESERT} & \textbf{AMAZON} \\
+    \hline
+    \makecell{\textbf{Percentage} \\ \textbf{Radial Error (\%)}} & 0.37220028 & 0.2383268 & 0.71984452 & 0.24183624 & 0.38495021 \\
+    \hline
+    \end{tabular}
+\end{table}
+
+
+% Table 3: Radial Errors in Pixels
+\begin{table}[H]
+\centering
+\caption{\textbf{Radial Errors in Pixels (Min, Mean, Max)}}
+\label{tab:radial_errors_pixels}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& \textbf{CITY1} & \textbf{CITY2} & \textbf{ROCKY} & \textbf{DESERT} & \textbf{AMAZON} \\
+\hline
+\makecell{\textbf{Mean Pixel} \\ \textbf{Error}} & 0.7221 & 0.6120 & 1.0303 & 0.5677 & 0.3914 \\
+\hline
+\makecell{\textbf{Max Pixel} \\ \textbf{Error}} & 2.1735 & 1.0046 & 4.9199 & 1.7750 & 1.0556 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+% Table: Radial Errors in Meters (Mean, Max)
+\begin{table}[H]
+    \centering
+    \caption{\textbf{Radial Errors in Meters (Mean, Max)}}
+    \label{tab:radial_errors_meters}
+    \begin{tabular}{|l|c|c|c|c|c|}
+    \hline
+    & \textbf{CITY1} & \textbf{CITY2} & \textbf{ROCKY} & \textbf{DESERT} & \textbf{AMAZON} \\
+    \hline
+    \makecell{\textbf{Mean Meter} \\ \textbf{Error}} & 
+        2.9390 & 
+        1.9124 & 
+        3.1922 & 
+        1.7598 & 
+        1.3412 \\
+    \hline
+    \makecell{\textbf{Max Meter} \\ \textbf{Error}} & 
+        8.8451 & 
+        3.1394 & 
+        15.2403 & 
+        5.5047 & 
+        3.6141 \\
+    \hline
+    \end{tabular}
+    \end{table}
+    
+
+% Table 4: Time Table
+\begin{table}[H]
+\centering
+\caption{\textbf{Processing Times (Seconds)}}
+\label{tab:processing_times}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+& \textbf{CITY1} & \textbf{CITY2} & \textbf{ROCKY} & \textbf{DESERT} & \textbf{AMAZON} \\
+\hline
+\makecell{\textbf{Mean} \\ \textbf{Add Time}} & 0.7684 & 0.8343 & 0.6292 & 0.5347 & 0.6315 \\
+\hline
+\makecell{\textbf{Mean Parameter} \\ \textbf{Inference Time}} & 1.6257 & 1.7150 & 1.5806 & 1.7735 & 1.6855 \\
+\hline
+\makecell{\textbf{Mean Location} \\ \textbf{Inference Time}} & 1.6739 & 1.5714 & 1.5110 & 1.7827 & 1.4405 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+
+
+. The results are presented in Figure \ref{fig:Key Metrics}. Importantly, the system meets the real-time requirement of 2 seconds and the accuracy requirement of 10\%. 
 
 % the plot of key metrics with regard to system performance. 
 \begin{figure}[H]
@@ -24,7 +128,7 @@ The system's generalized performance across five diverse datasets—CITY1, CITY2
 
 
 \subsection{Flight Path Analysis}
-Figures \ref{fig:Flight Path CITY1} and \ref{fig:Flight Path CITY2} show the actual vs estimated flight of the UAV across the worst and best performing dataset, CITY1 and CITY2 respectively. Even in the worst performing dataset, the system maintains a relatively accurate flight path, relative to its movement size, with the estimated path closely following the actual path. This indicates the system's ability to generalize and gives an idea of the scope of the error in the system.
+Figures \ref{fig:Flight Path ROCKY} and \ref{fig:Flight Path DESERT} show the actual vs estimated flight of the UAV across the worst and best performing dataset, ROCKY and DESERT respectively. Even in the worst performing dataset, the system maintains a highly accurate flight path. On a global scale, this error is negligible. The pilot be able to control the UAV and prevent further drift under significantly worse conditions.
 
 
     \begin{figure}[H]
@@ -32,14 +136,14 @@ Figures \ref{fig:Flight Path CITY1} and \ref{fig:Flight Path CITY2} show the act
         \begin{minipage}{0.45\textwidth}
             \centering
             \includegraphics[width=0.7\textwidth]{./Chapter 5/GPSpaths/PathCity1.png}
-            \caption{Flight Path of UAV in poorest performing Dataset}
-            \label{fig:Flight Path CITY1}
+            \caption{Flight Path of UAV in Rocky Dataset (Worst)}
+            \label{fig:Flight Path ROCKY}
         \end{minipage}\hfill
         \begin{minipage}{0.45\textwidth}
             \centering
             \includegraphics[width=0.7\textwidth]{./Chapter 5/GPSpaths/PathCity2.png}
-            \caption{Flight Path of UAV in best performing Dataset}
-            \label{fig:Flight Path CITY2}
+            \caption{Flight Path of UAV in Desert Dataset (Best).}
+            \label{fig:Flight Path DESERT}
         \end{minipage}
     \end{figure}
 
@@ -85,46 +189,41 @@ The plot shows relatively consistent performance across datasets, with CITY2, be
 
 \subsection{Error Distribution Map}
 
-The heatmap in Figure \ref{fig:Heatmap_XY_Dev} visualizes the distribution of pixel deviations in the X and Y directions across the datasets. The results provide insights into the system's error patterns and highlight areas of potential improvement. The heatmap shows that the system has a relatively consistent error distribution across the datasets, with the majority of errors being within the 10-20 pixel range. However, some datasets, such as DESERT and AMAZON, exhibit larger errors of up to 30 pixels, indicating potential areas of significant error. 
+The heatmap in Figure \ref{fig:Heatmap_XY_Dev} illustrates the distribution of pixel deviations in the X and Y directions across the datasets. For spatial conciseness, some axial values are omitted, and the values are quantized into bins, meaning they are not exactly off by the pixel bin they are in. This visualization provides an intuitive understanding of the pixel error distribution and any potential axial bias. As shown, the errors are distributed relatively evenly across both axes, indicating no significant bias in the system. Moreover, the majority of errors are below 2 pixels, demonstrating the system's robustness and accuracy in localization estimates. The largest radial error, as noted in Table \ref{tab:radial_errors_pixels}, is 4.9199 pixels. While this error is relatively small, the sources of these errors are discussed in the following section.
+
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.55\textwidth]{Chapter 5/RESULTPLOTS/BIASPLOT_XY_HEAT.png}
+    \includegraphics[width=0.65\textwidth]{Chapter 5/RESULTPLOTS/XYHEAT.png}
     \caption{Heatmap of Pixel Deviations in X and Y Directions}
     \label{fig:Heatmap_XY_Dev}
 \end{figure}
 
 
-\subsection{An Account of Variance Between and Error in Datasets}
-Given the large variation in error across datasets, as seen in both the violin plot in figure \ref{fig:Violin Dataset Plot} and the heatmap in figure \ref{fig:Heatmap_XY_Dev}, it is important to understand the sources of this variance. This section will detail the analysis conducted to identify the sources of this variance and the impact of these sources on the system's performance.
 
-\subsubsection{Internal Uncertainty and Variance}
-Correlations between error sizes and measures of uncertainty in the pipeline, specifically the standard deviation and mean-median difference in match vector magnitudes, were assessed. The variability in these vectors was used as a proxy for the uncertainty of the method. If the method was more uncertain when it was wrong, then the error likely originated from there. The match vectors, tested at various stages in the filtration process imply the accuracy of the transformational estimate. The results, in terms of correlation coefficients, as well as visual inspection, showed no relationship between uncertainty in the pipeline and error, indicating that there was not an increased likelihood of the variances in performance propagating from the anywhere including or before the transformational estimate.  
+\subsubsection{Sources of Error}
 
-\subsubsection{Ground Truth Heading error and Variance}
+The performance of the UAV navigation system is influenced by several sources of error, which are detailed below:
 
-Upon observing a moderate correlation between error magnitude and image sequence in the dataset, the accuracy of the estimated headings from Google Earth data was reconsidered. Ground truth headings, as explained in \ref{sec:scope}, were estimated. These heading estimates were generated early in the project, prior to the development of an optimized rotational estimation technique. Additionally, this technique involved sequential estimation, introducing cumulative errors. To evaluate the impact of these inaccuracies, a newer, optimized pipeline for heading estimation was employed, which would significantly reduce, but not eliminate, ground truth heading errors on the AMAZON dataset; The dataset was retested. The results demonstrated a significant reduction in mean radial error from 30.37 m to 17.91 m. This improvement underscores that inaccurate ground truth heading data was a significant contributor to the system's variance in performance across datasets.
 
-\subsubsection{Impact of Heading Error on Accuracy}
+\textbf{Quantization:} 
+When images are taken from slightly different positions, feature edges can distort due to sub-pixel shifting. This is because a fixed resolution can averages any information smaller than a pixel. For large features, these distortions at feature boundaries are minimal relative to feature size, but for smaller features, edge distortions occupy a significant portion, leading to high levels of distortion. At high altitudes, where features are predominantly small, this effect distorts a large number of descriptors and keypoints, leading to considerable distortion.
 
-Given these findings, and the factor improvements, it is estimated that the true absolute maximum error for an individual image in the given datasets, with the ground truth data available, is in the range of 7.5-15 pixels radially; this corresponds to around 3.4\%-6.8\% of the magnitude of the translation vector for that image, remaining within acceptable limits for the system's design objectives. Similar impacts are expected on the accuracy results of the other datasets, excluding the CITY2 dataset which has a fixed North heading for all images. The absence of true ground truth heading data constituted the primary factor in the variance in accuracy across datasets.
+This issue is prominent in the CITY datasets, where dense, small features amplify sub-pixel errors, leading to higher mean errors. While CITY2’s dataset also experiences sub-pixel shifting, it involves only significant translations rather than rotations, which has a larger impact on reducing distortion overall; hence, the error is not visible in the CITY2 dataset.
 
-\subsubsection{Additional Sources of Error}
+\textbf{Depth and Perspective Changes:} Google Earth uses a 3D model to generate its terrain, leading to changes in perspective and ground height as images are taken from different spots in the landscape. This effect is particularly evident in the ROCKY dataset, where large height changes in the mountainous regions cause both perspective distortion and scale changes.
 
-While heading estimation errors were identified as the main contributor to the overall inaccuracies, several other factors also contribute to the errors observed:
+\textbf{Variations in Terrain and Environmental Conditions:} Each terrain in the dataset has unique characteristics, including differences in feature count, contrast, and uniqueness. The optimal number of good features varies with the terrain. In this study, a static target number of keypoints was applied to each stage, which does not fully account for these differences. The system may generalize well across multiple datasets but it is not perfectly optimized for any specific one. A model that dynamically adjusts parameters or employs machine learning to optimize them would be more effective.
 
-\textbf{Variations in Terrain and Environmental Conditions:} Differences in terrain, lighting conditions, and feature density affect keypoint detection and matching accuracy. The system, even with dynamic parameter adjustments, cannot perfectly predict the expected quantity or quality of features without specific dataset tuning. Consequently, it is due to inherently miss some high-quality features or incorrectly match less reliable ones. Incorporating a machine learning model to predict expected feature density could enhance the system's performance.
+\textbf{Algorithmic Constraints:} The selected image processing and matching algorithms have inherent limitations, especially under extreme conditions or with highly repetitive features. Additionally, being optimized for efficiency, they may not capture and represent every feature within an image perfectly.
 
-\textbf{Inaccuracies in Camera Parameter Estimations:} While the system dynamically infers camera parameters, any inaccuracies in these estimations accumulate, leading to scaled errors during subsequent localization steps that rely on these parameters.
-
-\textbf{Image Noise and Resolution Limitations:} The Google Earth images used are at a fixed resolution of 1920x1080 pixels, which inherently contain some noise. This noise can adversely affect feature detection and matching accuracy.
-\textbf{Algorithmic Constraints:} The selected image processing and matching algorithms have inherent limitations, particularly when handling extreme conditions or highly repetitive features. Additionally, being optimized for portability, they may not capture and represent every feature within an image perfectly.
-
-Despite these factors, the achieved optimal radial error range, roughly 1-20 pixels across datasets, underscores the robustness and effectiveness of the image-based navigation system, affirming its suitability for practical UAV applications.
+Despite these factors, the system's achieved radial error range of 0-5 pixels across datasets underscores its robustness and effectiveness, affirming its suitability for practical UAV applications.
 
 \section{Stress Testing}
 
 This section involves the analysis of the system's robustness under various stressful conditions, including low-light environments and reduced mutual information. These tests were chosen practical and current relevance. The results aim to evaluate the system's performance under challenging scenarios and identify potential areas for improvement.
+
+Resolution Test
 
 \subsection{Mutual Information Results}
 

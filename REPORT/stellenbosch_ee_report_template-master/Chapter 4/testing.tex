@@ -308,30 +308,38 @@ Two outlier rejection methods, LMEDS (Least Median of Squares) and RANSAC (Rando
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{./Chapter 4/testresults/ransaclmedsrmse.png}
-        \caption{Radial GPS RMSE Comparison Across Datasets for LMEDS and RANSAC}
+        \caption{Radial GPS RMSE Comparison Across Datasets for LMEDS and RANSAC.}
         \label{fig:rmse_comparisonlmeds}
     \end{minipage}\hfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{./Chapter 4/testresults/ransaclmedsruntime.png}
-        \caption{Runtime Comparison Across Datasets for LMEDS and RANSAC}
+        \caption{Runtime Comparison Across Datasets for LMEDS and RANSAC.}
         \label{fig:runtime_comparisonlmeds}
     \end{minipage}
 \end{figure}
 
 
 
+
 \subsection{Lowe's Ratio Test}
 
-Lowe's ratio test was employed to filter keypoint matches by comparing the distance of the best match to the second-best match. A static threshold proved inadequate for generalizing across diverse datasets, leading to inconsistent accuracy. To enhance robustness, a dynamic thresholding approach was implemented. This required setting an initial threshold, and incrementing it, thereby increasing leniency until a certain number of matches, or percentage of the keypoints were found.  
+Lowe's Ratio Test was utilized to filter keypoint matches by comparing the distance of the best match to that of the second-best match. Initially, a static threshold was applied to determine match quality. However, this static approach was insufficient for handling the variability across diverse datasets, resulting in inconsistent accuracy. To improve robustness, a dynamic thresholding strategy was adopted. This approach involves setting an initial threshold and incrementally increasing it, thereby allowing greater leniency until a predefined number of matches or percentage of the keypoints is found.
 
-The accuracy significantly changed depending on these parameters, achieving it a robustness score of 3. However, its impact on accuracy is undoubtedly essential, and the dynamic thresholding makes it significantly more applicable. 
+The effectiveness of this dynamic thresholding method was evaluated through empirical testing. A lower initial threshold and lower increment value increased the likelihood of approaching the desired match count but impacted runtime. The initial threshold was set to 0.7, and the increment was established at 0.05. These parameters were chosen because they provided a balance between efficiency and accuracy; it may be changed crudely around these values without a significant impact on runtime or accuracy. 
 
-The initial threshold was set to 0.7, and the increment was set to 0.05. The threshold was incremented until 75\% of the keypoints were matched, or until the 500 good matches were found. It was tested that setting the initial threshold and increment too far below this, such as 0.5 and 0.025 respectively, led to a increases in runtime. Setting the initial threshold above 0.8, or the increment above 0.1 led to inclusion of too many noisy matches. If the exit conditions were too low or high, the same effect was observed. The chosen thresholds are within an acceptable range without being perfectly optimal.
+Through testing, a target of 500 keypoints was selected for its ability to consistently maintain stability across diverse datasets. The optimal range for reliable performance was found to be 300 to 700 keypoints, with 500 keypoints delivering the most stable results. Additionally, to prevent low-quality matches from entering the system when fewer keypoints were detected, a maximum match-to-keypoint ratio of 75\% was implemented. Given that the prior stage, Absolute Thresholding, was capped at, and expected to obtain, 1000 keypoints, this ratio typically exceeds the 500 match target, underscoring its role as a redundancy measure.
+ 
 
+\subsection{N-Match or Absolute Thresholding}
 
-\subsection{{N-Match or Absolute Thresholding}}
-These approaches leveraged fixed number or descriptor distance thresholds to filter matches. However, without relativity to the density and quality of keypoints, empirical tests revealed that these methods added instability to the system. They either had no meaningful effect or removed too many matches, leading to loss of accuracy. The thresholds were deemed too sensitive for generalized applications. 
+Absolute Thresholding, or N-Match Thresholding, involves filtering keypoint matches based on a fixed number of matches or a specific descriptor distance threshold. This method was tested in two configurations: applied before Lowe's Ratio Test and applied after.
+
+When Thresholding was applied after Lowe's Ratio Test, it operated on an already filtered set of matches. Therefore, this configuration proved to be highly sensitive to the chosen threshold. Empirical tests demonstrated that slight adjustments to the threshold often subtended situations of negligible effect or removal of almost all matches, leading to unpredictable performance and inconsistent accuracy across different datasets.
+
+In contrast, applying Absolute Thresholding before Lowe's Ratio Test offered significant advantages. This pre-filtering step effectively reduced the number of matches early in the processing pipeline, thereby decreasing the computational load for subsequent stages. Feature detectors occasionally produced abnormally high keypoint counts, up to five times the expected number of keypoints, due to variations within datasets, which led to excessive computational costs in Lowe's Ratio Test and subsequent transformation estimation stages, as well as an increase in noisy matches. By limiting the number of keypoints through Absolute Thresholding, these outliers were removed, enhancing both efficiency and match quality.
+
+N-Match thresholding was chosen above descriptor based thresholding due to its simple adaptability across terrains with varying quality keypoints. During the testing phase, various match threshold values between 1000 and 2500 keypoints were evaluated to identify the optimal balance between runtime efficiency and matching accuracy. Thresholds well below this keypoints were found to be too restrictive, while those above the limit had negligible effect. A threshold of 1000 keypoints was chosen due to significant gains in runtime relative to the upper limit, with negligible effect on accuracy. Naturally, this was also chosen in conjunction with Lowe's ratio's target match count of 500, to ensure that it had sufficient keypoints to meet this requirement. 
 
 
 
@@ -339,9 +347,9 @@ These approaches leveraged fixed number or descriptor distance thresholds to fil
 The following methods were selected based on the comprehensive evaluation of accuracy, runtime, and robustness across diverse datasets:
 
 \begin{itemize}
-    \item \textbf{Feature Detectors:} ORB for the crude similarity alignment layer and Dynamic AKAZE for the dense transformation estimation layer.
+    \item \textbf{Feature Detectors:} ORB for the crude similarity alignment layer due to its efficiency, and Dynamic AKAZE for the dense transformation estimation layer due to its accuracy. 
     \item \textbf{Local Feature Matcher:} FLANN for its superior runtime and scalability.
     \item \textbf{Transformational Estimator:} Rigid Transform SVD for its high accuracy, fast runtime, and robustness.
-    \item \textbf{Image Similarity Estimator:} Histogram for its superior accuracy and runtime.
-    \item \textbf{Optimization Techniques:} Dynamic Lowe's filtering for enhanced match quality and consistency. LMEDS was not included due to prior choices of methods not requiring it.
+    \item \textbf{Image Similarity Estimator:} Histogram for its accuracy and runtime.
+    \item \textbf{Optimization Techniques:} N-match thresholding targeting 1000 keypoints, Lowe's filtering targeting 500 keypoints. This was chosen to balance quality and quantity of matches. LMEDS or RANSAC was not included due to prior choices of methods not requiring it.
 \end{itemize}
