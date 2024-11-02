@@ -16,9 +16,9 @@
     $H$ & Homography matrix, specifically mapping points from one image plane to another.\\
     $GPS$ & Global Positioning System, providing geolocation and time information for navigation.\\
     $GNSS$ & Global Navigation Satellite System, a generic term for satellite-based navigation systems.\\
-
     $MAE$ & Mean Absolute Error, measuring the average localization error without directionality.\\
     $MI$ & Mutual Information, measuring the similarity or overlap between images, often used in image matching.\\
+    Lat-Lon Estimation & Estimation of Latitude and Longitude; If Referencing an error, it is the radial one.\\
 \end{tabularx}
 \endgroup
 
@@ -35,14 +35,11 @@
     \textbf{Affine Transformation} & 
     A planar transformation that preserves points, straight lines, and planes, including translation, scaling, rotation, and shearing. \\
 
-
     \textbf{Descriptors} & 
     Numerical values describing the characteristics of keypoints in an image, allowing for effective matching between different images. \\
 
     \textbf{Feature Detectors (or Extractors)} & 
     Processes for identifying distinct features in an image, which are invariant to changes in scale, rotation, and illumination. \\
-
-
 
     \textbf{Global Matching} & 
     Process of finding similarities and determining pose between entire images, considering full-image context rather than isolated keypoints. \\
@@ -74,6 +71,9 @@
     \textbf{Shearing} & 
     A type of affine transformation that slants the shape of an object in an image. Shearing changes angles between lines while keeping parallel lines intact. \\
 
+    \textbf{Localization} & 
+    The process of determining the position of an object or feature within a given space, used in the context of GPS and image-based navigation. \\
+
 \end{tabularx}
 \endgroup
 
@@ -88,9 +88,7 @@
     MAE     & Mean Absolute Error \\
     MI      & Mutual Information \\
     UAV     & Unmanned Aerial Vehicle \\
+    GNSS    & Global Navigation Satellite System \\
+    DOF     & Degrees of Freedom \\
 \end{tabular}
 \endgroup
-
-
-GNSS
-Lat-Lon

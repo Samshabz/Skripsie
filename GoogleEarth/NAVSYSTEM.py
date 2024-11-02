@@ -15,7 +15,7 @@ import gc
 
 
 class UAVNavigator:
-    def __init__(self, global_detector_choice, local_detector_choice, rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matching_technique, dataset_name, rotation_method, global_detector_threshold=0.001, local_detector_threshold=0.001, rotational_detector_threshold=0.001, translation_method=0, width_reduction=0, height_reduction=0, downsize_factor=1):
+    def __init__(self, global_detector_choice, local_detector_choice, rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matching_technique, dataset_name, rotation_method, global_detector_threshold=0.001, local_detector_threshold=0.001, rotational_detector_threshold=0.001, translation_method=0, width_reduction=0, height_reduction=0, downsize_factor=1, effectnum=0):
         self.stored_image_count = 0
         self.stored_global_keypoints = []
         self.stored_global_descriptors = []
@@ -39,6 +39,7 @@ class UAVNavigator:
 
         self.scale_factor_dual = 0
         self.downsize_factor = downsize_factor
+        self.effectnum = effectnum
         # angles 
         self.stored_headings = []
         self.estimated_headings = []
@@ -195,7 +196,7 @@ class UAVNavigator:
         # image = cv2.imread(image_path)  # Read the image in color
         # gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if len(image.shape) == 3 else image
         # print(f" directory is {self.directory}")
-        gray_image = self.pull_image(1-1, self.directory)
+        gray_image = self.pull_image(1-1, self.directory, apply_lighting=True)
         kps, _ = detector.get_keydes(gray_image)
         redo_true = True if len(kps) < num_kps else False
         return redo_true
@@ -332,8 +333,8 @@ class UAVNavigator:
         max_corr_score = -np.inf  # Initial maximum correlation score
         linked_angles = []
 
-        inference_img = self.pull_image(image_index, self.directory, bool_rotate=False)  # Load the current image
-        inference_img = cv2.resize(inference_img, None, fx=0.9, fy=0.9)
+        inference_img = self.pull_image(image_index, self.directory, apply_lighting=False)  # Load the current image
+        inference_img = cv2.resize(inference_img, None, fx=0.9, fy=0.9) 
         kp_inf, des_inf = self.global_detector.get_keydes(inference_img)
         
 
@@ -342,8 +343,8 @@ class UAVNavigator:
             
             if ref == image_index:  # Can change this to if i >= image_index to only infer from lower indices
                 continue  
-            ref_img = self.pull_image(ref, self.directory, bool_rotate=False)
-            ref_img = cv2.resize(ref_img, None, fx=0.9, fy=0.9)
+            ref_img = self.pull_image(ref, self.directory, apply_lighting=True)
+            ref_img = cv2.resize(ref_img, None, fx=0.9, fy=0.9) 
             kp_stored = self.stored_global_keypoints[ref]
             descriptors_stored = self.stored_global_descriptors[ref]
             Lowes_ratio = 0.8 if self.global_detector_name == "AKAZE" else 0.7
@@ -403,7 +404,7 @@ class UAVNavigator:
         
         return best_index, -0
 
-    def pull_image(self, index, directory, bool_rotate=False, use_estimate=False):
+    def pull_image(self, index, directory, apply_lighting=True):
         """Pull an image from from the directory with name index.jpg"""
         # print(f"Pulling image {index} from {directory}")
         image_path = os.path.join(directory, f'{index+1}.jpg')
@@ -411,18 +412,46 @@ class UAVNavigator:
         image = cv2.imread(image_path)  # Read the image in
         cropped_image = self.crop_image(image)
         # downscale
-        cropped_image = cv2.resize(cropped_image, None, fx=self.downsize_factor, fy=self.downsize_factor)
+        # cropped_image = cv2.resize(cropped_image, None, fx=(1), fy=self.downsize_factor)
         
 
 #         # # filter
-        # alpha = 0.5  # Contrast control (0.0-1.0, where <1 reduces contrast)
-        # beta = -50   # Brightness control (negative for darkening)
-        # low_light_image = cv2.convertScaleAbs(cropped_image, alpha=alpha, beta=beta)
-        # noise_sigma = 25
-        # noise = np.random.normal(0, noise_sigma, cropped_image.shape).astype(np.uint8)
-        # low_light_noisy_image = cv2.addWeighted(low_light_image, 0.9, noise, 0.1, 0)
-        # tinted_image = cv2.addWeighted(low_light_noisy_image, 0.7, np.zeros_like(cropped_image), 0.3, 0)
-        # cropped_image = tinted_image
+        if apply_lighting:
+            # night conditions
+            if self.effectnum == 1:
+                # Midnight settings (unchanged)
+                alpha = 0.5  # Contrast control (0.0-1.0, where <1 reduces contrast)
+                beta = -40   # Brightness control (negative for darkening)
+                low_light_image = cv2.convertScaleAbs(cropped_image, alpha=alpha, beta=beta)
+                noise_sigma = 20
+                noise = np.random.normal(0, noise_sigma, cropped_image.shape).astype(np.uint8)
+                low_light_noisy_image = cv2.addWeighted(low_light_image, 0.92, noise, 0.08, 0)
+                tinted_image = cv2.addWeighted(low_light_noisy_image, 0.85, np.zeros_like(cropped_image), 0.15, 0)
+                cropped_image = tinted_image
+            elif self.effectnum == 2:
+                # Late evening settings
+                alpha = 0.6  # Moderate contrast control
+                beta = -30   # Light darkening for late evening
+                low_light_image = cv2.convertScaleAbs(cropped_image, alpha=alpha, beta=beta)
+                noise_sigma = 15
+                noise = np.random.normal(0, noise_sigma, cropped_image.shape).astype(np.uint8)
+                low_light_noisy_image = cv2.addWeighted(low_light_image, 0.95, noise, 0.05, 0)
+                cropped_image = low_light_noisy_image
+            elif self.effectnum == 3:
+                # Early evening settings
+                alpha = 0.7  # Slightly higher contrast
+                beta = -15   # Subtle darkening for early evening
+                low_light_image = cv2.convertScaleAbs(cropped_image, alpha=alpha, beta=beta)
+                noise_sigma = 10
+                noise = np.random.normal(0, noise_sigma, cropped_image.shape).astype(np.uint8)
+                low_light_noisy_image = cv2.addWeighted(low_light_image, 0.97, noise, 0.03, 0)
+                cropped_image = low_light_noisy_image
+
+
+
+
+
+                
         # cv2.imshow("Tinted Low Light Image", tinted_image)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
@@ -542,7 +571,7 @@ class UAVNavigator:
         max_corr_score = -np.inf
         linked_angles = []
 
-        inference_img = self.pull_image(image_index, self.directory, bool_rotate=False)  # Load the current image
+        inference_img = self.pull_image(image_index, self.directory, apply_lighting=False)  # Load the current image
         kp_inf, des_inf = self.global_detector.get_keydes(inference_img)
 
         current_grids = divide_into_grids(inference_img, grid_size)
@@ -551,7 +580,7 @@ class UAVNavigator:
             if ref == image_index: 
                 continue
             
-            ref_img = self.pull_image(ref, self.directory, bool_rotate=False)
+            ref_img = self.pull_image(ref, self.directory, apply_lighting=False)
             kp_stored = self.stored_global_keypoints[ref]
             descriptors_stored = self.stored_global_descriptors[ref]
 
@@ -768,7 +797,7 @@ class UAVNavigator:
         # gray_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY) if len(cropped_image.shape) == 3 else cropped_image
         # # add im function is indexed with + 1
         
-        gray_image = self.pull_image(index-1, directory)
+        gray_image = self.pull_image(index-1, directory, apply_lighting=True)
         # gray_image = rotate_image(gray_image, heading)
         #1920 x 972 = 1080 * 0.9 = 972
         # lets normalize first based on stored headings 
@@ -910,10 +939,10 @@ class UAVNavigator:
     
     def reestimate_rotation(self, inference_index, best_index):
         """Reestimate the rotation angle based on the best match."""
-        inference_img = self.pull_image(inference_index, self.directory, bool_rotate=False)
+        inference_img = self.pull_image(inference_index, self.directory, apply_lighting=False)
         # rotational_detector = set_feature_extractor(2, 200) # detector choice : 1 is ORB, 1500 kp. 2 is AKAZE, 1500 kp
         kp_inf, des_inf = self.rotational_detector.get_keydes(inference_img)
-        ref_img = self.pull_image(best_index, self.directory, bool_rotate=False)
+        ref_img = self.pull_image(best_index, self.directory, apply_lighting=True)
         ref_kp, ref_des = self.rotational_detector.get_keydes(ref_img)
         
         # kp_stored = self.stored_local_keypoints[best_index]
@@ -937,7 +966,7 @@ class UAVNavigator:
         
         # Optionally overlay the first image
         if overlay:
-            img1 = self.pull_image(image, self.directory, bool_rotate=False)  # Assuming index '0' for the first image
+            img1 = self.pull_image(image, self.directory, apply_lighting=False)  # Assuming index '0' for the first image
             img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)  # Convert to RGB for plotting
             ax.imshow(cv2.addWeighted(img1, 0.4, img1, 0, 128))  # Add a semi-transparent filter
         
@@ -1004,10 +1033,10 @@ class UAVNavigator:
 
                     # image_to_infer_normed = None
                     # if bool_infer_factor:
-                    #     image_to_infer_normed = self.pull_image(i, self.directory, bool_rotate=True, use_estimate=False) # comparison with reference images
+                    #     image_to_infer_normed = self.pull_image(i, self.directory, apply_lighting=True, use_estimate=False) # comparison with reference images
                     # else:
-                    #     image_to_infer_normed = self.pull_image(i, self.directory, bool_rotate=True, use_estimate=True) # comparison between ref and inference
-                    # reference_image_normed = self.pull_image(best_index, self.directory, bool_rotate=True) # ref 
+                    #     image_to_infer_normed = self.pull_image(i, self.directory, apply_lighting=True, use_estimate=True) # comparison between ref and inference
+                    # reference_image_normed = self.pull_image(best_index, self.directory, apply_lighting=True) # ref 
 
                     # # image_to_infer_normed = cv2.GaussianBlur(image_to_infer_normed, (3, 3), 0)
                     # # reference_image_normed = cv2.GaussianBlur(reference_image_normed, (3, 3), 0) # global matching is highly noise variant
@@ -1350,13 +1379,13 @@ class UAVNavigator:
                 time_first  = time.time()
                 # GET KPS CURRENT
                 if bool_infer_factor:
-                    inference_image = self.pull_image(i, self.directory, bool_rotate=False)
+                    inference_image = self.pull_image(i, self.directory, apply_lighting=False)
                     if self.local_detector_name != "SuperPoint":
                         inf_kp, inf_des = self.local_detector.get_keydes(inference_image)
                     else:
                         inf_kp, inf_des = self.stored_feats[i], None
                 elif not bool_infer_factor:
-                    inference_image = self.pull_image(i, self.directory, bool_rotate=False)
+                    inference_image = self.pull_image(i, self.directory, apply_lighting=False)
                     inf_kp, inf_des = self.local_detector.get_keydes(inference_image) if self.local_detector_name != "SuperPoint" else (self.local_detector.get_features(inference_image), None)
                 
                 # GET MATCHES CURRENT 
@@ -1386,7 +1415,7 @@ class UAVNavigator:
                 elif not bool_infer_factor:
                     src_pts, dst_pts, gd_matches = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
                     # self.visualize_pts_and_actual(dst_pts - src_pts, actual_pixel_change_x_m, actual_pixel_change_y_m)
-                    # self.plot_matches(inference_image_rotated, self.pull_image(best_index, self.directory, bool_rotate=False), rotated_inf_kp, self.stored_local_keypoints[best_index], gd_matches)
+                    # self.plot_matches(inference_image_rotated, self.pull_image(best_index, self.directory, apply_lighting=False), rotated_inf_kp, self.stored_local_keypoints[best_index], gd_matches)
                 
 
                 # FILTER OUTLIERS
@@ -1466,7 +1495,7 @@ class UAVNavigator:
 
                 
 
-                image_size = self.pull_image(i, self.directory, bool_rotate=False).shape
+                image_size = self.pull_image(i, self.directory, apply_lighting=False).shape
                 act_tx_ratio = 1 - np.abs(Unnorm_x) / image_size[1]
                 act_ty_ratio = 1 - np.abs(Unnorm_y) / image_size[0]
                 act_tx_pixels = act_tx_ratio*image_size[1]
@@ -1737,7 +1766,7 @@ def print_choices(global_detector_choice,global_matcher_choice, global_matching_
 
 
     string_print = f"Preprocessing Global Detector: {printable_preproc_glob_detector}, Preprocessing Global Matcher: {printable_preproc_glob_matcher}, Global Matching Technique: {printable_global_matching_technique}, Local Detector: {printable_loc_detector}, Local Matcher: {printable_loc_matcher}"
-    print(string_print)
+    # print(string_print)
     return string_print
 
     # add all of this as a string for return
@@ -1819,7 +1848,8 @@ def main():
 
     rotation_method_to_use_arr = [0,1,2]
     width_reduction, height_reduction = 0, 0
-    scale_arr = [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
+    scale_arr = [1, 0.8, 0.6, 0.4, 0.3 , 0.25, 0.225,0.2, 0.175, 0.1]
+    scale = 1
     
     if 1==1:
     
@@ -1828,10 +1858,11 @@ def main():
                 # for local_detector_choice in local_detector_arr:
             # for rotation_method_to_use in rotation_method_to_use_arr:
             # for width_reduction, height_reduction in reduction_2D_array:
-            for scale in scale_arr:
+            # for scale in scale_arr:
                 #     for global_detector_choice in global_detector_arr:
                 # for scale_factor in [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]:
                 # for local_matcher_choice in local_matcher_arr:
+                for effect_num in [1,2,3]:
                     for main_dataset_name in dat_set_arr:
                         
                     # for global_matcher_technique in global_matcher_technique_arr:
@@ -1849,6 +1880,7 @@ def main():
                             gc.collect()
                             print(f'End of Iteration: {iteration_count}') 
                         print(f"Dataset: {main_dataset_name}")
+                        # print(f"Resolution: {int(1920/(1.9753*scale))} x {int(972/scale)}")
 
 
 
@@ -1860,13 +1892,13 @@ def main():
 
                         main_start_time = time.time()
                         
-                        navigator = UAVNavigator(global_detector_choice, local_detector_choice , rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, rotation_method_to_use, glob_thresh, loc_det_thresh, rot_det_thresh, translation_method_to_use, width_reduction, height_reduction, scale) # INITIALIZATION
-
+                        navigator = UAVNavigator(global_detector_choice, local_detector_choice , rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, rotation_method_to_use, glob_thresh, loc_det_thresh, rot_det_thresh, translation_method_to_use, width_reduction, height_reduction, scale, effectnum=effect_num) # INITIALIZATION
+                        
                         
                         
 
                         iteration_count += 1
-                        print(f"Scale: {scale}")
+                        # print(f"Scale: {scale}")
                         
                         # Step 1: Add images and infer factors
                         
@@ -1897,7 +1929,7 @@ def main():
                         pixel_x_arr = np.array(navigator.pixel_diffs)[:,0]
                         pixel_y_arr = np.array(navigator.pixel_diffs)[:,1]
                         # MEAN MAX MIN
-                        print(f"Mean Pixel X: {np.mean(pixel_x_arr)}, Mean Pixel Y: {np.mean(pixel_y_arr)}", f"Max Pixel X: {np.max(pixel_x_arr)}, Max Pixel Y: {np.max(pixel_y_arr)}", f"Min Pixel X: {np.min(pixel_x_arr)}, Min Pixel Y: {np.min(pixel_y_arr)}")
+                        # print(f"Mean Pixel X: {np.mean(pixel_x_arr)}, Mean Pixel Y: {np.mean(pixel_y_arr)}", f"Max Pixel X: {np.max(pixel_x_arr)}, Max Pixel Y: {np.max(pixel_y_arr)}", f"Min Pixel X: {np.min(pixel_x_arr)}, Min Pixel Y: {np.min(pixel_y_arr)}")
 
 
 
@@ -1936,9 +1968,15 @@ def main():
                         # find radial mean movement of UAV
                         gps_act_x, gps_act_y = np.mean(np_act_change[:,0]), np.mean(np_act_change[:,1])
                         mean_radial_movement = np.sqrt(gps_act_x**2 + gps_act_y**2)
+
+                        radial_percents = np.array(100*np_est_dev/np.linalg.norm(np_act_change, axis=1))
+                        # find mean radial percent and max radial percent
+                        mean_radial_percent = np.mean(radial_percents)
+                        max_radial_percent = np.max(radial_percents)
+                        print(f"Mean Radial Percent: {mean_radial_percent} %, Max Radial Percent: {max_radial_percent} %")
                         # find swing percentage
                         swing_percent = np.array(100*np_est_dev/mean_radial_movement)
-                        print(f"Percentage Deviation: {swing_percent} %")
+                        # print(f"Percentage Deviation: {swing_percent} %")
                         string_percent_GPS_dev = f"Percentage GPS Deviation: {swing_percent} %"
                         string_params = print_choices(global_detector_choice,global_matcher_choice, global_matcher_technique, local_detector_choice, local_matcher_choice)
                         string_GPS_error = f"RMSE GPS error: {np_est_dev}" 

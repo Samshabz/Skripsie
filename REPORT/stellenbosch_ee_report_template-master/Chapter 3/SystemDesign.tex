@@ -2,7 +2,7 @@
 
 \chapter{System Design}
 
-This chapter outlines the chosen methodology for the UAV navigation system, detailing the pipeline and its various components. The system is designed to accurately estimate the UAV's position and heading, even in scenarios where GPS data is unreliable or unavailable. The high-level flow of the system is illustrated in Figure \ref{fig:HighLevelFlow}.
+This chapter outlines the chosen methodology for the UAV navigation system, detailing the pipeline and its various components. The system is designed to accurately estimate the UAV's position and heading after GNSS signal is lost. The high-level flow of the system is illustrated in Figure \ref{fig:HighLevelFlow}.
 
 \begin{figure}[H]
     \centering
@@ -15,8 +15,7 @@ This chapter outlines the chosen methodology for the UAV navigation system, deta
 
 
 \section{System Pipeline}
-
-The UAV image-processing pipeline comprises several stages, each addressing specific goals in the larger aim to estimate the current GPS and heading of the UAV. These stages require varying levels of precision and efficiency to ensure robust performance.
+The system pipeline consists of multiple stages, each designed to perform a specific task in the navigation process. The pipeline is designed to be robust, accurate, and computationally efficient, ensuring reliable navigation in various operational scenarios. The pipeline stages are detailed below.
 
 \subsection{Pipeline Stages}
 
@@ -25,9 +24,8 @@ The UAV image-processing pipeline comprises several stages, each addressing spec
     The process begins with capturing a live image from the UAV’s downward-facing camera. This real-time visual input provides essential information about the UAV’s environment, forming the basis for position estimation.
 
     \item \textbf{Extract and Store Features:}  
-    Keypoints and descriptors are extracted from the current image to aid in the matching process. This extraction occurs in two layers: the coarse layer, used in the second stage of search space reduction, and the dense layer, used during the precise transformation stage. The system also extracts features when GPS is available to reduce computational load during critical phases when GNSS is lost.
+    Keypoints and descriptors are extracted from the current image to aid in the matching process. This extraction occurs in two layers: the coarse layer, used in the second stage of search space reduction, and the dense layer, used during the precise transformation stage. The system also extracts features when GNSS is available to reduce computational load during critical phases when GNSS is lost.
     
-
     \item \textbf{Store Corresponding Features and Telemetry:}  
     Extracted features (keypoints and descriptors) along with their corresponding telemetry data (GNSS position and heading) are stored for future reference. Stored features facilitate relative transformation inference when GNSS is unavailable, while telemetry data assists in converting relative transformations to real-world coordinates and headings.
 
@@ -117,8 +115,36 @@ The system design integrates multiple features to ensure robustness, accuracy, a
     \item \textbf{Optimization Techniques:} Standard Deviation Filtering, LMEDS, RANSAC, Lowe's ratio test, n-Match thresholding, and absolute thresholding for match refinement. Empirical tests indicated that cross-checking was not applicable due to the excessive computational costs involved. KNN
 \end{itemize}
 
+\subsection{Software}
+This sections gives a brief idea of the flow of software used in the system. This snippet will be found in the main loop and details the key flows. The full code may be found at \url{https://github.com/Samshabz/Skripsie}
+
+\begin{lstlisting}[language=Python, basicstyle=\ttfamily, keywordstyle=\bfseries, commentstyle=\itshape\color{gray}]
+    
+# Setup Lines...
+
+# Phase 1: GNSS is Available and Inference Mode is On
+# Add images from the dataset and infer Pixel to Metre Factor
+for i in range(1, inference_images + 1): 
+    navigator.add_image(i, directory)
+navigator.estim_pos(inference_images, Inference_Mode_On=True)
+navigator.find_pixel_to_metre_factor()
+
+# Phase 2: GNSS is Available and Inference Mode is Off
+# Add the rest of the images from dataset
+for i in range(inference_images+1, total_images + 1):
+    navigator.add_image(i, directory)
+
+# Phase 3: GNSS is Unavailable
+# Estimate the position of the UAV
+navigator.estim_pos(total_images, Inference_Mode_On=False)
+
+# Debug Lines...
+
+\end{lstlisting}
+
+
 
 \section{Conclusion}
 
-The system design integrates feature extraction, matching, and transformation estimation to enable precise UAV navigation, even in the absence of reliable GPS data. By employing a combination of diverse feature detectors and optimizing various pipeline stages, the system ensures robustness, accuracy, and computational efficiency across different operational scenarios. 
+The system design integrates feature extraction, matching, and transformation estimation to enable precise UAV navigation in the absence of GNSS signal. By employing a combination of diverse feature detectors and optimizing various pipeline stages, the system ensures robustness, accuracy, and computational efficiency across different operational scenarios. 
 

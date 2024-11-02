@@ -43,11 +43,12 @@
 \contentsline {subsection}{\numberline {3.1.1}Pipeline Stages}{17}{subsection.3.1.1}%
 \contentsline {section}{\numberline {3.2}Dynamic Methods and Techniques}{20}{section.3.2}%
 \contentsline {section}{\numberline {3.3}Testing Shortlist}{21}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Conclusion}{21}{section.3.4}%
+\contentsline {subsection}{\numberline {3.3.1}Software}{21}{subsection.3.3.1}%
+\contentsline {section}{\numberline {3.4}Conclusion}{22}{section.3.4}%
 \contentsline {chapter}{\numberline {4}Comparison of Methods}{23}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Testing Setup}{23}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Critical Testing Pipeline Understanding}{23}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Datasets}{24}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.2}Datasets}{23}{subsection.4.1.2}%
 \contentsline {subsection}{\numberline {4.1.3}Testing Structure}{25}{subsection.4.1.3}%
 \contentsline {section}{\numberline {4.2}Feature Detectors}{26}{section.4.2}%
 \contentsline {subsection}{\numberline {4.2.1}Accuracy and Runtime}{27}{subsection.4.2.1}%
@@ -73,29 +74,27 @@
 \contentsline {subsection}{\numberline {4.6.3}N-Match or Absolute Thresholding}{35}{subsection.4.6.3}%
 \contentsline {section}{\numberline {4.7}Summary}{36}{section.4.7}%
 \contentsline {chapter}{\numberline {5}Results}{37}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Detailed Performance Analysis}{37}{section.5.1}%
+\contentsline {section}{\numberline {5.1}Key Metric Analysis}{37}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Key Performance Metrics}{37}{subsection.5.1.1}%
 \contentsline {subsection}{\numberline {5.1.2}Flight Path Analysis}{39}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Detailed Performance Metrics}{39}{subsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.1.4}Dataset Performance Analysis}{40}{subsection.5.1.4}%
-\contentsline {subsection}{\numberline {5.1.5}Error Distribution Map}{41}{subsection.5.1.5}%
-\contentsline {subsubsection}{Sources of Error}{41}{subsubsection*.41}%
+\contentsline {subsection}{\numberline {5.1.3}Error Distribution Map}{40}{subsection.5.1.3}%
+\contentsline {subsubsection}{Sources of Error}{41}{subsubsection*.38}%
 \contentsline {section}{\numberline {5.2}Stress Testing}{42}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Mutual Information Results}{42}{subsection.5.2.1}%
-\contentsline {subsubsection}{Methodology}{43}{subsubsection*.42}%
-\contentsline {subsubsection}{Results}{43}{subsubsection*.43}%
-\contentsline {subsubsection}{Conclusions}{44}{subsubsection*.45}%
-\contentsline {subsection}{\numberline {5.2.2}Low-Light Testing}{44}{subsection.5.2.2}%
-\contentsline {subsubsection}{Results}{45}{subsubsection*.47}%
-\contentsline {section}{\numberline {5.3}Results Conclusion}{46}{section.5.3}%
-\contentsline {chapter}{\numberline {6}Summary and Conclusion}{47}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Future Work}{49}{chapter.7}%
-\contentsline {subsection}{\numberline {7.0.1}Multi-Image Weighted Inference System}{49}{subsection.7.0.1}%
-\contentsline {subsection}{\numberline {7.0.2}Non-Planar Stereo Matching}{49}{subsection.7.0.2}%
-\contentsline {subsection}{\numberline {7.0.3}Integration with Mapping and Reference Images}{49}{subsection.7.0.3}%
-\contentsline {subsection}{\numberline {7.0.4}Distortion Corrections}{50}{subsection.7.0.4}%
-\contentsline {subsection}{\numberline {7.0.5}Implementation on a Single Board Computer (SBC)}{50}{subsection.7.0.5}%
-\contentsline {subsection}{\numberline {7.0.6}Higher Resolution Imaging}{50}{subsection.7.0.6}%
-\contentsline {chapter}{Bibliography}{51}{chapter*.49}%
-\contentsline {chapter}{\numberline {A}Project Planning Schedule}{54}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Outcomes Compliance}{55}{appendix.B}%
+\contentsline {subsection}{\numberline {5.2.1}Low Resolution Testing}{42}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Dynamic Lighting Testing}{45}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Mutual Information Results}{45}{subsection.5.2.3}%
+\contentsline {subsubsection}{Methodology}{45}{subsubsection*.45}%
+\contentsline {subsection}{\numberline {5.2.4}Low-Light Testing}{47}{subsection.5.2.4}%
+\contentsline {subsubsection}{Results}{48}{subsubsection*.50}%
+\contentsline {section}{\numberline {5.3}Results Conclusion}{49}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Summary and Conclusion}{51}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Future Work}{53}{chapter.7}%
+\contentsline {subsection}{\numberline {7.0.1}Multi-Image Weighted Inference System}{53}{subsection.7.0.1}%
+\contentsline {subsection}{\numberline {7.0.2}Non-Planar Stereo Matching}{53}{subsection.7.0.2}%
+\contentsline {subsection}{\numberline {7.0.3}Integration with Mapping and Reference Images}{53}{subsection.7.0.3}%
+\contentsline {subsection}{\numberline {7.0.4}Distortion Corrections}{54}{subsection.7.0.4}%
+\contentsline {subsection}{\numberline {7.0.5}Implementation on a Single Board Computer (SBC)}{54}{subsection.7.0.5}%
+\contentsline {subsection}{\numberline {7.0.6}Higher Resolution Imaging}{54}{subsection.7.0.6}%
+\contentsline {chapter}{Bibliography}{55}{chapter*.53}%
+\contentsline {chapter}{\numberline {A}Project Planning Schedule}{58}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Outcomes Compliance}{59}{appendix.B}%

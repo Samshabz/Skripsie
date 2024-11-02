@@ -40,12 +40,29 @@ M.~Weiss, ``Personal communication,'' RF Engineer, 2024, june 26.
   Available: \url{https://www.geotab.com/blog/what-is-gps/}
 \BIBentrySTDinterwordspacing
 
+\bibitem{khalil2024gnss}
+\BIBentryALTinterwordspacing
+J.~Khalil, ``Gnss spoofing threatens airline safety, alarming pilots and
+  aviation officials,'' \emph{GPS World}, 2024. [Online]. Available:
+  \url{https://www.gpsworld.com/gnss-spoofing-threatens-airline-safety-alarming-pilots-and-aviation-officials/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{wright2022cold}
+M.~J. Wright, L.~Anastassiou, C.~Mishra, J.~M. Davies, A.~M. Phillips,
+  S.~Maskell, and J.~F. Ralph, ``Cold atom inertial sensors for navigation
+  applications,'' \emph{Frontiers in Physics}, vol.~10, p. 994459, 2022.
+
 \bibitem{Zhuang2023}
 Y.~Zhuang, X.~Sun, Y.~Li, J.~Huai, L.~Hua, X.~Yang, X.~Cao, P.~Zhang, Y.~Cao,
   L.~Qi, J.~Yang, N.~El-Bendary, N.~El-Sheimy, J.~Thompson, and R.~Chen,
   ``Multi-sensor integrated navigation/positioning systems using data fusion:
   From analytics-based to learning-based approaches,'' \emph{Information
   Fusion}, vol.~95, pp. 62--90, 2023.
+
+\bibitem{brewer_line_2024}
+J.~Brewer, ``Line of sight requirements for reliable low-power rf
+  communication,'' White Paper, ATEK Access Technologies, 2024, senior
+  Electrical Design Engineer.
 
 \bibitem{scoutaerial2024lidar}
 \BIBentryALTinterwordspacing
@@ -54,26 +71,13 @@ Y.~Zhuang, X.~Sun, Y.~Li, J.~Huai, L.~Hua, X.~Yang, X.~Cao, P.~Zhang, Y.~Cao,
   \url{https://www.scoutaerial.com.au/article-lidar/}
 \BIBentrySTDinterwordspacing
 
-\bibitem{brewer_line_2024}
-J.~Brewer, ``Line of sight requirements for reliable low-power rf
-  communication,'' White Paper, ATEK Access Technologies, 2024, senior
-  Electrical Design Engineer.
-
-\bibitem{wright2022cold}
-M.~J. Wright, L.~Anastassiou, C.~Mishra, J.~M. Davies, A.~M. Phillips,
-  S.~Maskell, and J.~F. Ralph, ``Cold atom inertial sensors for navigation
-  applications,'' \emph{Frontiers in Physics}, vol.~10, p. 994459, 2022.
-
-\bibitem{odonovan2005optical}
+\bibitem{arafat2023vision}
 \BIBentryALTinterwordspacing
-P.~O'Donovan, ``Optical flow: Techniques and applications,'' 2005, accessed:
-  2024-10-29. [Online]. Available:
-  \url{http://dgp.toronto.edu/~donovan/stabilization/opticalflow.pdf}
+M.~Y. Arafat, M.~M. Alam, and S.~Moh, ``Vision-based navigation techniques for
+  unmanned aerial vehicles: Review and challenges,'' \emph{Drones}, vol.~7,
+  no.~2, p.~89, 2023, accessed: 2024-10-29. [Online]. Available:
+  \url{https://doi.org/10.3390/drones7020089}
 \BIBentrySTDinterwordspacing
-
-\bibitem{barnum2003practical}
-P.~Barnum, B.~Hu, and C.~Brown, ``Exploring the practical limits of optical
-  flow,'' no. Technical Report 806, August 2003.
 
 \bibitem{sim2002integrated}
 \BIBentryALTinterwordspacing
@@ -91,6 +95,10 @@ X.~Zhang, F.~Xiao, M.~Zheng, and Z.~Xie, ``Uav image matching from handcrafted
   no.~1, 2024. [Online]. Available:
   \url{https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=e074c475d93d5e79ded55b5554ea57cb5fb71207}
 \BIBentrySTDinterwordspacing
+
+\bibitem{barnum2003practical}
+P.~Barnum, B.~Hu, and C.~Brown, ``Exploring the practical limits of optical
+  flow,'' no. Technical Report 806, August 2003.
 
 \bibitem{trajkovic1998fast}
 \BIBentryALTinterwordspacing
