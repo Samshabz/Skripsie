@@ -21,18 +21,18 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
-\bibitem{GoogleEarth}
-{Google LLC}, ``Google earth,'' \url{https://earth.google.com/}, 2024,
-  accessed: 2024-10-29.
-
 \bibitem{bian2020gms}
 J.-W. Bian, W.-Y. Lin, Y.~Liu, L.~Zhang, S.-K. Yeung, M.-M. Cheng, and I.~Reid,
   ``Gms: Grid-based motion statistics for fast, ultra-robust feature
   correspondence,'' \emph{International Journal of Computer Vision}, vol. 128,
   June 2020.
 
+\bibitem{GoogleEarth}
+{Google LLC}, ``Google earth,'' \url{https://earth.google.com/}, 2024,
+  accessed: 2024-10-29.
+
 \bibitem{Weiss2024}
-M.~Weiss, ``Personal communication,'' RF Engineer, 2024, june 26.
+M.~Weiss, ``Personal communication,'' RF Engineer, June 2024.
 
 \bibitem{geotab2024gps}
 \BIBentryALTinterwordspacing
@@ -47,17 +47,17 @@ J.~Khalil, ``Gnss spoofing threatens airline safety, alarming pilots and
   \url{https://www.gpsworld.com/gnss-spoofing-threatens-airline-safety-alarming-pilots-and-aviation-officials/}
 \BIBentrySTDinterwordspacing
 
-\bibitem{wright2022cold}
-M.~J. Wright, L.~Anastassiou, C.~Mishra, J.~M. Davies, A.~M. Phillips,
-  S.~Maskell, and J.~F. Ralph, ``Cold atom inertial sensors for navigation
-  applications,'' \emph{Frontiers in Physics}, vol.~10, p. 994459, 2022.
-
 \bibitem{Zhuang2023}
 Y.~Zhuang, X.~Sun, Y.~Li, J.~Huai, L.~Hua, X.~Yang, X.~Cao, P.~Zhang, Y.~Cao,
   L.~Qi, J.~Yang, N.~El-Bendary, N.~El-Sheimy, J.~Thompson, and R.~Chen,
   ``Multi-sensor integrated navigation/positioning systems using data fusion:
   From analytics-based to learning-based approaches,'' \emph{Information
   Fusion}, vol.~95, pp. 62--90, 2023.
+
+\bibitem{wright2022cold}
+M.~J. Wright, L.~Anastassiou, C.~Mishra, J.~M. Davies, A.~M. Phillips,
+  S.~Maskell, and J.~F. Ralph, ``Cold atom inertial sensors for navigation
+  applications,'' \emph{Frontiers in Physics}, vol.~10, p. 994459, 2022.
 
 \bibitem{brewer_line_2024}
 J.~Brewer, ``Line of sight requirements for reliable low-power rf

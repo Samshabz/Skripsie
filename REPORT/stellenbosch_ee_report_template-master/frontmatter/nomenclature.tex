@@ -8,7 +8,7 @@
 \renewcommand{\arraystretch}{1.2}
 \renewcommand{\tabularxcolumn}[1]{p{#1}}
 \begin{tabularx}{\textwidth}{@{}p{2.5cm}L}
-    $RMSE$ & Root Mean Square Error, representing the average magnitude of errors. In this study, the usage of this metric specifically, and frequently, uses this term to refer to the radial error in GPS estimate, in metres, averaged across the dataset. \\
+    $RMSE$ & Root Mean Square Error, representing the average magnitude of errors. In this study, the usage of this metric mainly refers to the radial error in Latitude, Longitude estimate, in metres, averaged across the dataset. \\
     $d_{\text{radial}}$ & Radial error distance, measuring the distance between estimated and true positions in meters.\\
     $x$, $y$ & Coordinates of a point in an image or on the ground plane.\\
     $\theta$ & Rotation angle between consecutive images in degrees or radians, used for orientation alignment.\\
@@ -65,15 +65,21 @@
     \textbf{Planar Transforms} & 
     General transformations applied to a plane in 2D space, such as affine transformations, homography, scaling, and shearing, which are crucial for image alignment. \\
 
-    \textbf{Scaling} & 
-    A transformation that changes the size of an image or its features without altering its shape, normalizing feature sizes across different images. \\
+\end{tabularx}
+    \endgroup
 
-    \textbf{Shearing} & 
-    A type of affine transformation that slants the shape of an object in an image. Shearing changes angles between lines while keeping parallel lines intact. \\
+\begingroup
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}p{2.5cm}L}
 
-    \textbf{Localization} & 
-    The process of determining the position of an object or feature within a given space, used in the context of GPS and image-based navigation. \\
+\textbf{Scaling} & 
+A transformation that changes the size of an image or its features without altering its shape, normalizing feature sizes across different images. \\
 
+\textbf{Shearing} & 
+A type of affine transformation that slants the shape of an object in an image. Shearing changes angles between lines while keeping parallel lines intact. \\
+
+\textbf{Localization} & 
+The process of determining the position of an object or feature within a given space, used in the context of GNSS and image-based navigation. \\
 \end{tabularx}
 \endgroup
 

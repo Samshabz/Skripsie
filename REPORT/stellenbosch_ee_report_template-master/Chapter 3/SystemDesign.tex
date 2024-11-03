@@ -1,8 +1,10 @@
 
 
 \chapter{System Design}
+\vspace{-1cm}
 
-This chapter outlines the chosen methodology for the UAV navigation system, detailing the pipeline and its various components. The system is designed to accurately estimate the UAV's position and heading after GNSS signal is lost. The high-level flow of the system is illustrated in Figure \ref{fig:HighLevelFlow}.
+
+uavsThis chapter outlines the developed methodology for the UAV navigation system, detailing the pipeline and its various components. The system is designed to accurately estimate the UAV's position and heading after GNSS signal is lost. The high-level flow of the system is illustrated in Figure \ref{fig:HighLevelFlow}.
 
 \begin{figure}[H]
     \centering
@@ -24,7 +26,7 @@ The system pipeline consists of multiple stages, each designed to perform a spec
     The process begins with capturing a live image from the UAV’s downward-facing camera. This real-time visual input provides essential information about the UAV’s environment, forming the basis for position estimation.
 
     \item \textbf{Extract and Store Features:}  
-    Keypoints and descriptors are extracted from the current image to aid in the matching process. This extraction occurs in two layers: the coarse layer, used in the second stage of search space reduction, and the dense layer, used during the precise transformation stage. The system also extracts features when GNSS is available to reduce computational load during critical phases when GNSS is lost.
+    Keypoints and descriptors are extracted from the current image to aid in the matching process. This extraction occurs in two layers: the coarse layer, used in the second stage of image match search space reduction, and the dense layer, used during the precise transformation stage. The system also extracts features when GNSS is available to reduce computational load during critical phases when GNSS is lost.
     
     \item \textbf{Store Corresponding Features and Telemetry:}  
     Extracted features (keypoints and descriptors) along with their corresponding telemetry data (GNSS position and heading) are stored for future reference. Stored features facilitate relative transformation inference when GNSS is unavailable, while telemetry data assists in converting relative transformations to real-world coordinates and headings.
@@ -38,11 +40,11 @@ The system pipeline consists of multiple stages, each designed to perform a spec
     The matching process is optimized to ensure robustness against noise and outliers, with a focus on computational efficiency. The techniques include usage of match acquisition techniques, search techniques, as well as subsequent optimization techniques to refine the matches.
     
     \item \textbf{Find Most Similar Image:}  
-    The stage involves two layers of search space reduction until a single image is chosen for the current image to accurately infer its relative transformation against. 
+    The stage involves two layers of potential image match search space reduction until a single image is chosen for the current image to accurately infer its relative transformation against. 
     
     The first is reduction based on proximity to the last known Lat-lon Coordinates. This stage outputs 5 matches. 
     
-    Thereafter, a more precise global matching technique is applied to identify the most similar match from the reduced search space. This requires initial rotational alignment using the coarse layer of matched features and subsequent global matching techniques to identify the best match based on similarity scores. The crude layer is chosen as global matching techniques were proven in the testing phase to be robust against minor rotational inaccuracies, allowing for efficiency prioritization. 
+    Thereafter, a more precise global matching technique is applied to identify the most similar match from the reduced image search space. This requires initial rotational alignment using the coarse layer of matched features and subsequent global matching techniques to identify the best match based on similarity scores. The crude layer is chosen as global matching techniques were proven in the testing phase to be robust against minor rotational inaccuracies, allowing for efficiency prioritization. 
 
 
     \item \textbf{Estimate Planar Transformation:}  
@@ -62,27 +64,17 @@ The system pipeline consists of multiple stages, each designed to perform a spec
 
     The estimated translation at this stage is a pixel value representing the displacement between aligned images. To convert this to real-world latitude and longitude coordinates, the vector must be scaled in magnitude and rotated to align with the global coordinate system. This process consists of the following steps:
 
-    First, the translation vector components, representing displacement between the current and reference images, are initially relative to the internal coordinate system. This vector is rotated by the heading of the reference image, aligning it with the global latitude-longitude system without altering its magnitude.  
-    \emph{At this stage, the translation vector is aligned with the global coordinate system but remains in pixel units.}
+    The translation vector, initially relative to the internal image coordinate system, is rotated by the heading of the reference image, aligning it with the global latitude-longitude system without altering its pixel magnitude.  
 
-    Next, the estimated pixel displacement is multiplied by the inferred pixel-to-metre conversion factor, resulting in a translation vector scaled to represent real-world distances in metres.  
-    \emph{At this stage, the translation vector represents real-world distances in metres and is aligned with the global coordinate system.}
+    Next, the estimated pixel displacement is multiplied by the inferred pixel-to-metre conversion factor, resulting in a translation vector in metres with East and North components. 
 
-    Then, the metre-based displacement components, now aligned with the global coordinate system, are converted to relative latitude and longitude changes. To account for the Earth's oblate spheroid shape, the equations below are used, which consider the latitude-dependent distance per degree of longitude:
+    Then, this vector is converted to a latitude and longitude displacement. To account for the Earth's oblate spheroid shape, the equations below are used, which consider the latitude-dependent distance per degree of longitude:  
+    
+    $ \Delta \text{Lon} = \frac{\Delta \text{East}_{\text{m}}}{111320 \cdot \cos(\text{Lat}_{\text{ref}})}, \quad \Delta \text{Lat} = \frac{\Delta \text{North}_{\text{m}}}{111320} $
 
-    \[
-    \Delta \text{Longitude} = \frac{\Delta \text{East}_{\text{metres}}}{111320 \cdot \cos(\text{Latitude}_{\text{reference}})}, \quad \Delta \text{Latitude} = \frac{\Delta \text{North}_{\text{metres}}}{111320}
-    \]
+    where the East and North components represent the eastward and northward displacement vector components in metres, aligned to the global coordinate system. The constant 111320 converts degrees of latitude to metres, with longitude scaled by $\cos(\text{Lat}_{\text{ref}})$ to reflect latitude-dependent longitudinal distance. 
 
-    where:
-    \begin{itemize}
-        \item \(\Delta \text{East}_{\text{metres}}\) and \(\Delta \text{North}_{\text{metres}}\) represent the eastward and northward displacement vector components in metres, aligned to the global coordinate system.
-        \item The constant \(111320\) converts degrees of latitude to metres, with longitude scaled by \(\cos(\text{Latitude}_{\text{reference}})\) to reflect latitude-dependent longitudinal distance.
-    \end{itemize}
-
-    \emph{At this stage, the translation vector represents relative changes in latitude and longitude, aligned with the global coordinate system.}
-
-    Finally, the calculated changes in latitude and longitude are added to the reference image’s known coordinates, yielding the UAV’s estimated absolute position.  
+    Finally, the calculated displacements in latitude and longitude are added to the reference image’s known coordinates, yielding the UAV’s estimated absolute position.  
 
     \item \textbf{Heading and Lat-Lon Estimate:}
     The systems heading and Lat-Lon estimates are outputted to the user interface for real-time monitoring and in practice, navigation.
@@ -92,50 +84,50 @@ The system pipeline consists of multiple stages, each designed to perform a spec
 
 
 \section{Dynamic Methods and Techniques}
-Upon rigorous testing, it was seen that not all parameters in the pipeline can generalize without tuning. However, static environmental tuning is not always possible or practical. To get around this, two dynamic methods were implemented to adjust these parameters to better account for varying densities of quality and quantities of keypoints across datasets. 
+Testing showed that the degree of environmental variation often leads to situations where a static pipeline will either not find a sufficient number of matches or take too long. To maintain generalizability across datasets (terrains), adaptive methods were implemented to adjust the pipeline without prior knowledge of the environment.
 
-Firstly, the keypoint filtering threshold of AKAZE was inconsistent across datasets, with static thresholds subtending unreasonably low or high numbers keypoints in different datasets. To address this, a dynamic method was implemented to adjust the leniency threshold based on the number of keypoints detected. This is done for the first image in the dataset, since changing terrains were not considered in this study. This ensures a stable number of keypoints were found. Specifically, enough to ensure a stable estimate but not too many to cause excessive computational overheads and noise.
+The first adaptation was made to AKAZE, which did not have a built-in method to adjust the number of keypoints detected. This method sampled the first image in the dataset and altered its threshold iteratively until a set number of keypoints were found. This was done once per dataset to maintain computational efficiency, but in practice, it may be done per n images or per time interval.
 
-Secondly, Lowe's ratio, an extremely powerful filtering technique in the matching process, was found to be highly sensitive to the dataset. This was caused by varying keypoint qualities for the same number of keypoints across datasets. To address this, a dynamically adjusting threshold was applied. This threshold increases in leniency until a sufficient number of matches are found or a certain percentage of the total number of keypoints are matched. 
-
-The above dynamic methods ensure that the system remains stable in different scenarios, where prior knowledge of the environment is not available. Naturally, this may be adapted to re-estimate these parameters, based on a time constraint, in varying environment missions. 
+Secondly, Lowe's ratio employed an adjusting threshold that increased in leniency until a set number of matches or a percentage of available keypoints were found. This was done per image.
 
 
 \section{Testing Shortlist}
 \label{sec:testing_shortlist}
+The following methods and techniques were tested, with some exclusions based on empirical results:
 
-The system design integrates multiple features to ensure robustness, accuracy, and efficiency in UAV navigation tasks. The following components have been selected and tested across various scenarios:
+\textbf{Feature Detectors:} AKAZE, SuperPoint (with LightGlue matcher), and ORB. Note, the SuperPoint detector is used in conjunction with the LightGlue matcher to enhance performance.
 
-\begin{itemize}
-    \item \textbf{Feature Detectors:} AKAZE, SuperPoint (with LightGlue matcher), and ORB. Note, the SuperPoint detector is used in conjunction with the LightGlue matcher to enhance performance.
-    \item \textbf{Feature Matchers:} FLANN and BruteForce. KNN 
-    \item \textbf{Search Techniques:} KNN with \( K=2 \). Empirical tests showed a value of 1 to be ineffective without Lowe's ratio test, while values above 2 introduced excessive computational overheads. Further, radius search was seen to be unreliable due to the varying density of keypoints across datasets.
-    \item \textbf{Planar Transformation Estimation:} Homography, Affine, Partial Affine (Rigid) transformations using OpenCV, and SVD-based rigid transformations for rotation and translation estimations. Rotational and Translational estimates were initially tested separately, due to the possibility of different responses to different prior stages and methods. However, it was seen that inter-method comparisons subtended equivalent conclusions; the methods were tested for brevity using a combined transform.
-    \item \textbf{Global Image Similarity Measures:} SSIM, histogram matching, local retrofit, and cross-correlation.
-    \item \textbf{Optimization Techniques:} Standard Deviation Filtering, LMEDS, RANSAC, Lowe's ratio test, n-Match thresholding, and absolute thresholding for match refinement. Empirical tests indicated that cross-checking was not applicable due to the excessive computational costs involved. KNN
-\end{itemize}
+\textbf{Feature Matchers:} FLANN and BruteForce. KNN.
 
-\subsection{Software}
-This sections gives a brief idea of the flow of software used in the system. This snippet will be found in the main loop and details the key flows. The full code may be found at \url{https://github.com/Samshabz/Skripsie}
+\textbf{Search Techniques:} KNN with \( K=2 \). Empirical tests showed a value of 1 to be ineffective since it excluded Lowe's ratio test, while values above 2 introduced excessive computational overheads. Further, radius search was seen to be unreliable due to the varying density of keypoints across datasets.
+
+\textbf{Planar Transformation Estimation:} Homography, Affine, Partial Affine (Rigid) transformations using OpenCV, and SVD-based rigid transformations for rotation and translation estimations. Rotational and translational estimates were initially tested separately, due to the possibility of different responses to different prior stages and methods. However, it was seen that inter-method comparisons subtended equivalent conclusions; the methods were tested for visual brevity using a combined transform.
+
+\textbf{Global Image Similarity Measures:} SSIM, histogram matching, local retrofit, and cross-correlation.
+
+\textbf{Optimization Techniques:} Standard Deviation Filtering, LMEDS, RANSAC, Lowe's ratio test, n-Match thresholding, and absolute thresholding for match refinement. Empirical tests indicated that cross-checking was not applicable due to the excessive computational costs involved. KNN.
+
+
+\section{Software}
+This sections details a snippet from the main loop showing the key software flow. 
+
+The full code may be found at \url{https://github.com/Samshabz/Skripsie}
 
 \begin{lstlisting}[language=Python, basicstyle=\ttfamily, keywordstyle=\bfseries, commentstyle=\itshape\color{gray}]
     
 # Setup Lines...
 
 # Phase 1: GNSS is Available and Inference Mode is On
-# Add images from the dataset and infer Pixel to Metre Factor
 for i in range(1, inference_images + 1): 
     navigator.add_image(i, directory)
 navigator.estim_pos(inference_images, Inference_Mode_On=True)
 navigator.find_pixel_to_metre_factor()
 
 # Phase 2: GNSS is Available and Inference Mode is Off
-# Add the rest of the images from dataset
 for i in range(inference_images+1, total_images + 1):
     navigator.add_image(i, directory)
 
 # Phase 3: GNSS is Unavailable
-# Estimate the position of the UAV
 navigator.estim_pos(total_images, Inference_Mode_On=False)
 
 # Debug Lines...
@@ -144,7 +136,5 @@ navigator.estim_pos(total_images, Inference_Mode_On=False)
 
 
 
-\section{Conclusion}
 
-The system design integrates feature extraction, matching, and transformation estimation to enable precise UAV navigation in the absence of GNSS signal. By employing a combination of diverse feature detectors and optimizing various pipeline stages, the system ensures robustness, accuracy, and computational efficiency across different operational scenarios. 
 

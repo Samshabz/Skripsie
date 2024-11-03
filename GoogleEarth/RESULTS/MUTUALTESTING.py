@@ -24,9 +24,11 @@ plt.rcParams.update({'font.size': 12})
 plt.figure(figsize=(10, 6))
 plt.plot(mutual_overlap, radial_percent, marker='o', linestyle='-', color='b')
 plt.yscale('log')  # Increasing linthresh to 0.5 for greater impact on spreading smaller values
-plt.xlabel('Total Mutual Overlap (%)', fontsize=12)
-plt.ylabel('Mean Radial Percent (%)', fontsize=12)
-plt.title('Total Mutual Overlap vs Mean Radial Percent Error', fontsize=14)
+plt.xlabel('Mutual Pixel Overlap (%)', fontsize=24)
+plt.ylabel('Mean Radial Percent (%)', fontsize=24)
+plt.title('Overlap vs Mean Radial Percent Error', fontsize=24)
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
 plt.grid(True, which="both", linestyle='--', linewidth=0.5)
 # plt.show()
 
@@ -44,9 +46,11 @@ plt.close()  # Close the figure
 # Plotting Mean Location Inference Time
 plt.figure(figsize=(10, 6))
 plt.plot(mutual_overlap, location_inference_time, marker='s', linestyle='-', color='r')
-plt.xlabel('Total Mutual Overlap (%)')
-plt.ylabel('Mean Location Inference Time (s)')
-plt.title('Total Mutual Overlap vs Mean Location Inference Time')
+plt.xlabel('Mutual Pixel Overlap (%)', fontsize=24)
+plt.ylabel('Mean Location Inference Time (s)', fontsize = 24)
+plt.title('Mutual Overlap vs Mean Location Inference Time', fontsize=24)
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
 plt.grid(True, linestyle='--', linewidth=0.5)
 
 
@@ -58,3 +62,7 @@ os.makedirs(directory, exist_ok=True)
 file_name = f"{directory}/MUTUAL_TIME.png"
 plt.savefig(file_name)  # Save the figure as a PNG file
 plt.close()  # Close the figure
+
+
+# save fontsizes
+# axis labels, axis values, title. 

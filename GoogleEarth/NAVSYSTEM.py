@@ -416,7 +416,7 @@ class UAVNavigator:
         
 
 #         # # filter
-        if apply_lighting:
+        if apply_lighting and 0==1:
             # night conditions
             if self.effectnum == 1:
                 # Midnight settings (unchanged)
@@ -840,7 +840,7 @@ class UAVNavigator:
         self.add_time_arr.append(end_time_add)
 
 
-    def compute_linear_regression_factors(self):
+    def find_pixel_to_metre_factor(self):
         """Compute the linear regression factors for both x and y based on the stored estimates and actual values."""
         
         # Prepare data for linear regression
@@ -1332,9 +1332,10 @@ class UAVNavigator:
 
 
 
-    def analyze_matches(self, bool_infer_factor, num_images_analyze):
+    def estim_pos(self, num_images_analyze, Inference_Mode_On = False):
         deviation_norms_x = []
         deviation_norms_y = []
+        bool_infer_factor = Inference_Mode_On
 
         range_im = num_images_analyze
         
@@ -1394,7 +1395,7 @@ class UAVNavigator:
                     src_pts, dst_pts, _ = self.get_src_dst_pts(inf_kp, self.stored_local_keypoints[best_index], inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(inf_kp, self.stored_feats[best_index])
                 elif not bool_infer_factor:
                     src_pts, dst_pts, gd_matches = self.get_src_dst_pts(inf_kp, self.stored_local_keypoints[best_index], inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(inf_kp, self.stored_feats[best_index])
-                    # self.overlay_matches(gd_matches, inf_kp, overlay=True, image=i)
+                    
                     
 
 
@@ -1424,7 +1425,7 @@ class UAVNavigator:
                 # 0.5 - 1.5 is good, latter being better generally. 
                 src_pts, dst_pts = self.filter_by_gradient(src_pts, dst_pts, tolerance=3.5, use_median=False) # slightly better nearer to 0. 
                 src_pts, dst_pts = self.ensure_parallel_lines(src_pts, dst_pts, np.abs(internal_angle)) # INSTABILITY 
-                if (len(src_pts) < 20): # THIS VALUE IS VERY IMPORTANT
+                if (len(src_pts) < 20): 
                     src_pts, dst_pts = prior_src, prior_dst
 
 
@@ -1498,25 +1499,18 @@ class UAVNavigator:
                 image_size = self.pull_image(i, self.directory, apply_lighting=False).shape
                 act_tx_ratio = 1 - np.abs(Unnorm_x) / image_size[1]
                 act_ty_ratio = 1 - np.abs(Unnorm_y) / image_size[0]
-                act_tx_pixels = act_tx_ratio*image_size[1]
-                act_ty_pixels = act_ty_ratio*image_size[0]
+
                 # print(f"unnorm xy: {Unnorm_x}, {Unnorm_y}")
                 act_tx_pixels = image_size[1] - np.abs(Unnorm_x)
                 act_ty_pixels = image_size[0] - np.abs(Unnorm_y)
                 
                 # print(f"X-overlap: {act_tx_percent:.2f}%, X-dev: {deviation_x_meters:.2f}m, Y-overlap: {act_ty_percent:.2f}%, Y-dev: {deviation_y_meters:.2f}m ")
                 if not bool_infer_factor:
-                    self.x_overlap.append(act_tx_pixels)
-                    self.y_overlap.append(act_ty_pixels)
-                x_disp_ratio = np.abs(Unnorm_x) / image_size[1]
-                y_disp_ratio = np.abs(Unnorm_y) / image_size[0]
-                total_overlap_ratio = x_disp_ratio * y_disp_ratio # not right - diff dims 
+                    # most recent implementation uses this to store translation vectors
+                    self.x_overlap.append(actual_pixel_change_x_m/self.inferred_factor_x)
+                    self.y_overlap.append(actual_pixel_change_y_m/self.inferred_factor_y)
 
-                # we want to plot the entire path. so lets output the estimated and actual GPS coordinates.
-                # if not bool_infer_factor:
-                #     print(f"Estimated GPS: {new_lon:.9f}, {new_lat:.9f}, Actual GPS: {self.stored_gps[i][0]:.9f}, {self.stored_gps[i][1]:.9f}")
 
-                # lets do the same print but with pixel estimates 
                 
                 if not bool_infer_factor:
                     # Get the actual GPS coordinates in meters using Haversine
@@ -1817,11 +1811,11 @@ def main():
     global_matcher_arr = [0,1,2]
     #ROT2, CPT2, ROCK, SAND, AMAZ - ALL: DATSETXXXX
     dat_set_arr = [
-        "DATSETROT2",
-        "DATSETCPT2",
-        "DATSETROCK2",
-        "DATSETSAND2", 
-        "DATSETAMAZ2"
+        "DATSETROT2", # CITY1
+        "DATSETCPT2", # CITY2
+        "DATSETROCK2", # ROCKY
+        "DATSETSAND2", # DESERT
+        "DATSETAMAZ2" # AMAZON
         
         ]
     # dat_set_arr = ["DATSETROCK"]
@@ -1850,6 +1844,8 @@ def main():
     width_reduction, height_reduction = 0, 0
     scale_arr = [1, 0.8, 0.6, 0.4, 0.3 , 0.25, 0.225,0.2, 0.175, 0.1]
     scale = 1
+    effect_num = 1
+    total_images = num_images
     
     if 1==1:
     
@@ -1862,7 +1858,7 @@ def main():
                 #     for global_detector_choice in global_detector_arr:
                 # for scale_factor in [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]:
                 # for local_matcher_choice in local_matcher_arr:
-                for effect_num in [1,2,3]:
+                # for effect_num in [1,2,3]:
                     for main_dataset_name in dat_set_arr:
                         
                     # for global_matcher_technique in global_matcher_technique_arr:
@@ -1880,7 +1876,7 @@ def main():
                             gc.collect()
                             print(f'End of Iteration: {iteration_count}') 
                         print(f"Dataset: {main_dataset_name}")
-                        # print(f"Resolution: {int(1920/(1.9753*scale))} x {int(972/scale)}")
+                        
 
 
 
@@ -1893,30 +1889,22 @@ def main():
                         main_start_time = time.time()
                         
                         navigator = UAVNavigator(global_detector_choice, local_detector_choice , rotational_detector_choice, global_matcher_choice, local_matcher_choice, global_matcher_technique, main_dataset_name, rotation_method_to_use, glob_thresh, loc_det_thresh, rot_det_thresh, translation_method_to_use, width_reduction, height_reduction, scale, effectnum=effect_num) # INITIALIZATION
-                        
-                        
-                        
-
                         iteration_count += 1
                         # print(f"Scale: {scale}")
                         
-                        # Step 1: Add images and infer factors
-                        
-                        for i in range(1, inference_images + 1): # stops at inference_images = 6]
+                        # Phase 1: GNSS is Available and Inference Mode is On
+                        for i in range(1, inference_images + 1): 
                             navigator.add_image(i, directory)
-                        navigator.analyze_matches(True, inference_images)
-                        navigator.compute_linear_regression_factors()
-                        
-                        
-                        # step 2: Add rest of images when GPS available
-                        for i in range(inference_images+1, num_images + 1):
+                        navigator.estim_pos(inference_images, Inference_Mode_On=True)
+                        navigator.find_pixel_to_metre_factor()
+
+                        # Phase 2: GNSS is Available and Inference Mode is Off
+                        for i in range(inference_images+1, total_images + 1):
                             navigator.add_image(i, directory)
-                        
+
+                        # Phase 3: GNSS is Unavailable
+                        navigator.estim_pos(total_images, Inference_Mode_On=False)
                     
-
-                        # step 3: Infer pos while NO GPS 
-                        navigator.analyze_matches(False, num_images) #  BOOL INFER FACTOR = FALSE. 
-
 
 
 
@@ -1948,7 +1936,13 @@ def main():
                         min_mut_info_y = np.min(navigator.y_overlap)
                         max_mut_info_x = np.max(navigator.x_overlap)
                         max_mut_info_y = np.max(navigator.y_overlap)
-                        
+                        # print(f"tx: mean: {net_information_mutual_x}, ty: mean: {net_information_mutual_y}")
+                        # print(f"tx: min: {min_mut_info_x}, ty: min: {min_mut_info_y}")
+                        # print(f"tx: max: {max_mut_info_x}, ty: max: {max_mut_info_y}")
+
+                        new_datname = "CITY1" if main_dataset_name == "DATSETROT2" else "CITY2" if main_dataset_name == "DATSETCPT2" else "ROCKY" if main_dataset_name == "DATSETROCK2" else "DESERT" if main_dataset_name == "DATSETSAND2" else "AMAZON" if main_dataset_name == "DATSETAMAZ2" else "UNKNOWN"
+
+                        print(f"Datastet: {new_datname}, all_tr_vectors: {navigator.x_overlap}, {navigator.y_overlap}")
                         # print(f"x, y-overlap-min: {int(min_mut_info_x)}, {int(min_mut_info_y)}")
                         # seperate add_time_arr, parameter_inference_time_arr, and location_inference_time_arr. Get the mean and variance of each
                         string_time_analysis_mean = f"Mean_Add_Time: {np.mean(navigator.add_time_arr)}, Mean_Parameter_Inference_Time: {np.mean(navigator.parameter_inference_time_arr)}, Mean_Location_Inference_Time: {np.mean(navigator.location_inference_time_arr)}, Mean_Total_Time: {np.sum(navigator.add_time_arr) + np.sum(navigator.parameter_inference_time_arr) + np.sum(navigator.location_inference_time_arr)}"
