@@ -105,7 +105,7 @@ class UAVNavigator:
         
         # datasets
         self.dataset_name = dataset_name # pass as string
-        self.directory = './GoogleEarth/DATASETS/{}'.format(self.dataset_name)
+        self.directory = './DATASETS/{}'.format(self.dataset_name)
 
         # rotation
         self.method_to_use = rotation_method # 0 is affine, 1 is homography, 2 is partial affine
@@ -1325,7 +1325,21 @@ class UAVNavigator:
 
         return new_lat, new_lon
 
+    def plot_xypts(self, src_pts, dst_pts, tx, ty):
+        # move src by tx, ty
 
+        src_pts = src_pts.reshape(-1, 2)
+        dst_pts = dst_pts.reshape(-1, 2)
+        src_pts = src_pts + np.array([tx, ty])
+
+        fig, ax = plt.subplots(figsize=(10, 10))
+        ax.scatter(src_pts[:, 0], src_pts[:, 1], color='blue', label='Source Points')
+        ax.scatter(dst_pts[:, 0], dst_pts[:, 1], color='red', label='Destination Points')
+        ax.set_xlabel('X Coordinate')
+        ax.set_ylabel('Y Coordinate')
+        ax.set_title('Source and Destination Points')
+        ax.legend()
+        plt.show()
 
 
 
@@ -1397,6 +1411,7 @@ class UAVNavigator:
                     src_pts, dst_pts, gd_matches = self.get_src_dst_pts(inf_kp, self.stored_local_keypoints[best_index], inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(inf_kp, self.stored_feats[best_index])
                     
                     
+                    
 
 
 
@@ -1416,6 +1431,7 @@ class UAVNavigator:
                 elif not bool_infer_factor:
                     src_pts, dst_pts, gd_matches = self.get_src_dst_pts(rotated_inf_kp, self.stored_local_keypoints[best_index], rotated_inf_des, self.stored_local_descriptors[best_index], 0.8, global_matcher_true=False) if self.neural_net_on == False else get_neural_src_pts(rotated_inf_kp, self.stored_feats[best_index])
                     # self.visualize_pts_and_actual(dst_pts - src_pts, actual_pixel_change_x_m, actual_pixel_change_y_m)
+                    
                     # self.plot_matches(inference_image_rotated, self.pull_image(best_index, self.directory, apply_lighting=False), rotated_inf_kp, self.stored_local_keypoints[best_index], gd_matches)
                 
 
@@ -1432,8 +1448,8 @@ class UAVNavigator:
 
                 # TRANSLATIONS
                 translation_x, translation_y = self.get_translations(bool_infer_factor, i, best_index, src_pts, dst_pts)
-
-
+                # if not bool_infer_factor:
+                    # self.plot_xypts(src_pts, dst_pts, translation_x, translation_y)
 
                 # print(f"second time {time.time() - time_first}")    
 
@@ -1489,7 +1505,7 @@ class UAVNavigator:
                 PIX_DIFF = np.abs(translation_x - actual_pixel_change_x_m/self.inferred_factor_x), np.abs(translation_y - actual_pixel_change_y_m/self.inferred_factor_y)
                 if not bool_infer_factor:
                     pass
-                    # print(f"PIX_DIFF: {PIX_DIFF}")
+                    # print(f"PIX_DIFF: {PIX_DIFF} FOR IMAGE {i+1} WRT {best_index+1}")
                     # image {i+1} wrt {best_index+1}, angle: {internal_angle} deg, actual deviation (m): {actual_pixel_change_x_m/self.inferred_factor_x}, {actual_pixel_change_y_m/self.inferred_factor_y}")
                 if not bool_infer_factor:
                     self.pixel_diffs.append((PIX_DIFF[0], PIX_DIFF[1]))   
@@ -1841,6 +1857,7 @@ def main():
     # reduction_arr_2D_pixels = [(920,0), (0,0), (0,0), (0,0), (400,400), (500,500), (600,600), (700,700), (800,800), (900,900), (1000,1000)]
 
     rotation_method_to_use_arr = [0,1,2]
+    width_reduction, height_reduction =  1408, 460
     width_reduction, height_reduction = 0, 0
     scale_arr = [1, 0.8, 0.6, 0.4, 0.3 , 0.25, 0.225,0.2, 0.175, 0.1]
     scale = 1
@@ -1867,7 +1884,7 @@ def main():
     #                     if local_detector_choice == 3 and local_matcher_choice !=0
     #                         continue
                         # if the navigator object exists
-                        directory = './GoogleEarth/DATASETS/{}'.format(main_dataset_name)
+                        directory = './DATASETS/{}'.format(main_dataset_name)
                         
 
                         if 'navigator' in locals():
@@ -1916,6 +1933,12 @@ def main():
                         #DEBUG ONLY
                         pixel_x_arr = np.array(navigator.pixel_diffs)[:,0]
                         pixel_y_arr = np.array(navigator.pixel_diffs)[:,1]
+                        radial_pix_diffs = np.sqrt(pixel_x_arr**2 + pixel_y_arr**2)
+                        print(f"Mean Radial Pixel Deviation: {np.mean(radial_pix_diffs)}")
+                        print(f"Max radial pixel deviation: {np.max(radial_pix_diffs)}")
+                        print(f"mean metre deviation: {np.mean(radial_pix_diffs)*navigator.inferred_factor_x}")
+                        print(f"Max metre deviation: {np.max(radial_pix_diffs)*navigator.inferred_factor_x}")
+
                         # MEAN MAX MIN
                         # print(f"Mean Pixel X: {np.mean(pixel_x_arr)}, Mean Pixel Y: {np.mean(pixel_y_arr)}", f"Max Pixel X: {np.max(pixel_x_arr)}, Max Pixel Y: {np.max(pixel_y_arr)}", f"Min Pixel X: {np.min(pixel_x_arr)}, Min Pixel Y: {np.min(pixel_y_arr)}")
 
@@ -1942,7 +1965,7 @@ def main():
 
                         new_datname = "CITY1" if main_dataset_name == "DATSETROT2" else "CITY2" if main_dataset_name == "DATSETCPT2" else "ROCKY" if main_dataset_name == "DATSETROCK2" else "DESERT" if main_dataset_name == "DATSETSAND2" else "AMAZON" if main_dataset_name == "DATSETAMAZ2" else "UNKNOWN"
 
-                        print(f"Datastet: {new_datname}, all_tr_vectors: {navigator.x_overlap}, {navigator.y_overlap}")
+                        # print(f"Datastet: {new_datname}, all_tr_vectors: {navigator.x_overlap}, {navigator.y_overlap}")
                         # print(f"x, y-overlap-min: {int(min_mut_info_x)}, {int(min_mut_info_y)}")
                         # seperate add_time_arr, parameter_inference_time_arr, and location_inference_time_arr. Get the mean and variance of each
                         string_time_analysis_mean = f"Mean_Add_Time: {np.mean(navigator.add_time_arr)}, Mean_Parameter_Inference_Time: {np.mean(navigator.parameter_inference_time_arr)}, Mean_Location_Inference_Time: {np.mean(navigator.location_inference_time_arr)}, Mean_Total_Time: {np.sum(navigator.add_time_arr) + np.sum(navigator.parameter_inference_time_arr) + np.sum(navigator.location_inference_time_arr)}"

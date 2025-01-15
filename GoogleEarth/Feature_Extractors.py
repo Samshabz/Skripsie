@@ -140,7 +140,7 @@ class SuperPointFeatureExtractor(BaseFeatureExtractor):
             # nms_radius=1 # lower implies more keypoints
 
             nms_radius= 4,  # Increase to suppress more keypoints
-            max_num_keypoints = 1000,  # Limit the number of keypoints to extract
+            max_num_keypoints = 1700,  # Limit the number of keypoints to extract
             detection_threshold =0.0000015,  # Increase threshold for more robust keypoints
             # remove_borders =1,  # Increase border distance to filter more edge keypoints
             # descriptor_dim =128,  # Cannot change, it was trained with 256
